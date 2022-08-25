@@ -1,0 +1,15 @@
+# ignore model and data files
+*.pth
+*.npy
+*.csv
+*.pkl
+cache/*
+
+# ignore plots
+*.pdf
+
+# ignore pre-complied code
+*.cpython-37.pyc
+__pycache__/
+*.py[cod]
+*.pyc
