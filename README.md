@@ -9,7 +9,7 @@ Table of Contents:
 
 *The purpose* of the repository is twofold: 1) collect and pre-process glucose data sets 2) establish baseline performance. *The goal* is to create a unified self-contained repository which would be a starting place for researchers and practioners to compare and develop old and new methods. *An example* of successful implemntation of a similar repository for tabular data sets can be found [here](https://github.com/Yura52/tabular-dl-revisiting-models).
 
-## 2, Overview
+## 2. Overview
 
 Currently, the main tasks are the following:
 
