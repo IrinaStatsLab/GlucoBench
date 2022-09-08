@@ -1,3 +1,6 @@
 | Dataset | # of subjects | # of segments per subject (min, max, median) | Frequency of reads | Length of series (min, max, median) | Static covariates | Dynamic covariates (known in the future) | Dynamic covariates (unknown in the future) |
 | -- | -- | -- | -- | -- | -- | -- | -- |
-| iglu example data | 5 | tbd | 5 minutes | tbd | time | none | none |
+| [iglu example data](https://github.com/irinagain/iglu) | 5 | tbd | 5 minutes | tbd | none | time | none |
+| [Hall 2018](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2005143#pbio.2005143.s010) | 57 | tbd | 5 minutes | tbd | age, BMI, A1c, FBG, ogtt, total cholesterol, triglycerides, HDL, LDL, height, weight, SSPG | time | meals (including nutrition, breakfast only) |
+| [Dubosson 2018](https://doi.org/10.5281/zenodo.1421615) | 9 | tbd | 5 minutes | tbd | age, gender, height, weight | time | activity (accelerometer), insulin, HR, BR, ECG |
+| [Anderson 2016](https://public.jaeb.org/jdrfapp2/stdy/465) | 30 | tbd | 5 minutes | tbd | age, race, medications, height, weight, A1c | time | insulin, ketones, meals |
