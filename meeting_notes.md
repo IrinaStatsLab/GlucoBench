@@ -29,6 +29,7 @@ The class is designed to randomly sub sample a given dataset to give mini sample
 - Write formatters, get_item,col_def functions in a class for IGLOO data following electricity class example (Split 3 data sets)
 - Spend time studying Data Loader
 
+* * *
 # Friday September 2, 2022
 
 Next Meeting: Friday September 9th, Room TBD
