@@ -1,8 +1,39 @@
+# Friday September 9, 2022
+
+Next Meeting: Friday September 16th, Room 403
+
+Next Meeting Notetaker: Nicky
+
+## Updates
+In the last meeting we tlaked about looking at IGLOO data and using pytorch function on it to familiarize the team wiht the structure.
+- The IGLOO dataset has been processed and added to the github
+- Basic vizualization of the data has been completed
+- We brainstormed couple of ways to rackle the segment gaps: in coclusion the best way was to draw histograms highlighting the distribution of aps between timestamps
+- The table outlining all the features of a dataset has been created and is being updated with other datasets and their features
+- Through discussion it was concluded that it would be great to have more description in the tables, like a footnote explaining all the abbrevations and a seperate   	table highlighting all the covariates
+- Dynamiz covariates could use some more context as well. Example, if a study has controlled meals, we know what was eaten & when. Description of how these meals are 	defined, whether they are a vector of 3 numbers, and whether they are alligned to the time stamp woud aid the study
+- Electircity example will be uploaded to github that can be used by the team to analyze how a loader class works. The primary focus for this week is on initializing 	the class, preprocessing data, and defining columns.
+
+## ts_dataset Class
+The class is designed to randomly sub sample a given dataset to give mini samples for a function to run stochastic gradient on. The high level idea is that it is a pipeline where you plug in a dataset and at the end of it you get samples in wrapper classes.
+
+
+## TODOs
+
+- Add classification information to the data table indiciating whether a dataset contains continuous or categorical data in it
+- Possibly add a footnote for abbrevations such as BMI, OGTT etc
+- Create a second table containig all covariates along with their description and refer to them from the first table through index reffering
+- Dubasson Data set: Just include everything in it and describe it
+- Create Histograms highlighting gaps in observation
+	- Create histograms for all 5 subjects of the IGLOO dataset
+- Write formatters, get_item,col_def functions in a class for IGLOO data following electricity class example (Split 3 data sets)
+- Spend time studying Data Loader
+
 # Friday September 2, 2022
 
 Next Meeting: Friday September 9th, Room TBD
 
-Next Meeting Notetaker: Nicky
+Next Meeting Notetaker: Akhil
 
 ## Intro and Logistics
 
