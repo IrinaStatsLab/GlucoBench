@@ -19,6 +19,7 @@
 import os
 import pathlib
 import torch
+from data_formatters import iglu_urjeet
 import numpy as np
 import data_formatters
 
@@ -132,7 +133,8 @@ def make_data_formatter(exp_name):
     """
 
     data_formatter_class = {
-        'electricity': data_formatters.electricity.ElectricityFormatter
+        'electricity': data_formatters.electricity.ElectricityFormatter,
+        'iglu_urjeet': iglu_urjeet.IGLUFormatter
     }
 
     return data_formatter_class[exp_name]()
