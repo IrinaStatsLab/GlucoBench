@@ -1,10 +1,15 @@
 # Dataset
 ds_name: electricity
 data_csv_path: ./raw_data/electricity.csv
+index_col: 0
 
 # hyperparameters
 total_time_steps: 192
 num_encoder_steps: 168
+
+#------------------------------------#
+#---------- DO NOT MODIFY -----------#
+#------------------------------------#
 max_samples: 5000 # leave 0 for training
 batch_size: 64
 device: cuda

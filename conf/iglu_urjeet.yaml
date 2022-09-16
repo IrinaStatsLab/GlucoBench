@@ -1,10 +1,15 @@
 # Dataset
 ds_name: iglu_urjeet
 data_csv_path: ./raw_data/iglu_example_data_5_subject.csv
+index_col: -1
 
 # hyperparameters
 total_time_steps: 192
 num_encoder_steps: 168
+
+#------------------------------------#
+#---------- DO NOT MODIFY -----------#
+#------------------------------------#
 max_samples: 0 # leave 0 for training
 batch_size: 64
 device: cuda

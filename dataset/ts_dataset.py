@@ -11,7 +11,8 @@ class TSDataset(Dataset):
     def __init__(self, cnf, data_formatter):
 
         self.params = cnf.all_params
-        self.data = pd.read_csv(self.params['data_csv_path'], index_col=0, na_filter=False)
+        self.params['index_col'] = False if self.params['index_col'] == -1 else self.params['index_col']
+        self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'], na_filter=False)
 
         # TODO: define splitter for train/val/test
         # self.train_set, self.valid_set, self.test_set = data_formatter.split_data(self.data)
@@ -48,7 +49,6 @@ class TSDataset(Dataset):
                     for i in range(num_entries - time_steps + 1)
                 ]
             split_data_map[identifier] = df
-
         # determine number of samples to extract
         print('# available segments={}'.format(len(valid_sampling_locations)))
         if max_samples > 0 and len(valid_sampling_locations) >= max_samples:
