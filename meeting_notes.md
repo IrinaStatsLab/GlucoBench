@@ -73,3 +73,23 @@ Metrics for performance:
 	- See ts_dataset.py
 - Add 3 datasets from Awesome-CGM to dataset table (**Lizzie**)
 
+
+* * *
+# Friday September 9, 2022
+
+## Notes
+We will split data into segments by 40 minute gaps. Do linear interpolation on all other gaps (< 40) within segments. Then look at final length of segments.
+
+Additional Info for *.yaml* file parameters,
+- History/Input: num_encoder_steps (168 glucose values)
+- Total length: 192 glucose values
+- Predicted Steps: 24 glucose values
+
+## TODOs
+
+- Try working at data formatter with existing datasets (**All**)
+- Explore new subject datasets + histograms, etc. (**All**)
+- Work on segment splitting
+- Adapt data formatter to subject datasets (**All**)
+	- See ts_dataset.py and electricity example
+- Start writing questions about research papers
