@@ -23,6 +23,9 @@ Next Meeting Notetaker: Lizzie
 - Call interpolation function at the beginning of the TSDataset
 - Scalers and encoders
 
+![image](https://user-images.githubusercontent.com/42304832/191999620-3147ee7f-e7ec-4968-887d-ed8d79358cc5.png)
+
+
 # Friday September 9, 2022
 
 Next Meeting: Friday September 16th, Room 403
