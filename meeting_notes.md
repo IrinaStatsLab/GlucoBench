@@ -1,3 +1,28 @@
+# Friday September 23, 2022
+
+Next Meeting: Friday September 30th, Room 403
+
+Next Meeting Notetaker: Lizzie
+
+## Updates
+- Visualizations and DataFormatters for different datasets have been done.
+- Work in interpolation has started.
+- Various datasets have been preprocessed for use by DataFormatters.
+
+## Meeting Nodes
+- For Anderson, there are 3 time columns which is kind of weird.
+- Disregard segments where there is just 1 datapoint (impossible to interpolate)
+- Should have a seperate id column for segment
+- Everything that processes the data should be in the same "tree"
+- Temporarily ignore the issues with Dubusson, see if we can make it work
+
+
+## Next Steps
+- Finish up the interpolation part
+- Interpolation function should be in the data formatter
+- Call interpolation function at the beginning of the TSDataset
+- Scalers and encoders
+
 # Friday September 9, 2022
 
 Next Meeting: Friday September 16th, Room 403
