@@ -19,7 +19,6 @@
 import os
 import pathlib
 import torch
-from data_formatters import iglu_urjeet
 import numpy as np
 import data_formatters
 
@@ -125,20 +124,22 @@ def create_folder_if_not_exist(directory):
   pathlib.Path(directory).mkdir(parents=True, exist_ok=True)
 
 
-def make_data_formatter(exp_name):
-    """Gets a data formatter object for experiment.
-
-    Returns:
-      Default DataFormatter per experiment.
-    """
-
-    data_formatter_class = {
-        'electricity': data_formatters.electricity.ElectricityFormatter,
-        'iglu_urjeet': iglu_urjeet.IGLUFormatter
-    }
-
-    return data_formatter_class[exp_name]()
-
-
 def csv_path_to_folder(path: str):
     return "/".join(path.split('/')[:-1]) + "/"
+
+
+def interpolate(data, gap_threshold=0, min_drop_length=0):
+  """Interpolates missing values in data.
+
+  Args:
+    data: Data to interpolate.
+    method: Method to use for interpolation.
+
+  Returns:
+    data: Data with missing values interpolated and 
+          additional column indicating continuous segments (call it 'segment').
+  """
+  # TODO: add functionality to interpolate missing values + add segment column
+  data['segment'] = 0
+  return data
+

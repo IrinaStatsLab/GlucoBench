@@ -13,9 +13,11 @@ class TSDataset(Dataset):
         self.params = cnf.all_params
         self.params['index_col'] = False if self.params['index_col'] == -1 else self.params['index_col']
         self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'], na_filter=False)
-
-        # TODO: define splitter for train/val/test
-        # self.train_set, self.valid_set, self.test_set = data_formatter.split_data(self.data)
+        
+        # TODO: implement interpolating
+        self.data = data_formatter.interpolate(self.data)
+        # TODO: implement splitting
+        
         self.params['column_definition'] = data_formatter.get_column_definition()
         self.params['input_size'] = data_formatter.get_input_size()
         self.params['output_size'] = data_formatter.get_output_size()

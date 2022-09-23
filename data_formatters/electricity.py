@@ -43,7 +43,7 @@ class ElectricityFormatter(GenericDataFormatter):
   """
 
   _column_definition = [
-      ('id', DataTypes.REAL_VALUED, InputTypes.ID),
+      ('id', DataTypes.CATEGORICAL, InputTypes.ID),
       ('hours_from_start', DataTypes.REAL_VALUED, InputTypes.TIME),
       ('power_usage', DataTypes.REAL_VALUED, InputTypes.TARGET),
       ('hour', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
@@ -52,10 +52,24 @@ class ElectricityFormatter(GenericDataFormatter):
       ('categorical_id', DataTypes.CATEGORICAL, InputTypes.STATIC_INPUT),
   ]
 
+  _interpolation_params = {
+      'gap_threshold': 45,
+      'min_drop_length': 5
+  }
+
   def __init__(self):
     """Initialises formatter."""
-    # TODO: set up scalers etc
     pass
+
+  def interpolate(self, df):
+    # TODO: implement interpolation in utils
+    df = utils.interpolate(df, **self._interpolation_params)
+    # create new column with unique id for each subject-segment pair
+    df['segment_id'] = df.id.astype('str') + '_' + df.segment.astype('str')
+    # set subject-segment column as ID and set subject id column as KNOWN_INPUT
+    self._column_definition[0] = ('id', DataTypes.CATEGORICAL, InputTypes.KNOWN_INPUT)
+    self._column_definition += [('segment_id', DataTypes.CATEGORICAL, InputTypes.ID)]
+    return df
 
   def split_data(self, df):
     pass

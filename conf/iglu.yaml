@@ -10,7 +10,7 @@ num_encoder_steps: 168
 #------------------------------------#
 #---------- DO NOT MODIFY -----------#
 #------------------------------------#
-max_samples: 0 # leave 0 for training
+max_samples: 5000 # leave 0 for training
 batch_size: 64
 device: cuda
 lr: 0.001

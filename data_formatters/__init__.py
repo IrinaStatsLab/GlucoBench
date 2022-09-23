@@ -13,5 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from data_formatters.utils import make_data_formatter, csv_path_to_folder
-from data_formatters import electricity
+from data_formatters.utils import csv_path_to_folder
+from data_formatters import electricity, iglu
