@@ -28,7 +28,7 @@ Next Meeting Notetaker: Lizzie
 # Friday September 16, 2022
 
 ## Notes
-We will split data into segments by 40 minute gaps. Do linear interpolation on all other gaps (< 40) within segments. Then look at final length of segments.
+We will split data into segments by 45 minute gaps. Do linear interpolation on all other gaps (< 5) within segments. Then look at final length of segments.
 
 Additional Info for *.yaml* file parameters,
 - History/Input: num_encoder_steps (168 glucose values)
