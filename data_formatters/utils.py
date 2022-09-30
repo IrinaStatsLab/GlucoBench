@@ -134,7 +134,7 @@ def csv_path_to_folder(path: str):
     return "/".join(path.split('/')[:-1]) + "/"
 
 
-def interpolate(df: pd.Dataframe, interpolation_columns: List[str], gap_threshold: int = 0, min_drop_length: int = 0, interval_length: int = 0):
+def interpolate(df: pd.DataFrame, interpolation_columns: List[str], gap_threshold: int = 0, min_drop_length: int = 0, interval_length: int = 0):
   """Interpolates missing values in data.
 
   Args:
