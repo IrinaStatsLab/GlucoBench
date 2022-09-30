@@ -16,12 +16,18 @@
 # Lint as: python3
 """Generic helper functions used across codebase."""
 
+from collections import namedtuple
+from datetime import datetime
 import os
 import pathlib
 import torch
 import numpy as np
+import pandas as pd
 import data_formatters
+from typing import List, Tuple
 
+
+MINUTE = 60
 
 # Loss functions.
 def pytorch_quantile_loss(y, y_pred, quantile):
@@ -128,18 +134,53 @@ def csv_path_to_folder(path: str):
     return "/".join(path.split('/')[:-1]) + "/"
 
 
-def interpolate(data, gap_threshold=0, min_drop_length=0):
+def interpolate(df: pd.Dataframe, interpolation_columns: List[str], gap_threshold: int = 0, min_drop_length: int = 0, interval_length: int = 0):
   """Interpolates missing values in data.
 
   Args:
-    data: Data to interpolate.
-    method: Method to use for interpolation.
+    df: Dataframe to interpolate on. Sorted by id and then time (a DateTime object).
+    interpolation_columns: Columns that we want to interpolate on.
+    gap_threshold: Maximum allowed gap for interpolation.
+    min_drop_length: Minimum number of points needed within an interval to interpolate.
+    interval_length: Length of interpolation intervals in minutes.
 
   Returns:
-    data: Data with missing values interpolated and 
-          additional column indicating continuous segments (call it 'segment').
+    data: DataFrame with missing values interpolated and 
+          additional column ('segment') indicating continuous segments.
   """
-  # TODO: add functionality to interpolate missing values + add segment column
-  data['segment'] = 0
-  return data
+  returned_columns = df.columns + ['segment']
+  new_dataframe = pd.DataFrame(columns=returned_columns)
+
+  segments = []
+  prev_segment_start_time: datetime = new_dataframe.iloc[1]['time']
+  for row in df.itertuples():
+    time_difference = (row['time'] - prev_segment_start_time).total_seconds()
+
+    # Must make a new segment if there exists a gap larger than the gap threshold.
+    if time_difference > gap_threshold:
+      segment_index += 1
+
+      if len(segments) >= min_drop_length:
+        first_instance, last_instance = segments[0], segments[-1]
+        number_of_intervals = (row['time'] - first_instance['time']).total_seconds() // (interval_length * MINUTE)
+
+        # Interpolate over the total number of intervals within our segment array.
+        for interval_idx in range(1, number_of_intervals):
+          temp_row = {}
+          for column in interpolation_columns:
+            # Use linear interpolation to get data point every interval_length minutes.
+            predicted_data_pt = first_instance[column] + interval_idx * (interval_length * MINUTE) * (last_instance[column] - first_instance[column]) / (last_instance['time'] - first_instance['time']).total_seconds()
+            temp_row[column] = predicted_data_pt
+
+          temp_row['id'] = segments[0]['id']
+          temp_row['segment'] = segment_index
+
+          new_dataframe.append(temp_row)  
+      
+      segments = []
+    segments.append(row)
+    prev_segment_start_time = row['time']
+    
+  return new_dataframe
+
 

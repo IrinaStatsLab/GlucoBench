@@ -37,7 +37,8 @@ class IGLUFormatter(GenericDataFormatter):
 
   _interpolation_params = {
       'gap_threshold': 45,
-      'min_drop_length': 5
+      'min_drop_length': 12,
+      'interval_length': 5
   }
 
   def __init__(self):
@@ -46,6 +47,7 @@ class IGLUFormatter(GenericDataFormatter):
   
   def interpolate(self, df):
     # TODO: implement interpolation in utils
+    df.sort_values(by=['id', 'time'], inplace=True)
     df = utils.interpolate(df, **self._interpolation_params)
     # create new column with unique id for each subject-segment pair
     df['segment_id'] = df.id.astype('str') + '_' + df.segment.astype('str')
