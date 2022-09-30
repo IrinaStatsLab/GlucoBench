@@ -1,3 +1,40 @@
+# Friday September 30, 2022
+
+Next Meeting: Friday October 7th, Room 403
+
+Next Meeting Notetaker: Akhil
+
+# Updates
+- Finished interpolate function in utils.py
+- Added dataset formatters, yaml, etc for Dubosson and Hall
+
+# Notes
+- Renat to post a commit/push schedule today to be followed throughout the week
+- No covariates added yet, later static covariates can be propagated, dynamic interpolation tbd
+- Segment standardization/sampling is already implemented in ts_dataset
+
+
+# TODOs
+- Drop rows/subjects in \_\_init\_\_ of dataset formatter if applicable
+	- Include a comment on which subjects/why dropped
+- Write split_data function to split train, val, test
+	- Define minimum segment length (tentatively min_length = 24 hours)
+	- Split subject ids 90:10 train:test
+	- Within each subject-segment in 90% train set, split as follows:
+		- If segment length >= 3*min_length, split last min_length as test, next to last min_length as validate, rest as train
+		- Else if segment length >= 2*min_length, split last min_length as validate, rest as train
+		- Else assign as train only
+- Check splitting proportions - i.e. what percent is train, val, test
+	- Can adjust min_length based on this 
+
+# Tentative task assignments:
+- Urjeet push draft code for split_data
+- Nicky will take over split_data for Monday/Tuesday
+- All make sure your dataset is up to date with all functions we've added
+	- In particular check that interpolate runs
+	- Throughout the semester, you are responsible for supporting your dataset
+
+
 # Friday September 23, 2022
 
 Next Meeting: Friday September 30th, Room 403
