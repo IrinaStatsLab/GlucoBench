@@ -48,7 +48,7 @@ class IGLUFormatter(GenericDataFormatter):
   def interpolate(self, df):
     # TODO: implement interpolation in utils
     df.sort_values(by=['id', 'time'], inplace=True)
-    df = utils.interpolate(df, **self._interpolation_params)
+    df = utils.interpolate(df, ['gl'], **self._interpolation_params)
     # create new column with unique id for each subject-segment pair
     df['segment_id'] = df.id.astype('str') + '_' + df.segment.astype('str')
     # set subject-segment column as ID and set subject id column as KNOWN_INPUT
