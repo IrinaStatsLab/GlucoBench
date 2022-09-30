@@ -157,7 +157,7 @@ def interpolate(df: pd.DataFrame, interpolation_columns: List[str], gap_threshol
     time_difference = (row['time'] - prev_segment_start_time).total_seconds()
 
     # Must make a new segment if there exists a gap larger than the gap threshold.
-    if time_difference > gap_threshold:
+    if time_difference > gap_threshold * MINUTE or row['id'] != segments[0]['id']:
       segment_index += 1
 
       if len(segments) >= min_drop_length:
