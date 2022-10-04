@@ -26,7 +26,7 @@ DataTypes = data_formatters.base.DataTypes
 InputTypes = data_formatters.base.InputTypes
 
 
-class DUBOSSONFormatter(GenericDataFormatter):
+class DubossonFormatter(GenericDataFormatter):
   # Defines and formats data for the IGLU dataset.
 
   _column_definition = [
@@ -36,17 +36,24 @@ class DUBOSSONFormatter(GenericDataFormatter):
   ]
 
   _interpolation_params = {
+      'interpolation_columns': ['gl'],
       'gap_threshold': 45,
-      'min_drop_length': 5
+      'min_drop_length': 12,
+      'interval_length': 5
   }
+
+  _drop_ids = [9]
 
   def __init__(self):
     """Initialises formatter."""
     pass
   
   def interpolate(self, df):
+    # drop defined ids (see _drop_ids) (defined here instead of init because data is read from TSDataset and not DubossonFormatter)
+    df = df.loc[~df.id.isin(self._drop_ids)].copy()
     # TODO: implement interpolation in utils
     df = utils.interpolate(df, **self._interpolation_params)
+
     # create new column with unique id for each subject-segment pair
     df['segment_id'] = df.id.astype('str') + '_' + df.segment.astype('str')
     # set subject-segment column as ID and set subject id column as KNOWN_INPUT
