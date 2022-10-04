@@ -46,7 +46,8 @@ class DubossonFormatter(GenericDataFormatter):
 
   def __init__(self):
     """Initialises formatter."""
-    pass
+    # Drop rows with ID '009'
+    df = df[df.id != '009']
   
   def interpolate(self, df):
     # drop defined ids (see _drop_ids) (defined here instead of init because data is read from TSDataset and not DubossonFormatter)
@@ -68,7 +69,6 @@ class DubossonFormatter(GenericDataFormatter):
     pass
 
   def transform_inputs(self, df):
-    # TODO: drop subject '009'
     pass
 
   def format_predictions(self, df):
