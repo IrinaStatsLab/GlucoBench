@@ -148,39 +148,95 @@ def interpolate(df: pd.DataFrame, interpolation_columns: List[str], gap_threshol
     data: DataFrame with missing values interpolated and 
           additional column ('segment') indicating continuous segments.
   """
-  returned_columns = df.columns + ['segment']
-  new_dataframe = pd.DataFrame(columns=returned_columns)
+  # returned_columns = df.columns + ['segment']
+  # new_dataframe = pd.DataFrame(columns=returned_columns)
 
-  segments = []
-  prev_segment_start_time: datetime = new_dataframe.iloc[1]['time']
-  for row in df.itertuples():
-    time_difference = (row['time'] - prev_segment_start_time).total_seconds()
+  # segments = []
+  # prev_segment_start_time: datetime = new_dataframe.iloc[1]['time']
+  # for row in df.itertuples():
+  #   time_difference = (row['time'] - prev_segment_start_time).total_seconds()
 
-    # Must make a new segment if there exists a gap larger than the gap threshold.
-    if time_difference > gap_threshold * MINUTE or row['id'] != segments[0]['id']:
-      segment_index += 1
+  #   # Must make a new segment if there exists a gap larger than the gap threshold.
+  #   if time_difference > gap_threshold * MINUTE or row['id'] != segments[0]['id']:
+  #     segment_index += 1
 
-      if len(segments) >= min_drop_length:
-        first_instance, last_instance = segments[0], segments[-1]
-        number_of_intervals = (row['time'] - first_instance['time']).total_seconds() // (interval_length * MINUTE)
+  #     if len(segments) >= min_drop_length:
+  #       first_instance, last_instance = segments[0], segments[-1]
+  #       number_of_intervals = (row['time'] - first_instance['time']).total_seconds() // (interval_length * MINUTE)
 
-        # Interpolate over the total number of intervals within our segment array.
-        for interval_idx in range(1, number_of_intervals):
-          temp_row = {}
-          for column in interpolation_columns:
-            # Use linear interpolation to get data point every interval_length minutes.
-            predicted_data_pt = first_instance[column] + interval_idx * (interval_length * MINUTE) * (last_instance[column] - first_instance[column]) / (last_instance['time'] - first_instance['time']).total_seconds()
-            temp_row[column] = predicted_data_pt
+  #       # Interpolate over the total number of intervals within our segment array.
+  #       for interval_idx in range(1, number_of_intervals):
+  #         temp_row = {}
+  #         for column in interpolation_columns:
+  #           # Use linear interpolation to get data point every interval_length minutes.
+  #           predicted_data_pt = first_instance[column] + interval_idx * (interval_length * MINUTE) * (last_instance[column] - first_instance[column]) / (last_instance['time'] - first_instance['time']).total_seconds()
+  #           temp_row[column] = predicted_data_pt
 
-          temp_row['id'] = segments[0]['id']
-          temp_row['segment'] = segment_index
+  #         temp_row['id'] = segments[0]['id']
+  #         temp_row['segment'] = segment_index
 
-          new_dataframe.append(temp_row)  
+  #         new_dataframe.append(temp_row)  
       
-      segments = []
-    segments.append(row)
-    prev_segment_start_time = row['time']
+  #     segments = []
+  #   segments.append(row)
+  #   prev_segment_start_time = row['time']
     
-  return new_dataframe
+  # return new_dataframe
+
+  ##### Lizzie's temp version while trying to bugfix Urjeet's
+  # convert to datetime
+  df['time'] = pd.to_datetime(df['time'])
+
+  # get unique ids and sort 
+  ids = list(set(df['id'].tolist()))
+  ids.sort()
+
+  subnum = 0 # define subject counter
+  for i in ids:
+      subnum += 1 # start loop by incrementing subject
+
+      # subset data to this subject and add lag column in minutes
+      data = df.loc[df['id'] == i].copy()
+      data['lag'] = data['time'].diff().astype('timedelta64[m]')
+
+      # find gap indices for this subject where gaps are lag > 45 minutes
+      idx = np.where(data['lag'] > gap_threshold)[0].tolist() # index is the location following gap (i.e. start of next segment)
+      # add zero and ending index for taking the difference
+      idx = [0] + idx + [len(data['lag'])]
+
+      for j in range(1, len(idx)):
+          ## if segment is less than an hour of data, then skip interpolation (data will not be appended)
+          # needs to be adjusted bc could have fewer readings but > desired overall length
+          if idx[j] - idx[j-1] < min_drop_length: continue # assumes min_drop_length is counting readings, not time
+          ## otherwise proceed with interpolation
+          # slice and copy the data corresponding to this segment
+          segment = data.iloc[idx[j-1]:idx[j]].copy()
+          # create index as time for resampling
+          segment.index = segment['time']
+          # resample to minute and take mean to round to nearest minute
+          segment = segment.resample('T').mean()
+          # resample to secondly,  interpolate, then resample to 5 minutes to get grid points
+          segment = segment.resample('s').mean().interpolate(method = 'linear') \
+              .resample('5T').interpolate(method = 'linear')
+          # add segment counter, id, and time because time gets dropped above
+          segment['segment'] = j
+          segment['id'] = i
+          segment['time'] = segment.index
+
+          # if first segment, then df1 is just this segment; else df1 needs to append the current segment
+          if j == 1:
+              df1 = segment.copy()
+          else:
+              df1 = df1.append(segment)
+      # if first subject, then copy; else append
+      if subnum == 1:
+          dfsubject = df1.copy()
+      else:
+          dfsubject = dfsubject.append(df1)
+
+  # reorder columns
+  dfsubject = dfsubject[['id', 'segment', 'time', 'gl']].reset_index(drop = True)   
+
+  return dfsubject
 
 
