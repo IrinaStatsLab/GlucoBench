@@ -42,12 +42,16 @@ class DubossonFormatter(GenericDataFormatter):
       'interval_length': 5
   }
 
+  _split_params = {
+      'test_percent_subjects': 0.9,
+      'test_length_segment': 12,
+      'val_length_segment': 12
+  }
+
   _drop_ids = [9]
 
   def __init__(self):
     """Initialises formatter."""
-    # Drop rows with ID '009'
-    df = df[df.id != '009']
   
   def interpolate(self, df):
     # drop defined ids (see _drop_ids) (defined here instead of init because data is read from TSDataset and not DubossonFormatter)
