@@ -184,8 +184,9 @@ def interpolate(df: pd.DataFrame, interpolation_columns: List[str], gap_threshol
   # return new_dataframe
 
   ##### Lizzie's temp version while trying to bugfix Urjeet's
-  # convert to datetime
+  # convert to datetime, float in case
   df['time'] = pd.to_datetime(df['time'])
+  df['gl'] = pd.to_numeric(df['gl'], errors = 'coerce')
 
   # get unique ids and sort 
   ids = list(set(df['id'].tolist()))
