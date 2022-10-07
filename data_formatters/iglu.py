@@ -53,6 +53,7 @@ class IGLUFormatter(GenericDataFormatter):
   
   def interpolate(self, df):
     # TODO: implement interpolation in utils
+    df['time'] = pd.to_datetime(df['time'])
     df.sort_values(by=['id', 'time'], inplace=True)
     df = utils.interpolate(df, ['gl'], **self._interpolation_params)
     # create new column with unique id for each subject-segment pair

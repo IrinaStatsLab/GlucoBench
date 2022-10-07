@@ -244,7 +244,7 @@ def interpolate(df: pd.DataFrame, interpolation_columns: List[str], gap_threshol
 def flatten(l):
   return [item for sublist in l for item in sublist]
 
-def split(df: pd.DataFrame, test_percent_subjects: float, val_length_segment: int, test_length_segment: int):
+def split(df: pd.DataFrame, test_percent_subjects: float, val_length_segment: int, test_length_segment: int, min_drop_length: int):
   L = dict()
   segment = []
   for i in range(len(df)):

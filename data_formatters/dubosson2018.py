@@ -43,10 +43,11 @@ class DubossonFormatter(GenericDataFormatter):
   }
 
   _split_params = {
-      'test_percent_subjects': 0.9,
-      'test_length_segment': 12,
-      'val_length_segment': 12
-  }
+  'test_percent_subjects': 0.1,
+  'test_length_segment': 144,
+  'val_length_segment': 144,
+  'min_drop_length': 144
+}
 
   _drop_ids = [9]
 
@@ -56,7 +57,7 @@ class DubossonFormatter(GenericDataFormatter):
   def interpolate(self, df):
     # drop defined ids (see _drop_ids) (defined here instead of init because data is read from TSDataset and not DubossonFormatter)
     df = df.loc[~df.id.isin(self._drop_ids)].copy()
-    df['time'] = pd.to_datetime(df['time'])
+    #df['time'] = pd.to_datetime(df['time'])
     # TODO: implement interpolation in utils
     df = utils.interpolate(df, **self._interpolation_params)
 
