@@ -36,10 +36,13 @@ class DubossonFormatter(GenericDataFormatter):
   ]
 
   _interpolation_params = {
-      'interpolation_columns': ['gl'],
-      'gap_threshold': 45,
-      'min_drop_length': 12,
-      'interval_length': 5
+    'id_col': 'id',
+    'time_col': 'time',
+    'interpolation_columns': ['gl'], 
+    'constant_columns': [],
+    'gap_threshold': 45, 
+    'min_drop_length': 12, 
+    'interval_length': 5
   }
 
   _split_params = {
@@ -51,14 +54,32 @@ class DubossonFormatter(GenericDataFormatter):
 
   _drop_ids = [9]
 
-  def __init__(self):
+  def __init__(self, cnf):
     """Initialises formatter."""
+    # load parameters from the config file
+    self.params = cnf.all_params
+    # check if data table has index col: -1 if not, index >= 0 if yes
+    self.params['index_col'] = False if self.params['index_col'] == -1 else self.params['index_col']
+    # read data table
+    self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'], na_filter=False)
+
+    # start formatting the data:
+    # 1. drop columns that are not in the column definition
+    # 2. drop rows based on conditions set in the formatter
+    # 3. interpolate missing values
+    # 4. split data into train, val, test
+    # 5. normalize / encode features and targets
+    self.drop()
+    self.interpolate()
+    # self.split_data()
+
+  def drop(self):
+    # drop columns that are not in the column definition
+    self.data = self.data[[col[0] for col in self._column_definition]]
+    # drop rows based on conditions set in the formatter
+    self.data = self.data.loc[~self.data.id.isin(self._drop_ids)].copy()
   
   def interpolate(self, df):
-    # drop defined ids (see _drop_ids) (defined here instead of init because data is read from TSDataset and not DubossonFormatter)
-    df = df.loc[~df.id.isin(self._drop_ids)].copy()
-    #df['time'] = pd.to_datetime(df['time'])
-    # TODO: implement interpolation in utils
     df = utils.interpolate(df, **self._interpolation_params)
 
     # create new column with unique id for each subject-segment pair
