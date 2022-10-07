@@ -148,40 +148,41 @@ def interpolate(df: pd.DataFrame, interpolation_columns: List[str], gap_threshol
     data: DataFrame with missing values interpolated and 
           additional column ('segment') indicating continuous segments.
   """
-  # returned_columns = df.columns + ['segment']
-  # new_dataframe = pd.DataFrame(columns=returned_columns)
+  '''
+  new_dataframe = []
 
-  # segments = []
-  # prev_segment_start_time: datetime = new_dataframe.iloc[1]['time']
-  # for row in df.itertuples():
-  #   time_difference = (row['time'] - prev_segment_start_time).total_seconds()
+  segments = []
+  segment_index = 0
+  prev_segment_start_time: datetime = df.iloc[1]['time']
+  for row in df.itertuples():
+    time_difference = (row.time- prev_segment_start_time).total_seconds()
 
-  #   # Must make a new segment if there exists a gap larger than the gap threshold.
-  #   if time_difference > gap_threshold * MINUTE or row['id'] != segments[0]['id']:
-  #     segment_index += 1
+    # Must make a new segment if there exists a gap larger than the gap threshold.
+    if len(segments) > 0 and (time_difference > gap_threshold * MINUTE or row.id != segments[0].id):
+      segment_index += 1
 
-  #     if len(segments) >= min_drop_length:
-  #       first_instance, last_instance = segments[0], segments[-1]
-  #       number_of_intervals = (row['time'] - first_instance['time']).total_seconds() // (interval_length * MINUTE)
+      if len(segments) >= min_drop_length:
+        first_instance, last_instance = segments[0], segments[-1]
+        number_of_intervals = (row.time - first_instance.time).total_seconds() // (interval_length * MINUTE)
 
-  #       # Interpolate over the total number of intervals within our segment array.
-  #       for interval_idx in range(1, number_of_intervals):
-  #         temp_row = {}
-  #         for column in interpolation_columns:
-  #           # Use linear interpolation to get data point every interval_length minutes.
-  #           predicted_data_pt = first_instance[column] + interval_idx * (interval_length * MINUTE) * (last_instance[column] - first_instance[column]) / (last_instance['time'] - first_instance['time']).total_seconds()
-  #           temp_row[column] = predicted_data_pt
+        # Interpolate over the total number of intervals within our segment array.
+        for interval_idx in range(1, int(number_of_intervals)):
+          temp_row = {}
+          for column in interpolation_columns:
+            # Use linear interpolation to get data point every interval_length minutes.
+            predicted_data_pt = getattr(first_instance, column) + interval_idx * (interval_length * MINUTE) * (getattr(last_instance, column) - getattr(first_instance, column)) / (last_instance.time - first_instance.time).total_seconds()
+            temp_row[column] = predicted_data_pt
 
-  #         temp_row['id'] = segments[0]['id']
-  #         temp_row['segment'] = segment_index
+          temp_row['id'] = segments[0].id
+          temp_row['segment'] = segment_index
 
-  #         new_dataframe.append(temp_row)  
+          new_dataframe.append(temp_row)  
       
-  #     segments = []
-  #   segments.append(row)
-  #   prev_segment_start_time = row['time']
+      segments = []
+    segments.append(row)
+    prev_segment_start_time = row.time
     
-  # return new_dataframe
+  return pd.DataFrame(new_dataframe)'''
 
   ##### Lizzie's temp version while trying to bugfix Urjeet's
   # convert to datetime, float in case
@@ -239,5 +240,73 @@ def interpolate(df: pd.DataFrame, interpolation_columns: List[str], gap_threshol
   dfsubject = dfsubject[['id', 'segment', 'time', 'gl']].reset_index(drop = True)   
 
   return dfsubject
+
+def flatten(l):
+  return [item for sublist in l for item in sublist]
+
+def split(df: pd.DataFrame, test_percent_subjects: float, val_length_segment: int, test_length_segment: int):
+  L = dict()
+  segment = []
+  for i in range(len(df)):
+      # get row information
+      row = df.iloc[i]
+      prev_row = df.iloc[0] if i == 0 else df.iloc[i-1]
+      
+      # check for change in subject or segment
+      if row.id != prev_row.id or row.segment != prev_row.segment:
+          if prev_row.id not in L:
+              L[prev_row.id] = [segment]
+          else:
+              L[prev_row.id].append(segment)
+          segment = []
+      
+      segment.append(i)
+      
+      # edge case: once at end of data, need to append final segment
+      if i == len(df)-1:
+          if prev_row.id not in L:
+              L[prev_row.id] = [segment]
+          else:
+            L[prev_row.id].append(segment)
+
+  test_set = []
+  number_of_subject = len(L)
+  test_count = int(number_of_subject * test_percent_subjects)
+
+  # add test set data
+  for i in range(test_count):
+    subjects = list(L.keys())
+    curr_subject = L[subjects[i]]
+    for segment in curr_subject:
+        for idx in segment:
+            test_set.append(idx)
+
+  # remove test set from L
+  subjects = list(L.keys())
+  for i in range(test_count):
+      del L[subjects[i]]
+  
+  train_set = []
+  validation = []
+
+  # iterate through L
+  # check that segment has length >= min_drop_length + val_length_segment + test_length_segment
+  for subject in L:
+      for segment in L[subject]:
+          if len(segment) >= min_drop_length + val_length_segment + test_length_segment:
+              train_set.append(segment[:(-(val_length_segment + test_length_segment))])
+              validation.append(segment[-(val_length_segment + test_length_segment):-test_length_segment])
+              test_set.append(segment[-test_length_segment:])
+          else:
+              train_set.append(segment)
+  
+  train_set = flatten(train_set)
+  validation = flatten(validation)
+
+  # Add to dictionary for access
+  return {'test': test_set, 'train': train_set, 'validation': validation}
+
+
+ 
 
 

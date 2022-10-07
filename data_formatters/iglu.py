@@ -34,6 +34,13 @@ class IGLUFormatter(GenericDataFormatter):
       ('gl', DataTypes.REAL_VALUED, InputTypes.TARGET) # Glycemic load
   ]
 
+  _split_params = {
+  'test_percent_subjects': 0.9,
+  'test_length_segment': 144,
+  'val_length_segment': 144,
+  'min_drop_length': 144
+}
+
   _interpolation_params = {
       'gap_threshold': 45,
       'min_drop_length': 12,

@@ -56,6 +56,7 @@ class DubossonFormatter(GenericDataFormatter):
   def interpolate(self, df):
     # drop defined ids (see _drop_ids) (defined here instead of init because data is read from TSDataset and not DubossonFormatter)
     df = df.loc[~df.id.isin(self._drop_ids)].copy()
+    df['time'] = pd.to_datetime(df['time'])
     # TODO: implement interpolation in utils
     df = utils.interpolate(df, **self._interpolation_params)
 
@@ -67,7 +68,7 @@ class DubossonFormatter(GenericDataFormatter):
     return df
 
   def split_data(self, df):
-    pass
+    return utils.split(df, **self._split_params)
 
   def set_scalers(self, df):
     pass
