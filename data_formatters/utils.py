@@ -68,7 +68,6 @@ def interpolate(data: pd.DataFrame,
     data: DataFrame with missing values interpolated and 
           additional column ('segment') indicating continuous segments.
   """
-
   # add id_col, segment as constant (do not need to be interpolated)
   constant_columns += [id_col, 'segment']
   # store final output
