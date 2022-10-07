@@ -225,16 +225,16 @@ def interpolate(df: pd.DataFrame, interpolation_columns: List[str], gap_threshol
           segment['id'] = i
           segment['time'] = segment.index
 
-          # if first segment, then df1 is just this segment; else df1 needs to append the current segment
+          # if first segment, then df1 is just this segment; else df1 needs to concat the current segment
           if j == 1:
               df1 = segment.copy()
           else:
-              df1 = df1.append(segment)
+              df1 = pd.concat([df1, segment])
       # if first subject, then copy; else append
       if subnum == 1:
           dfsubject = df1.copy()
       else:
-          dfsubject = dfsubject.append(df1)
+          dfsubject = pd.concat([dfsubject, df1])
 
   # reorder columns
   dfsubject = dfsubject[['id', 'segment', 'time', 'gl']].reset_index(drop = True)   
