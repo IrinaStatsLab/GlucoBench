@@ -1,3 +1,29 @@
+# Friday October 7, 2022
+
+Next Meeting: Friday October 14th, Room 403
+
+Next Meeting Notetaker: Urjeet
+
+## Update
+- Interpolate function was completed with a few bugs which were later cleared up
+- Renat combined Lizzie's and Urjeet's version of the interpolation fucntion to make an effecient one
+- Split function logic was converted to an algorithm
+
+## Notes
+- The split function algorithm was designed and developed but had an error with the distribution ratio. It was fixed to some extent but the fix needs to be verrified
+- Split functionality needs to be implemented at the right place, Renat will provide further details on this
+- Set about 10% of the data as test and the remainder could be broken up into train and validation. Ex. if there were 8 subjects, 1 entire subject data would be test and 10% of each subject would be included in the test dataset. [validation set is generally equal to or greater than the size of test set]
+- Important to remeber that we need to first split the raw data tables and then have TSDataset process the split datasets i.e. trian, test, & validation
+- Interpolation function seems to have an error with datetime conversion in the dataset, Renat will follow up on this bug
+- The goal is to have interpolation and split funcitons in place before next meeting to move ahead to scaling and wrap up pre-processing
+
+## TODOs
+
+- Make sure all the formatters are in place for the each of the dataset (All)
+- Implement interpolation and split functions for each dataset (All)
+- Make sure that the dataset example notebooks are update to date.Are structured as described by Renat and test the interpolate and split functions (All)
+
+* * *
 # Friday September 30, 2022
 
 Next Meeting: Friday October 7th, Room 403
@@ -34,7 +60,7 @@ Next Meeting Notetaker: Akhil
 	- In particular check that interpolate runs
 	- Throughout the semester, you are responsible for supporting your dataset
 
-
+* * *
 # Friday September 23, 2022
 
 Next Meeting: Friday September 30th, Room 403
@@ -62,6 +88,7 @@ Next Meeting Notetaker: Lizzie
 
 ![image](https://user-images.githubusercontent.com/42304832/191999620-3147ee7f-e7ec-4968-887d-ed8d79358cc5.png)
 
+* * *
 # Friday September 16, 2022
 
 ## Notes
