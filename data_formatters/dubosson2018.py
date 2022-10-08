@@ -49,7 +49,9 @@ class DubossonFormatter(GenericDataFormatter):
   'test_percent_subjects': 0.1,
   'test_length_segment': 144,
   'val_length_segment': 144,
-  'min_drop_length': 144
+  'min_drop_length': 12,
+  'id_col': 'id',
+  'id_segment_col': 'id_segment',
 }
 
   _drop_ids = [9]
@@ -62,6 +64,10 @@ class DubossonFormatter(GenericDataFormatter):
     self.params['index_col'] = False if self.params['index_col'] == -1 else self.params['index_col']
     # read data table
     self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'], na_filter=False)
+    # set time as datetime format in pandas
+    self.data.time = pd.to_datetime(self.data.time)
+    # round time to nearest 5 minutes
+    self.data.time = self.data.time.dt.round('5min')
 
     # start formatting the data:
     # 1. drop columns that are not in the column definition
@@ -69,9 +75,10 @@ class DubossonFormatter(GenericDataFormatter):
     # 3. interpolate missing values
     # 4. split data into train, val, test
     # 5. normalize / encode features and targets
+    self.train_idx, self.val_idx, self.test_idx = None, None, None
     self.drop()
     self.interpolate()
-    # self.split_data()
+    self.split_data()
 
   def drop(self):
     # drop columns that are not in the column definition
@@ -79,18 +86,17 @@ class DubossonFormatter(GenericDataFormatter):
     # drop rows based on conditions set in the formatter
     self.data = self.data.loc[~self.data.id.isin(self._drop_ids)].copy()
   
-  def interpolate(self, df):
-    df = utils.interpolate(df, **self._interpolation_params)
+  def interpolate(self):
+    self.data = utils.interpolate(self.data, **self._interpolation_params)
 
     # create new column with unique id for each subject-segment pair
-    df['segment_id'] = df.id.astype('str') + '_' + df.segment.astype('str')
+    self.data['id_segment'] = self.data.id.astype('str') + '_' + self.data.segment.astype('str')
     # set subject-segment column as ID and set subject id column as KNOWN_INPUT
     self._column_definition[0] = ('id', DataTypes.CATEGORICAL, InputTypes.KNOWN_INPUT)
-    self._column_definition += [('segment_id', DataTypes.CATEGORICAL, InputTypes.ID)]
-    return df
+    self._column_definition += [('id_segment', DataTypes.CATEGORICAL, InputTypes.ID)]
 
-  def split_data(self, df):
-    return utils.split(df, **self._split_params)
+  def split_data(self):
+    self.train_idx, self.val_idx, self.test_idx = utils.split(self.data, **self._split_params)
 
   def set_scalers(self, df):
     pass

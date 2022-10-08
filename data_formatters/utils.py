@@ -19,6 +19,7 @@
 from collections import namedtuple
 from datetime import datetime
 import os
+import math
 import pathlib
 import torch
 import numpy as np
@@ -70,6 +71,8 @@ def interpolate(data: pd.DataFrame,
   """
   # add id_col, segment as constant (do not need to be interpolated)
   constant_columns += [id_col, 'segment']
+  # count dropped segments
+  dropped_segments = 0
   # store final output
   output = []
   for id, id_data in data.groupby(id_col):
@@ -82,87 +85,75 @@ def interpolate(data: pd.DataFrame,
     for segment, segment_data in id_data.groupby('segment'):
       # if segment is too short, then we don't interpolate
       if len(segment_data) < min_drop_length:
+        dropped_segments += 1
         continue
       # reindex at interval_length minute intervals
       segment_data = segment_data.set_index(time_col).reindex(pd.date_range(start=segment_data[time_col].iloc[0], 
                                                                             end=segment_data[time_col].iloc[-1], 
-                                                                            freq=str(60*interval_length)+'S'))
+                                                                            freq=str(interval_length)+'min'))
       # interpolate
       segment_data[interpolation_columns] = segment_data[interpolation_columns].interpolate(method='linear')
       # fill constant columns with last value
       segment_data[constant_columns] = segment_data[constant_columns].fillna(method='ffill')
-      # reset index and make the time column a column again
-      segment_data = segment_data.reset_index(names=[time_col])
+      # reset index, make the time a column with name time_col
+      segment_data = segment_data.reset_index().rename(columns={'index': time_col})
       # add to output
       output.append(segment_data)
+  # print number of dropped segments and number of segments
+  print('Dropped segments: {}'.format(dropped_segments))
+  print('Extracted segments: {}'.format(len(output)))
   # concat all segments and reset index
   output = pd.concat(output)
   return output
 
-def flatten(l):
-  return [item for sublist in l for item in sublist]
+def split(df: pd.DataFrame, 
+          test_percent_subjects: float, 
+          val_length_segment: int, 
+          test_length_segment: int,
+          min_drop_length: int,
+          id_col: str,
+          id_segment_col: str,):
+  """Splits data into train, validation and test sets.
 
-def split(df: pd.DataFrame, test_percent_subjects: float, val_length_segment: int, test_length_segment: int, min_drop_length: int):
-  L = dict()
-  segment = []
-  for i in range(len(df)):
-      # get row information
-      row = df.iloc[i]
-      prev_row = df.iloc[0] if i == 0 else df.iloc[i-1]
-      
-      # check for change in subject or segment
-      if row.id != prev_row.id or row.segment != prev_row.segment:
-          if prev_row.id not in L:
-              L[prev_row.id] = [segment]
-          else:
-              L[prev_row.id].append(segment)
-          segment = []
-      
-      segment.append(i)
-      
-      # edge case: once at end of data, need to append final segment
-      if i == len(df)-1:
-          if prev_row.id not in L:
-              L[prev_row.id] = [segment]
-          else:
-            L[prev_row.id].append(segment)
+  Args: 
+    df: Dataframe to split.
+    test_percent_subjects: Percentage of subjects to use for test set.
+    val_length_segment: Length of validation segments in minutes.
+    test_length_segment: Length of test segments in minutes.
+    min_drop_length: Minimum number of points needed within an interval.
+    id_col: Name of the column containing the id of the subject (NOTE: note id_segment).
+    id_segment_col: Name of the column containing the id and segment.
 
-  test_set = []
-  number_of_subject = len(L)
-  test_count = int(number_of_subject * test_percent_subjects)
+  Returns:
+    train_idx: Training set indices.
+    val_idx: Validation set indices.
+    test_idx: Test set indices.
+  """
 
-  # add test set data
-  for i in range(test_count):
-    subjects = list(L.keys())
-    curr_subject = L[subjects[i]]
-    for segment in curr_subject:
-        for idx in segment:
-            test_set.append(idx)
+  # get unique ids
+  ids = df[id_col].unique()
+  # select some subjects for test data set
+  test_ids = np.random.choice(ids, math.ceil(len(ids) * test_percent_subjects), replace=False)
+  test_idx = list(df[df[id_col].isin(test_ids)].index)
+  # get the remaning data for training and validation
+  df = df[~df[id_col].isin(test_ids)]
 
-  # remove test set from L
-  subjects = list(L.keys())
-  for i in range(test_count):
-      del L[subjects[i]]
-  
-  train_set = []
-  validation = []
-
-  # iterate through L
-  # check that segment has length >= min_drop_length + val_length_segment + test_length_segment
-  for subject in L:
-      for segment in L[subject]:
-          if len(segment) >= min_drop_length + val_length_segment + test_length_segment:
-              train_set.append(segment[:(-(val_length_segment + test_length_segment))])
-              validation.append(segment[-(val_length_segment + test_length_segment):-test_length_segment])
-              test_set.append(segment[-test_length_segment:])
-          else:
-              train_set.append(segment)
-  
-  train_set = flatten(train_set)
-  validation = flatten(validation)
-
-  # Add to dictionary for access
-  return {'test': test_set, 'train': train_set, 'validation': validation}
+  # iterate through segments and split into train, val and test
+  train_idx = []; val_idx = []
+  for id, segment_data in df.groupby(id_segment_col):
+    if len(segment_data) >= min_drop_length + test_length_segment + val_length_segment:
+      # get indices for train, val and test
+      train_idx += list(segment_data.iloc[:-test_length_segment-val_length_segment].index)
+      val_idx += list(segment_data.iloc[-test_length_segment-val_length_segment:-test_length_segment].index)
+      test_idx += list(segment_data.iloc[-test_length_segment:].index)
+    elif len(segment_data) >= min_drop_length + test_length_segment:
+      # get indices for train and test
+      train_idx += list(segment_data.iloc[:-test_length_segment].index)
+      test_idx += list(segment_data.iloc[-test_length_segment:].index)
+    else:
+      # get indices for train
+      train_idx += list(segment_data.index)
+  return train_idx, val_idx, test_idx
 
 
  

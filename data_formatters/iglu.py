@@ -57,10 +57,10 @@ class IGLUFormatter(GenericDataFormatter):
     df.sort_values(by=['id', 'time'], inplace=True)
     df = utils.interpolate(df, ['gl'], **self._interpolation_params)
     # create new column with unique id for each subject-segment pair
-    df['segment_id'] = df.id.astype('str') + '_' + df.segment.astype('str')
+    df['id_segment'] = df.id.astype('str') + '_' + df.segment.astype('str')
     # set subject-segment column as ID and set subject id column as KNOWN_INPUT
     self._column_definition[0] = ('id', DataTypes.CATEGORICAL, InputTypes.KNOWN_INPUT)
-    self._column_definition += [('segment_id', DataTypes.CATEGORICAL, InputTypes.ID)]
+    self._column_definition += [('id_segment', DataTypes.CATEGORICAL, InputTypes.ID)]
     return df
 
   def split_data(self, df):
