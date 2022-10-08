@@ -8,8 +8,8 @@ import click
 from os import path
 
 class TSDataset(Dataset):
-    def __init__(self, data, cnf, data_formatter):
-        '''
+    def __init__(self, cnf, data_formatter, split):
+        '''Initialize the dataset.
         
         Args:
         data: pandas dataframe
@@ -19,7 +19,13 @@ class TSDataset(Dataset):
 
         # store data and params
         self.params = cnf.all_params
-        self.data = data
+        self.data = None
+        if split == 'train':
+            self.data = data_formatter.data.iloc[data_formatter.train_idx, :].copy()
+        elif split == 'val':
+            self.data = data_formatter.data.iloc[data_formatter.val_idx, :].copy()
+        elif split == 'test':
+            self.data = data_formatter.data.iloc[data_formatter.test_idx, :].copy()
 
         # load parameters from data formatter
         # 1. input_size: number of features
@@ -31,8 +37,8 @@ class TSDataset(Dataset):
         self.column_definition = data_formatter.get_column_definition()
         self.input_size = data_formatter.get_input_size()
         self.output_size = data_formatter.get_output_size()
-        self.id_col = data_formatter.get_cols_by_input_type(InputTypes.ID)
-        self.time_col = data_formatter.get_cols_by_input_type(InputTypes.TIME)
+        self.id_col = data_formatter.get_cols_by_input_type(InputTypes.ID)[0]
+        self.time_col = data_formatter.get_cols_by_input_type(InputTypes.TIME)[0]
         self.target_col = data_formatter.get_cols_by_input_type(InputTypes.TARGET)
         self.input_cols = data_formatter.get_cols_except_input_types({InputTypes.ID, InputTypes.TIME})
         
