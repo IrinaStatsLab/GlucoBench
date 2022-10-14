@@ -1,8 +1,25 @@
+# Friday October 14, 2022
+
+Next Meeting: Friday October 21, Room 403
+
+Next Meeting Notetaker: Urjeet
+
+## Updates
+- Dubosson and Weinstock finished implementing interpolate and split
+- Hall and iglu needed debugging - done in meeting 
+
+## TODOs
+- Change min_drop_length to 144 (12 hours if 5 minute intervals) 
+- If not done yet, round and average duplicates to get a perfect, unique grid in data_formatter 
+- Encode subject as numeric - i.e. 0, 1, 2, ...
+- Get all features from datetime timestamp - year, month, day, hour, minute
+	- See code in slack from Nicky
+
 # Friday October 7, 2022
 
 Next Meeting: Friday October 14th, Room 403
 
-Next Meeting Notetaker: Urjeet
+Next Meeting Notetaker: ~~Urjeet~~Lizzie
 
 ## Update
 - Interpolate function was completed with a few bugs which were later cleared up
