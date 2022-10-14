@@ -34,37 +34,49 @@ class IGLUFormatter(GenericDataFormatter):
       ('gl', DataTypes.REAL_VALUED, InputTypes.TARGET) # Glycemic load
   ]
 
-  _split_params = {
-  'test_percent_subjects': 0.9,
-  'test_length_segment': 144,
-  'val_length_segment': 144,
-  'min_drop_length': 144
-}
-
   _interpolation_params = {
-      'gap_threshold': 45,
-      'min_drop_length': 12,
-      'interval_length': 5
+    'id_col': 'id',
+    'time_col': 'time',
+    'interpolation_columns': ['gl'], 
+    'constant_columns': [],
+    'gap_threshold': 45, 
+    'min_drop_length': 12, 
+    'interval_length': 5
   }
 
-  def __init__(self):
+  _split_params = {
+  'test_percent_subjects': 0.1,
+  'test_length_segment': 144,
+  'val_length_segment': 144,
+  'min_drop_length': 12,
+  'id_col': 'id',
+  'id_segment_col': 'id_segment',
+  }
+
+  def __init__(self, cnf):
     """Initialises formatter."""
-    pass
+    # Get parameters
+    self.params = cnf.all_params
+    self.params['index_col'] = False if self.params['index_col'] == -1 else self.params['index_col']
+    # Read from input csv file
+    self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'])
+    # Convert timestamps into datetime objects
+    self.data['time'] = pd.to_datetime(self.data['time'])
+
+    self.drop_invalid_columns()
+    self.interpolate()
+    self.train_idx, self.val_idx, self.test_idx = self.split_data()
   
-  def interpolate(self, df):
-    # TODO: implement interpolation in utils
-    df['time'] = pd.to_datetime(df['time'])
-    df.sort_values(by=['id', 'time'], inplace=True)
-    df = utils.interpolate(df, ['gl'], **self._interpolation_params)
+  def interpolate(self):
+    self.data = utils.interpolate(self.data, **self._interpolation_params)
     # create new column with unique id for each subject-segment pair
-    df['id_segment'] = df.id.astype('str') + '_' + df.segment.astype('str')
+    self.data['id_segment'] = self.data.id.astype('str') + '_' + self.data.segment.astype('str')
     # set subject-segment column as ID and set subject id column as KNOWN_INPUT
     self._column_definition[0] = ('id', DataTypes.CATEGORICAL, InputTypes.KNOWN_INPUT)
     self._column_definition += [('id_segment', DataTypes.CATEGORICAL, InputTypes.ID)]
-    return df
 
-  def split_data(self, df):
-    pass
+  def split_data(self):
+    return utils.split(self.data, **self._split_params)
 
   def set_scalers(self, df):
     pass
@@ -74,3 +86,7 @@ class IGLUFormatter(GenericDataFormatter):
 
   def format_predictions(self, df):
     pass
+
+  def drop_invalid_columns(self):
+    valid_cols = [col[0] for col in self._column_definition]
+    self.data = self.data.drop(columns=[col for col in self.data if col not in valid_cols])
