@@ -40,7 +40,7 @@ class IGLUFormatter(GenericDataFormatter):
     'interpolation_columns': ['gl'], 
     'constant_columns': [],
     'gap_threshold': 45, 
-    'min_drop_length': 12, 
+    'min_drop_length': 144, 
     'interval_length': 5
   }
 
@@ -48,7 +48,7 @@ class IGLUFormatter(GenericDataFormatter):
   'test_percent_subjects': 0.1,
   'test_length_segment': 144,
   'val_length_segment': 144,
-  'min_drop_length': 12,
+  'min_drop_length': 144,
   'id_col': 'id',
   'id_segment_col': 'id_segment',
   }
@@ -62,6 +62,10 @@ class IGLUFormatter(GenericDataFormatter):
     self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'])
     # Convert timestamps into datetime objects
     self.data['time'] = pd.to_datetime(self.data['time'])
+    self.data.time = self.data.time.dt.round('5min')
+    self.data = self.data.groupby(['id', 'time']).mean().reset_index().rename(columns={'index': 'time'})
+
+
 
     self.drop_invalid_columns()
     self.interpolate()
