@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 import data_formatters
 from typing import List, Tuple
+from sklearn import preprocessing
 
 
 MINUTE = 60
@@ -155,7 +156,47 @@ def split(df: pd.DataFrame,
       train_idx += list(segment_data.index)
   return train_idx, val_idx, test_idx
 
+def encode(df: pd.DataFrame, 
+          id_col: str,
+          time_col: str,):
+  """Encodes time and id as real-valued input.
 
- 
+  Args: 
+    df: Dataframe to split.
+    id_col: Name of the column containing the id of the subject.
+    time_col: Name of the column containing time
 
+  Returns:
+    df: Dataframe with time and id encoded as real-values
+    id_encoder: Fitted encoder for use in inverse_transform later
+  """ 
+
+  # encode time as real-valued columns for year, month, day, hour, and minute
+  date = {
+      'year': [],
+      'month': [],
+      'day': [],
+      'hour': [],
+      'minute': []
+      }
+  for datetime in df[time_col]:
+      date['year'].append(datetime.year)
+      date['month'].append(datetime.month)
+      date['day'].append(datetime.day)
+      date['hour'].append(datetime.hour)
+      date['minute'].append(datetime.minute)
+  # Create new columns
+  df['year'] = date['year']
+  df['month'] = date['month']
+  df['day'] = date['day']
+  df['hour'] = date['hour']
+  df['minute'] = date['minute']
+
+  # encode id as real-value
+  id_encoder =  preprocessing.LabelEncoder()
+  id_encoder.fit(df[id_col])
+  df[id_col] = id_encoder.transform(df[id_col])
+  
+  return df, id_encoder
+  
 

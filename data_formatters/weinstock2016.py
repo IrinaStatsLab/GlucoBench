@@ -31,7 +31,7 @@ class WeinstockFormatter(GenericDataFormatter):
 
   _column_definition = [
       ('id', DataTypes.CATEGORICAL, InputTypes.ID),
-      ('time', DataTypes.REAL_VALUED, InputTypes.TIME),
+      ('time', DataTypes.DATE, InputTypes.TIME),
       ('gl', DataTypes.REAL_VALUED, InputTypes.TARGET) # Glycemic load
   ]
 
@@ -41,18 +41,23 @@ class WeinstockFormatter(GenericDataFormatter):
     'interpolation_columns': ['gl'], 
     'constant_columns': [],
     'gap_threshold': 45, 
-    'min_drop_length': 12, 
+    'min_drop_length': 144, 
     'interval_length': 5
   }
 
   _split_params = {
-  'test_percent_subjects': 0.1,
-  'test_length_segment': 144,
-  'val_length_segment': 144,
-  'min_drop_length': 12,
-  'id_col': 'id',
-  'id_segment_col': 'id_segment',
-}
+    'test_percent_subjects': 0.1,
+    'test_length_segment': 144,
+    'val_length_segment': 144,
+    'min_drop_length': 12,
+    'id_col': 'id',
+    'id_segment_col': 'id_segment',
+  }
+
+  _encoding_params = {
+    'id_col': 'id',
+    'time_col': 'time',
+  }
 
   _drop_ids = []
 
@@ -81,6 +86,7 @@ class WeinstockFormatter(GenericDataFormatter):
     self.drop()
     self.interpolate()
     self.split_data()
+    self.encode()
 
   def drop(self):
     # drop columns that are not in the column definition
@@ -99,6 +105,9 @@ class WeinstockFormatter(GenericDataFormatter):
 
   def split_data(self):
     self.train_idx, self.val_idx, self.test_idx = utils.split(self.data, **self._split_params)
+
+  def encode(self):
+    self.data, self.id_encoder = utils.encode(self.data, **self._encoding_params)
 
   def set_scalers(self, df):
     pass
