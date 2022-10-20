@@ -30,8 +30,13 @@ class IGLUFormatter(GenericDataFormatter):
 
   _column_definition = [
       ('id', DataTypes.CATEGORICAL, InputTypes.ID),
-      ('time', DataTypes.REAL_VALUED, InputTypes.TIME),
-      ('gl', DataTypes.REAL_VALUED, InputTypes.TARGET) # Glycemic load
+      ('time', DataTypes.DATE, InputTypes.TIME),
+      ('gl', DataTypes.REAL_VALUED, InputTypes.TARGET), # Glycemic load
+      ('year', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
+      ('month', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
+      ('day', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
+      ('hour', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
+      ('minute', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)
   ]
 
   _interpolation_params = {
@@ -53,6 +58,11 @@ class IGLUFormatter(GenericDataFormatter):
   'id_segment_col': 'id_segment',
   }
 
+  _encoding_params = {
+    'id_col': 'id',
+    'time_col': 'time',
+  }
+
   def __init__(self, cnf):
     """Initialises formatter."""
     # Get parameters
@@ -62,14 +72,14 @@ class IGLUFormatter(GenericDataFormatter):
     self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'])
     # Convert timestamps into datetime objects
     self.data['time'] = pd.to_datetime(self.data['time'])
+    # Round to nearest 5 mins
     self.data.time = self.data.time.dt.round('5min')
+    # Fix indexing issues when rounding
     self.data = self.data.groupby(['id', 'time']).mean().reset_index().rename(columns={'index': 'time'})
-
-
-
     self.drop_invalid_columns()
     self.interpolate()
     self.train_idx, self.val_idx, self.test_idx = self.split_data()
+    self.encode()
   
   def interpolate(self):
     self.data = utils.interpolate(self.data, **self._interpolation_params)
@@ -81,6 +91,9 @@ class IGLUFormatter(GenericDataFormatter):
 
   def split_data(self):
     return utils.split(self.data, **self._split_params)
+  
+  def encode(self):
+    self.data, self.id_encoder = utils.encode(self.data, **self._encoding_params)
 
   def set_scalers(self, df):
     pass
