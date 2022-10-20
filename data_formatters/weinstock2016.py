@@ -109,6 +109,13 @@ class WeinstockFormatter(GenericDataFormatter):
   def encode(self):
     self.data, self.id_encoder = utils.encode(self.data, **self._encoding_params)
 
+    # set column definitions for real-value encoded time
+    self._column_definition += [('year', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+    self._column_definition += [('month', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+    self._column_definition += [('day', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+    self._column_definition += [('hour', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+    self._column_definition += [('minute', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+
   def set_scalers(self, df):
     pass
 
