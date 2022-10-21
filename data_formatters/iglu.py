@@ -34,6 +34,7 @@ class IGLUFormatter(GenericDataFormatter):
       ('gl', DataTypes.REAL_VALUED, InputTypes.TARGET) # Glycemic load
   ]
 
+  # Column definitions for real valued time measurement values
   _time_measurement_columns = [
       ('year', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
       ('month', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
@@ -96,8 +97,9 @@ class IGLUFormatter(GenericDataFormatter):
     return utils.split(self.data, **self._split_params)
   
   def encode(self):
-    self._column_definition.extend(self._time_measurement_columns)
     self.data, self.id_encoder = utils.encode(self.data, **self._encoding_params)
+    # Add to column definitions after encoding
+    self._column_definition.extend(self._time_measurement_columns)
 
 
   def set_scalers(self, df):
