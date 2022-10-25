@@ -52,8 +52,13 @@ class DubossonFormatter(GenericDataFormatter):
   'min_drop_length': 12,
   'id_col': 'id',
   'id_segment_col': 'id_segment',
-}
+  }
 
+  _encoding_params = {
+    'id_col': 'id',
+    'time_col': 'time',
+  }
+    
   _drop_ids = [9]
 
   def __init__(self, cnf):
@@ -68,6 +73,7 @@ class DubossonFormatter(GenericDataFormatter):
     self.data.time = pd.to_datetime(self.data.time)
     # round time to nearest 5 minutes
     self.data.time = self.data.time.dt.round('5min')
+    self.data = self.data.groupby(['id', 'time']).mean().reset_index().rename(columns={'index': 'time'})
 
     # start formatting the data:
     # 1. drop columns that are not in the column definition
@@ -79,6 +85,7 @@ class DubossonFormatter(GenericDataFormatter):
     self.drop()
     self.interpolate()
     self.split_data()
+    self.encode()
 
   def drop(self):
     # drop columns that are not in the column definition
@@ -98,6 +105,16 @@ class DubossonFormatter(GenericDataFormatter):
   def split_data(self):
     self.train_idx, self.val_idx, self.test_idx = utils.split(self.data, **self._split_params)
 
+  def encode(self):
+    self.data, self.id_encoder = utils.encode(self.data, **self._encoding_params)
+
+    # set column definitions for real-value encoded time
+    self._column_definition += [('year', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+    self._column_definition += [('month', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+    self._column_definition += [('day', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+    self._column_definition += [('hour', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+    self._column_definition += [('minute', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+    
   def set_scalers(self, df):
     pass
 
