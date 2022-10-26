@@ -1,6 +1,8 @@
+from data_formatters.dubosson2018 import DataTypes
 from torch import from_numpy
 import pandas as pd
 import data_formatters.utils as utils
+from data_formatters.base import DataTypes
 from data_formatters.base import InputTypes
 from torch.utils.data import Dataset
 import numpy as np
@@ -30,17 +32,23 @@ class TSDataset(Dataset):
         # load parameters from data formatter
         # 1. input_size: number of features
         # 2. output_size: number of targets
-        # 3. input_cols: list of feature names
-        # 4. target_col: name of target column
-        # 5. time_col: name of time column
-        # 6. id_col: name of identifier column
+        # 3. input_cols_unkown: list of feature names that are unknown in the future
+        # 4. input_cols_known: list of feature names that are known in the future
+        # 5. target_col: name of target columns
+        # 6. time_col: name of time column
+        # 7. id_col: name of identifier column
         self.column_definition = data_formatter.get_column_definition()
-        self.input_size = data_formatter.get_input_size()
-        self.output_size = data_formatter.get_output_size()
-        self.id_col = data_formatter.get_cols_by_input_type(InputTypes.ID)[0]
-        self.time_col = data_formatter.get_cols_by_input_type(InputTypes.TIME)[0]
-        self.target_col = data_formatter.get_cols_by_input_type(InputTypes.TARGET)
-        self.input_cols = data_formatter.get_cols_except_input_types({InputTypes.ID, InputTypes.TIME})
+        self.id_col = data_formatter.get_cols(input_types={InputTypes.ID})[0]
+        self.time_col = data_formatter.get_cols(input_types={InputTypes.TIME})[0]
+        self.target_col = data_formatter.get_cols(input_types={InputTypes.TARGET})
+        self.input_cols_unknown = data_formatter.get_cols(input_types={InputTypes.TARGET, InputTypes.OBSERVED_INPUT},
+                                                          data_types={DataTypes.REAL_VALUED},
+                                                          exclude_input_types={InputTypes.ID, InputTypes.TIME})
+        self.input_cols_known = data_formatter.get_cols(input_types={InputTypes.STATIC_INPUT, InputTypes.KNOWN_INPUT},
+                                                        data_types={DataTypes.REAL_VALUED},
+                                                        exclude_input_types={InputTypes.ID, InputTypes.TIME})
+        self.input_size = len(self.input_cols_known) + len(self.input_cols_unknown)
+        self.output_size = len(self.target_col)
         
         # process data
         self.inputs = None
@@ -77,9 +85,10 @@ class TSDataset(Dataset):
             ranges = valid_sampling_locations
 
         # set variables to store extracted samples
-        # TODO: inputs and outputs should be numeric types -> need to set up encoders
-        self.inputs = np.empty((max_samples, self.params['total_time_steps'], self.input_size), dtype=object)
-        self.outputs = np.empty((max_samples, self.params['total_time_steps'], self.output_size), dtype=object)
+        self.inputs = np.empty((max_samples, self.params['total_time_steps'], self.input_size), dtype=np.float32)
+        self.outputs = np.empty((max_samples, 
+                                 self.params['total_time_steps'] - self.params['num_encoder_steps'], 
+                                 self.output_size), dtype=np.float32)
         self.time = np.empty((max_samples, self.params['total_time_steps'], 1), dtype=object)
         self.id = np.empty((max_samples, self.params['total_time_steps'], 1), dtype=object)
 
@@ -89,9 +98,12 @@ class TSDataset(Dataset):
                 print(i + 1, 'of', max_samples, 'samples done...')
             id, start_idx = tup
             sliced = split_data_map[id].iloc[start_idx - self.params['total_time_steps']:start_idx]
-            # TODO: pad out unknown in the future values from the inputs (OBSERVED + TARGET)
-            self.inputs[i, :, :] = sliced[self.input_cols]
-            self.outputs[i, :, :] = sliced[self.target_col]
+            # pad out unknown inputs with zeros
+            self.inputs[i, :, :len(self.input_cols_known)] = sliced[self.input_cols_known]
+            self.inputs[i, :, len(self.input_cols_known):] = sliced[self.input_cols_unknown]
+            self.inputs[i, self.params['num_encoder_steps']:, len(self.input_cols_known):] = 0
+            # extract outputs
+            self.outputs[i, :, :] = sliced[self.target_col].iloc[self.params['num_encoder_steps']:, :]
             self.time[i, :, 0] = sliced[self.time_col]
             self.id[i, :, 0] = sliced[self.id_col]
 

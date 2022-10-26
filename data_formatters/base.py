@@ -93,36 +93,30 @@ class GenericDataFormatter(abc.ABC):
     """
     return self._num_classes_per_cat_input
 
-  def get_cols_except_input_types(self, input_types):
+  def get_cols(self, 
+               input_types=None,
+               data_types=None,
+               exclude_input_types=None,
+               exclude_data_types=None):
     """Returns a list of columns of a given input type."""
     column_definition = self._column_definition
-    return [tup[0] for tup in column_definition if tup[2] not in input_types]
-
-  def get_cols_by_input_type(self, input_type):
-    """Returns a list of columns of a given input type."""
-    column_definition = self._column_definition
-    return [tup[0] for tup in column_definition if tup[2] == input_type]
-  
-  def get_cols_by_data_type(self, data_type):
-    """Returns a list of columns of a given data type."""
-    column_definition = self._column_definition
-    return [tup[0] for tup in column_definition if tup[1] == data_type]
-
-  def get_input_size(self):
-    """Returns the number of input features."""
-    column_definition = self._column_definition
-    inputs = [
-        tup for tup in column_definition if tup[2] not in {InputTypes.ID, InputTypes.TIME}
-    ]
-    return len(inputs)
-  
-  def get_output_size(self):
-    """Returns the number of output features."""
-    column_definition = self._column_definition
-    outputs = [
-      tup for tup in column_definition if tup[2] == InputTypes.TARGET
-    ]
-    return len(outputs)
+    if input_types is not None:
+      column_definition = [
+          col for col in column_definition if col[2] in input_types
+      ]
+    if data_types is not None:
+      column_definition = [
+          col for col in column_definition if col[1] in data_types
+      ]
+    if exclude_input_types is not None:
+      column_definition = [
+          col for col in column_definition if col[2] not in exclude_input_types
+      ]
+    if exclude_data_types is not None:
+      column_definition = [
+          col for col in column_definition if col[1] not in exclude_data_types
+      ]
+    return [tup[0] for tup in column_definition]
 
   def get_column_definition(self):
     """"Returns formatted column definition in order expected by the TFT."""
