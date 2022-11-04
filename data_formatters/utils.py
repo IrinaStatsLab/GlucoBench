@@ -105,6 +105,7 @@ def interpolate(data: pd.DataFrame,
   print('Extracted segments: {}'.format(len(output)))
   # concat all segments and reset index
   output = pd.concat(output)
+  output.reset_index(drop=True, inplace=True)
   return output
 
 def split(df: pd.DataFrame, 
@@ -147,13 +148,16 @@ def split(df: pd.DataFrame,
       train_idx += list(segment_data.iloc[:-test_length_segment-val_length_segment].index)
       val_idx += list(segment_data.iloc[-test_length_segment-val_length_segment:-test_length_segment].index)
       test_idx += list(segment_data.iloc[-test_length_segment:].index)
-    elif len(segment_data) >= min_drop_length + test_length_segment:
+    elif len(segment_data) >= min_drop_length + val_length_segment:
       # get indices for train and test
       train_idx += list(segment_data.iloc[:-test_length_segment].index)
-      test_idx += list(segment_data.iloc[-test_length_segment:].index)
-    else:
+      val_idx += list(segment_data.iloc[-val_length_segment:].index)
+    elif len(segment_data) >= min_drop_length:
       # get indices for train
       train_idx += list(segment_data.index)
+    else:
+      # segment is too short, skip
+      continue
   return train_idx, val_idx, test_idx
 
 def encode(df: pd.DataFrame, 

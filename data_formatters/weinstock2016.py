@@ -41,15 +41,15 @@ class WeinstockFormatter(GenericDataFormatter):
     'interpolation_columns': ['gl'], 
     'constant_columns': [],
     'gap_threshold': 45, 
-    'min_drop_length': 144, 
+    'min_drop_length': 192, 
     'interval_length': 5
   }
 
   _split_params = {
     'test_percent_subjects': 0.1,
-    'test_length_segment': 144,
-    'val_length_segment': 144,
-    'min_drop_length': 12,
+    'test_length_segment': 192,
+    'val_length_segment': 192,
+    'min_drop_length': 192,
     'id_col': 'id',
     'id_segment_col': 'id_segment',
   }
