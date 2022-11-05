@@ -41,17 +41,15 @@ class HALLFormatter(GenericDataFormatter):
     'interpolation_columns': ['gl'], 
     'constant_columns': [],
     'gap_threshold': 45, 
-    'min_drop_length': 144, 
+    'min_drop_length': None, 
     'interval_length': 5
   }
 
   _split_params = {
-  'test_percent_subjects': 0.1,
-  'test_length_segment': 144,
-  'val_length_segment': 144,
-  'min_drop_length': 144,
-  'id_col': 'id',
-  'id_segment_col': 'id_segment',
+    'test_percent_subjects': 0.1,
+    'length_segment': None,
+    'id_col': 'id',
+    'id_segment_col': 'id_segment',
   }
 
   _encoding_params = {
@@ -65,6 +63,8 @@ class HALLFormatter(GenericDataFormatter):
     """Initialises formatter."""
     # load parameters from the config file
     self.params = cnf.all_params
+    self._interpolation_params['min_drop_length'] = int(self.params['total_time_steps']*0.5)
+    self._split_params['length_segment'] = self.params['total_time_steps']
     # check if data table has index col: -1 if not, index >= 0 if yes
     self.params['index_col'] = False if self.params['index_col'] == -1 else self.params['index_col']
     # read data table

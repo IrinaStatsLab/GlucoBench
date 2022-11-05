@@ -110,9 +110,7 @@ def interpolate(data: pd.DataFrame,
 
 def split(df: pd.DataFrame, 
           test_percent_subjects: float, 
-          val_length_segment: int, 
-          test_length_segment: int,
-          min_drop_length: int,
+          length_segment: int,
           id_col: str,
           id_segment_col: str,):
   """Splits data into train, validation and test sets.
@@ -120,9 +118,7 @@ def split(df: pd.DataFrame,
   Args: 
     df: Dataframe to split.
     test_percent_subjects: Percentage of subjects to use for test set.
-    val_length_segment: Length of validation segments in minutes.
-    test_length_segment: Length of test segments in minutes.
-    min_drop_length: Minimum number of points needed within an interval.
+    length_segment: Length of validation segments in number of intervals.
     id_col: Name of the column containing the id of the subject (NOTE: note id_segment).
     id_segment_col: Name of the column containing the id and segment.
 
@@ -143,16 +139,16 @@ def split(df: pd.DataFrame,
   # iterate through segments and split into train, val and test
   train_idx = []; val_idx = []
   for id, segment_data in df.groupby(id_segment_col):
-    if len(segment_data) >= min_drop_length + test_length_segment + val_length_segment:
+    if len(segment_data) >= length_segment + length_segment + length_segment:
       # get indices for train, val and test
-      train_idx += list(segment_data.iloc[:-test_length_segment-val_length_segment].index)
-      val_idx += list(segment_data.iloc[-test_length_segment-val_length_segment:-test_length_segment].index)
-      test_idx += list(segment_data.iloc[-test_length_segment:].index)
-    elif len(segment_data) >= min_drop_length + val_length_segment:
+      train_idx += list(segment_data.iloc[:-length_segment-length_segment].index)
+      val_idx += list(segment_data.iloc[-length_segment-length_segment:-length_segment].index)
+      test_idx += list(segment_data.iloc[-length_segment:].index)
+    elif len(segment_data) >= length_segment + length_segment:
       # get indices for train and test
-      train_idx += list(segment_data.iloc[:-test_length_segment].index)
-      val_idx += list(segment_data.iloc[-val_length_segment:].index)
-    elif len(segment_data) >= min_drop_length:
+      train_idx += list(segment_data.iloc[:-length_segment].index)
+      val_idx += list(segment_data.iloc[-length_segment:].index)
+    elif len(segment_data) >= length_segment:
       # get indices for train
       train_idx += list(segment_data.index)
     else:

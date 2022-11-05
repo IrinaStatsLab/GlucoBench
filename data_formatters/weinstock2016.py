@@ -41,15 +41,13 @@ class WeinstockFormatter(GenericDataFormatter):
     'interpolation_columns': ['gl'], 
     'constant_columns': [],
     'gap_threshold': 45, 
-    'min_drop_length': 192, 
+    'min_drop_length': None, 
     'interval_length': 5
   }
 
   _split_params = {
     'test_percent_subjects': 0.1,
-    'test_length_segment': 192,
-    'val_length_segment': 192,
-    'min_drop_length': 192,
+    'length_segment': None,
     'id_col': 'id',
     'id_segment_col': 'id_segment',
   }
@@ -65,6 +63,8 @@ class WeinstockFormatter(GenericDataFormatter):
     """Initialises formatter."""
     # load parameters from the config file
     self.params = cnf.all_params
+    self._interpolation_params['min_drop_length'] = int(self.params['total_time_steps']*0.5)
+    self._split_params['length_segment'] = self.params['total_time_steps']
     # check if data table has index col: -1 if not, index >= 0 if yes
     self.params['index_col'] = False if self.params['index_col'] == -1 else self.params['index_col']
     # read data table
