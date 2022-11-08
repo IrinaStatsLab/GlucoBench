@@ -10,7 +10,7 @@ import click
 from os import path
 
 class TSDataset(Dataset):
-    def __init__(self, cnf, data_formatter, split):
+    def __init__(self, cnf, data_formatter, data):
         '''Initialize the dataset.
         
         Args:
@@ -21,13 +21,7 @@ class TSDataset(Dataset):
 
         # store data and params
         self.params = cnf.all_params
-        self.data = None
-        if split == 'train':
-            self.data = data_formatter.data.iloc[data_formatter.train_idx, :].copy()
-        elif split == 'val':
-            self.data = data_formatter.data.iloc[data_formatter.val_idx, :].copy()
-        elif split == 'test':
-            self.data = data_formatter.data.iloc[data_formatter.test_idx, :].copy()
+        self.data = data
 
         # load parameters from data formatter
         # 1. input_size: number of features

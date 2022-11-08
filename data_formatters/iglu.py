@@ -87,6 +87,7 @@ class IGLUFormatter(GenericDataFormatter):
     self.interpolate()
     self.train_idx, self.val_idx, self.test_idx = self.split_data()
     self.encode()
+    self.train_data, self.val_data, self.test_data = self.scale()
   
   def interpolate(self):
     self.data = utils.interpolate(self.data, **self._interpolation_params)
@@ -103,6 +104,9 @@ class IGLUFormatter(GenericDataFormatter):
     self.data, self.id_encoder = utils.encode(self.data, **self._encoding_params)
     # Add to column definitions after encoding
     self._column_definition.extend(self._time_measurement_columns)
+  
+  def scale(self):
+    return utils.scale(self.data, self.train_idx, self.val_idx, self.test_idx)
 
   def set_scalers(self, df):
     pass

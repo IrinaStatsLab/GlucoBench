@@ -199,4 +199,53 @@ def encode(df: pd.DataFrame,
   
   return df, id_encoder
   
+def scale(df: pd.DataFrame, train_idx: List[int], val_idx: List[int], test_idx: List[int]):
+  """Scales numerical data.
 
+  Args:
+    df: DataFrame to scale.
+    train_idx: Indexes of rows to train on
+    val_idx: Indexes of rows to validate on
+    test_idx: Indexes of rows to test on
+  
+  Returns:
+    train_data: pd.Dataframe, DataFrame of scaled training data.
+    val_data: pd.Dataframe, DataFrame of scaled validation data.
+    test_data: pd.Dataframe, DataFrame of scaled testing data.
+  """
+  train_data = df.iloc[train_idx, :].copy()
+  val_data = df.iloc[val_idx, :].copy()
+  test_data = df.iloc[test_idx, :].copy()
+
+  scaler = preprocessing.StandardScaler()
+  # Different scalers listed below for future analysis
+  # scaler = preprocessing.MinMaxScaler()
+  # scaler = preprocessing.MaxAbsScaler()
+  # scaler = preprocessing.RobustScaler(quartile_range=(25, 75))
+  # scaler = preprocessing.PowerTransformer(method="yeo-johnson")
+  # scaler = preprocessing.PowerTransformer(method="box-cox")
+  # scaler = preprocessing.QuantileTransformer(output_distribution="uniform")
+  # scaler = preprocessing.QuantileTransformer(output_distribution="normal")
+  # scaler = preprocessing.Normalizer()
+
+  # Select numerical columns
+  numerical_data = df.select_dtypes(include = "number")
+  # Fit numerical columns of training data using the scaler
+  scaler.fit(train_data[numerical_data.columns])
+  return scaleDataset(train_data, scaler), scaleDataset(val_data, scaler), scaleDataset(test_data, scaler)
+
+def scaleDataset(df: pd.DataFrame, scaler, datatypes_to_include: List[str] = ["number"]):
+  """Scales numerical data using a pre-fitted scaler.
+
+  Args:
+    df: DataFrame to scale.
+    scaler: Type of Scaler in sklearn.preprocessing, fitting on training data.
+    datatypes_to_include: Columns of datatypes we want to scale.
+  
+  Returns:
+    df: pd.DataFrame, scaled DataFrame.
+  """
+  numerical_data = df.select_dtypes(include=datatypes_to_include)
+  # Transform numerical columns using the scaler
+  df[numerical_data.columns] = scaler.transform(numerical_data)
+  return df
