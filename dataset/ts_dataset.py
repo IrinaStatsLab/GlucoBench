@@ -112,7 +112,7 @@ class TSDataset(Dataset):
         s = {
             'inputs': self.inputs[index],
             'outputs': self.outputs[index],
-            'time': self.time[index].tolist(),
+            # 'time': self.time[index].tolist(),
             'id': self.id[index].tolist()
         }
 
