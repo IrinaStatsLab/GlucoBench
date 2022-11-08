@@ -19,7 +19,6 @@
 import data_formatters.base
 import data_formatters.utils as utils
 import pandas as pd
-import sklearn.preprocessing
 
 GenericDataFormatter = data_formatters.base.GenericDataFormatter
 DataTypes = data_formatters.base.DataTypes
@@ -87,6 +86,7 @@ class WeinstockFormatter(GenericDataFormatter):
     self.interpolate()
     self.split_data()
     self.encode()
+    self.train_data, self.val_data, self.test_data = self.scale()
 
   def drop(self):
     # drop columns that are not in the column definition
@@ -115,6 +115,9 @@ class WeinstockFormatter(GenericDataFormatter):
     self._column_definition += [('day', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
     self._column_definition += [('hour', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
     self._column_definition += [('minute', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+
+  def scale(self):
+    return utils.scale(self.data, self.train_idx, self.val_idx, self.test_idx)
 
   def set_scalers(self, df):
     pass
