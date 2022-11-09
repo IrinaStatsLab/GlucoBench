@@ -101,12 +101,15 @@ class TSDataset(Dataset):
             self.time[i, :, 0] = sliced[self.time_col]
             self.id[i, :, 0] = sliced[self.id_col]
 
+        # convert time to string
+        self.time = self.time.astype(str)
+
     def __getitem__(self, index):
         # pad inputs 
         s = {
             'inputs': self.inputs[index],
             'outputs': self.outputs[index],
-            # 'time': self.time[index].tolist(),
+            'time': self.time[index].tolist(),
             'id': self.id[index].tolist()
         }
 
