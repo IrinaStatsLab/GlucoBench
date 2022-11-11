@@ -1,3 +1,34 @@
+# Friday November 11, 2022
+Next Meeting Friday November 18, Room 403
+
+Next Meeting Notetaker: Nicky
+
+## Updates
+- Urject wrote scaler and implemented
+- Akhil experimented with different scalers
+- Lizzie ran linear model and MLP 
+- Nicky out sick
+
+## TODOs
+- Get MLP running in _nn notebook (Urjeet, Akhil, Nicky?)
+- Edit scaling function to add options for scaling type (Urjeet)
+- Run MLP and LSTM models that Renat pushed (All)
+	- dropout should be between 0 and 1, controls percentage of data zero-ed out
+	- document your findings for hyperparameter searching
+		- track test error, table and/or graph
+		- test loss may need to be weighted for batch size
+	- MLP is baseline, LSTM is recurrent (accounts for time dependence)
+	- Use LSTM_SeqtoSeq for LSTM model
+		- may need to reshape data, message Renat if need help debugging issues
+	- start using yaml to change configs
+- Clean up and document your notebooks (All)
+	- To make more user-friendly
+		- Will be published eventually, also for own benefit later
+	- Remove Renat's comments and write your own
+- If thave time, start looking into Optuna (All)
+
+
+
 # Friday October 14, 2022
 
 Next Meeting: Friday October 21, Room 403
