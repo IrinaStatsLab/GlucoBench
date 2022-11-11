@@ -34,6 +34,15 @@ class DubossonFormatter(GenericDataFormatter):
       ('time', DataTypes.REAL_VALUED, InputTypes.TIME),
       ('gl', DataTypes.REAL_VALUED, InputTypes.TARGET) # Glycemic load
   ]
+    
+  # Column definitions for real valued time measurement values
+  _time_measurement_columns = [
+      ('year', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
+      ('month', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
+      ('day', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
+      ('hour', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT),
+      ('minute', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)
+  ]
 
   _interpolation_params = {
     'id_col': 'id',
@@ -86,6 +95,7 @@ class DubossonFormatter(GenericDataFormatter):
     self.interpolate()
     self.split_data()
     self.encode()
+    self.train_data, self.val_data, self.test_data = self.scale()
 
   def drop(self):
     # drop columns that are not in the column definition
@@ -107,13 +117,11 @@ class DubossonFormatter(GenericDataFormatter):
 
   def encode(self):
     self.data, self.id_encoder = utils.encode(self.data, **self._encoding_params)
-
-    # set column definitions for real-value encoded time
-    self._column_definition += [('year', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
-    self._column_definition += [('month', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
-    self._column_definition += [('day', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
-    self._column_definition += [('hour', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
-    self._column_definition += [('minute', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
+    # Add to column definitions after encoding
+    self._column_definition.extend(self._time_measurement_columns)
+  
+  def scale(self):
+    return utils.scale(self.data, self.train_idx, self.val_idx, self.test_idx)
     
   def set_scalers(self, df):
     pass
