@@ -88,6 +88,8 @@ class HALLFormatter(GenericDataFormatter):
     self.interpolate()
     self.split_data()
     self.encode()
+    #scaling
+    self.train_data, self.val_data, self.test_data = self.scale()
 
   def drop(self):
     # drop columns that are not in the column definition
@@ -118,6 +120,8 @@ class HALLFormatter(GenericDataFormatter):
     self._column_definition += [('hour', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
     self._column_definition += [('minute', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
 
+  def scale(self):
+    return utils.scale(self.data, self.train_idx, self.val_idx, self.test_idx)
 
   def set_scalers(self, df):
     pass
