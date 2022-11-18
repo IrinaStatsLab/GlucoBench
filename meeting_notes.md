@@ -1,3 +1,20 @@
+# Friday November 18, 2022
+Next Meeting Notetaker: Nicky
+
+## Updates
+- Fixed bugs in LSTM
+
+## TODOs
+- should code our own version of scalers called by the scale function in utils
+- for scaler:
+	- change selection criterion for types we specify
+	- fit separate scaler for each column
+	- be able to pass in different scalers into the function in the parameters
+	- another parameter to scale curve wise or single mean/std/max/min
+- make a table in markdown w/ results of training w/ their configs
+	- keep track of the last epochs as well
+
+
 # Friday November 11, 2022
 Next Meeting Friday November 18, Room 403
 
