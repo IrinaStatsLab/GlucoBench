@@ -25,6 +25,7 @@ import torch
 import numpy as np
 import pandas as pd
 import data_formatters
+from scalers import scaler
 from typing import List, Tuple
 from sklearn import preprocessing
 
@@ -199,7 +200,7 @@ def encode(df: pd.DataFrame,
   
   return df, id_encoder
   
-def scale(df: pd.DataFrame, train_idx: List[int], val_idx: List[int], test_idx: List[int]):
+def scale(df: pd.DataFrame, train_idx: List[int], val_idx: List[int], test_idx: List[int], columns_to_scale: List[str], scaler: scaler.Scaler, scale_off_curve: bool):
   """Scales numerical data.
 
   Args:
@@ -207,6 +208,9 @@ def scale(df: pd.DataFrame, train_idx: List[int], val_idx: List[int], test_idx: 
     train_idx: Indexes of rows to train on
     val_idx: Indexes of rows to validate on
     test_idx: Indexes of rows to test on
+    columns_to_scale: Columns to independently scale.
+    scaler: Scaler used for fitting and scaling.
+    scale_off_curve: Scale off a curve vs other parameters.
   
   Returns:
     train_data: pd.Dataframe, DataFrame of scaled training data.
@@ -217,35 +221,11 @@ def scale(df: pd.DataFrame, train_idx: List[int], val_idx: List[int], test_idx: 
   val_data = df.iloc[val_idx, :].copy()
   test_data = df.iloc[test_idx, :].copy()
 
-  scaler = preprocessing.StandardScaler()
-  # Different scalers listed below for future analysis
-  # scaler = preprocessing.MinMaxScaler()
-  # scaler = preprocessing.MaxAbsScaler()
-  # scaler = preprocessing.RobustScaler(quartile_range=(25, 75))
-  # scaler = preprocessing.PowerTransformer(method="yeo-johnson")
-  # scaler = preprocessing.PowerTransformer(method="box-cox")
-  # scaler = preprocessing.QuantileTransformer(output_distribution="uniform")
-  # scaler = preprocessing.QuantileTransformer(output_distribution="normal")
-  # scaler = preprocessing.Normalizer()
+  for column in columns_to_scale:
+    # Fit scaler on column.
+    train_data = scaler.fit_transform(train_data, column)
+    # Scale the columns in the datasets.
+    val_data = scaler.transform(val_data, column)
+    test_data = scaler.transform(test_data, column)
 
-  # Select numerical columns
-  numerical_data = df.select_dtypes(include = "number")
-  # Fit numerical columns of training data using the scaler
-  scaler.fit(train_data[numerical_data.columns])
-  return scaleDataset(train_data, scaler), scaleDataset(val_data, scaler), scaleDataset(test_data, scaler)
-
-def scaleDataset(df: pd.DataFrame, scaler, datatypes_to_include: List[str] = ["number"]):
-  """Scales numerical data using a pre-fitted scaler.
-
-  Args:
-    df: DataFrame to scale.
-    scaler: Type of Scaler in sklearn.preprocessing, fitting on training data.
-    datatypes_to_include: Columns of datatypes we want to scale.
-  
-  Returns:
-    df: pd.DataFrame, scaled DataFrame.
-  """
-  numerical_data = df.select_dtypes(include=datatypes_to_include)
-  # Transform numerical columns using the scaler
-  df[numerical_data.columns] = scaler.transform(numerical_data)
-  return df
+  return train_data, val_data, test_data

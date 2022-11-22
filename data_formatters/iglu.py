@@ -18,6 +18,7 @@
 
 import data_formatters.base
 import data_formatters.utils as utils
+from scalers import standard_scaler
 import pandas as pd
 
 GenericDataFormatter = data_formatters.base.GenericDataFormatter
@@ -65,6 +66,12 @@ class IGLUFormatter(GenericDataFormatter):
     'time_col': 'time',
   }
 
+  _scale_params = {
+    'columns_to_scale': ["gl"],
+    'scaler': standard_scaler.StandardScaler(),
+    'scale_off_curve': False
+  }
+
   _drop_ids = []
 
   def __init__(self, cnf):
@@ -106,7 +113,7 @@ class IGLUFormatter(GenericDataFormatter):
     self._column_definition.extend(self._time_measurement_columns)
   
   def scale(self):
-    return utils.scale(self.data, self.train_idx, self.val_idx, self.test_idx)
+    return utils.scale(self.data, self.train_idx, self.val_idx, self.test_idx, **self._scale_params)
 
   def set_scalers(self, df):
     pass
