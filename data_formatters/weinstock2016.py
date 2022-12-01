@@ -19,6 +19,8 @@
 import data_formatters.base
 import data_formatters.utils as utils
 import pandas as pd
+from scalers import minmax_scaler
+from scalers import standard_scaler
 
 GenericDataFormatter = data_formatters.base.GenericDataFormatter
 DataTypes = data_formatters.base.DataTypes
@@ -54,6 +56,12 @@ class WeinstockFormatter(GenericDataFormatter):
   _encoding_params = {
     'id_col': 'id',
     'time_col': 'time',
+  }
+
+  _scale_params = {
+    'columns_to_scale': ["gl", "year", "month", "day", "hour", "minute"],
+    'scaler': minmax_scaler.MinMaxScaler(),
+    'scale_off_curve': False
   }
 
   _drop_ids = []
@@ -117,7 +125,7 @@ class WeinstockFormatter(GenericDataFormatter):
     self._column_definition += [('minute', DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT)]
 
   def scale(self):
-    return utils.scale(self.data, self.train_idx, self.val_idx, self.test_idx)
+    return utils.scale(self.data, self.train_idx, self.val_idx, self.test_idx, **self._scale_params)
 
   def set_scalers(self, df):
     pass
