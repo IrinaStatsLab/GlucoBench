@@ -1,3 +1,15 @@
+# Friday December 2nd, 2022
+Next Meeting NEXT SEMESTER
+
+## Updates
+- Last meeting of the semester. Project will continue next semester, should express interest in continuing and then a decision will be made
+- Will most likely switch to DARTS library for models (https://unit8co.github.io/darts/)
+- End goal is to create a unified library of glucose datasets to establish a baseline for new models to be tested with
+
+## TODOs
+- Anonymous end of semester assessment
+
+
 # Friday November 18, 2022
 Next Meeting Friday December 2, Room 403
 
