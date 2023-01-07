@@ -30,10 +30,8 @@ interpolation_params:
 split_params:
   test_percent_subjects: 0.1
   length_segment: 192
-  id_col: id
-  id_segment_col: id_segment
 
-# Encoding paramters
+# Encoding parameters
 encoding_params:
   date: 
     - year
@@ -41,4 +39,9 @@ encoding_params:
     - day
     - hour
     - minute
+
+# Scaling parameters
+scaling_params:
+  scale_by: id
+  scaler: StandardScaler
   

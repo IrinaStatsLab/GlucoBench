@@ -119,38 +119,34 @@ def interpolate(data: pd.DataFrame,
   # create new column with unique id for each subject-segment pair
   output['id_segment'] = output[id_col].astype('str') + '_' + output.segment.astype('str')
   output['id_segment'] = output['id_segment'].astype('category')
-  # change id column input type to KNOWN_INPUT
-  for i in range(len(column_definition)):
-    if column_definition[i][0] == id_col:
-      column_definition[i] = (id_col, DataTypes.CATEGORICAL, InputTypes.KNOWN_INPUT)
-      break
   # add id_segment column to column_definition as ID
-  column_definition += [('id_segment', DataTypes.CATEGORICAL, InputTypes.ID)]
+  column_definition += [('id_segment', DataTypes.CATEGORICAL, InputTypes.SID)]
 
   return output, column_definition
 
 def split(df: pd.DataFrame, 
+          column_definition: List[Tuple[str, DataTypes, InputTypes]],
           test_percent_subjects: float, 
-          length_segment: int,
-          id_col: str,
-          id_segment_col: str,):
+          length_segment: int):
   """Splits data into train, validation and test sets.
 
   Args: 
     df: Dataframe to split.
+    column_definition: List of tuples (column_name, data_type, input_type).
     test_percent_subjects: Percentage of subjects to use for test set.
     length_segment: Length of validation segments in number of intervals.
-    id_col: Name of the column containing the id of the subject (NOTE: note id_segment).
-    id_segment_col: Name of the column containing the id and segment.
 
   Returns:
     train_idx: Training set indices.
     val_idx: Validation set indices.
     test_idx: Test set indices.
   """
-
+  # get id and id_segment columns
+  id_col = [column_name for column_name, data_type, input_type in column_definition if input_type == InputTypes.ID][0]
+  id_segment_col = [column_name for column_name, data_type, input_type in column_definition if input_type == InputTypes.SID][0]
   # get unique ids
   ids = df[id_col].unique()
+
   # select some subjects for test data set
   test_ids = np.random.choice(ids, math.ceil(len(ids) * test_percent_subjects), replace=False)
   test_idx = list(df[df[id_col].isin(test_ids)].index)
@@ -209,32 +205,51 @@ def encode(df: pd.DataFrame,
   column_definition += new_columns
   return df, column_definition, encoders
   
-# def scale(df: pd.DataFrame, train_idx: List[int], val_idx: List[int], test_idx: List[int], columns_to_scale: List[str], scaler: scaler.Scaler, scale_off_curve: bool):
-#   """Scales numerical data.
+def scale(df: pd.DataFrame, 
+          column_definition: List[Tuple[str, DataTypes, InputTypes]],
+          train_idx: List[int], 
+          val_idx: List[int], 
+          test_idx: List[int], 
+          scale_by: str,
+          scaler: str):
+  """Scales numerical data.
 
-#   Args:
-#     df: DataFrame to scale.
-#     train_idx: Indexes of rows to train on
-#     val_idx: Indexes of rows to validate on
-#     test_idx: Indexes of rows to test on
-#     columns_to_scale: Columns to independently scale.
-#     scaler: Scaler used for fitting and scaling.
-#     scale_off_curve: Scale off a curve vs other parameters.
+  Args:
+    df: DataFrame to scale.
+    train_idx: Indexes of rows to train on
+    val_idx: Indexes of rows to validate on
+    test_idx: Indexes of rows to test on
+    scale_by: Column to use as id.
+    scaler: Scaler to use.
   
-#   Returns:
-#     train_data: pd.Dataframe, DataFrame of scaled training data.
-#     val_data: pd.Dataframe, DataFrame of scaled validation data.
-#     test_data: pd.Dataframe, DataFrame of scaled testing data.
-#   """
-#   train_data = df.iloc[train_idx, :].copy()
-#   val_data = df.iloc[val_idx, :].copy()
-#   test_data = df.iloc[test_idx, :].copy()
+  Returns:
+    train_data: pd.Dataframe, DataFrame of scaled training data.
+    val_data: pd.Dataframe, DataFrame of scaled validation data.
+    test_data: pd.Dataframe, DataFrame of scaled testing data.
+  """
+  train_data = df.iloc[train_idx, :].copy()
+  val_data = df.iloc[val_idx, :].copy()
+  test_data = df.iloc[test_idx, :].copy()
 
-#   for column in columns_to_scale:
-#     # Fit scaler on column.
-#     train_data = scaler.fit_transform(train_data, column)
-#     # Scale the columns in the datasets.
-#     val_data = scaler.transform(val_data, column)
-#     test_data = scaler.transform(test_data, column)
+  # select all real-valued columns
+  columns_to_scale = [column for column, data_type, input_type in column_definition if data_type == DataTypes.REAL_VALUED]
+  
+  scalers = {}
+  for group, data_group in train_data.groupby(scale_by):
+    scalers[group] = {}
+    for column in columns_to_scale:
+      # scale data
+      scaler_class = getattr(preprocessing, scaler)()
+      # train, val, test index where scale_by == group
+      train_idx = train_data[scale_by] == group
+      val_idx = val_data[scale_by] == group
+      test_idx = test_data[scale_by] == group
+      # fit scaler on column.
+      train_data.loc[train_idx, column] = scaler_class.fit_transform(data_group[column].values.reshape(-1, 1))
+      # scale the columns in the datasets.
+      val_data.loc[val_idx, column] = scaler_class.transform(val_data.loc[val_idx, column].values.reshape(-1, 1))
+      test_data.loc[test_idx, column] = scaler_class.transform(test_data.loc[test_idx, column].values.reshape(-1, 1))
+      # save scaler.
+      scalers[group][column] = scaler
 
-#   return train_data, val_data, test_data
+  return train_data, val_data, test_data, scalers

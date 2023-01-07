@@ -58,8 +58,8 @@ class DataFormatter():
     self._split_params = self.params['split_params']
     self.split_data()
 
-    # # scale
-    # self.train_data, self.val_data, self.test_data = self.scale()
+    # scale
+    # self.train_data, self.val_data, self.test_data, self.scalers = self.scale()
 
   def process_column_definition(self):
     self._column_definition = []
@@ -99,10 +99,11 @@ class DataFormatter():
     self.data, self._column_definition = utils.interpolate(self.data, self._column_definition, **self._interpolation_params)
 
   def split_data(self):
-    self.train_idx, self.val_idx, self.test_idx = utils.split(self.data, **self._split_params)
+    self.train_idx, self.val_idx, self.test_idx = utils.split(self.data, self._column_definition, **self._split_params)
+    self.train_data, self.val_data, self.test_data = self.data.iloc[self.train_idx], self.data.iloc[self.val_idx], self.data.iloc[self.test_idx]
 
   def encode(self):
     self.data, self._column_definition, self.encoders = utils.encode(self.data, self._column_definition, **self._encoding_params)
   
-  # def scale(self):
-  #   return utils.scale(self.data, self.train_idx, self.val_idx, self.test_idx)
+  def scale(self):
+    return utils.scale(self.data, self._column_definition, self.train_idx, self.val_idx, self.test_idx, **self.params['scaling_params'])

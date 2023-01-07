@@ -15,4 +15,5 @@ class InputTypes(enum.IntEnum):
   KNOWN_INPUT = 2
   STATIC_INPUT = 3
   ID = 4  # Single column used as an entity identifier
-  TIME = 5  # Single column exclusively used as a time index
+  SID = 5  # Single column used as a segment identifier
+  TIME = 6  # Single column exclusively used as a time index
