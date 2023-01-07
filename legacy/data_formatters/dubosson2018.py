@@ -94,8 +94,8 @@ class DubossonFormatter(GenericDataFormatter):
     self.drop()
     self.interpolate()
     self.split_data()
-    self.encode()
-    self.train_data, self.val_data, self.test_data = self.scale()
+    # self.encode()
+    # self.train_data, self.val_data, self.test_data = self.scale()
 
   def drop(self):
     # drop columns that are not in the column definition
