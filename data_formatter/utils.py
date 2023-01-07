@@ -75,7 +75,7 @@ def interpolate(data: pd.DataFrame,
   # select all other columns except time
   constant_columns = [column_name for column_name, data_type, input_type in column_definition if
     input_type not in set([InputTypes.TIME])]
-  constant_columns += ['segment']
+  constant_columns += ['id_segment']
 
   # get id and time columns
   id_col = [column_name for column_name, data_type, input_type in column_definition if input_type == InputTypes.ID][0]
@@ -85,14 +85,17 @@ def interpolate(data: pd.DataFrame,
   dropped_segments = 0
   # store final output
   output = []
+  num_segments = 0
   for id, id_data in data.groupby(id_col):
     # sort values 
     id_data.sort_values(time_col, inplace=True)
     # get time difference between consecutive rows
     lag = (id_data[time_col].diff().dt.total_seconds().fillna(0) / 60.0).astype(int)
     # if lag > gap_threshold, then we have a gap and need to split into segments
-    id_data['segment'] = (lag > gap_threshold).cumsum()
-    for segment, segment_data in id_data.groupby('segment'):
+    id_data['id_segment'] = num_segments + (lag > gap_threshold).cumsum()
+    for segment, segment_data in id_data.groupby('id_segment'):
+      # update number of segments
+      num_segments += 1
       # if segment is too short, then we don't interpolate
       if len(segment_data) < min_drop_length:
         dropped_segments += 1
@@ -115,10 +118,6 @@ def interpolate(data: pd.DataFrame,
   # concat all segments and reset index
   output = pd.concat(output)
   output.reset_index(drop=True, inplace=True)
-  
-  # create new column with unique id for each subject-segment pair
-  output['id_segment'] = output[id_col].astype('str') + '_' + output.segment.astype('str')
-  output['id_segment'] = output['id_segment'].astype('category')
   # add id_segment column to column_definition as ID
   column_definition += [('id_segment', DataTypes.CATEGORICAL, InputTypes.SID)]
 
@@ -155,7 +154,7 @@ def split(df: pd.DataFrame,
 
   # iterate through segments and split into train, val and test
   train_idx = []; val_idx = []
-  for id, segment_data in df.groupby(id_segment_col):
+  for id_segment, segment_data in df.groupby(id_segment_col):
     if len(segment_data) >= 3 * length_segment:
       # get indices for train, val and test
       train_idx += list(segment_data.iloc[:-length_segment-length_segment].index)
