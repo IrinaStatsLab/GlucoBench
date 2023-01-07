@@ -82,7 +82,7 @@ class DataFormatter():
       if col[1] == DataTypes.DATE:
         self.data[col[0]] = pd.to_datetime(self.data[col[0]])
         # round time to the observation interval
-        self.data[col[0]] = self.data[col[0]].dt.round(self.params['observation_interval'])
+        # self.data[col[0]] = self.data[col[0]].dt.round(self.params['observation_interval'])
       if col[1] == DataTypes.CATEGORICAL:
         self.data[col[0]] = self.data[col[0]].astype('category')
       if col[1] == DataTypes.REAL_VALUED:
