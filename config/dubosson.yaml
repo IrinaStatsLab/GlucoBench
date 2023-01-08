@@ -21,6 +21,9 @@ drop:
   id:
     - 9
 
+# NA values abbreviation
+nan_vals: null
+
 # Interpolation parameters
 interpolation_params:
   gap_threshold: 45

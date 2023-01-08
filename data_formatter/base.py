@@ -1,5 +1,6 @@
 '''Defines a generic data formatter for CGM data sets.'''
 
+import numpy as np
 import pandas as pd
 import sklearn.preprocessing
 import data_formatter.types as types
@@ -38,6 +39,9 @@ class DataFormatter():
     self.params['index_col'] = False if self.params['index_col'] == -1 else self.params['index_col']
     # read data table
     self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'], na_filter=False)
+
+    # check NA values
+    self.check_nan()
 
     # set data types in DataFrame to match column definition
     self.set_data_types()
@@ -81,19 +85,27 @@ class DataFormatter():
     for col in self._column_definition:
       if col[1] == DataTypes.DATE:
         self.data[col[0]] = pd.to_datetime(self.data[col[0]])
-        # round time to the observation interval
-        # self.data[col[0]] = self.data[col[0]].dt.round(self.params['observation_interval'])
       if col[1] == DataTypes.CATEGORICAL:
         self.data[col[0]] = self.data[col[0]].astype('category')
       if col[1] == DataTypes.REAL_VALUED:
         self.data[col[0]] = self.data[col[0]].astype('float')
 
+  def check_nan(self):
+    if self.params['nan_vals'] is not None:
+      # replace NA values with pd.np.nan
+      self.data = self.data.replace(self.params['nan_vals'], np.nan)
+    # delete rows where target, time, or id are na
+    self.data = self.data.dropna(subset=[col[0] 
+                                  for col in self._column_definition 
+                                  if col[2] in [InputTypes.TARGET, InputTypes.TIME, InputTypes.ID]])
+
   def drop(self):
     # drop columns that are not in the column definition
     self.data = self.data[[col[0] for col in self._column_definition]]
     # drop rows based on conditions set in the formatter
-    for col in self.params['drop'].keys():
-      self.data = self.data.loc[~self.data[col].isin(self.params['drop'][col])].copy()
+    if self.params['drop'] is not None:
+      for col in self.params['drop'].keys():
+        self.data = self.data.loc[~self.data[col].isin(self.params['drop'][col])].copy()
   
   def interpolate(self):
     self.data, self._column_definition = utils.interpolate(self.data, self._column_definition, **self._interpolation_params)

@@ -1,6 +1,6 @@
 # Dataset
-ds_name: weinstock2016
-data_csv_path: ./raw_data/Weinstock2016_processed.csv
+ds_name: hall2018
+data_csv_path: ./raw_data/Hall2018_processed.csv
 index_col: -1
 observation_interval: 5min
 
@@ -20,7 +20,7 @@ column_definition:
 drop: null
 
 # NA values abbreviation
-nan_vals: null
+nan_vals: 'NA'
 
 # Interpolation parameters
 interpolation_params:
