@@ -24,6 +24,7 @@ import pathlib
 import torch
 import numpy as np
 import pandas as pd
+pd.options.mode.chained_assignment = None
 from typing import List, Tuple
 from sklearn import preprocessing
 
@@ -175,7 +176,7 @@ def split(df: pd.DataFrame,
 def encode(df: pd.DataFrame, 
           column_definition: List[Tuple[str, DataTypes, InputTypes]],
           date: List,):
-  """Encodes time and id as real-valued input.
+  """Encodes categorical columns.
 
   Args: 
     df: Dataframe to split.
@@ -204,21 +205,18 @@ def encode(df: pd.DataFrame,
   column_definition += new_columns
   return df, column_definition, encoders
   
-def scale(df: pd.DataFrame, 
+def scale(train_data: pd.DataFrame,
+          val_data: pd.DataFrame,
+          test_data: pd.DataFrame,
           column_definition: List[Tuple[str, DataTypes, InputTypes]],
-          train_idx: List[int], 
-          val_idx: List[int], 
-          test_idx: List[int], 
-          scale_by: str,
           scaler: str):
   """Scales numerical data.
 
   Args:
-    df: DataFrame to scale.
-    train_idx: Indexes of rows to train on
-    val_idx: Indexes of rows to validate on
-    test_idx: Indexes of rows to test on
-    scale_by: Column to use as id.
+    train_data: pd.Dataframe, DataFrame of training data.
+    val_data: pd.Dataframe, DataFrame of validation data.
+    test_data: pd.Dataframe, DataFrame of testing data.
+    column_definition: List of tuples (column_name, data_type, input_type).
     scaler: Scaler to use.
   
   Returns:
@@ -226,29 +224,10 @@ def scale(df: pd.DataFrame,
     val_data: pd.Dataframe, DataFrame of scaled validation data.
     test_data: pd.Dataframe, DataFrame of scaled testing data.
   """
-  train_data = df.iloc[train_idx, :].copy()
-  val_data = df.iloc[val_idx, :].copy()
-  test_data = df.iloc[test_idx, :].copy()
-
   # select all real-valued columns
   columns_to_scale = [column for column, data_type, input_type in column_definition if data_type == DataTypes.REAL_VALUED]
-  
-  scalers = {}
-  for group, data_group in train_data.groupby(scale_by):
-    scalers[group] = {}
-    for column in columns_to_scale:
-      # scale data
-      scaler_class = getattr(preprocessing, scaler)()
-      # train, val, test index where scale_by == group
-      train_idx = train_data[scale_by] == group
-      val_idx = val_data[scale_by] == group
-      test_idx = test_data[scale_by] == group
-      # fit scaler on column.
-      train_data.loc[train_idx, column] = scaler_class.fit_transform(data_group[column].values.reshape(-1, 1))
-      # scale the columns in the datasets.
-      val_data.loc[val_idx, column] = scaler_class.transform(val_data.loc[val_idx, column].values.reshape(-1, 1))
-      test_data.loc[test_idx, column] = scaler_class.transform(test_data.loc[test_idx, column].values.reshape(-1, 1))
-      # save scaler.
-      scalers[group][column] = scaler
-
-  return train_data, val_data, test_data, scalers
+  scaler = getattr(preprocessing, scaler)()
+  train_data[columns_to_scale] = scaler.fit_transform(train_data[columns_to_scale])
+  val_data[columns_to_scale] = scaler.transform(val_data[columns_to_scale])
+  test_data[columns_to_scale] = scaler.transform(test_data[columns_to_scale])
+  return train_data, val_data, test_data, scaler
