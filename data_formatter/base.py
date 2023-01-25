@@ -1,5 +1,5 @@
 '''Defines a generic data formatter for CGM data sets.'''
-
+import warnings
 import numpy as np
 import pandas as pd
 import sklearn.preprocessing
@@ -29,42 +29,60 @@ class DataFormatter():
     self.params = cnf
     
     # load column definition
+    print('-'*32)
+    print('Loading column definition...')
     self.__process_column_definition()
 
     # check that column definition is valid
+    print('Checking column definition...')
     self.__check_column_definition()
 
     # load data
     # check if data table has index col: -1 if not, index >= 0 if yes
+    print('Loading data...')
     self.params['index_col'] = False if self.params['index_col'] == -1 else self.params['index_col']
     # read data table
     self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'], na_filter=False)
 
     # check NA values
+    print('Checking for NA values...')
     self.__check_nan()
 
     # set data types in DataFrame to match column definition
+    print('Setting data types...')
     self.__set_data_types()
 
+    # check time grid
+    print('Checking time grid...')
+    self.__check_time_grid()
+
     # drop columns / rows
+    print('Dropping columns / rows...')
     self.__drop()
 
     # encode
+    print('Encoding data...')
     self._encoding_params = self.params['encoding_params']
     self.__encode()
 
     # interpolate
+    print('Interpolating data...')
     self._interpolation_params = self.params['interpolation_params']
     self._interpolation_params['interval_length'] = self.params['observation_interval']
     self.__interpolate()
 
     # split data
+    print('Splitting data...')
     self._split_params = self.params['split_params']
     self.__split_data()
 
     # scale
+    print('Scaling data...')
     self._scaling_params = self.params['scaling_params']
     self.__scale()
+
+    print('Data formatting complete.')
+    print('-'*32)
 
   def __process_column_definition(self):
     self._column_definition = []
@@ -100,6 +118,39 @@ class DataFormatter():
                                   for col in self._column_definition 
                                   if col[2] in [InputTypes.TARGET, InputTypes.TIME, InputTypes.ID]])
 
+  def __check_time_grid(self):
+    # get time column
+    time_col_name = [col[0] for col in self._column_definition if col[2] == InputTypes.TIME][0]
+    time_col = self.data[time_col_name]
+    # round time to minutes
+    time_col = time_col.dt.round('min')
+    # compute gaps between time points
+    time_gaps = time_col.diff().dt.total_seconds().fillna(0)
+    # convert str indicating observation_interval to seconds 
+    observation_interval = pd.Timedelta(self.params['observation_interval']).total_seconds()
+    # if time gaps are within observational_interval + 50%, assume one segment, otherwise assume next segment
+    segments = (time_gaps > observation_interval * 1.5).cumsum()
+    # iterate over segments
+    num_deviating_gaps = 0
+    for segment in segments.unique():
+      # get time points in segment
+      segment_time = time_col[segments == segment]
+      # compute time gaps
+      segment_time_gaps = segment_time.diff().dt.total_seconds().fillna(0)
+      # check if time gaps are equal to observation interval, otherwise warn
+      if not np.allclose(segment_time_gaps, observation_interval):
+        num_deviating_gaps += 1
+      # fix time
+      segment_time = pd.date_range(start=segment_time.min(),
+                                       periods=len(segment_time),
+                                       freq=self.params['observation_interval'])
+      # set time column to fixed time
+      time_col[segments == segment] = segment_time
+    if num_deviating_gaps > 0:
+      self.data[time_col_name] = time_col
+      print('\tWARNING: {} time gaps deviate from observation interval.'.format(num_deviating_gaps))
+
+
   def __drop(self):
     # drop columns that are not in the column definition
     self.data = self.data[[col[0] for col in self._column_definition]]
@@ -130,3 +181,26 @@ class DataFormatter():
                                                                                self.test_data, 
                                                                                self._column_definition, 
                                                                                **self.params['scaling_params'])
+
+  def get_column(self, column_name):
+    # write cases for time, id, target, future, static, dynamic covariates
+    if column_name == 'time':
+      return [col[0] for col in self._column_definition if col[2] == InputTypes.TIME][0]
+    elif column_name == 'id':
+      return [col[0] for col in self._column_definition if col[2] == InputTypes.ID][0]
+    elif column_name == 'sid':
+      return [col[0] for col in self._column_definition if col[2] == InputTypes.SID][0]
+    elif column_name == 'target':
+      return [col[0] for col in self._column_definition if col[2] == InputTypes.TARGET]
+    elif column_name == 'future_covs':
+      future_covs = [col[0] for col in self._column_definition if col[2] == InputTypes.KNOWN_INPUT] 
+      return future_covs if len(future_covs) > 0 else None
+    elif column_name == 'static_covs':
+      static_covs = [col[0] for col in self._column_definition if col[2] == InputTypes.STATIC_INPUT]
+      return static_covs if len(static_covs) > 0 else None
+    elif column_name == 'dynamic_covs':
+      dynamic_covs = [col[0] for col in self._column_definition if col[2] == InputTypes.OBSERVED_INPUT]
+      return dynamic_covs if len(dynamic_covs) > 0 else None
+    else:
+      raise ValueError('Column {} not found.'.format(column_name))
+  

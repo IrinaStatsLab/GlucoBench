@@ -59,10 +59,10 @@ def interpolate(data: pd.DataFrame,
 
   Args:
     df: Dataframe to interpolate on. Sorted by id and then time (a DateTime object).
-    column_definition: List of tuples (column_name, data_type, input_type).
-    gap_threshold: Maximum allowed gap for interpolation.
-    min_drop_length: Minimum number of points needed within an interval to interpolate.
-    interval_length: Length of interpolation intervals in minutes.
+    column_definition: List of tuples describing columns (column_name, data_type, input_type).
+    gap_threshold: Number in minutes, maximum allowed gap for interpolation.
+    min_drop_length: Number of points, minimum number within an interval to interpolate.
+    interval_length: Number in minutes, length of interpolation.
 
   Returns:
     data: DataFrame with missing values interpolated and 
@@ -114,8 +114,8 @@ def interpolate(data: pd.DataFrame,
       # add to output
       output.append(segment_data)
   # print number of dropped segments and number of segments
-  print('Dropped segments: {}'.format(dropped_segments))
-  print('Extracted segments: {}'.format(len(output)))
+  print('\tDropped segments: {}'.format(dropped_segments))
+  print('\tExtracted segments: {}'.format(len(output)))
   # concat all segments and reset index
   output = pd.concat(output)
   output.reset_index(drop=True, inplace=True)
@@ -127,20 +127,24 @@ def interpolate(data: pd.DataFrame,
 def split(df: pd.DataFrame, 
           column_definition: List[Tuple[str, DataTypes, InputTypes]],
           test_percent_subjects: float, 
-          length_segment: int):
+          length_segment: int,
+          random_state: int = 42):
   """Splits data into train, validation and test sets.
 
   Args: 
     df: Dataframe to split.
-    column_definition: List of tuples (column_name, data_type, input_type).
-    test_percent_subjects: Percentage of subjects to use for test set.
-    length_segment: Length of validation segments in number of intervals.
+    column_definition: List of tuples describing columns (column_name, data_type, input_type).
+    test_percent_subjects: Float number from [0, 1], percentage of subjects to use for test set.
+    length_segment: Number of points, length of segments saved for validation / test sets.
+    random_state: Number, Random state for reproducibility.
 
   Returns:
     train_idx: Training set indices.
     val_idx: Validation set indices.
     test_idx: Test set indices.
   """
+  # set random state
+  np.random.seed(random_state)
   # get id and id_segment columns
   id_col = [column_name for column_name, data_type, input_type in column_definition if input_type == InputTypes.ID][0]
   id_segment_col = [column_name for column_name, data_type, input_type in column_definition if input_type == InputTypes.SID][0]
@@ -156,6 +160,11 @@ def split(df: pd.DataFrame,
   # iterate through segments and split into train, val and test
   train_idx = []; val_idx = []
   for id_segment, segment_data in df.groupby(id_segment_col):
+    # handle length of segment = 0 case
+    if length_segment == 0:
+      train_idx += list(segment_data.index)
+      continue
+    # otherwise, split into train, val and test
     if len(segment_data) >= 3 * length_segment:
       # get indices for train, val and test
       train_idx += list(segment_data.iloc[:-length_segment-length_segment].index)
@@ -171,6 +180,10 @@ def split(df: pd.DataFrame,
     else:
       # segment is too short, skip
       continue
+  # print number of points in each set and proportion
+  print('\tTrain: {} ({:.2f}%)'.format(len(train_idx), len(train_idx) / len(df) * 100))
+  print('\tVal: {} ({:.2f}%)'.format(len(val_idx), len(val_idx) / len(df) * 100))
+  print('\tTest: {} ({:.2f}%)'.format(len(test_idx), len(test_idx) / len(df) * 100))
   return train_idx, val_idx, test_idx
 
 def encode(df: pd.DataFrame, 
@@ -180,8 +193,8 @@ def encode(df: pd.DataFrame,
 
   Args: 
     df: Dataframe to split.
-    column_definition: list of tuples containing column name and types.
-    date: list containing date columns to extract.
+    column_definition: List of tuples describing columns (column_name, data_type, input_type).
+    date: List of str, list containing date info to extract.
 
   Returns:
     df: Dataframe with encoded columns.
@@ -203,6 +216,12 @@ def encode(df: pd.DataFrame,
     else:
       continue
   column_definition += new_columns
+  # print updated column definition
+  print('\tUpdated column definition:')
+  for column, column_type, input_type in column_definition:
+    print('\t\t{}: {} ({})'.format(column, 
+                                   DataTypes(column_type).name, 
+                                   InputTypes(input_type).name))
   return df, column_definition, encoders
   
 def scale(train_data: pd.DataFrame,
@@ -216,8 +235,8 @@ def scale(train_data: pd.DataFrame,
     train_data: pd.Dataframe, DataFrame of training data.
     val_data: pd.Dataframe, DataFrame of validation data.
     test_data: pd.Dataframe, DataFrame of testing data.
-    column_definition: List of tuples (column_name, data_type, input_type).
-    scaler: Scaler to use.
+    column_definition: List of tuples describing columns (column_name, data_type, input_type).
+    scaler: String, scaler to use.
   
   Returns:
     train_data: pd.Dataframe, DataFrame of scaled training data.
@@ -226,8 +245,15 @@ def scale(train_data: pd.DataFrame,
   """
   # select all real-valued columns
   columns_to_scale = [column for column, data_type, input_type in column_definition if data_type == DataTypes.REAL_VALUED]
+  # handle no scaling case
+  if scaler == 'None':
+    print('\tNo scaling applied')
+    return train_data, val_data, test_data, None
   scaler = getattr(preprocessing, scaler)()
   train_data[columns_to_scale] = scaler.fit_transform(train_data[columns_to_scale])
-  val_data[columns_to_scale] = scaler.transform(val_data[columns_to_scale])
-  test_data[columns_to_scale] = scaler.transform(test_data[columns_to_scale])
+  # handle empty validation and test sets
+  val_data[columns_to_scale] = scaler.transform(val_data[columns_to_scale]) if val_data.shape[0] > 0 else val_data[columns_to_scale]
+  test_data[columns_to_scale] = scaler.transform(test_data[columns_to_scale]) if test_data.shape[0] > 0 else test_data[columns_to_scale]
+  # print columns that were scaled
+  print('\tScaled columns: {}'.format(columns_to_scale))
   return train_data, val_data, test_data, scaler
