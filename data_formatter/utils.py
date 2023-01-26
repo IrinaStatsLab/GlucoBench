@@ -81,6 +81,9 @@ def interpolate(data: pd.DataFrame,
   # get id and time columns
   id_col = [column_name for column_name, data_type, input_type in column_definition if input_type == InputTypes.ID][0]
   time_col = [column_name for column_name, data_type, input_type in column_definition if input_type == InputTypes.TIME][0]
+  
+  # round time to nearest minute
+  data[time_col] = data[time_col].dt.round('1min') 
 
   # count dropped segments
   dropped_segments = 0
