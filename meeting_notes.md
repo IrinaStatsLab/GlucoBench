@@ -1,3 +1,28 @@
+# Wednesday January 25th, 2023
+Next Meeting: Wednesday February 1st, 2023
+Next Meeting Notetaker: **Nicky**
+
+Slack updates due on **Monday before noon**
+
+Try to have independent team meeting sometime in the week (Nicky, Nathaniel, Lizzie, Valeriya - optional)
+
+## Updates
+- Welcome Nathaniel to the team!
+- Switching to darts for models
+
+## TODOs
+- **NEW dataset assignments**:
+	- Dubosson - Renat
+	- Hall - Nicky
+	- iglu - Nathaniel
+	- Weinstock - Valeriya
+	- Chase - Dr. Gaynanova
+	- TBD - Lizzie
+- Replicate dubosson.ipynb for your dataset
+- Add covariates as columns to raw data csv
+	- covariate data to be shared by Lizzie for your datasets
+
+
 # Friday December 2nd, 2022
 Next Meeting NEXT SEMESTER
 
