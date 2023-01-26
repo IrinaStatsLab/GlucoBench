@@ -17,7 +17,10 @@ column_definition:
     input_type: target
 
 # Drop
-drop: null
+drop: 
+  rows: 
+    - 57309
+  columns: null
 
 # NA values abbreviation
 nan_vals: 'NA'

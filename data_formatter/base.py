@@ -119,8 +119,14 @@ class DataFormatter():
     self.data = self.data[[col[0] for col in self._column_definition]]
     # drop rows based on conditions set in the formatter
     if self.params['drop'] is not None:
-      for col in self.params['drop'].keys():
-        self.data = self.data.loc[~self.data[col].isin(self.params['drop'][col])].copy()
+      if self.params['drop']['rows'] is not None:
+        # drop row at indices in the list self.params['drop']['rows']
+        self.data = self.data.drop(self.params['drop']['rows'])
+        self.data = self.data.reset_index(drop=True)
+      if self.params['drop']['columns'] is not None:
+        for col in self.params['drop']['columns'].keys():
+          # drop rows where specified columns have values in the list self.params['drop']['columns'][col]
+          self.data = self.data.loc[~self.data[col].isin(self.params['drop']['columns'][col])].copy()
   
   def __interpolate(self):
     self.data, self._column_definition = utils.interpolate(self.data, 

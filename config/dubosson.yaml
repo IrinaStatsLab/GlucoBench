@@ -17,17 +17,19 @@ column_definition:
     input_type: target
 
 # Drop
-drop: 
-  id:
-    - 9
+drop:
+  rows: null
+  columns:
+    id:
+      - 9
 
 # NA values abbreviation
 nan_vals: null
 
 # Interpolation parameters
 interpolation_params:
-  gap_threshold: 30
-  min_drop_length: 192
+  gap_threshold: 30 # in minutes
+  min_drop_length: 192 # number of points
 
 # Splitting parameters
 split_params:
