@@ -104,6 +104,13 @@ def interpolate(data: pd.DataFrame,
       if len(segment_data) < min_drop_length:
         dropped_segments += 1
         continue
+      
+      # find and prit duplicated times
+      duplicates = segment_data.duplicated(time_col, keep=False)
+      if duplicates.any():
+        print(segment_data[duplicates])
+        raise ValueError('Duplicate times in segment {} of id {}'.format(segment, id))
+
       # reindex at interval_length minute intervals
       segment_data = segment_data.set_index(time_col).reindex(pd.date_range(start=segment_data[time_col].iloc[0], 
                                                                             end=segment_data[time_col].iloc[-1], 
