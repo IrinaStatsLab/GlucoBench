@@ -82,6 +82,8 @@ def interpolate(data: pd.DataFrame,
   id_col = [column_name for column_name, data_type, input_type in column_definition if input_type == InputTypes.ID][0]
   time_col = [column_name for column_name, data_type, input_type in column_definition if input_type == InputTypes.TIME][0]
   
+  # round to minute
+  data[time_col] = data[time_col].dt.round('1min')
   # count dropped segments
   dropped_segments = 0
   # store final output
@@ -92,8 +94,11 @@ def interpolate(data: pd.DataFrame,
     id_data.sort_values(time_col, inplace=True)
     # get time difference between consecutive rows
     lag = (id_data[time_col].diff().dt.total_seconds().fillna(0) / 60.0).astype(int)
-    # if lag > gap_threshold, then we have a gap and need to split into segments
-    id_data['id_segment'] = num_segments + (lag > gap_threshold).cumsum()
+    # if lag > gap_threshold or lag < interval_length, then we have a gap and need to split into segments
+    interval_length_num = pd.Timedelta(interval_length).total_seconds() / 60.0
+    id_segment = num_segments + (lag > gap_threshold).cumsum()
+    id_segment += (lag < interval_length_num).cumsum()
+    id_data['id_segment'] = id_segment
     for segment, segment_data in id_data.groupby('id_segment'):
       # update number of segments
       num_segments += 1
@@ -109,7 +114,10 @@ def interpolate(data: pd.DataFrame,
         raise ValueError('Duplicate times in segment {} of id {}'.format(segment, id))
 
       # reindex at interval_length minute intervals
-      index = create_index(segment_data.loc[:, time_col], interval_length)
+      index = pd.date_range(start = segment_data[time_col].iloc[0], 
+                            end = segment_data[time_col].iloc[-1], 
+                            freq = interval_length)
+      # create_index(segment_data.loc[:, time_col], interval_length)
       segment_data = segment_data.set_index(time_col).reindex(index)
       # interpolate
       segment_data[interpolation_columns] = segment_data[interpolation_columns].interpolate(method='linear')
