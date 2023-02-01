@@ -31,6 +31,7 @@ interpolation_params:
 split_params:
   test_percent_subjects: 0.1
   length_segment: 192
+  random_state: 0
 
 # Encoding parameters
 encoding_params:
