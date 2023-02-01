@@ -1,0 +1,48 @@
+# Dataset
+ds_name: colas2019
+data_csv_path: ./raw_data/Colas2019_processed.csv
+index_col: -1
+observation_interval: 5min
+
+# Columns
+column_definition:
+  - name: id
+    data_type: categorical
+    input_type: id
+  - name: time
+    data_type: date
+    input_type: time
+  - name: gl
+    data_type: real_valued
+    input_type: target
+
+# Drop
+drop: 
+
+# NA values abbreviation
+nan_vals: NaN
+
+# Interpolation parameters
+interpolation_params:
+  gap_threshold: 30
+  min_drop_length: 192
+
+# Splitting parameters
+split_params:
+  test_percent_subjects: 0.1
+  length_segment: 192
+  random_state: 0
+
+# Encoding parameters
+encoding_params:
+  date: 
+    - year
+    - month
+    - day
+    - hour
+    - minute
+
+# Scaling parameters
+scaling_params:
+  scaler: None
+  
