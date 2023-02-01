@@ -25,4 +25,5 @@
 | 21 | Dubosson BR | breathing rate: time stamped breathing rate | continuous | no, aggregated by the second |
 | 22 | Dubosson HR | heart rate: time stamped heart rate | continuous | no, aggregated by the second |
 | 23 | Dubosson ECG | electrocardiogram: waveform measurements (unknown units) | continuous | no, collected every ~0.004 seconds |
+| 24 | Colas T2DM | type 2 diabetes diagnosis | categorical | - |
 
