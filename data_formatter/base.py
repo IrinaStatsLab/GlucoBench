@@ -66,7 +66,7 @@ class DataFormatter():
     self._interpolation_params = self.params['interpolation_params']
     self._interpolation_params['interval_length'] = self.params['observation_interval']
     self.__interpolate()
-
+    
     # split data
     print('Splitting data...')
     self._split_params = self.params['split_params']
@@ -103,7 +103,7 @@ class DataFormatter():
       if col[1] == DataTypes.CATEGORICAL:
         self.data[col[0]] = self.data[col[0]].astype('category')
       if col[1] == DataTypes.REAL_VALUED:
-        self.data[col[0]] = self.data[col[0]].astype('float')
+        self.data[col[0]] = self.data[col[0]].astype(np.float32)
 
   def __check_nan(self):
     if self.params['nan_vals'] is not None:

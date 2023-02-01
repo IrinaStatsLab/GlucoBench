@@ -88,20 +88,18 @@ def interpolate(data: pd.DataFrame,
   dropped_segments = 0
   # store final output
   output = []
-  num_segments = 0
   for id, id_data in data.groupby(id_col):
     # sort values 
     id_data.sort_values(time_col, inplace=True)
     # get time difference between consecutive rows
     lag = (id_data[time_col].diff().dt.total_seconds().fillna(0) / 60.0).astype(int)
-    # if lag > gap_threshold or lag < interval_length, then we have a gap and need to split into segments
+    # if (lag > gap_threshold) OR 
+    #   (lag div by interval_length), then we start a new segment
     interval_length_num = pd.Timedelta(interval_length).total_seconds() / 60.0
-    id_segment = num_segments + (lag > gap_threshold).cumsum()
-    id_segment += (lag < interval_length_num).cumsum()
+    id_segment = (lag % interval_length_num > 0).cumsum()
+    id_segment += (lag > gap_threshold).cumsum()
     id_data['id_segment'] = id_segment
     for segment, segment_data in id_data.groupby('id_segment'):
-      # update number of segments
-      num_segments += 1
       # if segment is too short, then we don't interpolate
       if len(segment_data) < min_drop_length:
         dropped_segments += 1
@@ -125,6 +123,8 @@ def interpolate(data: pd.DataFrame,
       segment_data[constant_columns] = segment_data[constant_columns].fillna(method='ffill')
       # reset index, make the time a column with name time_col
       segment_data = segment_data.reset_index().rename(columns={'index': time_col})
+      # set the id_segment to position in output
+      segment_data['id_segment'] = len(output)
       # add to output
       output.append(segment_data)
   # print number of dropped segments and number of segments
@@ -246,10 +246,11 @@ def encode(df: pd.DataFrame,
     if column_type == DataTypes.DATE:
       for extract_col in date:
         df[column + '_' + extract_col] = getattr(df[column].dt, extract_col)
+        df[column + '_' + extract_col] = df[column + '_' + extract_col].astype(np.float32)
         new_columns.append((column + '_' + extract_col, DataTypes.REAL_VALUED, InputTypes.KNOWN_INPUT))
     elif column_type == DataTypes.CATEGORICAL:
       encoders[column] = preprocessing.LabelEncoder()
-      df[column] = encoders[column].fit_transform(df[column])
+      df[column] = encoders[column].fit_transform(df[column]).astype(np.float32)
       column_definition[i] = (column, DataTypes.REAL_VALUED, input_type)
     else:
       continue
