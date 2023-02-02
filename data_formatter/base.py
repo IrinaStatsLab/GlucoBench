@@ -85,8 +85,9 @@ class DataFormatter():
 
     print('Data formatting complete.')
     print('-'*32)
-    f.close()
-    sys.stdout = stdout
+    if study_file is not None:
+      f.close()
+      sys.stdout = stdout
 
 
   def __process_column_definition(self):
