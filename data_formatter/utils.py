@@ -86,6 +86,8 @@ def interpolate(data: pd.DataFrame,
   data[time_col] = data[time_col].dt.round('1min')
   # count dropped segments
   dropped_segments = 0
+  # count number of values that are interpolated
+  interpolation_count = 0
   # store final output
   output = []
   for id, id_data in data.groupby(id_col):
@@ -93,11 +95,8 @@ def interpolate(data: pd.DataFrame,
     id_data.sort_values(time_col, inplace=True)
     # get time difference between consecutive rows
     lag = (id_data[time_col].diff().dt.total_seconds().fillna(0) / 60.0).astype(int)
-    # if (lag > gap_threshold) OR 
-    #   (lag div by interval_length), then we start a new segment
-    interval_length_num = pd.Timedelta(interval_length).total_seconds() / 60.0
-    id_segment = (lag % interval_length_num > 0).cumsum()
-    id_segment += (lag > gap_threshold).cumsum()
+    # if lag > gap_threshold
+    id_segment = (lag > gap_threshold).cumsum()
     id_data['id_segment'] = id_segment
     for segment, segment_data in id_data.groupby('id_segment'):
       # if segment is too short, then we don't interpolate
@@ -112,15 +111,20 @@ def interpolate(data: pd.DataFrame,
         raise ValueError('Duplicate times in segment {} of id {}'.format(segment, id))
 
       # reindex at interval_length minute intervals
-      index = pd.date_range(start = segment_data[time_col].iloc[0], 
-                            end = segment_data[time_col].iloc[-1], 
+      segment_data = segment_data.set_index(time_col)
+      index_new = pd.date_range(start = segment_data.index[0], 
+                            end = segment_data.index[-1], 
                             freq = interval_length)
-      # create_index(segment_data.loc[:, time_col], interval_length)
-      segment_data = segment_data.set_index(time_col).reindex(index)
+      index_union = index_new.union(segment_data.index)
+      segment_data = segment_data.reindex(index_union)
+      # count nan values in interpolation columns
+      interpolation_count += segment_data[interpolation_columns[0]].isna().sum()
       # interpolate
-      segment_data[interpolation_columns] = segment_data[interpolation_columns].interpolate(method='linear')
+      segment_data[interpolation_columns] = segment_data[interpolation_columns].interpolate(method='index')
       # fill constant columns with last value
       segment_data[constant_columns] = segment_data[constant_columns].fillna(method='ffill')
+      # delete rows not conforming to frequency
+      segment_data = segment_data.reindex(index_new)
       # reset index, make the time a column with name time_col
       segment_data = segment_data.reset_index().rename(columns={'index': time_col})
       # set the id_segment to position in output
@@ -133,6 +137,9 @@ def interpolate(data: pd.DataFrame,
   # concat all segments and reset index
   output = pd.concat(output)
   output.reset_index(drop=True, inplace=True)
+  # count number of interpolated values
+  print('\tInterpolated values: {}'.format(interpolation_count))
+  print('\tPercent of values interpolated: {:.2f}%'.format(interpolation_count / len(output) * 100))
   # add id_segment column to column_definition as ID
   column_definition += [('id_segment', DataTypes.CATEGORICAL, InputTypes.SID)]
 
