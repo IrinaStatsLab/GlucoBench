@@ -1,6 +1,23 @@
+# Wednesday February 1st, 2023
+Next Meeting: Wednesday February 8th, 2023
+Next Meeting Notetaker: **Nicky**
+
+Slack updates due on **Monday before noon**
+
+## Updates
+- New (updated) interpolation function 
+- Switching from Optuna to AutoARIMA 
+
+## TODOs
+- Modify .yaml files with the parameters set during the exploratory analysis
+- Go to bin -> Create new script for your dataset (copy arima_weinstock.py but change the links) -> Go through the code and make sure you understand everything -> Run the script on your dataset, e.g. finish ARIMA model part
+- Add the covariates to your dataset (if you have any)
+- Think about Google Colab Pro+
+
+
 # Wednesday January 25th, 2023
 Next Meeting: Wednesday February 1st, 2023
-Next Meeting Notetaker: **Nicky**
+Next Meeting Notetaker: **Valeriya**
 
 Slack updates due on **Monday before noon**
 
