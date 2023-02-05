@@ -44,18 +44,33 @@ def make_series(data: Dict[str, pd.DataFrame],
                 scalers[name] = None
     return series, scalers
 
-def backtest_and_save(series: Union[TimeSeries, Sequence[TimeSeries]],
-                      forecasts: Union[TimeSeries, Sequence[TimeSeries]], 
-                      metric: Union[
-                                Callable[[TimeSeries, TimeSeries], float],
-                                List[Callable[[TimeSeries, TimeSeries], float]],
-                              ], 
-                      scaler: Callable[[TimeSeries], TimeSeries] = None,
-                      reduction: Union[Callable[[np.ndarray], float], None] = np.mean,
-                      save_path: str = None
-                      ):
+def early_stopping_check(study, 
+                         trial, 
+                         study_file, 
+                         early_stopping_rounds=10):
+      """
+      Early stopping callback for Optuna.
+      This function checks the current trial number and the best trial number.
+      """
+      current_trial_number = trial.number
+      best_trial_number = study.best_trial.number
+      should_stop = (current_trial_number - best_trial_number) >= early_stopping_rounds
+      if should_stop:
+          with open(study_file, 'a') as f:
+              f.write('Early stopping at trial {} (best trial: {})'.format(current_trial_number, best_trial_number))
+          study.stop()
+
+def rescale_and_backtest(series: Union[TimeSeries, Sequence[TimeSeries]],
+                         forecasts: Union[TimeSeries, Sequence[TimeSeries]], 
+                         metric: Union[
+                                    Callable[[TimeSeries, TimeSeries], float],
+                                    List[Callable[[TimeSeries, TimeSeries], float]],
+                                ], 
+                         scaler: Callable[[TimeSeries], TimeSeries] = None,
+                         reduction: Union[Callable[[np.ndarray], float], None] = np.mean,
+                        ):
     """
-    Backtest the forecasts on the series and save the results to a csv file.
+    Backtest the forecasts on the series.
 
     Parameters
     ----------
@@ -69,8 +84,6 @@ def backtest_and_save(series: Union[TimeSeries, Sequence[TimeSeries]],
         The metric to use for backtesting.
     reduction
         The reduction to apply to the metric.
-    save_path
-        The path to save the results to.
 
     Returns
     -------
@@ -89,14 +102,8 @@ def backtest_and_save(series: Union[TimeSeries, Sequence[TimeSeries]],
     for idx, target_ts in enumerate(series):
         if scaler is not None:
             target_ts = scaler.inverse_transform(target_ts)
-            target_ts.to_pickle(os.path.join(save_path, f'true_values_{idx}.pkl'))
             for idxf, f in enumerate(forecasts[idx]):
                 f = scaler.inverse_transform(f)
-                f.to_pickle(os.path.join(save_path, f'forecast_{idx}_{idxf}.pkl'))
-        else:
-            target_ts.to_pickle(os.path.join(save_path, f'true_values_{idx}.pkl'))
-            for idxf, f in enumerate(forecasts[idx]):
-                f.to_pickle(os.path.join(save_path, f'forecast_{idx}_{idxf}.pkl'))
         errors = [
             [metric_f(target_ts, f) for metric_f in metric]
             if len(metric) > 1

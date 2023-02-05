@@ -1,4 +1,5 @@
 '''Defines a generic data formatter for CGM data sets.'''
+import sys
 import warnings
 import numpy as np
 import pandas as pd
@@ -23,11 +24,16 @@ dict_input_type = {'target': InputTypes.TARGET,
 class DataFormatter():
   # Defines and formats data for the IGLU dataset.
 
-  def __init__(self, cnf):
+  def __init__(self, cnf, study_file = None):
     """Initialises formatter."""
     # load parameters from the config file
     self.params = cnf
-    
+    # write progress to file if specified
+    self.study_file = study_file
+    stdout = sys.stdout
+    f = open(study_file, 'a') if study_file is not None else sys.stdout
+    sys.stdout = f
+
     # load column definition
     print('-'*32)
     print('Loading column definition...')
@@ -79,6 +85,10 @@ class DataFormatter():
 
     print('Data formatting complete.')
     print('-'*32)
+    if study_file is not None:
+      f.close()
+      sys.stdout = stdout
+
 
   def __process_column_definition(self):
     self._column_definition = []
@@ -151,6 +161,18 @@ class DataFormatter():
                                                                                self._column_definition, 
                                                                                **self.params['scaling_params'])
 
+  def reshuffle(self, seed):
+    stdout = sys.stdout
+    f = open(self.study_file, 'a')
+    sys.stdout = f
+    self.params['split_params']['random_state'] = seed
+    self.train_idx, self.val_idx, self.test_idx = utils.split(self.data, 
+                                                              self._column_definition, 
+                                                              **self._split_params)
+    self.train_data, self.val_data, self.test_data = self.data.iloc[self.train_idx], self.data.iloc[self.val_idx], self.data.iloc[self.test_idx]
+    sys.stdout = stdout
+    f.close()
+    
   def get_column(self, column_name):
     # write cases for time, id, target, future, static, dynamic covariates
     if column_name == 'time':
