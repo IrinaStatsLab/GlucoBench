@@ -57,7 +57,7 @@ def early_stopping_check(study,
       should_stop = (current_trial_number - best_trial_number) >= early_stopping_rounds
       if should_stop:
           with open(study_file, 'a') as f:
-              f.write('Early stopping at trial {} (best trial: {})'.format(current_trial_number, best_trial_number))
+              f.write('\nEarly stopping at trial {} (best trial: {})'.format(current_trial_number, best_trial_number))
           study.stop()
 
 def rescale_and_backtest(series: Union[TimeSeries, Sequence[TimeSeries]],
@@ -102,16 +102,15 @@ def rescale_and_backtest(series: Union[TimeSeries, Sequence[TimeSeries]],
     for idx, target_ts in enumerate(series):
         if scaler is not None:
             target_ts = scaler.inverse_transform(target_ts)
-            for idxf, f in enumerate(forecasts[idx]):
-                f = scaler.inverse_transform(f)
+            predicted_ts = [scaler.inverse_transform(f) for f in forecasts[idx]]
         errors = [
             [metric_f(target_ts, f) for metric_f in metric]
             if len(metric) > 1
             else metric[0](target_ts, f)
-            for f in forecasts[idx]
+            for f in predicted_ts
         ]
         if reduction is None:
-            backtest_list.append(errors)
+            backtest_list.append(np.array(errors))
         else:
             backtest_list.append(reduction(np.array(errors), axis=0))
     return backtest_list if len(backtest_list) > 1 else backtest_list[0]
