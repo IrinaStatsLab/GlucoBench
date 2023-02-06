@@ -144,10 +144,12 @@ class DataFormatter():
                                                            **self._interpolation_params)
 
   def __split_data(self):
-    self.train_idx, self.val_idx, self.test_idx = utils.split(self.data, 
-                                                              self._column_definition, 
-                                                              **self._split_params)
-    self.train_data, self.val_data, self.test_data = self.data.iloc[self.train_idx], self.data.iloc[self.val_idx], self.data.iloc[self.test_idx]
+    self.train_idx, self.val_idx, self.test_idx, self.test_idx_ood = utils.split(self.data, 
+                                                                                 self._column_definition, 
+                                                                                 **self._split_params)
+    self.train_data, self.val_data, self.test_data = self.data.iloc[self.train_idx], \
+                                                      self.data.iloc[self.val_idx], \
+                                                        self.data.iloc[self.test_idx + self.test_idx_ood]
 
   def __encode(self):
     self.data, self._column_definition, self.encoders = utils.encode(self.data, 
@@ -166,10 +168,12 @@ class DataFormatter():
     f = open(self.study_file, 'a')
     sys.stdout = f
     self.params['split_params']['random_state'] = seed
-    self.train_idx, self.val_idx, self.test_idx = utils.split(self.data, 
-                                                              self._column_definition, 
-                                                              **self._split_params)
-    self.train_data, self.val_data, self.test_data = self.data.iloc[self.train_idx], self.data.iloc[self.val_idx], self.data.iloc[self.test_idx]
+    self.train_idx, self.val_idx, self.test_idx, self.test_idx_ood = utils.split(self.data, 
+                                                                                  self._column_definition, 
+                                                                                  **self._split_params)
+    self.train_data, self.val_data, self.test_data = self.data.iloc[self.train_idx], \
+                                                      self.data.iloc[self.val_idx], \
+                                                        self.data.iloc[self.test_idx+self.test_idx_ood]
     sys.stdout = stdout
     f.close()
     

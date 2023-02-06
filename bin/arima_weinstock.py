@@ -43,7 +43,8 @@ def load_data(seed = 0, study_file = None):
     # build series
     series, scalers = make_series({'train': formatter.train_data,
                                     'val': formatter.val_data,
-                                    'test': formatter.test_data},
+                                    'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
+                                    'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
                                     time_col,
                                     group_col,
                                     {'target': target_col,
@@ -69,7 +70,8 @@ def reshuffle_data(formatter, seed):
     # build series
     series, scalers = make_series({'train': formatter.train_data,
                                     'val': formatter.val_data,
-                                    'test': formatter.test_data},
+                                    'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
+                                    'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
                                     time_col,
                                     group_col,
                                     {'target': target_col,
@@ -83,9 +85,9 @@ def reshuffle_data(formatter, seed):
 # define objective function
 def objective(trial):
     # select input and output chunk lengths
-    in_len = trial.suggest_int("in_len", 96, 240, step=12)
-    out_len = 12
-
+    out_len = 12 # 1 hour
+    in_len = trial.suggest_int("in_len", 96, 240 - 2 * out_len, step=12) # at least 2 hours of predictions left
+    
     # build the ARIMA model
     model = models.AutoARIMA(autoarima_args={'start_p': 0,
                                          'start_q': 0,
@@ -101,7 +103,7 @@ def objective(trial):
     errors = model.backtest(series['val']['target'],
                             train_length=in_len,
                             forecast_horizon=out_len,
-                            stride=12,
+                            stride=out_len,
                             retrain=True,
                             verbose=False,
                             metric=metrics.rmse,
@@ -140,7 +142,8 @@ if __name__ == '__main__':
     # Select best hyperparameters #
     best_params = study.best_trial.params
     seeds = list(range(10, 20))
-    all_errors = []
+    id_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
+    ood_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     for seed in seeds:
         formatter, series, scalers = reshuffle_data(formatter, seed)
         in_len = best_params['in_len']
@@ -161,20 +164,71 @@ if __name__ == '__main__':
         forecasts = model.historical_forecasts(series['test']['target'],
                                                train_length=in_len,
                                                forecast_horizon=out_len, 
-                                               stride=1,
+                                               stride=out_len,
                                                retrain=True,
                                                verbose=False,
                                                last_points_only=False)
-
-        errors = rescale_and_backtest(forecasts, 
-                                      series['test']['target'], 
+        errors = rescale_and_backtest(series['test']['target'],
+                                      forecasts,  
                                       [metrics.mse, metrics.mae],
-                                      scalers['target'])
-        errors = np.array(errors)
-        all_errors.append(errors)
-        
-        print(f"Seed: {seed}, RMSE: {errors[:, 0].mean()}, MAE: {errors[:, 1].mean()}")
-    all_errors = np.array(all_errors)
-    print(f"Mean RMSE: {all_errors[:, 0].mean()}, Mean MAE: {all_errors[:, 1].mean()}")
-    print(f"Std RMSE: {all_errors[:, 0].std()}, Std MAE: {all_errors[:, 1].std()}")
-    f.close()
+                                      scalers['target'],
+                                      reduction=None)
+        errors = np.vstack(errors)
+        with open(study_file, "a") as f:
+            mean = errors.mean(axis=0); id_errors_stats['mean'].append(mean)
+            median = np.median(errors, axis=0); id_errors_stats['median'].append(median)
+            std = errors.std(axis=0); id_errors_stats['std'].append(std)
+            quantile25 = np.quantile(errors, 0.25, axis=0); id_errors_stats['quantile25'].append(quantile25)
+            quantile75 = np.quantile(errors, 0.75, axis=0); id_errors_stats['quantile75'].append(quantile75)
+            minn = errors.min(axis=0); id_errors_stats['min'].append(minn)
+            maxx = errors.max(axis=0); id_errors_stats['max'].append(maxx)
+            f.write(f"\tSeed: {seed}, Std MSE: {std[0]}, MAE: {std[1]}\n")
+            f.write(f"\tSeed: {seed}, Min MSE: {minn[0]}, MAE: {minn[1]}\n")
+            f.write(f"\tSeed: {seed}, 25% quantile MSE: {quantile25[0]}, MAE: {quantile25[1]}\n")
+            f.write(f"\tSeed: {seed}, Median MSE: {median[0]}, MAE: {median[1]}\n")
+            f.write(f"\tSeed: {seed}, Mean MSE: {mean[0]}, MAE: {mean[1]}\n")
+            f.write(f"\tSeed: {seed}, 75% quantile MSE: {quantile75[0]}, MAE: {quantile75[1]}\n")
+            f.write(f"\tSeed: {seed}, Max MSE: {maxx[0]}, MAE: {maxx[1]}\n")
+        # backtest on the ood test set
+        forecasts = model.historical_forecasts(series['test_ood']['target'],
+                                               train_length=in_len,
+                                               forecast_horizon=out_len, 
+                                               stride=out_len,
+                                               retrain=True,
+                                               verbose=False,
+                                               last_points_only=False)
+        errors = rescale_and_backtest(series['test_ood']['target'],
+                                      forecasts,  
+                                      [metrics.mse, metrics.mae],
+                                      scalers['target'],
+                                      reduction=None)
+        errors = np.vstack(errors)
+        with open(study_file, "a") as f:
+            mean = errors.mean(axis=0); ood_errors_stats['mean'].append(mean)
+            median = np.median(errors, axis=0); ood_errors_stats['median'].append(median)
+            std = errors.std(axis=0); ood_errors_stats['std'].append(std)
+            quantile25 = np.quantile(errors, 0.25, axis=0); ood_errors_stats['quantile25'].append(quantile25)
+            quantile75 = np.quantile(errors, 0.75, axis=0); ood_errors_stats['quantile75'].append(quantile75)
+            minn = errors.min(axis=0); ood_errors_stats['min'].append(minn)
+            maxx = errors.max(axis=0); ood_errors_stats['max'].append(maxx)
+            f.write(f"\tSeed: {seed}, Std OOD MSE: {std[0]}, MAE: {std[1]}\n")
+            f.write(f"\tSeed: {seed}, Min OOD MSE: {minn[0]}, MAE: {minn[1]}\n")
+            f.write(f"\tSeed: {seed}, 25% quantile OOD MSE: {quantile25[0]}, MAE: {quantile25[1]}\n")
+            f.write(f"\tSeed: {seed}, Median OOD MSE: {median[0]}, MAE: {median[1]}\n")
+            f.write(f"\tSeed: {seed}, Mean OOD MSE: {mean[0]}, MAE: {mean[1]}\n")
+            f.write(f"\tSeed: {seed}, 75% quantile OOD MSE: {quantile75[0]}, MAE: {quantile75[1]}\n")
+            f.write(f"\tSeed: {seed}, Max OOD MSE: {maxx[0]}, MAE: {maxx[1]}\n")
+
+    # report estimation error for each statistic
+    with open(study_file, "a") as f:
+        for key in id_errors_stats.keys():
+            mean = np.mean(id_errors_stats[key], axis=0)
+            std = np.std(id_errors_stats[key], axis=0)
+            f.write(f"ID Mean of {key} of MSE: {mean[0]}, MAE: {mean[1]}\n")
+            f.write(f"ID Std of {key} of MSE: {std[0]}, MAE: {std[1]}\n")
+        for key in ood_errors_stats.keys():
+            mean = np.mean(ood_errors_stats[key], axis=0)
+            std = np.std(ood_errors_stats[key], axis=0)
+            f.write(f"OOD Mean of {key} of MSE: {mean[0]}, MAE: {mean[1]}\n")
+            f.write(f"OOD Std of {key} of MSE: {std[0]}, MAE: {std[1]}\n")
+

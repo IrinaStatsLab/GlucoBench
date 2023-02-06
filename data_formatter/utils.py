@@ -198,12 +198,12 @@ def split(df: pd.DataFrame,
 
   # select some subjects for test data set
   test_ids = np.random.choice(ids, math.ceil(len(ids) * test_percent_subjects), replace=False)
-  test_idx = list(df[df[id_col].isin(test_ids)].index)
+  test_idx_ood = list(df[df[id_col].isin(test_ids)].index)
   # get the remaning data for training and validation
   df = df[~df[id_col].isin(test_ids)]
 
   # iterate through segments and split into train, val and test
-  train_idx = []; val_idx = []
+  train_idx = []; val_idx = []; test_idx = []
   for id_segment, segment_data in df.groupby(id_segment_col):
     # handle length of segment = 0 case
     if length_segment == 0:
@@ -228,8 +228,8 @@ def split(df: pd.DataFrame,
   # print number of points in each set and proportion
   print('\tTrain: {} ({:.2f}%)'.format(len(train_idx), len(train_idx) / len(df) * 100))
   print('\tVal: {} ({:.2f}%)'.format(len(val_idx), len(val_idx) / len(df) * 100))
-  print('\tTest: {} ({:.2f}%)'.format(len(test_idx), len(test_idx) / len(df) * 100))
-  return train_idx, val_idx, test_idx
+  print('\tTest: {} ({:.2f}%)'.format(len(test_idx + test_idx_ood), len(test_idx + test_idx_ood) / len(df) * 100))
+  return train_idx, val_idx, test_idx, test_idx_ood
 
 def encode(df: pd.DataFrame, 
           column_definition: List[Tuple[str, DataTypes, InputTypes]],
