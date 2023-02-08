@@ -26,7 +26,7 @@ from bin.utils import *
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('./config/weinstock.yaml', 'r') as f:
+    with open('./config/dubosson.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -86,7 +86,7 @@ def reshuffle_data(formatter, seed):
 def objective(trial):
     # select input and output chunk lengths
     out_len = 12 # 1 hour
-    in_len = trial.suggest_int("in_len", 96, 240 - 2 * out_len, step=12) # at least 2 hours of predictions left
+    in_len = trial.suggest_int("in_len", 96, 192, step=12) # at least 2 hours of predictions left
     
     # build the ARIMA model
     model = models.AutoARIMA(autoarima_args={'start_p': 0,
@@ -122,7 +122,7 @@ def print_callback(study, trial, study_file=None):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './output/arima_weinstock.txt'
+    study_file = './output/arima_dubosson.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
@@ -231,4 +231,3 @@ if __name__ == '__main__':
             std = np.std(ood_errors_stats[key], axis=0)
             f.write(f"OOD Mean of {key} of MSE: {mean[0]}, MAE: {mean[1]}\n")
             f.write(f"OOD Std of {key} of MSE: {std[0]}, MAE: {std[1]}\n")
-
