@@ -7,6 +7,9 @@ cache/*
 *.out
 track_*
 
+# ignore unpreprocessed data
+raw_data/Weinstock2016_allfiles/*
+
 # ignore pre-complied code
 *.cpython-37.pyc
 __pycache__/
