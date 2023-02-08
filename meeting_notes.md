@@ -8,25 +8,25 @@ Next Meeting Notetaker: **TBD**
 ## TODOs
 ### Add Covariates
 **- Preprocess covariate data**
-	- Write processing steps
-	- Check if some features are missing (e.g. year, month, day, time, glucose, NAs, etc.)
+- Write processing steps
+- Check if some features are missing (e.g. year, month, day, time, glucose, NAs, etc.)
 
 ### New Models
 **- Linear Regression *(results should be a little worse than XGBoost)***
 **- XGBoost (Gradient Boosted Trees)**
-	- Play around with hyperparameters to optimize XGBoost
+- Play around with hyperparameters to optimize XGBoost
 
 ### Paper
 **- Choose a paper**
-	- look at particular points that make it interesting
-	- think like a reviewer to understand why the paper was chosen and stands out from other papers
-	- write ~5+ things highlightingn these points
-	- most important parts: Abstract -> 2 paragraphs of introduction -> results
-	- Questions to think about: "Why did the authors write this sentence?" "What is this sentence doing in the terms of the context?" "What is it doing?"
-	- Goal is to be able to transfer understanding to writing our paper well
+- look at particular points that make it interesting
+- think like a reviewer to understand why the paper was chosen and stands out from other papers
+- write ~5+ things highlightingn these points
+- most important parts: Abstract -> 2 paragraphs of introduction -> results
+- Questions to think about: "Why did the authors write this sentence?" "What is this sentence doing in the terms of the context?" "What is it doing?"
+- Goal is to be able to transfer understanding to writing our paper well
 **- Start adding results to overleaf paper, note about error computation/distribution**
 **- Decide what kind of section you want to work on in writing the paper (e.g. data, models, metrics, testing protocol, etc.)**
-	- Text Renat what section
+- Text Renat what section
 
 ### Some Sanity Checks for Model Error
 - For any other model except arima, ID error should not be grater than OOD
