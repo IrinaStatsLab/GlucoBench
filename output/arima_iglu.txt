@@ -1,0 +1,197 @@
+Optimization started at 2023-02-08 10:26:33.771438--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+
+Current value: 0.12012644824189529, Current params: {'in_len': 96}
+Best value: 0.12012644824189529, Best params: {'in_len': 96}
+Current value: 0.12223762714567231, Current params: {'in_len': 144}
+Best value: 0.12012644824189529, Best params: {'in_len': 96}
+Current value: 0.12206960021303355, Current params: {'in_len': 132}
+Best value: 0.12012644824189529, Best params: {'in_len': 96}
+Current value: 0.12223762714567231, Current params: {'in_len': 144}
+Best value: 0.12012644824189529, Best params: {'in_len': 96}
+Current value: 0.12000166177618672, Current params: {'in_len': 156}
+Best value: 0.12000166177618672, Best params: {'in_len': 156}
+Current value: 0.11869018325464316, Current params: {'in_len': 108}
+Best value: 0.11869018325464316, Best params: {'in_len': 108}
+Current value: 0.11869018325464316, Current params: {'in_len': 108}
+Best value: 0.11869018325464316, Best params: {'in_len': 108}
+Current value: 0.12012644824189529, Current params: {'in_len': 96}
+Best value: 0.11869018325464316, Best params: {'in_len': 108}
+Current value: 0.11259230968206367, Current params: {'in_len': 120}
+Best value: 0.11259230968206367, Best params: {'in_len': 120}
+Current value: 0.12223762714567231, Current params: {'in_len': 144}
+Best value: 0.11259230968206367, Best params: {'in_len': 120}
+Current value: 0.11259230968206367, Current params: {'in_len': 120}
+Best value: 0.11259230968206367, Best params: {'in_len': 120}
+Current value: 0.11259230968206367, Current params: {'in_len': 120}
+Best value: 0.11259230968206367, Best params: {'in_len': 120}
+Current value: 0.11259230968206367, Current params: {'in_len': 120}
+Best value: 0.11259230968206367, Best params: {'in_len': 120}
+Current value: 0.11259230968206367, Current params: {'in_len': 120}
+Best value: 0.11259230968206367, Best params: {'in_len': 120}
+Early stopping at trial 13 (best trial: 8)	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+	Seed: 10, Std MSE: 223.50831680701242, MAE: 6.489139688743157
+	Seed: 10, Min MSE: 0.09711167861987376, MAE: 0.24059473516439311
+	Seed: 10, 25% quantile MSE: 4.5056483470192585, MAE: 1.8506312206834792
+	Seed: 10, Median MSE: 22.977560854683453, MAE: 4.086699005925878
+	Seed: 10, Mean MSE: 100.16894141171963, MAE: 5.9070617421967535
+	Seed: 10, 75% quantile MSE: 60.68683802551145, MAE: 6.523721078357933
+	Seed: 10, Max MSE: 1248.2393288500748, MAE: 33.67802834611751
+	Seed: 10, Std OOD MSE: 592.3076484439241, MAE: 9.403524732724541
+	Seed: 10, Min OOD MSE: 0.27706380306191675, MAE: 0.4280892436680664
+	Seed: 10, 25% quantile OOD MSE: 11.274111853010279, MAE: 2.7128551721926746
+	Seed: 10, Median OOD MSE: 40.87191471414793, MAE: 5.708002657943136
+	Seed: 10, Mean OOD MSE: 233.46710970080923, MAE: 9.090231096442007
+	Seed: 10, 75% quantile OOD MSE: 211.7403182292211, MAE: 12.20239175221113
+	Seed: 10, Max OOD MSE: 4958.456933100433, MAE: 59.21854121371706
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+	Seed: 11, Std MSE: 223.50831680701242, MAE: 6.489139688743157
+	Seed: 11, Min MSE: 0.09711167861987376, MAE: 0.24059473516439311
+	Seed: 11, 25% quantile MSE: 4.5056483470192585, MAE: 1.8506312206834792
+	Seed: 11, Median MSE: 22.977560854683453, MAE: 4.086699005925878
+	Seed: 11, Mean MSE: 100.16894141171963, MAE: 5.9070617421967535
+	Seed: 11, 75% quantile MSE: 60.68683802551145, MAE: 6.523721078357933
+	Seed: 11, Max MSE: 1248.2393288500748, MAE: 33.67802834611751
+	Seed: 11, Std OOD MSE: 592.3076484439241, MAE: 9.403524732724541
+	Seed: 11, Min OOD MSE: 0.27706380306191675, MAE: 0.4280892436680664
+	Seed: 11, 25% quantile OOD MSE: 11.274111853010279, MAE: 2.7128551721926746
+	Seed: 11, Median OOD MSE: 40.87191471414793, MAE: 5.708002657943136
+	Seed: 11, Mean OOD MSE: 233.46710970080923, MAE: 9.090231096442007
+	Seed: 11, 75% quantile OOD MSE: 211.7403182292211, MAE: 12.20239175221113
+	Seed: 11, Max OOD MSE: 4958.456933100433, MAE: 59.21854121371706
+	Train: 6727 (61.56%)
+	Val: 2400 (21.96%)
+	Test: 3835 (35.10%)
+	Seed: 12, Std MSE: 1135.0351713632347, MAE: 14.369531417556235
+	Seed: 12, Min MSE: 0.598093280320812, MAE: 0.5970844975196741
+	Seed: 12, 25% quantile MSE: 20.26942198463973, MAE: 3.7621422372345075
+	Seed: 12, Median MSE: 70.42442596442774, MAE: 7.590370680608058
+	Seed: 12, Mean MSE: 479.526246897001, MAE: 12.32393246735645
+	Seed: 12, 75% quantile MSE: 336.61636673192334, MAE: 14.858440762620868
+	Seed: 12, Max MSE: 5863.143966129434, MAE: 72.98980702856954
+	Seed: 12, Std OOD MSE: 1409.320954893924, MAE: 15.407324413159952
+	Seed: 12, Min OOD MSE: 0.7573234679496155, MAE: 0.7419051035101916
+	Seed: 12, 25% quantile OOD MSE: 28.90105204124704, MAE: 4.05175138959724
+	Seed: 12, Median OOD MSE: 99.21501361450665, MAE: 8.341297712197127
+	Seed: 12, Mean OOD MSE: 576.7038404676769, MAE: 13.608650228990182
+	Seed: 12, 75% quantile OOD MSE: 383.63924370523404, MAE: 15.271618763181658
+	Seed: 12, Max OOD MSE: 9299.250046224328, MAE: 89.82808566855188
+	Train: 6350 (62.56%)
+	Val: 2200 (21.67%)
+	Test: 4412 (43.47%)
+	Seed: 13, Std MSE: 166.1847939994116, MAE: 5.538081052647205
+	Seed: 13, Min MSE: 0.5162689077249139, MAE: 0.6276782753538951
+	Seed: 13, 25% quantile MSE: 4.703283322113986, MAE: 1.970059533285746
+	Seed: 13, Median MSE: 16.28871302885767, MAE: 3.4502007651209974
+	Seed: 13, Mean MSE: 90.7586267361405, MAE: 5.71973924318844
+	Seed: 13, 75% quantile MSE: 77.0128190793655, MAE: 6.894897267785332
+	Seed: 13, Max MSE: 857.1595779861924, MAE: 24.188238792280753
+	Seed: 13, Std OOD MSE: 365.7215011805392, MAE: 8.722807986875804
+	Seed: 13, Min OOD MSE: 0.7968156798664339, MAE: 0.6978296455525689
+	Seed: 13, 25% quantile OOD MSE: 22.88294651076055, MAE: 3.8031339508101785
+	Seed: 13, Median OOD MSE: 73.55800139828766, MAE: 7.446309941810455
+	Seed: 13, Mean OOD MSE: 242.05350837195792, MAE: 10.451113034482566
+	Seed: 13, 75% quantile OOD MSE: 299.60912698267043, MAE: 14.59752090970434
+	Seed: 13, Max OOD MSE: 2095.7229323165334, MAE: 43.63264042247621
+	Train: 6350 (62.56%)
+	Val: 2200 (21.67%)
+	Test: 4412 (43.47%)
+	Seed: 14, Std MSE: 166.1847939994116, MAE: 5.538081052647205
+	Seed: 14, Min MSE: 0.5162689077249139, MAE: 0.6276782753538951
+	Seed: 14, 25% quantile MSE: 4.703283322113986, MAE: 1.970059533285746
+	Seed: 14, Median MSE: 16.28871302885767, MAE: 3.4502007651209974
+	Seed: 14, Mean MSE: 90.7586267361405, MAE: 5.71973924318844
+	Seed: 14, 75% quantile MSE: 77.0128190793655, MAE: 6.894897267785332
+	Seed: 14, Max MSE: 857.1595779861924, MAE: 24.188238792280753
