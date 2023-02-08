@@ -133,7 +133,7 @@ if __name__ == '__main__':
                              early_stopping_rounds=5,
                              study_file=study_file)
     print_call = partial(print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=1, 
+    study.optimize(objective, n_trials=100, 
                    callbacks=[print_call, early_stopping], 
                    catch=(np.linalg.LinAlgError, KeyError))
     
