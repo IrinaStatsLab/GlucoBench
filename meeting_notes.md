@@ -13,6 +13,7 @@ Next Meeting Notetaker: **TBD**
 
 ### New Models
 **- Linear Regression *(results should be a little worse than XGBoost)***
+
 **- XGBoost (Gradient Boosted Trees)**
 - Play around with hyperparameters to optimize XGBoost
 
@@ -25,8 +26,8 @@ Next Meeting Notetaker: **TBD**
 - Questions to think about: "Why did the authors write this sentence?" "What is this sentence doing in the terms of the context?" "What is it doing?"
 - Goal is to be able to transfer understanding to writing our paper well
 **- Start adding results to overleaf paper, note about error computation/distribution**
-**- Decide what kind of section you want to work on in writing the paper (e.g. data, models, metrics, testing protocol, etc.)**
-- Text Renat what section
+
+**- Decide and text Renat what kind of section you want to work on in writing the paper (e.g. data, models, metrics, testing protocol, etc.)**
 
 ### Some Sanity Checks for Model Error
 - For any other model except arima, ID error should not be grater than OOD
