@@ -1,6 +1,6 @@
 # Dataset
 ds_name: hall2018
-data_csv_path: ./raw_data/Hall2018_processed.csv
+data_csv_path: ./raw_data/Hall2018_processed_akhil.csv
 index_col: -1
 observation_interval: 5min
 
@@ -27,8 +27,8 @@ nan_vals: 'NA'
 
 # Interpolation parameters
 interpolation_params:
-  gap_threshold: 45
-  min_drop_length: 20
+  gap_threshold: 30 # in minutes
+  min_drop_length: 192 # number of points
 
 # Splitting parameters
 split_params:
@@ -47,5 +47,5 @@ encoding_params:
 
 # Scaling parameters
 scaling_params:
-  scaler: StandardScaler
+  scaler: None
   
