@@ -144,10 +144,6 @@ if __name__ == '__main__':
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
-    # early_stopping = partial(early_stopping_check, 
-    #                          early_stopping_rounds=20,
-    #                          study_file=study_file)
-    # , early_stopping
     print_call = partial(print_callback, study_file=study_file)
     study.optimize(objective, n_trials=400, 
                    callbacks=[print_call], 
@@ -182,8 +178,7 @@ if __name__ == '__main__':
                                     gamma=gamma,
                                     reg_alpha=alpha,
                                     reg_lambda=lambda_,
-                                    n_estimators=n_estimators,
-                                    tree_method='approx')
+                                    n_estimators=n_estimators)
         # train the model
         model.fit(series['train']['target'],
                   max_samples_per_ts=100)
