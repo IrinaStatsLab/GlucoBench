@@ -81,13 +81,14 @@ def reshuffle_data(formatter, seed):
     
     return formatter, series, scalers
 
-
 # define objective function
 def objective(trial):
     # select input and output chunk lengths
-    out_len = 12 # 1 hour
-    in_len = trial.suggest_int("in_len", 96, 240 - 2 * out_len, step=12) # at least 2 hours of predictions left
-    max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 10, 100, step=10)
+    out_len = formatter.params["length_pred"]
+    in_len = trial.suggest_int("in_len", 12, formatter.params["max_length_input"], step=12) # at least 2 hours of predictions left
+    max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=50)
+    if max_samples_per_ts < 100:
+        max_samples_per_ts = None # unlimited
 
     # build the Linear Regression model
     model = models.LinearRegressionModel(lags = in_len,
@@ -127,27 +128,27 @@ if __name__ == '__main__':
             f.write(f"Optimization started at {datetime.datetime.now()}")
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
-    # study = optuna.create_study(direction="minimize")
-    # early_stopping = partial(early_stopping_check, 
-    #                          early_stopping_rounds=5,
-    #                          study_file=study_file)
-    # print_call = partial(print_callback, study_file=study_file)
-    # study.optimize(objective, n_trials=100, 
-    #                callbacks=[print_call, early_stopping], 
-    #                catch=(np.linalg.LinAlgError, KeyError))
+    study = optuna.create_study(direction="minimize")
+    print_call = partial(print_callback, study_file=study_file)
+    study.optimize(objective, n_trials=50, 
+                   callbacks=[print_call], 
+                   catch=(np.linalg.LinAlgError, KeyError))
     
-    # Select best hyperparameters #
-    best_params = {'in_len': 96, 'max_samples_per_ts': 70}
-    # study.best_trial.params
+    # Select best hyperparameters
+    best_params = study.best_trial.params
+    in_len = best_params['in_len']
+    out_len = formatter.params["length_pred"]
+    stride = out_len // 2
+    max_samples_per_ts = best_params['max_samples_per_ts']
+    if max_samples_per_ts < 100:
+        max_samples_per_ts = None # unlimited
+
+    # Test on ID and OOD data
     seeds = list(range(10, 20))
     id_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     ood_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     for seed in seeds:
         formatter, series, scalers = reshuffle_data(formatter, seed)
-        in_len = best_params['in_len']
-        max_samples_per_ts = best_params['max_samples_per_ts']
-        out_len = 12
-
         # build the model
         model = models.LinearRegressionModel(lags = in_len,
                                              output_chunk_length = out_len)
@@ -158,10 +159,11 @@ if __name__ == '__main__':
         # backtest on the test set
         forecasts = model.historical_forecasts(series['test']['target'],
                                                forecast_horizon=out_len, 
-                                               stride=out_len,
+                                               stride=stride,
                                                retrain=False,
                                                verbose=False,
-                                               last_points_only=False)
+                                               last_points_only=False,
+                                               start=formatter.params["max_length_input"])
         errors = rescale_and_backtest(series['test']['target'],
                                       forecasts,  
                                       [metrics.mse, metrics.mae],
@@ -186,10 +188,11 @@ if __name__ == '__main__':
         # backtest on the ood test set
         forecasts = model.historical_forecasts(series['test_ood']['target'],
                                                forecast_horizon=out_len, 
-                                               stride=out_len,
+                                               stride=stride,
                                                retrain=False,
                                                verbose=False,
-                                               last_points_only=False)
+                                               last_points_only=False,
+                                               start=formatter.params["max_length_input"])
         errors = rescale_and_backtest(series['test_ood']['target'],
                                       forecasts,  
                                       [metrics.mse, metrics.mae],
