@@ -3,13 +3,13 @@
 *.npy
 *.pkl
 cache/*
-*.csv
 *.out
 track_*
 output/tensorboard_*/*
 
 # ignore unpreprocessed data
 raw_data/Weinstock2016_allfiles/*
+raw_data/Colas2019/*
 
 # ignore pre-complied code
 *.cpython-37.pyc
