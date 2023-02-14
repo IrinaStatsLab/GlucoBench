@@ -11,11 +11,24 @@ from darts import models
 from darts import metrics
 from darts import TimeSeries
 from darts.dataprocessing.transformers import Scaler
+from pytorch_lightning.callbacks import Callback
+
+class LossLogger(Callback):
+    def __init__(self):
+        self.train_loss = []
+        self.val_loss = []
+
+    def on_train_epoch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule") -> None:
+        self.train_loss.append(float(trainer.callback_metrics["train_loss"]))
+
+    def on_validation_epoch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule") -> None:
+        self.val_loss.append(float(trainer.callback_metrics["val_loss"]))
 
 def make_series(data: Dict[str, pd.DataFrame],
                 time_col: str,
                 group_col: str,
-                value_cols: List[str]
+                value_cols: Dict[str, List[str]],
+                include_sid: bool = False,
                 ) -> Dict[str, darts.TimeSeries]:
     """
     Make TimeSeries from data.
@@ -23,17 +36,21 @@ def make_series(data: Dict[str, pd.DataFrame],
     time_col: name of time column
     group_col: name of group column
     value_cols: list of value columns
+    include_sid: whether to include segment id as static covariate
 
     Returns: dict of TimeSeries
     """
     series = {i: {j: None for j in value_cols} for i in data.keys()}
-    scalers = {i: {j: None for j in value_cols} for i in data.keys()}
+    scalers = {}
     for key, df in data.items():
         for name, cols in value_cols.items():
             series[key][name] = TimeSeries.from_group_dataframe(df = df,
                                                                 group_cols = group_col,
                                                                 time_col = time_col,
                                                                 value_cols = cols) if cols is not None else None
+            if series[key][name] is not None and include_sid is False:
+                for i in range(len(series[key][name])):
+                    series[key][name][i] = series[key][name][i].with_static_covariates(None)
             if cols is not None: 
                 if key == 'train':
                     scalers[name] = Scaler()
