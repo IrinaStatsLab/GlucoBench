@@ -288,6 +288,7 @@ def scale(train_data: pd.DataFrame,
     train_data: pd.Dataframe, DataFrame of scaled training data.
     val_data: pd.Dataframe, DataFrame of scaled validation data.
     test_data: pd.Dataframe, DataFrame of scaled testing data.
+    scalers: dictionary index by column names containing scalers.
   """
   # select all real-valued columns
   columns_to_scale = [column for column, data_type, input_type in column_definition if data_type == DataTypes.REAL_VALUED]
@@ -295,11 +296,14 @@ def scale(train_data: pd.DataFrame,
   if scaler == 'None':
     print('\tNo scaling applied')
     return train_data, val_data, test_data, None
-  scaler = getattr(preprocessing, scaler)()
-  train_data[columns_to_scale] = scaler.fit_transform(train_data[columns_to_scale])
-  # handle empty validation and test sets
-  val_data[columns_to_scale] = scaler.transform(val_data[columns_to_scale]) if val_data.shape[0] > 0 else val_data[columns_to_scale]
-  test_data[columns_to_scale] = scaler.transform(test_data[columns_to_scale]) if test_data.shape[0] > 0 else test_data[columns_to_scale]
+  scalers = {}
+  for column in columns_to_scale:
+    scaler_column = getattr(preprocessing, scaler)()
+    train_data[column] = scaler_column.fit_transform(train_data[column].values.reshape(-1, 1))
+    # handle empty validation and test sets
+    val_data[column] = scaler_column.transform(val_data[column].values.reshape(-1, 1)) if val_data.shape[0] > 0 else val_data[column]
+    test_data[column] = scaler_column.transform(test_data[column].values.reshape(-1, 1)) if test_data.shape[0] > 0 else test_data[column]
+    scalers[column] = scaler_column
   # print columns that were scaled
   print('\tScaled columns: {}'.format(columns_to_scale))
-  return train_data, val_data, test_data, scaler
+  return train_data, val_data, test_data, scalers

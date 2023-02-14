@@ -168,12 +168,19 @@ class DataFormatter():
     f = open(self.study_file, 'a')
     sys.stdout = f
     self.params['split_params']['random_state'] = seed
+    # split data
     self.train_idx, self.val_idx, self.test_idx, self.test_idx_ood = utils.split(self.data, 
                                                                                   self._column_definition, 
                                                                                   **self._split_params)
     self.train_data, self.val_data, self.test_data = self.data.iloc[self.train_idx], \
                                                       self.data.iloc[self.val_idx], \
                                                         self.data.iloc[self.test_idx+self.test_idx_ood]
+    # re-scale data
+    self.train_data, self.val_data, self.test_data, self.scalers = utils.scale(self.train_data, 
+                                                                               self.val_data, 
+                                                                               self.test_data, 
+                                                                               self._column_definition, 
+                                                                               **self.params['scaling_params'])
     sys.stdout = stdout
     f.close()
     

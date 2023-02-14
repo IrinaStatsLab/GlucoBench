@@ -13,9 +13,9 @@ Table of Contents:
 
 The main goal of the project is to create a unified library of glucose data sets and establish simple benchmarks for prediction. The timeline for the project split into weeks tentatively looks as:
 
-- [ ] (January 25) Familiarize with the existing code base / DARTS library
-- [ ] (February 1) Hyper-parameter (Optuna) optimization for ARIMA
-- [ ] (February 1) Results (with statistics) and timing for ARIMA
+- [x] (January 25) Familiarize with the existing code base / DARTS library
+- [ ] ~~(February 1) Hyper-parameter (Optuna) optimization for ARIMA~~
+- [ ] ~~(February 1) Results (with statistics) and timing for ARIMA~~
 - [ ] (February 1) Add all covariates to all data sets
 - [ ] (February 8) Add LinearRegression, RandomForest, and XGBModel
 - [ ] (February 15) Get cluster access for GPU
