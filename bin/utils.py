@@ -13,6 +13,31 @@ from darts import TimeSeries
 from darts.dataprocessing.transformers import Scaler
 from pytorch_lightning.callbacks import Callback
 
+def compute_error_statistics(errors: np.ndarray, 
+                             ) -> Dict[str, List[float]]:
+    """
+    Compute min, 25%, 50%, 75%, max, mean, std of the errors.
+
+    Parameters
+    ----------
+    errors
+        The errors arranged as n-by-p, where n is the number of samples and p is the number of metrics.
+
+    Returns
+    -------
+    Dict[str, float]
+        The error statistics for each metric.
+    """
+    error_statistics = {'min': [], 'max': [], 'mean': [], 'std': [], 'quantile25': [], 'median': [], 'quantile75': []}
+    error_statistics['min'].append(np.min(errors, axis=0))
+    error_statistics['max'].append(np.max(errors, axis=0))
+    error_statistics['mean'].append(np.mean(errors, axis=0))
+    error_statistics['std'].append(np.std(errors, axis=0))
+    error_statistics['quantile25'].append(np.percentile(errors, 25, axis=0))
+    error_statistics['median'].append(np.percentile(errors, 50, axis=0))
+    error_statistics['quantile75'].append(np.percentile(errors, 75, axis=0))
+    return error_statistics
+
 class LossLogger(Callback):
     def __init__(self):
         self.train_loss = []
@@ -23,6 +48,12 @@ class LossLogger(Callback):
 
     def on_validation_epoch_end(self, trainer: "pl.Trainer", pl_module: "pl.LightningModule") -> None:
         self.val_loss.append(float(trainer.callback_metrics["val_loss"]))
+
+def print_callback(study, trial, study_file=None):
+    # write output to a file
+    with open(study_file, "a") as f:
+        f.write(f"Current value: {trial.value}, Current params: {trial.params}\n")
+        f.write(f"Best value: {study.best_value}, Best params: {study.best_trial.params}\n")
 
 def make_series(data: Dict[str, pd.DataFrame],
                 time_col: str,
