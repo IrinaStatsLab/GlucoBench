@@ -65,7 +65,7 @@ if __name__ == '__main__':
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
             # write current date and time
-            f.write(f"Optimization started at {datetime.datetime.now()}")
+            f.write(f"Optimization started at {datetime.datetime.now()}\n")
     # load data
     with open('./config/weinstock.yaml', 'r') as f:
         config = yaml.safe_load(f)
@@ -88,51 +88,30 @@ if __name__ == '__main__':
         test_data_ood = formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]
         
         # backtest on the ID test set
-        errors = test_model(test_data, formatter.scalers[target_col[0]], in_len, out_len, stride, target_col, group_col)
+        id_errors_sample = test_model(test_data, formatter.scalers[target_col[0]], in_len, out_len, stride, target_col, group_col)
+        id_errors_sample = np.vstack(id_errors_sample)
+        id_error_stats_sample = compute_error_statistics(id_errors_sample)
+        for key in id_errors_stats.keys():
+            id_errors_stats[key].append(id_error_stats_sample[key])
         with open(study_file, "a") as f:
-            mean = errors.mean(axis=0); id_errors_stats['mean'].append(mean)
-            median = np.median(errors, axis=0); id_errors_stats['median'].append(median)
-            std = errors.std(axis=0); id_errors_stats['std'].append(std)
-            quantile25 = np.quantile(errors, 0.25, axis=0); id_errors_stats['quantile25'].append(quantile25)
-            quantile75 = np.quantile(errors, 0.75, axis=0); id_errors_stats['quantile75'].append(quantile75)
-            minn = errors.min(axis=0); id_errors_stats['min'].append(minn)
-            maxx = errors.max(axis=0); id_errors_stats['max'].append(maxx)
-            f.write(f"\tSeed: {seed}, Std MSE: {std[0]}, MAE: {std[1]}\n")
-            f.write(f"\tSeed: {seed}, Min MSE: {minn[0]}, MAE: {minn[1]}\n")
-            f.write(f"\tSeed: {seed}, 25% quantile MSE: {quantile25[0]}, MAE: {quantile25[1]}\n")
-            f.write(f"\tSeed: {seed}, Median MSE: {median[0]}, MAE: {median[1]}\n")
-            f.write(f"\tSeed: {seed}, Mean MSE: {mean[0]}, MAE: {mean[1]}\n")
-            f.write(f"\tSeed: {seed}, 75% quantile MSE: {quantile75[0]}, MAE: {quantile75[1]}\n")
-            f.write(f"\tSeed: {seed}, Max MSE: {maxx[0]}, MAE: {maxx[1]}\n")
+            f.write(f"\tSeed: {seed} ID errors (MSE, MAE) stats: {id_error_stats_sample}\n")
         
         # backtest on the ood test set
-        errors = test_model(test_data_ood, formatter.scalers[target_col[0]], in_len, out_len, stride, target_col, group_col)
+        ood_errors_sample = test_model(test_data_ood, formatter.scalers[target_col[0]], in_len, out_len, stride, target_col, group_col)
+        ood_errors_sample = np.vstack(ood_errors_sample)
+        ood_errors_stats_sample = compute_error_statistics(ood_errors_sample)
+        for key in ood_errors_stats.keys():
+            ood_errors_stats[key].append(ood_errors_stats_sample[key])
         with open(study_file, "a") as f:
-            mean = errors.mean(axis=0); ood_errors_stats['mean'].append(mean)
-            median = np.median(errors, axis=0); ood_errors_stats['median'].append(median)
-            std = errors.std(axis=0); ood_errors_stats['std'].append(std)
-            quantile25 = np.quantile(errors, 0.25, axis=0); ood_errors_stats['quantile25'].append(quantile25)
-            quantile75 = np.quantile(errors, 0.75, axis=0); ood_errors_stats['quantile75'].append(quantile75)
-            minn = errors.min(axis=0); ood_errors_stats['min'].append(minn)
-            maxx = errors.max(axis=0); ood_errors_stats['max'].append(maxx)
-            f.write(f"\tSeed: {seed}, Std OOD MSE: {std[0]}, MAE: {std[1]}\n")
-            f.write(f"\tSeed: {seed}, Min OOD MSE: {minn[0]}, MAE: {minn[1]}\n")
-            f.write(f"\tSeed: {seed}, 25% quantile OOD MSE: {quantile25[0]}, MAE: {quantile25[1]}\n")
-            f.write(f"\tSeed: {seed}, Median OOD MSE: {median[0]}, MAE: {median[1]}\n")
-            f.write(f"\tSeed: {seed}, Mean OOD MSE: {mean[0]}, MAE: {mean[1]}\n")
-            f.write(f"\tSeed: {seed}, 75% quantile OOD MSE: {quantile75[0]}, MAE: {quantile75[1]}\n")
-            f.write(f"\tSeed: {seed}, Max OOD MSE: {maxx[0]}, MAE: {maxx[1]}\n")
+            f.write(f"\tSeed: {seed} OOD errors (MSE, MAE) stats: {ood_errors_stats_sample}\n")
+
 
     # report estimation error for each statistic
     with open(study_file, "a") as f:
         for key in id_errors_stats.keys():
-            mean = np.mean(id_errors_stats[key], axis=0)
-            std = np.std(id_errors_stats[key], axis=0)
-            f.write(f"ID Mean of {key} of MSE: {mean[0]}, MAE: {mean[1]}\n")
-            f.write(f"ID Std of {key} of MSE: {std[0]}, MAE: {std[1]}\n")
+            id_errors_stats[key] = np.mean(id_errors_stats[key], axis=0)
+        f.write(f"RS ID (MSE, MAE) errors stats: {id_errors_stats}\n")
+        
         for key in ood_errors_stats.keys():
-            mean = np.mean(ood_errors_stats[key], axis=0)
-            std = np.std(ood_errors_stats[key], axis=0)
-            f.write(f"OOD Mean of {key} of MSE: {mean[0]}, MAE: {mean[1]}\n")
-            f.write(f"OOD Std of {key} of MSE: {std[0]}, MAE: {std[1]}\n")
-
+            ood_errors_stats[key] = np.mean(ood_errors_stats[key], axis=0)
+        f.write(f"RS OOD (MSE, MAE) errors stats: {ood_errors_stats}\n")
