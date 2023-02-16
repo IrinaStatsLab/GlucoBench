@@ -1,11 +1,4 @@
-Optimization started at 2023-02-06 22:41:43.432075--------------------------------
-Loading column definition...
-Checking column definition...
-Loading data...
---------------------------------
-Loading column definition...
-Checking column definition...
-Loading data...
+Optimization started at 2023-02-16 15:21:48.727505
 --------------------------------
 Loading column definition...
 Checking column definition...
@@ -24,171 +17,77 @@ Encoding data...
 		time_hour: REAL_VALUED (KNOWN_INPUT)
 		time_minute: REAL_VALUED (KNOWN_INPUT)
 Interpolating data...
-	Dropped segments: 65
+	Dropped segments: 63
 	Extracted segments: 205
-	Interpolated values: 138
-	Percent of values interpolated: 0.13%
+	Interpolated values: 241
+	Percent of values interpolated: 0.22%
 Splitting data...
-	Train: 37946 (38.93%)
-	Val: 31104 (31.91%)
-	Test: 39658 (40.69%)
+	Train: 37857 (38.80%)
+	Val: 31296 (32.08%)
+	Test: 39658 (40.65%)
 Scaling data...
-	No scaling applied
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 Data formatting complete.
 --------------------------------
-
-Current value: 0.08775789225907629, Current params: {'in_len': 144}
-Best value: 0.08775789225907629, Best params: {'in_len': 144}
-Current value: 0.08775789225907629, Current params: {'in_len': 144}
-Best value: 0.08775789225907629, Best params: {'in_len': 144}
-Current value: 0.01029087767902042, Current params: {'in_len': 204}
-Best value: 0.01029087767902042, Best params: {'in_len': 204}
-Current value: 0.08775789225907629, Current params: {'in_len': 144}
-Best value: 0.01029087767902042, Best params: {'in_len': 204}
-Current value: 0.01029087767902042, Current params: {'in_len': 192}
-Best value: 0.01029087767902042, Best params: {'in_len': 204}
-Current value: 0.01029087767902042, Current params: {'in_len': 204}
-Best value: 0.01029087767902042, Best params: {'in_len': 204}
-Current value: 0.09070309389393237, Current params: {'in_len': 120}
-Best value: 0.01029087767902042, Best params: {'in_len': 204}
-Current value: 0.01029087767902042, Current params: {'in_len': 192}
-Best value: 0.01029087767902042, Best params: {'in_len': 204}
-Early stopping at trial 7 (best trial: 2)	Train: 37728 (38.80%)
-	Val: 31296 (32.18%)
-	Test: 39684 (40.81%)
-	Seed: 10, Std MSE: 2.232022047606425, MAE: 0.7666407143327167
-	Seed: 10, Min MSE: 2.376145992312011e-05, MAE: 0.004874572793909238
-	Seed: 10, 25% quantile MSE: 0.06527826777014588, MAE: 0.25549558506843795
-	Seed: 10, Median MSE: 0.38846961132543145, MAE: 0.6232733038767435
-	Seed: 10, Mean MSE: 1.2854083817361126, MAE: 0.835266662128649
-	Seed: 10, 75% quantile MSE: 1.2903857174574074, MAE: 1.1359462970941863
-	Seed: 10, Max MSE: 12.887735659186685, MAE: 3.589949255795503
-	Seed: 10, Std OOD MSE: 388.14759616910254, MAE: 7.0213921318124735
-	Seed: 10, Min OOD MSE: 0.11841897635312688, MAE: 0.1854978613331776
-	Seed: 10, 25% quantile OOD MSE: 8.921318486952805, MAE: 2.4758961241955433
-	Seed: 10, Median OOD MSE: 28.325992280640637, MAE: 4.504449870382644
-	Seed: 10, Mean OOD MSE: 142.6395237226865, MAE: 6.911727545998723
-	Seed: 10, 75% quantile OOD MSE: 121.675545099147, MAE: 9.238459278602898
-	Seed: 10, Max OOD MSE: 6157.416639103493, MAE: 60.09857711646695
-	Train: 37928 (39.08%)
-	Val: 30912 (31.85%)
-	Test: 39868 (41.07%)
-	Seed: 11, Std MSE: 2.7115711215098406, MAE: 0.8237718554672754
-	Seed: 11, Min MSE: 1.0621679053324801e-05, MAE: 0.003259091752823906
-	Seed: 11, 25% quantile MSE: 0.07369585658919106, MAE: 0.2714660018122146
-	Seed: 11, Median MSE: 0.4115880150758763, MAE: 0.6415512567799055
-	Seed: 11, Mean MSE: 1.438988422828902, MAE: 0.8720024959648364
-	Seed: 11, 75% quantile MSE: 1.3813673413077836, MAE: 1.1751696976347006
-	Seed: 11, Max MSE: 17.48977180292009, MAE: 4.182077450612326
-	Seed: 11, Std OOD MSE: 442.55554922963813, MAE: 7.923382837035688
-	Seed: 11, Min OOD MSE: 0.16398370551658237, MAE: 0.28627949301524325
-	Seed: 11, 25% quantile OOD MSE: 11.484214034472558, MAE: 2.833994318533597
-	Seed: 11, Median OOD MSE: 37.84623177431061, MAE: 5.108458008841289
-	Seed: 11, Mean OOD MSE: 183.18199079402942, MAE: 7.837107292798301
-	Seed: 11, 75% quantile OOD MSE: 135.76343987127595, MAE: 9.829136001045125
-	Seed: 11, Max OOD MSE: 4611.71792101162, MAE: 55.53868097300497
-	Train: 38244 (39.59%)
-	Val: 30720 (31.80%)
-	Test: 39744 (41.14%)
-	Seed: 12, Std MSE: 2.6049223829462815, MAE: 0.7855510698235959
-	Seed: 12, Min MSE: 2.9844167726291658e-05, MAE: 0.005462981578432391
-	Seed: 12, 25% quantile MSE: 0.08036824713519532, MAE: 0.28347357183928423
-	Seed: 12, Median MSE: 0.3281888693445185, MAE: 0.5726470150331906
-	Seed: 12, Mean MSE: 1.3120607027893283, MAE: 0.8336487386713496
-	Seed: 12, 75% quantile MSE: 1.4766608262605732, MAE: 1.2151650633510123
-	Seed: 12, Max MSE: 20.941772534843704, MAE: 4.576218147645903
-	Seed: 12, Std OOD MSE: 565.5901448449669, MAE: 8.610243482969288
-	Seed: 12, Min OOD MSE: 0.09244749035784665, MAE: 0.2659454121426812
-	Seed: 12, 25% quantile OOD MSE: 10.417897435301981, MAE: 2.737634124528369
-	Seed: 12, Median OOD MSE: 43.98029532064435, MAE: 5.442802270873824
-	Seed: 12, Mean OOD MSE: 214.64571254818895, MAE: 8.248788041271474
-	Seed: 12, 75% quantile OOD MSE: 168.4727338925012, MAE: 10.612269246974197
-	Seed: 12, Max OOD MSE: 6157.038616921433, MAE: 60.09754643429421
-	Train: 37451 (38.02%)
-	Val: 31680 (32.16%)
-	Test: 39577 (40.18%)
-	Seed: 13, Std MSE: 4.092644056906877, MAE: 0.9139342844157001
-	Seed: 13, Min MSE: 6.530054751637755e-06, MAE: 0.0025553971807994458
-	Seed: 13, 25% quantile MSE: 0.08727907192513464, MAE: 0.2954303165302008
-	Seed: 13, Median MSE: 0.40774611529174787, MAE: 0.638550010016246
-	Seed: 13, Mean MSE: 1.6354099450470445, MAE: 0.894502134607071
-	Seed: 13, 75% quantile MSE: 1.2691902259508696, MAE: 1.126583430532719
-	Seed: 13, Max MSE: 41.16340864117284, MAE: 6.4158716197546255
-	Seed: 13, Std OOD MSE: 374.11128966759037, MAE: 7.202755285928006
-	Seed: 13, Min OOD MSE: 0.1870325550321246, MAE: 0.40775783753939737
-	Seed: 13, 25% quantile OOD MSE: 9.617516715280475, MAE: 2.604603323855475
-	Seed: 13, Median OOD MSE: 35.83714464775115, MAE: 4.98493058957771
-	Seed: 13, Mean OOD MSE: 158.0361332085196, MAE: 7.3290543572197935
-	Seed: 13, 75% quantile OOD MSE: 119.0312073439483, MAE: 9.190429493474328
-	Seed: 13, Max OOD MSE: 4463.035238420404, MAE: 49.51713207288932
-	Train: 37563 (38.31%)
-	Val: 31680 (32.31%)
-	Test: 39465 (40.25%)
-	Seed: 14, Std MSE: 3.315623285671756, MAE: 0.882000555002536
-	Seed: 14, Min MSE: 2.5382143666845027e-05, MAE: 0.005038069438469961
-	Seed: 14, 25% quantile MSE: 0.07329925894839501, MAE: 0.2706797331282331
-	Seed: 14, Median MSE: 0.45778746170764295, MAE: 0.6765775666385068
-	Seed: 14, Mean MSE: 1.6591878740017292, MAE: 0.9387560359203809
-	Seed: 14, 75% quantile MSE: 1.8235664522089454, MAE: 1.3499581130733418
-	Seed: 14, Max MSE: 23.44773473158491, MAE: 4.8422861059199
-	Seed: 14, Std OOD MSE: 256.3684189427516, MAE: 5.914422794877641
-	Seed: 14, Min OOD MSE: 0.09818678444887759, MAE: 0.2092784608382677
-	Seed: 14, 25% quantile OOD MSE: 10.92315329762072, MAE: 2.6818755214287435
-	Seed: 14, Median OOD MSE: 32.62771067043902, MAE: 4.571673110549432
-	Seed: 14, Mean OOD MSE: 112.73635740574845, MAE: 6.430720300467422
-	Seed: 14, 75% quantile OOD MSE: 91.82515483391978, MAE: 8.031225865759916
-	Seed: 14, Max OOD MSE: 2861.581162924757, MAE: 43.78709481895148
-	Train: 37951 (38.94%)
-	Val: 31104 (31.91%)
-	Test: 39653 (40.68%)
-	Seed: 15, Std MSE: 3.762366970933738, MAE: 0.9341100183047515
-	Seed: 15, Min MSE: 9.698148996222149e-06, MAE: 0.0031141851255540587
-	Seed: 15, 25% quantile MSE: 0.09521275259717062, MAE: 0.3085636795473192
-	Seed: 15, Median MSE: 0.393980200818849, MAE: 0.6276011253591065
-	Seed: 15, Mean MSE: 1.7166981305766382, MAE: 0.9187690701581841
-	Seed: 15, 75% quantile MSE: 1.339710820889357, MAE: 1.1565079383623313
-	Seed: 15, Max MSE: 29.375167299266273, MAE: 5.419886281027146
-	Seed: 15, Std OOD MSE: 682.9948245638353, MAE: 9.434542722267478
-	Seed: 15, Min OOD MSE: 0.1383555468246369, MAE: 0.3165984081955848
-	Seed: 15, 25% quantile OOD MSE: 12.258195056978417, MAE: 2.9121666874294183
-	Seed: 15, Median OOD MSE: 43.63354066027583, MAE: 5.490290115737251
-	Seed: 15, Mean OOD MSE: 232.47669759069348, MAE: 8.470470007459758
-	Seed: 15, 75% quantile OOD MSE: 148.02888860508205, MAE: 9.967593164572113
-	Seed: 15, Max OOD MSE: 9465.117329799445, MAE: 75.83433263602551
-	Train: 38001 (39.20%)
-	Val: 30912 (31.89%)
-	Test: 39795 (41.05%)
-	Seed: 16, Std MSE: 3.9740198466029306, MAE: 0.9269604911178599
-	Seed: 16, Min MSE: 1.014204825007294e-05, MAE: 0.0031846582626826603
-	Seed: 16, 25% quantile MSE: 0.07529450550534045, MAE: 0.27438642182731954
-	Seed: 16, Median MSE: 0.5763902828609011, MAE: 0.759198502807763
-	Seed: 16, Mean MSE: 1.7552291310562438, MAE: 0.9465587033896952
-	Seed: 16, 75% quantile MSE: 1.4787741830381442, MAE: 1.2160220070345886
-	Seed: 16, Max MSE: 30.807901930729184, MAE: 5.550486639091133
-	Seed: 16, Std OOD MSE: 573.7298959515048, MAE: 8.619301438542555
-	Seed: 16, Min OOD MSE: 0.12571904211187257, MAE: 0.24592056114819982
-	Seed: 16, 25% quantile OOD MSE: 12.193789738352567, MAE: 2.8833005028447443
-	Seed: 16, Median OOD MSE: 49.11676150534168, MAE: 5.812707509636719
-	Seed: 16, Mean OOD MSE: 207.4564934239059, MAE: 8.224979573082134
-	Seed: 16, 75% quantile OOD MSE: 144.79873039135197, MAE: 9.820276258160405
-	Seed: 16, Max OOD MSE: 6477.273375106161, MAE: 70.97637984533026
-	Train: 37714 (38.79%)
-	Val: 30912 (31.79%)
-	Test: 40082 (41.22%)
-	Seed: 17, Std MSE: 3.1171403170174328, MAE: 0.874346983118288
-	Seed: 17, Min MSE: 5.4202848145431356e-05, MAE: 0.007362258359052021
-	Seed: 17, 25% quantile MSE: 0.07130128323432688, MAE: 0.2670230013207231
-	Seed: 17, Median MSE: 0.42615936460982257, MAE: 0.6528088270005412
-	Seed: 17, Mean MSE: 1.5916647509787996, MAE: 0.9094955217540929
-	Seed: 17, 75% quantile MSE: 1.671474032409364, MAE: 1.2928549928005708
-	Seed: 17, Max MSE: 24.59135426982952, MAE: 4.9589670567396915
-	Seed: 17, Std OOD MSE: 520.8503075679656, MAE: 8.408402168185587
-	Seed: 17, Min OOD MSE: 0.04035415509843994, MAE: 0.19978296826637512
-	Seed: 17, 25% quantile OOD MSE: 10.749051661149744, MAE: 2.735548079778686
-	Seed: 17, Median OOD MSE: 35.549796698773505, MAE: 5.058208850821181
-	Seed: 17, Mean OOD MSE: 193.26921027861027, MAE: 7.912942088952917
-	Seed: 17, 75% quantile OOD MSE: 149.073510809567, MAE: 9.935465038523445
-	Seed: 17, Max OOD MSE: 6138.548822777125, MAE: 67.65026982964628
-	Train: 38175 (39.39%)
-	Val: 30720 (31.69%)
-	Test: 39813 (41.08%)
+	Train: 37639 (38.66%)
+	Val: 31488 (32.34%)
+	Test: 39684 (40.76%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 10 ID errors (MSE, MAE) stats: {'min': [array([0.26715124, 0.40980794])], 'max': [array([2891.48438201,   47.77811421])], 'mean': [array([147.96100833,   7.46682299])], 'std': [array([314.23255556,   6.93179545])], 'quantile25': [array([10.0077633 ,  2.63703442])], 'median': [array([43.77067965,  5.46126634])], 'quantile75': [array([142.13770519,   9.69051279])]}
+	Seed: 10 OOD errors (MSE, MAE) stats: {'min': [array([2.05289115e-13, 4.53088418e-07])], 'max': [array([3531.97623896,   46.68964173])], 'mean': [array([93.66748458,  5.74545159])], 'std': [array([227.48823185,   5.54128347])], 'quantile25': [array([6.00934048, 2.00247119])], 'median': [array([23.15288699,  4.03423191])], 'quantile75': [array([83.75984521,  7.50631143])]}
+	Train: 37839 (38.94%)
+	Val: 31104 (32.01%)
+	Test: 39868 (41.03%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 11 ID errors (MSE, MAE) stats: {'min': [array([0.26715124, 0.40980794])], 'max': [array([2891.48438201,   47.77811421])], 'mean': [array([144.61101029,   7.4126875 ])], 'std': [array([310.50635746,   6.85174481])], 'quantile25': [array([10.1905734 ,  2.63703442])], 'median': [array([43.14000492,  5.46126634])], 'quantile75': [array([141.62477516,   9.66627665])]}
+	Seed: 11 OOD errors (MSE, MAE) stats: {'min': [array([0.10792793, 0.2880878 ])], 'max': [array([4689.61134325,   57.53692044])], 'mean': [array([131.6081949 ,   6.64729622])], 'std': [array([325.50884872,   6.70867293])], 'quantile25': [array([6.94350558, 2.2476335 ])], 'median': [array([28.92353094,  4.46640771])], 'quantile75': [array([114.73627811,   8.77794004])]}
+	Train: 38155 (39.45%)
+	Val: 30912 (31.96%)
+	Test: 39744 (41.09%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 12 ID errors (MSE, MAE) stats: {'min': [array([0.26715124, 0.40980794])], 'max': [array([2891.48438201,   47.77811421])], 'mean': [array([138.9102995 ,   7.32310676])], 'std': [array([284.62616654,   6.53300265])], 'quantile25': [array([11.25849273,  2.73184652])], 'median': [array([43.3384532 ,  5.46744118])], 'quantile75': [array([140.33156524,   9.57818828])]}
+	Seed: 12 OOD errors (MSE, MAE) stats: {'min': [array([1.26734608e-11, 3.55998046e-06])], 'max': [array([16272.6842226 ,   102.83068141])], 'mean': [array([152.08298263,   7.13186101])], 'std': [array([626.4795332,   7.240197 ])], 'quantile25': [array([9.72135614, 2.53659199])], 'median': [array([38.38710557,  5.10372638])], 'quantile75': [array([128.10135739,   9.33872343])]}
+	Train: 37362 (37.89%)
+	Val: 31872 (32.32%)
+	Test: 39577 (40.13%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 13 ID errors (MSE, MAE) stats: {'min': [array([0.26715124, 0.40980794])], 'max': [array([2891.48438201,   47.77811421])], 'mean': [array([136.98841656,   7.30863525])], 'std': [array([278.5077652 ,   6.46978689])], 'quantile25': [array([10.20475106,  2.63880546])], 'median': [array([43.05055228,  5.47069178])], 'quantile75': [array([141.62477516,   9.66627665])]}
+	Seed: 13 OOD errors (MSE, MAE) stats: {'min': [array([0.05365742, 0.15705634])], 'max': [array([8575.87475268,   77.12932641])], 'mean': [array([107.48866955,   6.19195637])], 'std': [array([335.69098843,   5.955728  ])], 'quantile25': [array([7.48215167, 2.25327401])], 'median': [array([30.32079163,  4.43696772])], 'quantile75': [array([99.25335808,  8.21284658])]}
+	Train: 37474 (38.18%)
+	Val: 31872 (32.47%)
+	Test: 39465 (40.21%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 14 ID errors (MSE, MAE) stats: {'min': [array([0.26715124, 0.40980794])], 'max': [array([2891.48438201,   47.77811421])], 'mean': [array([145.39719955,   7.51533443])], 'std': [array([304.84236286,   6.81090661])], 'quantile25': [array([10.35904047,  2.70209593])], 'median': [array([45.03355845,  5.72748321])], 'quantile75': [array([144.91396718,   9.84619607])]}
+	Seed: 14 OOD errors (MSE, MAE) stats: {'min': [array([0.09053288, 0.23547148])], 'max': [array([6918.03046057,   70.67059827])], 'mean': [array([100.34480249,   6.00787919])], 'std': [array([334.66458571,   5.69711441])], 'quantile25': [array([7.28805697, 2.24308602])], 'median': [array([28.04611241,  4.40657261])], 'quantile75': [array([96.11560589,  8.18284562])]}
+	Train: 37862 (38.80%)
+	Val: 31296 (32.07%)
+	Test: 39653 (40.64%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 15 ID errors (MSE, MAE) stats: {'min': [array([0.26715124, 0.40980794])], 'max': [array([2891.48438201,   47.77811421])], 'mean': [array([149.70999476,   7.5201464 ])], 'std': [array([314.32244568,   6.96863044])], 'quantile25': [array([10.35904047,  2.6648937 ])], 'median': [array([43.3384532 ,  5.46126634])], 'quantile75': [array([154.41025028,   9.84619607])]}
+	Seed: 15 OOD errors (MSE, MAE) stats: {'min': [array([0.03723586, 0.17652374])], 'max': [array([2896.92941516,   47.0358214 ])], 'mean': [array([121.89759138,   6.61798179])], 'std': [array([258.14671419,   6.25769889])], 'quantile25': [array([8.04428577, 2.37074075])], 'median': [array([29.61066542,  4.43570333])], 'quantile75': [array([112.77727639,   8.69543944])]}
+	Train: 37912 (39.07%)
+	Val: 31104 (32.05%)
+	Test: 39795 (41.01%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 16 ID errors (MSE, MAE) stats: {'min': [array([0.26715124, 0.40980794])], 'max': [array([2891.48438201,   47.77811421])], 'mean': [array([146.36688104,   7.39754924])], 'std': [array([314.96267629,   6.93256362])], 'quantile25': [array([9.31259077, 2.59299689])], 'median': [array([42.68223511,  5.36953012])], 'quantile75': [array([141.74080044,   9.63667873])]}
+	Seed: 16 OOD errors (MSE, MAE) stats: {'min': [array([1.26734608e-11, 3.55998046e-06])], 'max': [array([16272.6842226 ,   102.83068141])], 'mean': [array([144.71709734,   6.88774813])], 'std': [array([632.32739278,   7.16020082])], 'quantile25': [array([8.28154547, 2.44307225])], 'median': [array([33.18775764,  4.84740286])], 'quantile75': [array([122.0728074 ,   9.14982868])]}
+	Train: 37625 (38.65%)
+	Val: 31104 (31.95%)
+	Test: 40082 (41.18%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 17 ID errors (MSE, MAE) stats: {'min': [array([0.26715124, 0.40980794])], 'max': [array([2891.48438201,   47.77811421])], 'mean': [array([147.21548014,   7.44715908])], 'std': [array([312.64631657,   6.92563433])], 'quantile25': [array([9.91202905, 2.63703442])], 'median': [array([43.06869952,  5.43186971])], 'quantile75': [array([141.75885466,   9.69051279])]}
+	Seed: 17 OOD errors (MSE, MAE) stats: {'min': [array([0.03723586, 0.17652374])], 'max': [array([6994.08576791,   67.75001346])], 'mean': [array([122.65872292,   6.65114315])], 'std': [array([317.86384577,   6.23706675])], 'quantile25': [array([9.03993345, 2.47329695])], 'median': [array([33.65337424,  4.74868185])], 'quantile75': [array([112.53196279,   8.94528247])]}
+	Train: 38086 (39.25%)
+	Val: 30912 (31.86%)
+	Test: 39813 (41.03%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 18 ID errors (MSE, MAE) stats: {'min': [array([0.26715124, 0.40980794])], 'max': [array([2891.48438201,   47.77811421])], 'mean': [array([148.35812519,   7.48996314])], 'std': [array([314.04559199,   6.93418086])], 'quantile25': [array([9.14481498, 2.57401313])], 'median': [array([43.77067965,  5.56547454])], 'quantile75': [array([154.41025028,  10.13435114])]}
+	Seed: 18 OOD errors (MSE, MAE) stats: {'min': [array([2.05289115e-13, 4.53088418e-07])], 'max': [array([3715.25025218,   48.41666893])], 'mean': [array([131.26277366,   6.89537116])], 'std': [array([284.1541169 ,   6.50438722])], 'quantile25': [array([8.70187883, 2.40430971])], 'median': [array([33.62554806,  4.8295131 ])], 'quantile75': [array([121.38106117,   9.03045044])]}
+	Train: 37811 (38.70%)
+	Val: 31488 (32.22%)
+	Test: 39512 (40.44%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([0.26715124, 0.40980794])], 'max': [array([2891.48438201,   47.77811421])], 'mean': [array([143.09337183,   7.36460629])], 'std': [array([310.48008987,   6.82480546])], 'quantile25': [array([10.073481  ,  2.62424707])], 'median': [array([42.68223511,  5.43186971])], 'quantile75': [array([137.15454603,   9.58766094])]}
+	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([0.09217855, 0.25588632])], 'max': [array([8575.87475268,   77.12932641])], 'mean': [array([106.73410448,   6.36445409])], 'std': [array([315.83575768,   5.76139658])], 'quantile25': [array([9.52075755, 2.57830702])], 'median': [array([32.33388188,  4.68360454])], 'quantile75': [array([106.69921013,   8.53393891])]}
+RS ID (MSE, MAE) errors stats: {'mean': array([[144.86117872,   7.42460111]]), 'std': array([[305.9172328 ,   6.81830511]]), 'quantile25': array([[10.08225772,  2.64400019]]), 'quantile75': array([[144.01074896,   9.73428501]]), 'median': array([[43.38755511,  5.48481593]]), 'min': array([[0.26715124, 0.40980794]]), 'max': array([[2891.48438201,   47.77811421]])}
+RS OOD (MSE, MAE) errors stats: {'mean': array([[121.24624239,   6.51411427]]), 'std': array([[365.81600152,   6.30637461]]), 'quantile25': array([[8.10328119, 2.35527834]]), 'quantile75': array([[109.74287626,   8.6373607 ]]), 'median': array([[31.12416548,  4.5992812 ]]), 'min': array([[0.04187685, 0.12895574]]), 'max': array([[7844.30014286,   69.80196799]])}
