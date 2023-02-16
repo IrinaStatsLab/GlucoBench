@@ -45,4 +45,8 @@ encoding_params:
 # Scaling parameters
 scaling_params:
   scaler: None
+
+# Model params
+max_length_input: 168
+length_pred: 12
   
