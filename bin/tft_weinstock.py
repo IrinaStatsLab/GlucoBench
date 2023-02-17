@@ -95,11 +95,8 @@ def objective(trial):
         max_samples_per_ts = None # unlimited
     # suggest hyperparameters: model
     hidden_size = trial.suggest_int("hidden_size", 32, 256, step=32)
-    lstm_layers = trial.suggest_int("lstm_layers", 1, 3, step=1)
     num_attention_heads = trial.suggest_int("num_attention_heads", 2, 4, step=1)
-    full_attention = True if trial.suggest_int("full_attention", 1, 2, step=1) == 1 else False
     dropout = trial.suggest_uniform("dropout", 0.0, 0.3)
-    hidden_continuous_size = trial.suggest_int("hidden_continuous_size", 4, 16, step=4)
     # suggest hyperparameters: training
     lr = trial.suggest_uniform("lr", 1e-4, 1e-2)
     batch_size = trial.suggest_int("batch_size", 32, 64, step=16)
@@ -107,17 +104,17 @@ def objective(trial):
     el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
     loss_logger = LossLogger()
     pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
-    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [1], "callbacks": [el_stopper, loss_logger, pruner]}
+    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [2], "callbacks": [el_stopper, loss_logger, pruner]}
     
     # build the TFTModel model
     model = models.TFTModel(input_chunk_length = in_len, 
                             output_chunk_length = out_len, 
                             hidden_size = hidden_size,
-                            lstm_layers = lstm_layers,
+                            lstm_layers = 1,
                             num_attention_heads = num_attention_heads,
-                            full_attention = full_attention,
+                            full_attention = False,
                             dropout = dropout,
-                            hidden_continuous_size = hidden_continuous_size,
+                            hidden_continuous_size = 4,
                             add_relative_index = True,
                             model_name = model_name,
                             work_dir = work_dir,
@@ -177,11 +174,8 @@ if __name__ == '__main__':
         max_samples_per_ts = None # unlimited
     # suggest hyperparameters: model
     hidden_size = best_params["hidden_size"]
-    lstm_layers = best_params["lstm_layers"]
     num_attention_heads = best_params["num_attention_heads"]
-    full_attention = True if best_params["full_attention"] == 1 else False
     dropout = best_params["dropout"]
-    hidden_continuous_size = best_params["hidden_continuous_size"]
     # suggest hyperparameters: training
     lr = best_params["lr"]
     batch_size = best_params["batch_size"]
@@ -200,16 +194,16 @@ if __name__ == '__main__':
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = LossLogger()
-            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [1], "callbacks": [el_stopper, loss_logger]}
+            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [2], "callbacks": [el_stopper, loss_logger]}
             # build the model
             model = models.TFTModel(input_chunk_length = in_len, 
                                     output_chunk_length = out_len, 
                                     hidden_size = hidden_size,
-                                    lstm_layers = lstm_layers,
+                                    lstm_layers = 1,
                                     num_attention_heads = num_attention_heads,
-                                    full_attention = full_attention,
+                                    full_attention = False,
                                     dropout = dropout,
-                                    hidden_continuous_size = hidden_continuous_size,
+                                    hidden_continuous_size = 4,
                                     add_relative_index = True,
                                     model_name = model_name,
                                     work_dir = work_dir,

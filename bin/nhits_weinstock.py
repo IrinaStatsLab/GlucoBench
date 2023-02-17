@@ -183,7 +183,7 @@ if __name__ == '__main__':
     # set parameters
     out_len = formatter.params['length_pred']
     stride = out_len // 2
-    model_name = f'tensorboard_tft_weinstock'
+    model_name = f'tensorboard_nhits_weinstock'
     work_dir = os.path.join(os.path.dirname(__file__), '../output')
     # suggest hyperparameters: input size
     in_len = best_params["in_len"]
