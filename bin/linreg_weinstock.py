@@ -152,7 +152,7 @@ if __name__ == '__main__':
         # backtest on the test set
         forecasts = model.historical_forecasts(series['test']['target'],
                                             forecast_horizon=out_len, 
-                                            stride=out_len,
+                                            stride=stride,
                                             retrain=False,
                                             verbose=False,
                                             last_points_only=False,
@@ -172,7 +172,7 @@ if __name__ == '__main__':
         # backtest on the ood test set
         forecasts = model.historical_forecasts(series['test_ood']['target'],
                                                 forecast_horizon=out_len, 
-                                                stride=out_len,
+                                                stride=stride,
                                                 retrain=False,
                                                 verbose=False,
                                                 last_points_only=False,
