@@ -1,0 +1,34 @@
+Optimization started at 2023-02-19 15:09:50.745917--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 1416
+	Extracted segments: 681
+	Interpolated values: 140564
+	Percent of values interpolated: 24.24%
+Splitting data...
+	Train: 357814 (68.58%)
+	Val: 96960 (18.58%)
+	Test: 125008 (23.96%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
+Current value: 0.12471739947795868, Current params: {'in_len': 156, 'max_samples_per_ts': 150, 'd_model': 64, 'n_heads': 2, 'num_encoder_layers': 3, 'num_decoder_layers': 1, 'dim_feedforward': 512, 'dropout': 0.16637632231408223, 'lr': 0.0004621118402647982, 'batch_size': 64, 'lr_epochs': 10}
+Best value: 0.12471739947795868, Best params: {'in_len': 156, 'max_samples_per_ts': 150, 'd_model': 64, 'n_heads': 2, 'num_encoder_layers': 3, 'num_decoder_layers': 1, 'dim_feedforward': 512, 'dropout': 0.16637632231408223, 'lr': 0.0004621118402647982, 'batch_size': 64, 'lr_epochs': 10}
+Current value: 0.12652699649333954, Current params: {'in_len': 192, 'max_samples_per_ts': 200, 'd_model': 128, 'n_heads': 2, 'num_encoder_layers': 3, 'num_decoder_layers': 2, 'dim_feedforward': 288, 'dropout': 0.12166076433197359, 'lr': 0.0001469927592508437, 'batch_size': 48, 'lr_epochs': 10}
+Best value: 0.12471739947795868, Best params: {'in_len': 156, 'max_samples_per_ts': 150, 'd_model': 64, 'n_heads': 2, 'num_encoder_layers': 3, 'num_decoder_layers': 1, 'dim_feedforward': 512, 'dropout': 0.16637632231408223, 'lr': 0.0004621118402647982, 'batch_size': 64, 'lr_epochs': 10}
