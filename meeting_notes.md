@@ -1,3 +1,32 @@
+# Wednesday February 15, 2023
+Next Meeting: Wednesday February 22nd, 2023
+Next Meeting Notetaker: Nathaniel
+
+## Updates
+Arima model has new testing fw - no longer using Optuna
+
+## TODOs
+### Rerun Arima, XGBoost, and Linear Regression
+* Upload models output by Saturday 2/18.
+* Add the results to the Overleaf paper
+* Some sanity checks: Ensure OOD is <= ID
+
+### New Models: Run NHits and Transformer Models
+* These are time intensive - start early
+* Reach out to Dr. Gaynanova or Renat for information about the models
+
+### Continue Reading Paper to Summarize
+* Focus on the authors' _contributions_, usually found in the Abstract + Introduction
+* Ask
+	* Why was this paper chosen?
+	* What is this sentence/unique word choice doing in terms of the context?
+	* What are some shortcomings that are not apparent?
+* Goal: understand what makes papers get published to use in writing our paper well
+
+### Some Sanity Checks for Model Error
+- For any other model except arima, ID error should not be grater than OOD
+- Glucose values range from 0-400, so error should be reasonably in range, otherwise model probably failed catastrophically
+
 # Wednesday February 8, 2023
 Next Meeting: Wednesday February 15th, 2023
 Next Meeting Notetaker: **TBD**
