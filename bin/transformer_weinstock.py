@@ -96,7 +96,7 @@ def objective(trial):
         max_samples_per_ts = None # unlimited
     # suggest hyperparameters: model
     d_model = trial.suggest_int("d_model", 32, 128, step=32)
-    n_heads = trial.suggest_int("n_heads", 2, 6, step=2)
+    n_heads = trial.suggest_int("n_heads", 2, 4, step=2)
     num_encoder_layers = trial.suggest_int("num_encoder_layers", 1, 4, step=1)
     num_decoder_layers = trial.suggest_int("num_decoder_layers", 1, 4, step=1)
     dim_feedforward = trial.suggest_int("dim_feedforward", 32, 512, step=32)
