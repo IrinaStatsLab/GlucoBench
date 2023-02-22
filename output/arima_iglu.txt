@@ -390,3 +390,465 @@ OOD Mean of min of MSE: 0.5700526299820678, MAE: 0.6230899094223113
 OOD Std of min of MSE: 0.20748727532719471, MAE: 0.09802402002677109
 OOD Mean of max of MSE: 6983.6965238458915, MAE: 72.35052869357729
 OOD Std of max of MSE: 2853.188849891153, MAE: 17.27248265586239
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 7230 (63.25%)
+	Val: 2400 (21.00%)
+	Test: 3332 (29.15%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 20
+	Extracted segments: 19
+	Interpolated values: 531
+	Percent of values interpolated: 4.10%
+Splitting data...
+	Train: 6902 (60.38%)
+	Val: 2400 (21.00%)
+	Test: 3452 (30.20%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 6902 (60.38%)
+	Val: 2400 (21.00%)
+	Test: 3452 (30.20%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 14
+	Extracted segments: 18
+	Interpolated values: 643
+	Percent of values interpolated: 4.75%
+Splitting data...
+	Train: 7950 (66.26%)
+	Val: 2160 (18.00%)
+	Test: 3212 (26.77%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 7950 (66.26%)
+	Val: 2160 (18.00%)
+	Test: 3212 (26.77%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 14
+	Extracted segments: 18
+	Interpolated values: 643
+	Percent of values interpolated: 4.75%
+Splitting data...
+	Train: 7950 (66.26%)
+	Val: 2160 (18.00%)
+	Test: 3212 (26.77%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 7950 (66.26%)
+	Val: 2160 (18.00%)
+	Test: 3212 (26.77%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 14
+	Extracted segments: 18
+	Interpolated values: 643
+	Percent of values interpolated: 4.75%
+Splitting data...
+	Train: 7950 (66.26%)
+	Val: 2160 (18.00%)
+	Test: 3212 (26.77%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 7950 (66.26%)
+	Val: 2160 (18.00%)
+	Test: 3212 (26.77%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 14
+	Extracted segments: 18
+	Interpolated values: 643
+	Percent of values interpolated: 4.75%
+Splitting data...
+	Train: 7950 (66.26%)
+	Val: 2160 (18.00%)
+	Test: 3212 (26.77%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 7950 (66.26%)
+	Val: 2160 (18.00%)
+	Test: 3212 (26.77%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 10 ID errors (MSE, MAE) stats: {'min': [array([1.21908379, 0.83458184])], 'max': [array([2669.82279619,   45.02029201])], 'mean': [array([387.11862236,  11.76452022])], 'std': [array([651.82657968,  11.9477879 ])], 'quantile25': [array([16.17734158,  3.33445433])], 'median': [array([78.26931458,  7.3145587 ])], 'quantile75': [array([418.16936732,  16.35611038])]}
+	Seed: 10 OOD errors (MSE, MAE) stats: {'min': [array([1.06665792, 0.75308161])], 'max': [array([11570.10829436,    90.39487209])], 'mean': [array([537.5514175 ,  13.59622566])], 'std': [array([1314.99127969,   14.49765074])], 'quantile25': [array([22.00066709,  3.61875657])], 'median': [array([89.88654796,  8.22949353])], 'quantile75': [array([455.37634027,  18.48892751])]}
+	Train: 7950 (66.26%)
+	Val: 2160 (18.00%)
+	Test: 3212 (26.77%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 11 ID errors (MSE, MAE) stats: {'min': [array([1.21908379, 0.83458184])], 'max': [array([2669.82279619,   45.02029201])], 'mean': [array([387.11862236,  11.76452022])], 'std': [array([651.82657968,  11.9477879 ])], 'quantile25': [array([16.17734158,  3.33445433])], 'median': [array([78.26931458,  7.3145587 ])], 'quantile75': [array([418.16936732,  16.35611038])]}
+	Seed: 11 OOD errors (MSE, MAE) stats: {'min': [array([1.06665792, 0.75308161])], 'max': [array([11570.10829436,    90.39487209])], 'mean': [array([537.5514175 ,  13.59622566])], 'std': [array([1314.99127969,   14.49765074])], 'quantile25': [array([22.00066709,  3.61875657])], 'median': [array([89.88654796,  8.22949353])], 'quantile75': [array([455.37634027,  18.48892751])]}
+	Train: 7101 (64.95%)
+	Val: 2160 (19.76%)
+	Test: 4037 (36.92%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 12 ID errors (MSE, MAE) stats: {'min': [array([1.21908379, 0.83458184])], 'max': [array([2669.82279619,   45.02029201])], 'mean': [array([331.8751073,  10.5343834])], 'std': [array([627.94603168,  11.51155985])], 'quantile25': [array([14.30254063,  3.10101232])], 'median': [array([52.65654572,  6.03370095])], 'quantile75': [array([400.35846675,  14.68050767])]}
+	Seed: 12 OOD errors (MSE, MAE) stats: {'min': [array([1.47654952, 0.90084494])], 'max': [array([19923.12377296,   122.07016861])], 'mean': [array([505.59727575,  12.78306108])], 'std': [array([1592.60547963,   14.47361603])], 'quantile25': [array([29.93803403,  4.26941645])], 'median': [array([94.37647768,  8.08333544])], 'quantile75': [array([339.40154566,  15.3888086 ])]}
+	Train: 6918 (64.55%)
+	Val: 1920 (17.91%)
+	Test: 4252 (39.67%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 13 ID errors (MSE, MAE) stats: {'min': [array([1.33402866, 0.95175339])], 'max': [array([2706.34886702,   45.25304647])], 'mean': [array([432.2972031 ,  12.84343269])], 'std': [array([675.91785553,  12.14274753])], 'quantile25': [array([20.01621192,  3.8562098 ])], 'median': [array([112.15253065,   7.83020406])], 'quantile75': [array([439.61224757,  17.17964602])]}
+	Seed: 13 OOD errors (MSE, MAE) stats: {'min': [array([1.88142592, 0.96750573])], 'max': [array([6848.51625978,   78.14064577])], 'mean': [array([346.51404302,  12.48781451])], 'std': [array([648.50950776,  10.25927641])], 'quantile25': [array([42.2628812 ,  5.48357885])], 'median': [array([135.96696778,   9.75117825])], 'quantile75': [array([376.2078489 ,  16.20229827])]}
+	Train: 6918 (64.55%)
+	Val: 1920 (17.91%)
+	Test: 4252 (39.67%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 14 ID errors (MSE, MAE) stats: {'min': [array([1.33402866, 0.95175339])], 'max': [array([2706.34886702,   45.25304647])], 'mean': [array([432.2972031 ,  12.84343269])], 'std': [array([675.91785553,  12.14274753])], 'quantile25': [array([20.01621192,  3.8562098 ])], 'median': [array([112.15253065,   7.83020406])], 'quantile75': [array([439.61224757,  17.17964602])]}
+	Seed: 14 OOD errors (MSE, MAE) stats: {'min': [array([1.88142592, 0.96750573])], 'max': [array([6848.51625978,   78.14064577])], 'mean': [array([346.51404302,  12.48781451])], 'std': [array([648.50950776,  10.25927641])], 'quantile25': [array([42.2628812 ,  5.48357885])], 'median': [array([135.96696778,   9.75117825])], 'quantile75': [array([376.2078489 ,  16.20229827])]}
+	Train: 7950 (66.26%)
+	Val: 2160 (18.00%)
+	Test: 3212 (26.77%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 15 ID errors (MSE, MAE) stats: {'min': [array([1.21908379, 0.83458184])], 'max': [array([2669.82279619,   45.02029201])], 'mean': [array([387.11862236,  11.76452022])], 'std': [array([651.82657968,  11.9477879 ])], 'quantile25': [array([16.17734158,  3.33445433])], 'median': [array([78.26931458,  7.3145587 ])], 'quantile75': [array([418.16936732,  16.35611038])]}
+	Seed: 15 OOD errors (MSE, MAE) stats: {'min': [array([1.06665792, 0.75308161])], 'max': [array([11570.10829436,    90.39487209])], 'mean': [array([537.5514175 ,  13.59622566])], 'std': [array([1314.99127969,   14.49765074])], 'quantile25': [array([22.00066709,  3.61875657])], 'median': [array([89.88654796,  8.22949353])], 'quantile75': [array([455.37634027,  18.48892751])]}
+	Train: 7101 (64.95%)
+	Val: 2160 (19.76%)
+	Test: 4037 (36.92%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 16 ID errors (MSE, MAE) stats: {'min': [array([1.21908379, 0.83458184])], 'max': [array([2669.82279619,   45.02029201])], 'mean': [array([331.8751073,  10.5343834])], 'std': [array([627.94603168,  11.51155985])], 'quantile25': [array([14.30254063,  3.10101232])], 'median': [array([52.65654572,  6.03370095])], 'quantile75': [array([400.35846675,  14.68050767])]}
+	Seed: 16 OOD errors (MSE, MAE) stats: {'min': [array([1.47654952, 0.90084494])], 'max': [array([19923.12377296,   122.07016861])], 'mean': [array([505.59727575,  12.78306108])], 'std': [array([1592.60547963,   14.47361603])], 'quantile25': [array([29.93803403,  4.26941645])], 'median': [array([94.37647768,  8.08333544])], 'quantile75': [array([339.40154566,  15.3888086 ])]}
+	Train: 7786 (73.27%)
+	Val: 1440 (13.55%)
+	Test: 3864 (36.36%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 17 ID errors (MSE, MAE) stats: {'min': [array([2.23324224, 1.23251479])], 'max': [array([2111.93827549,   44.46929505])], 'mean': [array([331.85940334,  10.68068208])], 'std': [array([589.27171528,  11.78947452])], 'quantile25': [array([11.30063667,  2.90558786])], 'median': [array([32.8459944 ,  4.96728581])], 'quantile75': [array([400.35846675,  15.36327553])]}
+	Seed: 17 OOD errors (MSE, MAE) stats: {'min': [array([0.46767438, 0.58666924])], 'max': [array([14747.15457355,   103.12852978])], 'mean': [array([846.72856722,  18.00473095])], 'std': [array([1674.93316081,   16.82667652])], 'quantile25': [array([66.94286737,  6.61619823])], 'median': [array([247.1225116 ,  12.88320758])], 'quantile75': [array([824.32935388,  24.19374216])]}
+	Train: 7786 (73.27%)
+	Val: 1440 (13.55%)
+	Test: 3864 (36.36%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 18 ID errors (MSE, MAE) stats: {'min': [array([2.23324224, 1.23251479])], 'max': [array([2111.93827549,   44.46929505])], 'mean': [array([331.85940334,  10.68068208])], 'std': [array([589.27171528,  11.78947452])], 'quantile25': [array([11.30063667,  2.90558786])], 'median': [array([32.8459944 ,  4.96728581])], 'quantile75': [array([400.35846675,  15.36327553])]}
+	Seed: 18 OOD errors (MSE, MAE) stats: {'min': [array([0.46767438, 0.58666924])], 'max': [array([14747.15457355,   103.12852978])], 'mean': [array([846.72856722,  18.00473095])], 'std': [array([1674.93316081,   16.82667652])], 'quantile25': [array([66.94286737,  6.61619823])], 'median': [array([247.1225116 ,  12.88320758])], 'quantile75': [array([824.32935388,  24.19374216])]}
+	Train: 6918 (64.55%)
+	Val: 1920 (17.91%)
+	Test: 4252 (39.67%)
+	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([1.33402866, 0.95175339])], 'max': [array([2706.34886702,   45.25304647])], 'mean': [array([432.2972031 ,  12.84343269])], 'std': [array([675.91785553,  12.14274753])], 'quantile25': [array([20.01621192,  3.8562098 ])], 'median': [array([112.15253065,   7.83020406])], 'quantile75': [array([439.61224757,  17.17964602])]}
+	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([1.88142592, 0.96750573])], 'max': [array([6848.51625978,   78.14064577])], 'mean': [array([346.51404302,  12.48781451])], 'std': [array([648.50950776,  10.25927641])], 'quantile25': [array([42.2628812 ,  5.48357885])], 'median': [array([135.96696778,   9.75117825])], 'quantile75': [array([376.2078489 ,  16.20229827])]}
+RS ID (MSE, MAE) errors stats: {'mean': array([[378.57164977,  11.62539897]]), 'std': array([[641.76687996,  11.8873675 ]]), 'quantile25': array([[15.97870151,  3.35851927]]), 'quantile75': array([[417.47787117,  16.06948356]]), 'median': array([[74.22706159,  6.74362618]]), 'min': array([[1.45639894, 0.94931989]]), 'max': array([[2569.2037133 ,   44.97991896]])}
+RS OOD (MSE, MAE) errors stats: {'mean': array([[535.68480675,  13.98277046]]), 'std': array([[1242.55796432,   13.68713666]]), 'quantile25': array([[38.65524477,  4.90782356]]), 'quantile75': array([[482.22143666,  18.32387789]]), 'median': array([[136.05585258,   9.58751014]]), 'min': array([[1.27326993, 0.81367904]]), 'max': array([[12459.64303555,    95.60039503]])}

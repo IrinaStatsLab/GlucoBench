@@ -24,13 +24,13 @@ nan_vals: null
 
 # Interpolation parameters
 interpolation_params:
-  gap_threshold: 30 # in minutes
+  gap_threshold: 45 # in minutes
   min_drop_length: 200 # in number of points
 
 # Splitting parameters
 split_params:
   test_percent_subjects: 0.1
-  length_segment: 200
+  length_segment: 240
   random_state: 0
 
 # Encoding parameters
@@ -44,5 +44,8 @@ encoding_params:
 
 # Scaling parameters
 scaling_params:
-  scaler: StandardScaler
+  scaler: None
   
+# Model params
+max_length_input: 192
+length_pred: 12

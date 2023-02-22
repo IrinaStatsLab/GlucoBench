@@ -103,13 +103,55 @@ def make_series(data: Dict[str, pd.DataFrame],
                     series[key][name][i] = series[key][name][i].with_static_covariates(None)
             if cols is not None: 
                 if key == 'train':
-                    scalers[name] = Scaler()
+                    scalers[name] = ScalerCustom()
                     series[key][name] = scalers[name].fit_transform(series[key][name])
                 else:
                     series[key][name] = scalers[name].transform(series[key][name])
             else:
                 scalers[name] = None
     return series, scalers
+
+class ScalerCustom:
+    '''
+    Custom scaler for TimeSeries.
+    '''
+    def __init__(self):
+        self.scaler = Scaler()
+
+    def fit(self, time_series: Union[List[TimeSeries], TimeSeries]) -> None:
+        if isinstance(time_series, list):
+            # extract series as Pandas dataframe
+            df = pd.concat([ts.pd_dataframe() for ts in time_series])
+            value_cols = df.columns
+            df.reset_index(inplace=True)
+            # create new equally spaced time grid
+            df['new_time'] = pd.date_range(start=df['time'].min(), periods=len(df), freq='1H')
+            # fit scaler
+            series = TimeSeries.from_dataframe(df, time_col='new_time', value_cols=value_cols)
+            series = self.scaler.fit(series)
+        else:
+            series = self.scaler.fit(time_series)
+
+    def transform(self, time_series: Union[List[TimeSeries], TimeSeries]) -> Union[List[TimeSeries], TimeSeries]:
+        if isinstance(time_series, list):
+            # transform one by one
+            series = [self.scaler.transform(ts) for ts in time_series]
+        else:
+            series = self.scaler.transform(time_series)
+        return series
+    
+    def inverse_transform(self, time_series: Union[List[TimeSeries], TimeSeries]) -> Union[List[TimeSeries], TimeSeries]:
+        if isinstance(time_series, list):
+            # transform one by one
+            series = [self.scaler.inverse_transform(ts) for ts in time_series]
+        else:
+            series = self.scaler.inverse_transform(time_series)
+        return series
+    
+    def fit_transform(self, time_series: Union[List[TimeSeries], TimeSeries]) -> Union[List[TimeSeries], TimeSeries]:
+        self.fit(time_series)
+        series = self.transform(time_series)
+        return series
 
 def early_stopping_check(study, 
                          trial, 

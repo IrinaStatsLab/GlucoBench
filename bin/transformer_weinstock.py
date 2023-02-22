@@ -17,6 +17,8 @@ from darts import models
 from darts import metrics
 from darts import TimeSeries
 from darts.dataprocessing.transformers import Scaler
+from torch.optim.lr_scheduler import StepLR
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 
 # import data formatter
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -26,7 +28,7 @@ from bin.utils import *
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('./config/dubosson.yaml', 'r') as f:
+    with open('./config/weinstock.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -83,37 +85,60 @@ def reshuffle_data(formatter, seed):
 
 # define objective function
 def objective(trial):
+    # set parameters
     out_len = formatter.params['length_pred']
-    # suggest hyperparameters
+    model_name = f'tensorboard_transformer_weinstock'
+    work_dir = os.path.join(os.path.dirname(__file__), '../output')
+    # suggest hyperparameters: input size
     in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
-    max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 100, 250, step=50)
+    max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=50)
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
-    lr = trial.suggest_float("lr", 0.001, 1.0, step=0.001)
-    subsample = trial.suggest_float("subsample", 0.6, 1.0, step=0.1)
-    min_child_weight = trial.suggest_float("min_child_weight", 1.0, 5.0, step=1.0)
-    colsample_bytree = trial.suggest_float("colsample_bytree", 0.8, 1.0, step=0.1)
-    max_depth = trial.suggest_int("max_depth", 4, 10, step=1)
-    gamma = trial.suggest_float("gamma", 0.5, 10, step=0.5)
-    alpha = trial.suggest_float("alpha", 0.001, 0.3, step=0.001)
-    lambda_ = trial.suggest_float("lambda_", 0.001, 0.3, step=0.001)
-    n_estimators = trial.suggest_int("n_estimators", 128, 512, step=32)
+    # suggest hyperparameters: model
+    d_model = trial.suggest_int("d_model", 32, 128, step=32)
+    n_heads = trial.suggest_int("n_heads", 2, 4, step=2)
+    num_encoder_layers = trial.suggest_int("num_encoder_layers", 1, 4, step=1)
+    num_decoder_layers = trial.suggest_int("num_decoder_layers", 1, 4, step=1)
+    dim_feedforward = trial.suggest_int("dim_feedforward", 32, 512, step=32)
+    dropout = trial.suggest_uniform("dropout", 0, 0.2)
+    # suggest hyperparameters: training
+    lr = trial.suggest_uniform("lr", 1e-4, 1e-3)
+    batch_size = trial.suggest_int("batch_size", 32, 64, step=16)
+    lr_epochs = trial.suggest_int("lr_epochs", 2, 20, step=2)
+    # model callbacks
+    el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
+    loss_logger = LossLogger()
+    pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
+    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [3], "callbacks": [el_stopper, loss_logger, pruner]}
+    # optimizer scheduler
+    scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
     
-    # build the XGBoost model
-    model = models.XGBModel(lags=in_len, 
-                            learning_rate=lr,
-                            subsample=subsample,
-                            min_child_weight=min_child_weight,
-                            colsample_bytree=colsample_bytree,
-                            max_depth=max_depth,
-                            gamma=gamma,
-                            reg_alpha=alpha,
-                            reg_lambda=lambda_,
-                            n_estimators=n_estimators)
+    # build the TransformerModel model
+    model = models.TransformerModel(input_chunk_length=in_len,
+                                    output_chunk_length=out_len, 
+                                    d_model=d_model, 
+                                    nhead=n_heads, 
+                                    num_encoder_layers=num_encoder_layers, 
+                                    num_decoder_layers=num_decoder_layers, 
+                                    dim_feedforward=dim_feedforward, 
+                                    dropout=dropout,
+                                    log_tensorboard = True,
+                                    pl_trainer_kwargs = pl_trainer_kwargs,
+                                    batch_size = batch_size,
+                                    optimizer_kwargs = {'lr': lr},
+                                    lr_scheduler_cls = StepLR,
+                                    lr_scheduler_kwargs = scheduler_kwargs,
+                                    save_checkpoints = True,
+                                    model_name = model_name,
+                                    work_dir = work_dir,
+                                    force_reset = True,)
 
     # train the model
-    model.fit(series['train']['target'],
-              max_samples_per_ts=max_samples_per_ts)
+    model.fit(series=series['train']['target'],
+              val_series=series['val']['target'],
+              max_samples_per_ts=max_samples_per_ts,
+              verbose=False,)
+    model.load_from_checkpoint(model_name, work_dir=work_dir)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
@@ -130,37 +155,44 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './output/xgboost_dubosson.txt'
+    study_file = './output/transformer_weinstock.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
             # write current date and time
-            (f"Optimization started at {datetime.datetime.now()}\n")
+            f.write(f"Optimization started at {datetime.datetime.now()}")
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
     print_call = partial(print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=400, 
+    study.optimize(objective, n_trials=100, 
                    callbacks=[print_call], 
-                   catch=(np.linalg.LinAlgError, KeyError))
-    
+                   catch=(RuntimeError, KeyError))
+
     # Select best hyperparameters 
     best_params = study.best_trial.params
-    in_len = best_params['in_len']
+    # set parameters
     out_len = formatter.params['length_pred']
     stride = out_len // 2
-    max_samples_per_ts = best_params['max_samples_per_ts']
+    model_name = f'tensorboard_transformer_weinstock'
+    work_dir = os.path.join(os.path.dirname(__file__), '../output')
+    # suggest hyperparameters: input size
+    in_len = best_params["in_len"]
+    max_samples_per_ts = best_params["max_samples_per_ts"]
     if max_samples_per_ts < 100:
-        max_samples_per_ts = None
-    lr = best_params['lr']
-    subsample = best_params['subsample']
-    min_child_weight = best_params['min_child_weight']
-    colsample_bytree = best_params['colsample_bytree']
-    max_depth = best_params['max_depth']
-    gamma = best_params['gamma']
-    alpha = best_params['alpha']
-    lambda_ = best_params['lambda_']
-    n_estimators = best_params['n_estimators']
+        max_samples_per_ts = None # unlimited
+    # suggest hyperparameters: model
+    d_model = best_params["d_model"]
+    n_heads = best_params["n_heads"]
+    num_encoder_layers = best_params["num_encoder_layers"]
+    num_decoder_layers = best_params["num_decoder_layers"]
+    dim_feedforward = best_params["dim_feedforward"]
+    dropout = best_params["dropout"]
+    # suggest hyperparameters: training
+    lr = best_params["lr"]
+    batch_size = best_params["batch_size"]
+    lr_epochs = best_params["lr_epochs"]
+    scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
 
     # Set model seed
     model_seeds = list(range(10, 20))
@@ -173,30 +205,45 @@ if __name__ == '__main__':
         ood_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
         for seed in seeds:
             formatter, series, scalers = reshuffle_data(formatter, seed)
+            # model callbacks
+            el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
+            loss_logger = LossLogger()
+            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [3], "callbacks": [el_stopper, loss_logger]}
             # build the model
-            model = models.XGBModel(lags=in_len, 
-                                    learning_rate=lr,
-                                    subsample=subsample,
-                                    min_child_weight=min_child_weight,
-                                    colsample_bytree=colsample_bytree,
-                                    max_depth=max_depth,
-                                    gamma=gamma,
-                                    reg_alpha=alpha,
-                                    reg_lambda=lambda_,
-                                    n_estimators=n_estimators,
-                                    random_state=model_seed)
+            model = models.TransformerModel(input_chunk_length=in_len,
+                                            output_chunk_length=out_len, 
+                                            d_model=d_model, 
+                                            nhead=n_heads, 
+                                            num_encoder_layers=num_encoder_layers, 
+                                            num_decoder_layers=num_decoder_layers, 
+                                            dim_feedforward=dim_feedforward, 
+                                            dropout=dropout,
+                                            log_tensorboard = True,
+                                            pl_trainer_kwargs = pl_trainer_kwargs,
+                                            batch_size = batch_size,
+                                            optimizer_kwargs = {'lr': lr},
+                                            lr_scheduler_cls = StepLR,
+                                            lr_scheduler_kwargs = scheduler_kwargs,
+                                            save_checkpoints = True,
+                                            model_name = model_name,
+                                            work_dir = work_dir,
+                                            force_reset = True,)
+
             # train the model
-            model.fit(series['train']['target'],
-                    max_samples_per_ts=max_samples_per_ts)
+            model.fit(series=series['train']['target'],
+                    val_series=series['val']['target'],
+                    max_samples_per_ts=max_samples_per_ts,
+                    verbose=False,)
+            model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
-                                                forecast_horizon=out_len, 
-                                                stride=stride,
-                                                retrain=False,
-                                                verbose=False,
-                                                last_points_only=False,
-                                                start=formatter.params["max_length_input"])
+                                                    forecast_horizon=out_len, 
+                                                    stride=stride,
+                                                    retrain=False,
+                                                    verbose=False,
+                                                    last_points_only=False,
+                                                    start=formatter.params["max_length_input"])
             id_errors_sample = rescale_and_backtest(series['test']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],
