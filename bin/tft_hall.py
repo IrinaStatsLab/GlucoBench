@@ -27,7 +27,7 @@ from utils import *
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('./config/hall.yaml', 'r') as f:
+    with open('../config/hall.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
