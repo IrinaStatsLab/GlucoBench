@@ -139,15 +139,18 @@ if __name__ == '__main__':
             f.write(f"Optimization started at {datetime.datetime.now()}")
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
-    study = optuna.create_study(direction="minimize")
-    print_call = partial(print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=100, 
-                   callbacks=[print_call], 
-                   catch=(np.linalg.LinAlgError, KeyError))
+    # print("series", series)
+    # print("scalers", scalers)
+
+    # study = optuna.create_study(direction="minimize")
+    # print_call = partial(print_callback, study_file=study_file)
+    # study.optimize(objective, n_trials=100, 
+    #                callbacks=[print_call], 
+    #                catch=(np.linalg.LinAlgError, KeyError))
     
     # Select best hyperparameters #
-    # best_params = {'in_len': 96, 'max_samples_per_ts': 70}
-    best_params = study.best_trial.params
+    best_params = {'in_len': 96, 'max_samples_per_ts': 50}
+    # best_params = study.best_trial.params
     in_len = best_params['in_len']
     out_len = formatter.params["length_pred"]
     stride = out_len // 2
@@ -178,6 +181,7 @@ if __name__ == '__main__':
                                                verbose=False,
                                                last_points_only=False,
                                                start=formatter.params["max_length_input"])
+        # print("scalers", scalers['target'])
         id_errors_sample = utils.rescale_and_backtest(
                                       series['test']['target'],
                                       forecasts,  
@@ -186,9 +190,11 @@ if __name__ == '__main__':
                                       reduction=None
                                     )
         id_errors_sample = np.vstack(id_errors_sample)
+        # print("id errors sample", id_errors_sample)
         id_error_stats_sample = utils.compute_error_statistics(id_errors_sample)
         for key in id_errors_stats.keys():
           id_errors_stats[key].append(id_error_stats_sample[key])
+        # print(id_error_stats_sample)
         with open(study_file, "a") as f:
           f.write(f"\tSeed: {seed} ID errors (MSE, MAE) stats: {id_error_stats_sample}\n")
           

@@ -1,10 +1,61 @@
 # Wednesday February 15, 2023
+Next Meeting: Wednesday March 1st, 2023
+Next Meeting Notetaker: **TBD**
+
+## Updates
+* Nathaniel:
+	* ran ARIMA, XGBoost, LinReg, TFT, NHits
+	* Specific To Dos:
+		1. Run transformer
+		2. Add values to the Overleaf paper
+		3. Add tim
+	* Iglu has time which is a covariate: minute, second, etc.
+* Valeriya:
+	* Errors for ID > OOD surprisingly. Why?
+		- The OOD looks like it's in the same timeframe as the training data.
+		- There's only one subject in OOD. That subject's data may be very similar to another subject in the training data.
+		- Maybe the test OOD has significantly smaller magnitudes so the relative error is much, much smaller. Would we do subject specific scaling?
+			- previous studies have _more adhoc_ scaling: max to 450 and do min/max per subject. => absolute vs. relative error
+	* Specific To Dos:
+		1. train one model/subject. Test on ood 
+		2. change the splits so have 2 subjects in testing data
+		3. Try turning off scaling from darts
+* Nikki:
+	* Ran most models. Laptop kept turning off so getting Colab Pro+. Will finish running models by tomorrow morning
+* Lizzie
+	* TFT didn't run but everything else is in the Overleaf paper
+	* Issue: OOD smaller than ID as well. However, b/c there's more subjects.
+
+## TODOs
+* Everyone
+	* Saturday Feb 25th: update config files w covariates for the data set
+		* data_type is either *categorical* or *
+		* input_type is in either observed_input (time features - know in past and know what it will be in the future), known_input (heartbeat - know when we measure it), static_input (age, marital status, annual income - will likely not change)
+	* Wednesday March 1st: finish up no-covariates models
+	* Wednesday March 1st: run Linear regression + XGBoost w/ covariates
+
+## Learnings
+1. Set scaling to "None" in your config file b/c darts already does scaling.
+2. In NHits, transformer, & TFT, set GPU devices to [0] if using Colab
+3. What do the garbage errors mean?
+4. The Google Colab Pro+ instance is still running even if the GUI doesn't show it
+
+### New Models: Run NHits and Transformer Models
+* These are time intensive - start early
+* Reach out to Dr. Gaynanova or Renat for information about the models
+
+### Continue Reading Paper to Summarize
+
+### Some Sanity Checks for Model Error
+- For any other model except arima, ID error should not be grater than OOD
+- Glucose values range from 0-400, so error should be reasonably in range, otherwise model probably failed catastrophically
+
+# Wednesday February 15, 2023
 Next Meeting: Wednesday February 22nd, 2023
 Next Meeting Notetaker: Nathaniel
 
 ## Updates
 Arima model has new testing fw - no longer using Optuna
-
 ## TODOs
 ### Rerun Arima, XGBoost, and Linear Regression
 * Upload models output by Saturday 2/18.
