@@ -140,7 +140,7 @@ if __name__ == '__main__':
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
     print_call = partial(print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=50, 
+    study.optimize(objective, n_trials=400, 
                    callbacks=[print_call], 
                    catch=(np.linalg.LinAlgError, KeyError))
     
