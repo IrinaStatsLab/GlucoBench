@@ -23,12 +23,12 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 # import data formatter
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from data_formatter.base import *
-from bin.utils import *
+from utils import *
 
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('./config/hall.yaml', 'r') as f:
+    with open('../config/hall.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -164,7 +164,7 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './output/nhits_hall.txt'
+    study_file = '../output/nhits_hall.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
