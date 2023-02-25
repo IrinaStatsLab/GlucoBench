@@ -48,7 +48,7 @@ class DataFormatter():
     print('Loading data...')
     self.params['index_col'] = False if self.params['index_col'] == -1 else self.params['index_col']
     # read data table
-    self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'], na_filter=False)
+    self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'])
 
     # check NA values
     print('Checking for NA values...')
@@ -116,13 +116,12 @@ class DataFormatter():
         self.data[col[0]] = self.data[col[0]].astype(np.float32)
 
   def __check_nan(self):
-    if self.params['nan_vals'] is not None:
-      # replace NA values with pd.np.nan
-      self.data = self.data.replace(self.params['nan_vals'], np.nan)
     # delete rows where target, time, or id are na
     self.data = self.data.dropna(subset=[col[0] 
                                   for col in self._column_definition 
                                   if col[2] in [InputTypes.TARGET, InputTypes.TIME, InputTypes.ID]])
+    # assert that there are no na values in the data
+    assert self.data.isna().sum().sum() == 0, 'There are NA values in the data even after dropping with missing time, glucose, or id.'
 
   def __drop(self):
     # drop columns that are not in the column definition

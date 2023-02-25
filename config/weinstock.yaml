@@ -1,6 +1,6 @@
 # Dataset
 ds_name: weinstock2016
-data_csv_path: ./raw_data/Weinstock2016_processed.csv
+data_csv_path: ./raw_data/Weinstock2016_processed_with_covariates.csv
 index_col: -1
 observation_interval: 5min
 
@@ -15,6 +15,120 @@ column_definition:
   - name: gl
     data_type: real_valued
     input_type: target
+  - name: Height
+    data_type: real_valued
+    input_type: static_input
+  - name: Weight
+    data_type: real_valued
+    input_type: static_input  
+  - name: Gender
+    data_type: categorical
+    input_type: static_input
+  - name: Race
+    data_type: categorical
+    input_type: static_input
+  - name: EduLevel
+    data_type: categorical
+    input_type: static_input
+  - name: AnnualInc
+    data_type: real_valued
+    input_type: static_input
+  - name: MaritalStatus
+    data_type: categorical
+    input_type: static_input
+  - name: DaysWkEx
+    data_type: real_valued
+    input_type: static_input
+  - name: DaysWkDrinkAlc
+    data_type: real_valued
+    input_type: static_input
+  - name: DaysMonBingeAlc
+    data_type: real_valued
+    input_type: static_input
+  - name: T1DDiagAge
+    data_type: real_valued
+    input_type: static_input
+  - name: NumHospDKA
+    data_type: real_valued
+    input_type: static_input
+  - name: NumSHSinceT1DDiag
+    data_type: real_valued
+    input_type: static_input
+  - name: InsDeliveryMethod
+    data_type: categorical
+    input_type: static_input
+  - name: UnitsInsTotal
+    data_type: real_valued
+    input_type: static_input
+  - name: NumMeterCheckDay
+    data_type: real_valued
+    input_type: static_input
+  - name: Aspirin
+    data_type: real_valued
+    input_type: static_input
+  - name: Simvastatin
+    data_type: real_valued
+    input_type: static_input
+  - name: Lisinopril
+    data_type: real_valued
+    input_type: static_input
+  - name: "Vitamin D"
+    data_type: real_valued
+    input_type: static_input
+  - name: "Multivitamin preparation"
+    data_type: real_valued
+    input_type: static_input
+  - name: Omeprazole
+    data_type: real_valued
+    input_type: static_input
+  - name: atorvastatin
+    data_type: real_valued
+    input_type: static_input
+  - name: Synthroid
+    data_type: real_valued
+    input_type: static_input
+  - name: "vitamin D3"
+    data_type: real_valued
+    input_type: static_input
+  - name: Hypertension
+    data_type: real_valued
+    input_type: static_input
+  - name: Hyperlipidemia
+    data_type: real_valued
+    input_type: static_input
+  - name: Hypothyroidism
+    data_type: real_valued
+    input_type: static_input
+  - name: Depression
+    data_type: real_valued
+    input_type: static_input
+  - name: "Coronary artery disease"
+    data_type: real_valued
+    input_type: static_input
+  - name: "Diabetic peripheral neuropathy"
+    data_type: real_valued
+    input_type: static_input
+  - name: Dyslipidemia
+    data_type: real_valued
+    input_type: static_input
+  - name: "Chronic kidney disease"
+    data_type: real_valued
+    input_type: static_input
+  - name: Osteoporosis
+    data_type: real_valued
+    input_type: static_input
+  - name: "Proliferative diabetic retinopathy"
+    data_type: real_valued
+    input_type: static_input
+  - name: Hypercholesterolemia
+    data_type: real_valued
+    input_type: static_input
+  - name: "Erectile dysfunction"
+    data_type: real_valued
+    input_type: static_input
+  - name: "Type I diabetes mellitus"
+    data_type: real_valued
+    input_type: static_input
 
 # Drop
 drop: null
