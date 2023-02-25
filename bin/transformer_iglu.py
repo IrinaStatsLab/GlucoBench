@@ -104,7 +104,7 @@ def reshuffle_data(formatter, seed):
 def objective(trial):
     # set parameters
     out_len = formatter.params['length_pred']
-    model_name = f'tensorboard_tft_iglu'
+    model_name = f'tensorboard_transformer_iglu'
     work_dir = os.path.join(os.path.dirname(__file__), '../output')
 
     # suggest hyperparameters: input size
@@ -112,44 +112,55 @@ def objective(trial):
     max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=50)
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
+
     # suggest hyperparameters: model
-    hidden_size = trial.suggest_int("hidden_size", 32, 256, step=32)
-    num_attention_heads = trial.suggest_int("num_attention_heads", 2, 4, step=1)
-    dropout = trial.suggest_uniform("dropout", 0.0, 0.3)
+    d_model = trial.suggest_int("d_model", 32, 128, step=32)
+    n_heads = trial.suggest_int("n_heads", 2, 4, step=2)
+    num_encoder_layers = trial.suggest_int("num_encoder_layers", 1, 4, step=1)
+    num_decoder_layers = trial.suggest_int("num_decoder_layers", 1, 4, step=1)
+    dim_feedforward = trial.suggest_int("dim_feedforward", 32, 512, step=32)
+    dropout = trial.suggest_uniform("dropout", 0, 0.2)
+
     # suggest hyperparameters: training
-    lr = trial.suggest_uniform("lr", 1e-4, 1e-2)
+    lr = trial.suggest_uniform("lr", 1e-4, 1e-3)
     batch_size = trial.suggest_int("batch_size", 32, 64, step=16)
+    lr_epochs = trial.suggest_int("lr_epochs", 2, 20, step=2)
+
     # model callbacks
     el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
     loss_logger = utils.LossLogger()
     pruner = utils.PyTorchLightningPruningCallback(trial, monitor="val_loss")
     pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner]}
+
+    # optimizer scheduler
+    scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
     
-    # build the TFTModel model
-    model = models.TFTModel(input_chunk_length = in_len, 
-                            output_chunk_length = out_len, 
-                            hidden_size = hidden_size,
-                            lstm_layers = 1,
-                            num_attention_heads = num_attention_heads,
-                            full_attention = False,
-                            dropout = dropout,
-                            hidden_continuous_size = 4,
-                            add_relative_index = True,
-                            model_name = model_name,
-                            work_dir = work_dir,
-                            log_tensorboard = True,
-                            pl_trainer_kwargs = pl_trainer_kwargs,
-                            batch_size = batch_size,
-                            optimizer_kwargs = {'lr': lr},
-                            save_checkpoints = True,
-                            force_reset=True)
+    # build the TransformerModel model
+    model = models.TransformerModel(input_chunk_length=in_len,
+                                    output_chunk_length=out_len, 
+                                    d_model=d_model, 
+                                    nhead=n_heads, 
+                                    num_encoder_layers=num_encoder_layers, 
+                                    num_decoder_layers=num_decoder_layers, 
+                                    dim_feedforward=dim_feedforward, 
+                                    dropout=dropout,
+                                    log_tensorboard = True,
+                                    pl_trainer_kwargs = pl_trainer_kwargs,
+                                    batch_size = batch_size,
+                                    optimizer_kwargs = {'lr': lr},
+                                    lr_scheduler_cls = StepLR,
+                                    lr_scheduler_kwargs = scheduler_kwargs,
+                                    save_checkpoints = True,
+                                    model_name = model_name,
+                                    work_dir = work_dir,
+                                    force_reset = True,)
 
     # train the model
     model.fit(series=series['train']['target'],
               val_series=series['val']['target'],
               max_samples_per_ts=max_samples_per_ts,
               verbose=False,)
-    model.load_from_checkpoint(model_name, work_dir = work_dir)
+    model.load_from_checkpoint(model_name, work_dir=work_dir)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
@@ -159,33 +170,38 @@ def objective(trial):
                             verbose=False,
                             metric=metrics.rmse,
                             last_points_only=False,
-                          )
+                            )
     avg_error = np.mean(errors)
+
     return avg_error
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './GitHub/GluNet/output/tft_iglu.txt'
+    study_file = './output/transformer_iglu.txt'
+
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
             # write current date and time
-            (f"Optimization started at {datetime.datetime.now()}\n")
+            f.write(f"Optimization started at {datetime.datetime.now()}")
+
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
     print_call = partial(utils.print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=50, 
+    study.optimize(objective, n_trials=100, 
                    callbacks=[print_call], 
                    catch=(RuntimeError, KeyError))
-    
+
     # Select best hyperparameters 
     best_params = study.best_trial.params
     # set parameters
     out_len = formatter.params['length_pred']
     stride = out_len // 2
-    model_name = f'tensorboard_tft_iglu'
-    work_dir = './GitHub/GluNet/output'
+
+    model_name = f'tensorboard_transformer_iglu'
+    work_dir = os.path.join(os.path.dirname(__file__), '../output')
+    print(work_dir)
 
     # suggest hyperparameters: input size
     in_len = best_params["in_len"]
@@ -194,12 +210,18 @@ if __name__ == '__main__':
         max_samples_per_ts = None # unlimited
 
     # suggest hyperparameters: model
-    hidden_size = best_params["hidden_size"]
-    num_attention_heads = best_params["num_attention_heads"]
+    d_model = best_params["d_model"]
+    n_heads = best_params["n_heads"]
+    num_encoder_layers = best_params["num_encoder_layers"]
+    num_decoder_layers = best_params["num_decoder_layers"]
+    dim_feedforward = best_params["dim_feedforward"]
     dropout = best_params["dropout"]
+
     # suggest hyperparameters: training
     lr = best_params["lr"]
     batch_size = best_params["batch_size"]
+    lr_epochs = best_params["lr_epochs"]
+    scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
 
     # Set model seed
     model_seeds = list(range(10, 20))
@@ -217,23 +239,25 @@ if __name__ == '__main__':
             loss_logger = utils.LossLogger()
             pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger]}
             # build the model
-            model = models.TFTModel(input_chunk_length = in_len, 
-                                    output_chunk_length = out_len, 
-                                    hidden_size = hidden_size,
-                                    lstm_layers = 1,
-                                    num_attention_heads = num_attention_heads,
-                                    full_attention = False,
-                                    dropout = dropout,
-                                    hidden_continuous_size = 4,
-                                    add_relative_index = True,
-                                    model_name = model_name,
-                                    work_dir = work_dir,
-                                    log_tensorboard = True,
-                                    pl_trainer_kwargs = pl_trainer_kwargs,
-                                    batch_size = batch_size,
-                                    optimizer_kwargs = {'lr': lr},
-                                    save_checkpoints = True,
-                                    force_reset=True)
+            model = models.TransformerModel(input_chunk_length=in_len,
+                                            output_chunk_length=out_len, 
+                                            d_model=d_model, 
+                                            nhead=n_heads, 
+                                            num_encoder_layers=num_encoder_layers, 
+                                            num_decoder_layers=num_decoder_layers, 
+                                            dim_feedforward=dim_feedforward, 
+                                            dropout=dropout,
+                                            log_tensorboard = True,
+                                            pl_trainer_kwargs = pl_trainer_kwargs,
+                                            batch_size = batch_size,
+                                            optimizer_kwargs = {'lr': lr},
+                                            lr_scheduler_cls = StepLR,
+                                            lr_scheduler_kwargs = scheduler_kwargs,
+                                            save_checkpoints = True,
+                                            model_name = model_name,
+                                            work_dir = work_dir,
+                                            force_reset = True,)
+
             # train the model
             model.fit(series=series['train']['target'],
                     val_series=series['val']['target'],
