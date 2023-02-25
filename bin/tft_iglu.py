@@ -42,7 +42,6 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import sklearn
 
-
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
@@ -105,66 +104,52 @@ def reshuffle_data(formatter, seed):
 def objective(trial):
     # set parameters
     out_len = formatter.params['length_pred']
-    model_name = f'tensorboard_nhits_weinstock'
+    model_name = f'tensorboard_tft_iglu'
     work_dir = os.path.join(os.path.dirname(__file__), '../output')
+
     # suggest hyperparameters: input size
     in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
     max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=50)
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
     # suggest hyperparameters: model
-    kernel_sizes = trial.suggest_int("kernel_sizes", 1, 5)
-    if kernel_sizes == 1:
-        kernel_sizes = [[2], [2], [2]]
-    elif kernel_sizes == 2:
-        kernel_sizes = [[4], [4], [4]]
-    elif kernel_sizes == 3:
-        kernel_sizes = [[8], [8], [8]]
-    elif kernel_sizes == 4:
-        kernel_sizes = [[8], [4], [1]]
-    elif kernel_sizes == 5:
-        kernel_sizes = [[16], [8], [1]]
-    dropout = trial.suggest_uniform("dropout", 0, 0.2)
+    hidden_size = trial.suggest_int("hidden_size", 32, 256, step=32)
+    num_attention_heads = trial.suggest_int("num_attention_heads", 2, 4, step=1)
+    dropout = trial.suggest_uniform("dropout", 0.0, 0.3)
     # suggest hyperparameters: training
-    lr = trial.suggest_uniform("lr", 1e-4, 1e-3)
+    lr = trial.suggest_uniform("lr", 1e-4, 1e-2)
     batch_size = trial.suggest_int("batch_size", 32, 64, step=16)
-    lr_epochs = trial.suggest_int("lr_epochs", 2, 20, step=2)
     # model callbacks
     el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
     loss_logger = utils.LossLogger()
     pruner = utils.PyTorchLightningPruningCallback(trial, monitor="val_loss")
     pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner]}
-    # optimizer scheduler
-    scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
     
-    # build the NHiTSModel model
-    model = models.NHiTSModel(input_chunk_length=in_len, 
-                                output_chunk_length=out_len, 
-                                num_stacks=3, 
-                                num_blocks=1, 
-                                num_layers=2, 
-                                layer_widths=512, 
-                                pooling_kernel_sizes=kernel_sizes, 
-                                n_freq_downsample=None, 
-                                dropout=dropout, 
-                                activation='ReLU',
-                                log_tensorboard = True,
-                                pl_trainer_kwargs = pl_trainer_kwargs,
-                                batch_size = batch_size,
-                                optimizer_kwargs = {'lr': lr},
-                                lr_scheduler_cls = StepLR,
-                                lr_scheduler_kwargs = scheduler_kwargs,
-                                save_checkpoints = True,
-                                model_name = model_name,
-                                work_dir = work_dir,
-                                force_reset = True,)
+    # build the TFTModel model
+    model = models.TFTModel(input_chunk_length = in_len, 
+                            output_chunk_length = out_len, 
+                            hidden_size = hidden_size,
+                            lstm_layers = 1,
+                            num_attention_heads = num_attention_heads,
+                            full_attention = False,
+                            dropout = dropout,
+                            hidden_continuous_size = 4,
+                            add_relative_index = True,
+                            model_name = model_name,
+                            work_dir = work_dir,
+                            log_tensorboard = True,
+                            pl_trainer_kwargs = pl_trainer_kwargs,
+                            batch_size = batch_size,
+                            optimizer_kwargs = {'lr': lr},
+                            save_checkpoints = True,
+                            force_reset=True)
 
     # train the model
     model.fit(series=series['train']['target'],
               val_series=series['val']['target'],
               max_samples_per_ts=max_samples_per_ts,
-              verbose=False,) 
-    model.load_from_checkpoint(model_name, work_dir=work_dir)
+              verbose=False,)
+    model.load_from_checkpoint(model_name, work_dir = work_dir)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
@@ -174,33 +159,32 @@ def objective(trial):
                             verbose=False,
                             metric=metrics.rmse,
                             last_points_only=False,
-                            )
+                          )
     avg_error = np.mean(errors)
-
     return avg_error
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './GitHub/GluNet/output/nhits_iglu.txt'
+    study_file = './GitHub/GluNet/output/tft_iglu.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
             # write current date and time
-            f.write(f"Optimization started at {datetime.datetime.now()}")
+            (f"Optimization started at {datetime.datetime.now()}\n")
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
     print_call = partial(utils.print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=100, 
+    study.optimize(objective, n_trials=50, 
                    callbacks=[print_call], 
                    catch=(RuntimeError, KeyError))
-
+    
     # Select best hyperparameters 
     best_params = study.best_trial.params
     # set parameters
     out_len = formatter.params['length_pred']
     stride = out_len // 2
-    model_name = f'tensorboard_nhits_iglu'
+    model_name = f'tensorboard_tft_iglu'
     work_dir = './GitHub/GluNet/output'
 
     # suggest hyperparameters: input size
@@ -208,24 +192,14 @@ if __name__ == '__main__':
     max_samples_per_ts = best_params["max_samples_per_ts"]
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
+
     # suggest hyperparameters: model
-    kernel_sizes = best_params["kernel_sizes"]
+    hidden_size = best_params["hidden_size"]
+    num_attention_heads = best_params["num_attention_heads"]
     dropout = best_params["dropout"]
-    if kernel_sizes == 1:
-        kernel_sizes = [[2], [2], [2]]
-    elif kernel_sizes == 2:
-        kernel_sizes = [[4], [4], [4]]
-    elif kernel_sizes == 3:
-        kernel_sizes = [[8], [8], [8]]
-    elif kernel_sizes == 4:
-        kernel_sizes = [[8], [4], [1]]
-    elif kernel_sizes == 5:
-        kernel_sizes = [[16], [8], [1]]
     # suggest hyperparameters: training
     lr = best_params["lr"]
     batch_size = best_params["batch_size"]
-    lr_epochs = best_params["lr_epochs"]
-    scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
 
     # Set model seed
     model_seeds = list(range(10, 20))
@@ -243,26 +217,23 @@ if __name__ == '__main__':
             loss_logger = utils.LossLogger()
             pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger]}
             # build the model
-            model = models.NHiTSModel(input_chunk_length=in_len, 
-                                        output_chunk_length=out_len, 
-                                        num_stacks=3, 
-                                        num_blocks=1, 
-                                        num_layers=2, 
-                                        layer_widths=512, 
-                                        pooling_kernel_sizes=kernel_sizes, 
-                                        n_freq_downsample=None, 
-                                        dropout=dropout, 
-                                        activation='ReLU',
-                                        log_tensorboard = True,
-                                        pl_trainer_kwargs = pl_trainer_kwargs,
-                                        lr_scheduler_cls = StepLR,
-                                        lr_scheduler_kwargs = scheduler_kwargs,
-                                        batch_size = batch_size,
-                                        optimizer_kwargs = {'lr': lr},
-                                        save_checkpoints = True,
-                                        model_name = model_name,
-                                        work_dir = work_dir,
-                                        force_reset = True,)
+            model = models.TFTModel(input_chunk_length = in_len, 
+                                    output_chunk_length = out_len, 
+                                    hidden_size = hidden_size,
+                                    lstm_layers = 1,
+                                    num_attention_heads = num_attention_heads,
+                                    full_attention = False,
+                                    dropout = dropout,
+                                    hidden_continuous_size = 4,
+                                    add_relative_index = True,
+                                    model_name = model_name,
+                                    work_dir = work_dir,
+                                    log_tensorboard = True,
+                                    pl_trainer_kwargs = pl_trainer_kwargs,
+                                    batch_size = batch_size,
+                                    optimizer_kwargs = {'lr': lr},
+                                    save_checkpoints = True,
+                                    force_reset=True)
             # train the model
             model.fit(series=series['train']['target'],
                     val_series=series['val']['target'],
