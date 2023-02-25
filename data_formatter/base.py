@@ -50,6 +50,10 @@ class DataFormatter():
     # read data table
     self.data = pd.read_csv(self.params['data_csv_path'], index_col=self.params['index_col'])
 
+    # drop columns / rows
+    print('Dropping columns / rows...')
+    self.__drop()
+
     # check NA values
     print('Checking for NA values...')
     self.__check_nan()
