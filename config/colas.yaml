@@ -15,12 +15,33 @@ column_definition:
   - name: gl
     data_type: real_valued
     input_type: target
+  - name: gender
+    data_type: categorical
+    input_type: static_input
+  - name: age
+    data_type: real_valued
+    input_type: static_input
+  - name: BMI
+    data_type: real_valued
+    input_type: static_input
+  - name: glycaemia
+    data_type: real_valued
+    input_type: static_input
+  - name: HbA1c
+    data_type: real_valued
+    input_type: static_input
+  - name: follow.up
+    data_type: real_valued
+    input_type: static_input
+  - name: T2DM
+    data_type: categorical
+    input_type: static_input
 
 # Drop
-drop: 
+drop: null
 
 # NA values abbreviation
-nan_vals: NaN
+nan_vals: null
 
 # Interpolation parameters
 interpolation_params:
