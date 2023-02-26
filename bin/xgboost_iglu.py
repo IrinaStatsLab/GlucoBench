@@ -1,25 +1,6 @@
-# append proper directories into path
+from typing import List, Union, Dict
 import sys
 import os
-sys.path.append("/content/drive/MyDrive/Colab Notebooks")
-sys.path.append("/content/drive/MyDrive/Colab Notebooks/GitHub/GluNet")
-sys.path.append("/content/drive/MyDrive/Colab Notebooks/GitHub/GluNet/bin")
-
-# GluNet imports
-from data_formatter.base import DataFormatter # in "/Glunet"
-import utils # in "/Glunet/bin"
-
-# installed in "MyDrive/Colab Notebooks"
-import optuna
-
-import darts
-from darts import models, metrics, TimeSeries
-from darts.dataprocessing.transformers import Scaler
-
-# built-in packages
-import numpy as np
-from typing import List, Union, Dict
-
 import yaml
 import datetime
 from functools import partial
@@ -29,13 +10,23 @@ sns.set_style('whitegrid')
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import sklearn
+import optuna
+import darts
 
-# --------------------------------------------------------------------
+from darts import models
+from darts import metrics
+from darts import TimeSeries
+from darts.dataprocessing.transformers import Scaler
+
+# import data formatter
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from data_formatter.base import *
+from bin.utils import *
 
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('./GitHub/GluNet/config/iglu.yaml', 'r') as f:
+    with open('./config/iglu.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -50,7 +41,7 @@ def load_data(seed = 0, study_file = None):
     future_cols = formatter.get_column('future_covs')
 
     # build series
-    series, scalers = utils.make_series({'train': formatter.train_data,
+    series, scalers = make_series({'train': formatter.train_data,
                                     'val': formatter.val_data,
                                     'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
                                     'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
@@ -77,7 +68,7 @@ def reshuffle_data(formatter, seed):
     future_cols = formatter.get_column('future_covs')
 
     # build series
-    series, scalers = utils.make_series({'train': formatter.train_data,
+    series, scalers = make_series({'train': formatter.train_data,
                                     'val': formatter.val_data,
                                     'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
                                     'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
@@ -90,15 +81,14 @@ def reshuffle_data(formatter, seed):
     
     return formatter, series, scalers
 
-
 # define objective function
 def objective(trial):
     out_len = formatter.params['length_pred']
+    # suggest hyperparameters
     in_len = trial.suggest_int("in_len", 24, formatter.params['max_length_input'], step=12)
-    max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=12) # at least 3 hours of predictions left
+    max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=50)
     if max_samples_per_ts < 100:
-      max_samples_per_ts = None # unlimited
-
+        max_samples_per_ts = None # unlimited
     lr = trial.suggest_float("lr", 0.001, 1.0, step=0.001)
     subsample = trial.suggest_float("subsample", 0.6, 1.0, step=0.1)
     min_child_weight = trial.suggest_float("min_child_weight", 1.0, 5.0, step=1.0)
@@ -119,9 +109,7 @@ def objective(trial):
                             gamma=gamma,
                             reg_alpha=alpha,
                             reg_lambda=lambda_,
-                            n_estimators=n_estimators,
-                            seed=0
-                          )
+                            n_estimators=n_estimators)
 
     # train the model
     model.fit(series['train']['target'],
@@ -135,26 +123,19 @@ def objective(trial):
                             verbose=False,
                             metric=metrics.rmse,
                             last_points_only=False,
-                          )
+                            )
     avg_error = np.mean(errors)
 
     return avg_error
 
-# for convenience, print some optimization trials information
-def print_callback(study, trial, study_file=None):
-    # write output to a file
-    with open(study_file, "a") as f:
-        f.write(f"\nCurrent value: {trial.value}, Current params: {trial.params}")
-        f.write(f"\nBest value: {study.best_value}, Best params: {study.best_trial.params}")
-
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './GitHub/GluNet/output/xgboost_iglu.txt'
+    study_file = './output/xgboost_iglu.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
             # write current date and time
-            f.write(f"Optimization started at {datetime.datetime.now()}")
+            (f"Optimization started at {datetime.datetime.now()}\n")
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
@@ -163,15 +144,14 @@ if __name__ == '__main__':
                    callbacks=[print_call], 
                    catch=(np.linalg.LinAlgError, KeyError))
     
-    # Select best hyperparameters #
+    # Select best hyperparameters 
     best_params = study.best_trial.params
-    # best_params = {'in_len': 144, 'lr': 1.0, 'subsample': 0.8, 'min_child_weight': 1.0, 'colsample_bytree': 1.0, 'max_depth': 7, 'gamma': 0.5, 'alpha': 0.092, 'lambda_': 0.077, 'n_estimators': 480}
     in_len = best_params['in_len']
     out_len = formatter.params['length_pred']
     stride = out_len // 2
     max_samples_per_ts = best_params['max_samples_per_ts']
     if max_samples_per_ts < 100:
-      max_samples_per_ts = None
+        max_samples_per_ts = None
     lr = best_params['lr']
     subsample = best_params['subsample']
     min_child_weight = best_params['min_child_weight']
@@ -181,19 +161,18 @@ if __name__ == '__main__':
     alpha = best_params['alpha']
     lambda_ = best_params['lambda_']
     n_estimators = best_params['n_estimators']
-    
+
+    # Set model seed
     model_seeds = list(range(10, 20))
     id_model_results = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     ood_model_results = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     for model_seed in model_seeds:
         # Backtest on the test set
-        seeds = list(range(1,3))
-
+        seeds = list(range(1, 3))
         id_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
         ood_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
         for seed in seeds:
             formatter, series, scalers = reshuffle_data(formatter, seed)
-
             # build the model
             model = models.XGBModel(lags=in_len, 
                                     learning_rate=lr,
@@ -208,49 +187,47 @@ if __name__ == '__main__':
                                     random_state=model_seed)
             # train the model
             model.fit(series['train']['target'],
-                      max_samples_per_ts=max_samples_per_ts)
+                    max_samples_per_ts=max_samples_per_ts)
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
-                                                  forecast_horizon=out_len, 
-                                                  stride=stride,
-                                                  retrain=False,
-                                                  verbose=False,
-                                                  last_points_only=False,
-                                                  start=formatter.params["max_length_input"])
-            id_errors_sample = utils.rescale_and_backtest(series['test']['target'],
-                                          forecasts,  
-                                          [metrics.mse, metrics.mae],
-                                          scalers['target'],
-                                          reduction=None)
-
+                                                forecast_horizon=out_len, 
+                                                stride=stride,
+                                                retrain=False,
+                                                verbose=False,
+                                                last_points_only=False,
+                                                start=formatter.params["max_length_input"])
+            id_errors_sample = rescale_and_backtest(series['test']['target'],
+                                        forecasts,  
+                                        [metrics.mse, metrics.mae],
+                                        scalers['target'],
+                                        reduction=None)
             id_errors_sample = np.vstack(id_errors_sample)
-            id_errors_stats_sample = utils.compute_error_statistics(id_errors_sample)
+            id_error_stats_sample = compute_error_statistics(id_errors_sample)
             for key in id_errors_stats.keys():
-                id_errors_stats[key].append(id_errors_stats_sample[key])
+                id_errors_stats[key].append(id_error_stats_sample[key])
             with open(study_file, "a") as f:
-              f.write(f"\t\tModel Seed: {model_seed} Seed: {seed} ID errors (MSE, MAE) stats: {id_errors_stats_sample}\n")
-              
+                f.write(f"\t\tModel Seed: {model_seed} Seed: {seed} ID errors (MSE, MAE) stats: {id_error_stats_sample}\n")
+
             # backtest on the ood test set
             forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                                  forecast_horizon=out_len, 
-                                                  stride=stride,
-                                                  retrain=False,
-                                                  verbose=False,
-                                                  last_points_only=False,
-                                                  start=formatter.params["max_length_input"])
-            ood_errors_sample = utils.rescale_and_backtest(series['test_ood']['target'],
-                                          forecasts,  
-                                          [metrics.mse, metrics.mae],
-                                          scalers['target'],
-                                          reduction=None)
+                                                    forecast_horizon=out_len, 
+                                                    stride=stride,
+                                                    retrain=False,
+                                                    verbose=False,
+                                                    last_points_only=False,
+                                                    start=formatter.params["max_length_input"])
+            ood_errors_sample = rescale_and_backtest(series['test_ood']['target'],
+                                        forecasts,  
+                                        [metrics.mse, metrics.mae],
+                                        scalers['target'],
+                                        reduction=None)
             ood_errors_sample = np.vstack(ood_errors_sample)
-            ood_errors_stats_sample = utils.compute_error_statistics(ood_errors_sample)
-
+            ood_errors_stats_sample = compute_error_statistics(ood_errors_sample)
             for key in ood_errors_stats.keys():
                 ood_errors_stats[key].append(ood_errors_stats_sample[key])
             with open(study_file, "a") as f:
-                f.write(f"\t\tModel Seed: {model_seed} Seed: {seed} ID errors (MSE, MAE) stats: {ood_errors_stats_sample}\n")
+                f.write(f"\t\tModel Seed: {model_seed} Seed: {seed} OOD errors (MSE, MAE) stats: {ood_errors_stats_sample}\n")
 
         # report estimation error for each statistic
         with open(study_file, "a") as f:
@@ -258,19 +235,19 @@ if __name__ == '__main__':
                 id_errors_stats[key] = np.mean(id_errors_stats[key], axis=0)
                 id_model_results[key].append(id_errors_stats[key])
             f.write(f"\tModel seed: {model_seed} RS ID (MSE, MAE) errors stats: {id_errors_stats}\n")
-
+            
             for key in ood_errors_stats.keys():
                 ood_errors_stats[key] = np.mean(ood_errors_stats[key], axis=0)
                 ood_model_results[key].append(ood_errors_stats[key])
             f.write(f"\tModel seed: {model_seed} RS OOD (MSE, MAE) errors stats: {ood_errors_stats}\n")
-  
+                
     for key in id_model_results.keys():
         errors = np.vstack(id_model_results[key])
-        errors_stats = utils.compute_error_statistics(errors)
+        errors_stats = compute_error_statistics(errors)
         with open(study_file, "a") as f:
             f.write(f"Key: {key} RS ID (MSE, MAE) stats: {errors_stats}\n")
     for key in ood_model_results.keys():
         errors = np.vstack(ood_model_results[key])
-        errors_stats = utils.compute_error_statistics(errors)
+        errors_stats = compute_error_statistics(errors)
         with open(study_file, "a") as f:
             f.write(f"Key: {key} RS OOD (MSE, MAE) stats: {errors_stats}\n")

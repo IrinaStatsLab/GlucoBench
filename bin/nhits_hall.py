@@ -23,12 +23,12 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 # import data formatter
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from data_formatter.base import *
-from utils import *
+from bin.utils import *
 
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('../config/hall.yaml', 'r') as f:
+    with open('./config/hall.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -116,7 +116,7 @@ def objective(trial):
     el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
     loss_logger = LossLogger()
     pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
-    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner]}
+    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [1], "callbacks": [el_stopper, loss_logger, pruner]}
     # optimizer scheduler
     scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
     
@@ -164,7 +164,7 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = '../output/nhits_hall.txt'
+    study_file = './output/nhits_hall.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
@@ -223,7 +223,7 @@ if __name__ == '__main__':
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = LossLogger()
-            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger]}
+            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [1], "callbacks": [el_stopper, loss_logger]}
             # build the model
             model = models.NHiTSModel(input_chunk_length=in_len, 
                                         output_chunk_length=out_len, 

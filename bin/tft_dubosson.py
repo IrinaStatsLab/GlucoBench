@@ -94,17 +94,21 @@ def objective(trial):
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
     # suggest hyperparameters: model
-    hidden_size = trial.suggest_int("hidden_size", 32, 256, step=32)
-    num_attention_heads = trial.suggest_int("num_attention_heads", 2, 4, step=1)
-    dropout = trial.suggest_uniform("dropout", 0.0, 0.3)
+    hidden_size = trial.suggest_int("hidden_size", 16, 256, step=16)
+    num_attention_heads = trial.suggest_int("num_attention_heads", 1, 4, step=1)
+    dropout = trial.suggest_float("dropout", 0.1, 0.3)
     # suggest hyperparameters: training
-    lr = trial.suggest_uniform("lr", 1e-4, 1e-2)
+    lr = trial.suggest_float("lr", 1e-4, 1e-2)
     batch_size = trial.suggest_int("batch_size", 32, 64, step=16)
+    max_grad_norm = trial.suggest_float("max_grad_norm", 0.01, 1)
     # model callbacks
-    el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
+    el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.02, mode='min') 
     loss_logger = LossLogger()
     pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
-    pl_trainer_kwargs = {"accelerator": "cpu", "callbacks": [el_stopper, loss_logger, pruner]}
+    pl_trainer_kwargs = {"accelerator": "gpu", 
+                         "devices": [2], 
+                         "callbacks": [el_stopper, loss_logger, pruner],
+                         "gradient_clip_val": max_grad_norm,}
     
     # build the TFTModel model
     model = models.TFTModel(input_chunk_length = in_len, 
@@ -179,6 +183,7 @@ if __name__ == '__main__':
     # suggest hyperparameters: training
     lr = best_params["lr"]
     batch_size = best_params["batch_size"]
+    max_grad_norm = best_params["max_grad_norm"]
 
     # Set model seed
     model_seeds = list(range(10, 20))
@@ -194,7 +199,10 @@ if __name__ == '__main__':
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = LossLogger()
-            pl_trainer_kwargs = {"accelerator": "cpu", "callbacks": [el_stopper, loss_logger]}
+            pl_trainer_kwargs = {"accelerator": "gpu", 
+                                    "devices": [2], 
+                                    "callbacks": [el_stopper, loss_logger],
+                                    "gradient_clip_val": max_grad_norm,}
             # build the model
             model = models.TFTModel(input_chunk_length = in_len, 
                                     output_chunk_length = out_len, 
@@ -215,19 +223,19 @@ if __name__ == '__main__':
                                     force_reset=True)
             # train the model
             model.fit(series=series['train']['target'],
-                    val_series=series['val']['target'],
-                    max_samples_per_ts=max_samples_per_ts,
-                    verbose=False,)
+                      val_series=series['val']['target'],
+                      max_samples_per_ts=max_samples_per_ts,
+                      verbose=False,)
             model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
-                                                    forecast_horizon=out_len, 
-                                                    stride=stride,
-                                                    retrain=False,
-                                                    verbose=False,
-                                                    last_points_only=False,
-                                                    start=formatter.params["max_length_input"])
+                                                   forecast_horizon=out_len, 
+                                                   stride=stride,
+                                                   retrain=False,
+                                                   verbose=False,
+                                                   last_points_only=False,
+                                                   start=formatter.params["max_length_input"])
             id_errors_sample = rescale_and_backtest(series['test']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],
@@ -242,12 +250,12 @@ if __name__ == '__main__':
 
             # backtest on the ood test set
             forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                                    forecast_horizon=out_len, 
-                                                    stride=stride,
-                                                    retrain=False,
-                                                    verbose=False,
-                                                    last_points_only=False,
-                                                    start=formatter.params["max_length_input"])
+                                                   forecast_horizon=out_len, 
+                                                   stride=stride,
+                                                   retrain=False,
+                                                   verbose=False,
+                                                   last_points_only=False,
+                                                   start=formatter.params["max_length_input"])
             ood_errors_sample = rescale_and_backtest(series['test_ood']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],

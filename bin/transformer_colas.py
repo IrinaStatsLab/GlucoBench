@@ -23,12 +23,12 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 # import data formatter
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from data_formatter.base import *
-from utils import *
+from bin.utils import *
 
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('../config/colas.yaml', 'r') as f:
+    with open('./config/colas.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -105,11 +105,12 @@ def objective(trial):
     lr = trial.suggest_uniform("lr", 1e-4, 1e-3)
     batch_size = trial.suggest_int("batch_size", 32, 64, step=16)
     lr_epochs = trial.suggest_int("lr_epochs", 2, 20, step=2)
+    max_grad_norm = trial.suggest_float("max_grad_norm", 0.1, 1)
     # model callbacks
     el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
     loss_logger = LossLogger()
     pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
-    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner]}
+    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner], "gradient_clip_val": max_grad_norm}
     # optimizer scheduler
     scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
     
@@ -155,7 +156,7 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = '../output/transformer_colas.txt'
+    study_file = './output/transformer_colas.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
@@ -192,6 +193,7 @@ if __name__ == '__main__':
     lr = best_params["lr"]
     batch_size = best_params["batch_size"]
     lr_epochs = best_params["lr_epochs"]
+    max_grad_norm = best_params["max_grad_norm"]
     scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
 
     # Set model seed
@@ -199,7 +201,6 @@ if __name__ == '__main__':
     id_model_results = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     ood_model_results = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     for model_seed in model_seeds:
-        print(model_seed)
         # Backtest on the test set
         seeds = list(range(1, 3))
         id_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
@@ -209,7 +210,7 @@ if __name__ == '__main__':
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = LossLogger()
-            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger]}
+            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger], "gradient_clip_val": max_grad_norm}
             # build the model
             model = models.TransformerModel(input_chunk_length=in_len,
                                             output_chunk_length=out_len, 
