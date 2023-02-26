@@ -1,6 +1,7 @@
 # Dataset
 ds_name: hall2018
-data_csv_path: ../raw_data/Hall2018_processed_akhil.csv
+data_csv_path: ./raw_data/hall_covariates/hall_covariates.csv
+#./raw_data/Hall2018_processed_akhil.csv
 index_col: -1
 observation_interval: 5min
 
@@ -15,6 +16,147 @@ column_definition:
   - name: gl
     data_type: real_valued
     input_type: target
+  - name: Age
+    data_type: real_valued
+    input_type: static_input
+  - name: BMI
+    data_type: real_valued
+    input_type: static_input
+  - name: A1C
+    data_type: real_valued
+    input_type: static_input
+  - name: FBG
+    data_type: real_valued
+    input_type: static_input
+  - name: ogtt.2hr
+    data_type: real_valued
+    input_type: static_input
+  - name: insulin
+    data_type: real_valued
+    input_type: static_input
+  - name: hs.CRP
+    data_type: real_valued
+    input_type: static_input
+  - name: Tchol
+    data_type: real_valued
+    input_type: static_input
+  - name: Trg
+    data_type: real_valued
+    input_type: static_input
+  - name: HDL
+    data_type: real_valued
+    input_type: static_input
+  - name: LDL
+    data_type: real_valued
+    input_type: static_input
+  - name: mean_glucose
+    data_type: real_valued
+    input_type: static_input
+  - name: sd_glucose
+    data_type: real_valued
+    input_type: static_input
+  - name: range_glucose
+    data_type: real_valued
+    input_type: static_input
+  - name: min_glucose
+    data_type: real_valued
+    input_type: static_input
+  - name: max_glucose
+    data_type: real_valued
+    input_type: static_input
+  - name: quartile.25_glucose
+    data_type: real_valued
+    input_type: static_input
+  - name: median_glucose
+    data_type: real_valued
+    input_type: static_input
+  - name: quartile.75_glucose
+    data_type: real_valued
+    input_type: static_input
+  - name: mean_slope
+    data_type: real_valued
+    input_type: static_input
+  - name: max_slope
+    data_type: real_valued
+    input_type: static_input
+  - name: number_Random140
+    data_type: real_valued
+    input_type: static_input
+  - name: number_Random200
+    data_type: real_valued
+    input_type: static_input
+  - name: percent_below.80
+    data_type: real_valued
+    input_type: static_input
+  - name: se_glucose_mean
+    data_type: real_valued
+    input_type: static_input
+  - name: numGE
+    data_type: real_valued
+    input_type: static_input
+  - name: mage
+    data_type: real_valued
+    input_type: static_input
+  - name: j_index
+    data_type: real_valued
+    input_type: static_input
+  - name: IQR
+    data_type: real_valued
+    input_type: static_input
+  - name: modd
+    data_type: real_valued
+    input_type: static_input
+  - name: distance_traveled
+    data_type: real_valued
+    input_type: static_input
+  - name: coef_variation
+    data_type: real_valued
+    input_type: static_input
+  - name: number_Random140_normByDays
+    data_type: real_valued
+    input_type: static_input
+  - name: number_Random200_normByDays
+    data_type: real_valued
+    input_type: static_input
+  - name: numGE_normByDays
+    data_type: real_valued
+    input_type: static_input
+  - name: distance_traveled_normByDays
+    data_type: real_valued
+    input_type: static_input
+  - name: diagnosis
+    data_type: real_valued
+    input_type: static_input
+  - name: freq_low
+    data_type: real_valued
+    input_type: static_input
+  - name: freq_moderate
+    data_type: real_valued
+    input_type: static_input
+  - name: freq_severe
+    data_type: real_valued
+    input_type: static_input
+  - name: glucotype
+    data_type: categorical
+    input_type: static_input
+  - name: Height
+    data_type: real_valued
+    input_type: static_input
+  - name: Weight
+    data_type: real_valued
+    input_type: static_input
+  - name: Insulin_rate_dd
+    data_type: real_valued
+    input_type: static_input
+  - name: perc_cgm_prediabetic_range
+    data_type: real_valued
+    input_type: static_input
+  - name: perc_cgm_diabetic_range
+    data_type: real_valued
+    input_type: static_input
+  - name: SSPG
+    data_type: real_valued
+    input_type: static_input
 
 # Drop
 drop: 
