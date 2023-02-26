@@ -1,37 +1,6 @@
-# append proper directories into path
+from typing import List, Union, Dict
 import sys
 import os
-sys.path.append("/content/drive/MyDrive/Colab Notebooks")
-sys.path.append("/content/drive/MyDrive/Colab Notebooks/GitHub/GluNet")
-sys.path.append("/content/drive/MyDrive/Colab Notebooks/GitHub/GluNet/bin")
-
-import seaborn as sns
-sns.set_style('whitegrid')
-import matplotlib.pyplot as plt
-import statsmodels.api as sm
-
-from darts.dataprocessing.transformers import Scaler
-from torch.optim.lr_scheduler import StepLR
-from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-
-
-# GluNet imports
-from data_formatter.base import DataFormatter # in "/Glunet"
-import utils # in "/Glunet/bin"
-
-# installed in "MyDrive/Colab Notebooks"
-import optuna
-
-import darts
-from darts import models, metrics, TimeSeries
-from darts.dataprocessing.transformers import Scaler
-
-import statsforecast as sf
-
-# built-in packages
-import numpy as np
-from typing import List, Union, Dict
-
 import yaml
 import datetime
 from functools import partial
@@ -41,12 +10,25 @@ sns.set_style('whitegrid')
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import sklearn
+import optuna
+import darts
 
+from darts import models
+from darts import metrics
+from darts import TimeSeries
+from darts.dataprocessing.transformers import Scaler
+from torch.optim.lr_scheduler import StepLR
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+
+# import data formatter
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from data_formatter.base import *
+from bin.utils import *
 
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('./GitHub/GluNet/config/iglu.yaml', 'r') as f:
+    with open('./config/iglu.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -61,7 +43,7 @@ def load_data(seed = 0, study_file = None):
     future_cols = formatter.get_column('future_covs')
 
     # build series
-    series, scalers = utils.make_series({'train': formatter.train_data,
+    series, scalers = make_series({'train': formatter.train_data,
                                     'val': formatter.val_data,
                                     'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
                                     'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
@@ -88,7 +70,7 @@ def reshuffle_data(formatter, seed):
     future_cols = formatter.get_column('future_covs')
 
     # build series
-    series, scalers = utils.make_series({'train': formatter.train_data,
+    series, scalers = make_series({'train': formatter.train_data,
                                     'val': formatter.val_data,
                                     'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
                                     'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
@@ -102,10 +84,11 @@ def reshuffle_data(formatter, seed):
     return formatter, series, scalers
 
 # define objective function
+# define objective function
 def objective(trial):
     # set parameters
     out_len = formatter.params['length_pred']
-    model_name = f'tensorboard_nhits_weinstock'
+    model_name = f'tensorboard_nhits_iglu'
     work_dir = os.path.join(os.path.dirname(__file__), '../output')
     # suggest hyperparameters: input size
     in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
@@ -131,9 +114,9 @@ def objective(trial):
     lr_epochs = trial.suggest_int("lr_epochs", 2, 20, step=2)
     # model callbacks
     el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
-    loss_logger = utils.LossLogger()
-    pruner = utils.PyTorchLightningPruningCallback(trial, monitor="val_loss")
-    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner]}
+    loss_logger = LossLogger()
+    pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
+    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [1], "callbacks": [el_stopper, loss_logger, pruner]}
     # optimizer scheduler
     scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
     
@@ -163,7 +146,7 @@ def objective(trial):
     model.fit(series=series['train']['target'],
               val_series=series['val']['target'],
               max_samples_per_ts=max_samples_per_ts,
-              verbose=False,) 
+              verbose=False,)
     model.load_from_checkpoint(model_name, work_dir=work_dir)
 
     # backtest on the validation set
@@ -181,7 +164,7 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './GitHub/GluNet/output/nhits_iglu.txt'
+    study_file = './output/nhits_iglu.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
@@ -190,7 +173,7 @@ if __name__ == '__main__':
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
-    print_call = partial(utils.print_callback, study_file=study_file)
+    print_call = partial(print_callback, study_file=study_file)
     study.optimize(objective, n_trials=100, 
                    callbacks=[print_call], 
                    catch=(RuntimeError, KeyError))
@@ -201,8 +184,7 @@ if __name__ == '__main__':
     out_len = formatter.params['length_pred']
     stride = out_len // 2
     model_name = f'tensorboard_nhits_iglu'
-    work_dir = './GitHub/GluNet/output'
-
+    work_dir = os.path.join(os.path.dirname(__file__), '../output')
     # suggest hyperparameters: input size
     in_len = best_params["in_len"]
     max_samples_per_ts = best_params["max_samples_per_ts"]
@@ -240,8 +222,8 @@ if __name__ == '__main__':
             formatter, series, scalers = reshuffle_data(formatter, seed)
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
-            loss_logger = utils.LossLogger()
-            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger]}
+            loss_logger = LossLogger()
+            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [1], "callbacks": [el_stopper, loss_logger]}
             # build the model
             model = models.NHiTSModel(input_chunk_length=in_len, 
                                         output_chunk_length=out_len, 
@@ -278,13 +260,13 @@ if __name__ == '__main__':
                                                     verbose=False,
                                                     last_points_only=False,
                                                     start=formatter.params["max_length_input"])
-            id_errors_sample = utils.rescale_and_backtest(series['test']['target'],
+            id_errors_sample = rescale_and_backtest(series['test']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],
                                         scalers['target'],
                                         reduction=None)
             id_errors_sample = np.vstack(id_errors_sample)
-            id_error_stats_sample = utils.compute_error_statistics(id_errors_sample)
+            id_error_stats_sample = compute_error_statistics(id_errors_sample)
             for key in id_errors_stats.keys():
                 id_errors_stats[key].append(id_error_stats_sample[key])
             with open(study_file, "a") as f:
@@ -298,13 +280,13 @@ if __name__ == '__main__':
                                                     verbose=False,
                                                     last_points_only=False,
                                                     start=formatter.params["max_length_input"])
-            ood_errors_sample = utils.rescale_and_backtest(series['test_ood']['target'],
+            ood_errors_sample = rescale_and_backtest(series['test_ood']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],
                                         scalers['target'],
                                         reduction=None)
             ood_errors_sample = np.vstack(ood_errors_sample)
-            ood_errors_stats_sample = utils.compute_error_statistics(ood_errors_sample)
+            ood_errors_stats_sample = compute_error_statistics(ood_errors_sample)
             for key in ood_errors_stats.keys():
                 ood_errors_stats[key].append(ood_errors_stats_sample[key])
             with open(study_file, "a") as f:
@@ -324,11 +306,11 @@ if __name__ == '__main__':
                 
     for key in id_model_results.keys():
         errors = np.vstack(id_model_results[key])
-        errors_stats = utils.compute_error_statistics(errors)
+        errors_stats = compute_error_statistics(errors)
         with open(study_file, "a") as f:
             f.write(f"Key: {key} RS ID (MSE, MAE) stats: {errors_stats}\n")
     for key in ood_model_results.keys():
         errors = np.vstack(ood_model_results[key])
-        errors_stats = utils.compute_error_statistics(errors)
+        errors_stats = compute_error_statistics(errors)
         with open(study_file, "a") as f:
             f.write(f"Key: {key} RS OOD (MSE, MAE) stats: {errors_stats}\n")
