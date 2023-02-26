@@ -125,7 +125,7 @@ column_definition:
     data_type: real_valued
     input_type: static_input
   - name: diagnosis
-    data_type: real_valued
+    data_type: categorical
     input_type: static_input
   - name: freq_low
     data_type: real_valued
