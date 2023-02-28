@@ -1,6 +1,6 @@
 # Dataset
 ds_name: dubosson2018
-data_csv_path: ./raw_data/Dubosson2018_processed.csv
+data_csv_path: ./raw_data/Dubosson_processed_with_covariates.csv
 index_col: -1
 observation_interval: 5min
 
@@ -15,6 +15,39 @@ column_definition:
   - name: gl
     data_type: real_valued
     input_type: target
+  - name: fast_insulin
+    data_type: real_valued
+    input_type: known_input
+  - name: slow_insulin
+    data_type: real_valued
+    input_type: known_input
+  - name: calories
+    data_type: real_valued
+    input_type: known_input
+  - name: balance
+    data_type: categorical
+    input_type: known_input
+  - name: quality
+    data_type: categorical
+    input_type: known_input
+  - name: HR
+    data_type: real_valued
+    input_type: known_input
+  - name: BR
+    data_type: real_valued
+    input_type: known_input
+  - name: Posture
+    data_type: real_valued
+    input_type: known_input
+  - name: Activity
+    data_type: real_valued
+    input_type: known_input
+  - name: HRV
+    data_type: real_valued
+    input_type: known_input
+  - name: CoreTemp
+    data_type: real_valued
+    input_type: known_input
 
 # Drop
 drop:

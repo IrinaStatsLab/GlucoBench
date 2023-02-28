@@ -21,12 +21,12 @@ from darts.dataprocessing.transformers import Scaler
 # import data formatter
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from data_formatter.base import *
-from utils import *
+from bin.utils import *
 
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('../config/hall.yaml', 'r') as f:
+    with open('./config/dubosson.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -51,6 +51,18 @@ def load_data(seed = 0, study_file = None):
                                     'static': static_cols,
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
+    
+    # attach static covariates to series
+    for i in range(len(series['train']['target'])):
+        static_covs = series['train']['static'][i][0].pd_dataframe()
+        series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
+    # attach to validation and test series
+    for i in range(len(series['val']['target'])):
+        static_covs = series['val']['static'][i][0].pd_dataframe()
+        series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test']['target'])):
+        static_covs = series['test']['static'][i][0].pd_dataframe()
+        series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
     
     return formatter, series, scalers
 
@@ -79,6 +91,18 @@ def reshuffle_data(formatter, seed):
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
     
+    # attach static covariates to series
+    for i in range(len(series['train']['target'])):
+        static_covs = series['train']['static'][i][0].pd_dataframe()
+        series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
+    # attach to validation and test series
+    for i in range(len(series['val']['target'])):
+        static_covs = series['val']['static'][i][0].pd_dataframe()
+        series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test']['target'])):
+        static_covs = series['test']['static'][i][0].pd_dataframe()
+        series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+    
     return formatter, series, scalers
 
 # define objective function
@@ -92,14 +116,17 @@ def objective(trial):
 
     # build the Linear Regression model
     model = models.LinearRegressionModel(lags = in_len,
-                                         output_chunk_length = out_len)
+                                         lags_future_covariates = (in_len, formatter.params['length_pred']),
+                                         output_chunk_length = formatter.params['length_pred'])
 
     # train the model
     model.fit(series['train']['target'],
-              max_samples_per_ts=max_samples_per_ts)
+            future_covariates=series['train']['future'],
+            max_samples_per_ts=max_samples_per_ts)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
+                            future_covariates = series['val']['future'],
                             forecast_horizon=out_len,
                             stride=out_len,
                             retrain=False,
@@ -113,7 +140,7 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = '../output/linreg_hall.txt'
+    study_file = './output/linreg_covariates_dubosson.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
@@ -144,19 +171,22 @@ if __name__ == '__main__':
         formatter, series, scalers = reshuffle_data(formatter, seed)
         # build the model
         model = models.LinearRegressionModel(lags = in_len,
-                                             output_chunk_length = out_len)
+                                             lags_future_covariates = (in_len, formatter.params['length_pred']),
+                                             output_chunk_length = formatter.params['length_pred'])
         # train the model
         model.fit(series['train']['target'],
+                  future_covariates=series['train']['future'],
                   max_samples_per_ts=max_samples_per_ts)
 
         # backtest on the test set
         forecasts = model.historical_forecasts(series['test']['target'],
-                                            forecast_horizon=out_len, 
-                                            stride=stride,
-                                            retrain=False,
-                                            verbose=False,
-                                            last_points_only=False,
-                                            start=formatter.params["max_length_input"])
+                                               future_covariates = series['test']['future'],
+                                               forecast_horizon=out_len, 
+                                               stride=stride,
+                                               retrain=False,
+                                               verbose=False,
+                                               last_points_only=False,
+                                               start=formatter.params["max_length_input"])
         id_errors_sample = rescale_and_backtest(series['test']['target'],
                                     forecasts,  
                                     [metrics.mse, metrics.mae],
@@ -171,12 +201,13 @@ if __name__ == '__main__':
 
         # backtest on the ood test set
         forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                                forecast_horizon=out_len, 
-                                                stride=stride,
-                                                retrain=False,
-                                                verbose=False,
-                                                last_points_only=False,
-                                                start=formatter.params["max_length_input"])
+                                               future_covariates = series['test_ood']['future'],
+                                               forecast_horizon=out_len, 
+                                               stride=stride,
+                                               retrain=False,
+                                               verbose=False,
+                                               last_points_only=False,
+                                               start=formatter.params["max_length_input"])
         ood_errors_sample = rescale_and_backtest(series['test_ood']['target'],
                                     forecasts,  
                                     [metrics.mse, metrics.mae],
