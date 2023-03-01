@@ -23,7 +23,7 @@ from statsforecast.models import AutoARIMA
 # import data formatter
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from data_formatter.base import *
-from utils import *
+from bin.utils import *
 
 def test_model(test_data, scaler, in_len, out_len, stride, target_col, group_col):
     errors = []
@@ -60,14 +60,14 @@ def test_model(test_data, scaler, in_len, out_len, stride, target_col, group_col
 
 if __name__ == '__main__':
     # study file
-    study_file = '../output/arima_colas.txt'
+    study_file = './output/arima_colas.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
             # write current date and time
             f.write(f"Optimization started at {datetime.datetime.now()}\n")
     # load data
-    with open('../config/colas.yaml', 'r') as f:
+    with open('./config/colas.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['scaling_params']['scaler'] = 'MinMaxScaler'
     formatter = DataFormatter(config, study_file = study_file)
@@ -83,7 +83,6 @@ if __name__ == '__main__':
     id_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     ood_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     for seed in seeds:
-        print(seed)
         formatter.reshuffle(seed)
         test_data = formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)]
         test_data_ood = formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]

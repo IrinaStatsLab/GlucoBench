@@ -85,8 +85,8 @@ def reshuffle_data(formatter, seed):
 def objective(trial):
     out_len = formatter.params['length_pred']
     # suggest hyperparameters
-    in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
-    max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 100, 250, step=50)
+    in_len = trial.suggest_int("in_len", 24, formatter.params['max_length_input'], step=12)
+    max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=50)
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
     lr = trial.suggest_float("lr", 0.001, 1.0, step=0.001)
@@ -97,7 +97,7 @@ def objective(trial):
     gamma = trial.suggest_float("gamma", 0.5, 10, step=0.5)
     alpha = trial.suggest_float("alpha", 0.001, 0.3, step=0.001)
     lambda_ = trial.suggest_float("lambda_", 0.001, 0.3, step=0.001)
-    n_estimators = trial.suggest_int("n_estimators", 128, 512, step=32)
+    n_estimators = trial.suggest_int("n_estimators", 256, 512, step=32)
     
     # build the XGBoost model
     model = models.XGBModel(lags=in_len, 
@@ -140,7 +140,7 @@ if __name__ == '__main__':
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
     print_call = partial(print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=400, 
+    study.optimize(objective, n_trials=50, 
                    callbacks=[print_call], 
                    catch=(np.linalg.LinAlgError, KeyError))
     

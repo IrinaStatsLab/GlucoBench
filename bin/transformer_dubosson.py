@@ -105,11 +105,12 @@ def objective(trial):
     lr = trial.suggest_uniform("lr", 1e-4, 1e-3)
     batch_size = trial.suggest_int("batch_size", 32, 64, step=16)
     lr_epochs = trial.suggest_int("lr_epochs", 2, 20, step=2)
+    max_grad_norm = trial.suggest_float("max_grad_norm", 0.1, 1)
     # model callbacks
     el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
     loss_logger = LossLogger()
     pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
-    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [3], "callbacks": [el_stopper, loss_logger, pruner]}
+    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner], "gradient_clip_val": max_grad_norm}
     # optimizer scheduler
     scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
     
@@ -192,6 +193,7 @@ if __name__ == '__main__':
     lr = best_params["lr"]
     batch_size = best_params["batch_size"]
     lr_epochs = best_params["lr_epochs"]
+    max_grad_norm = best_params["max_grad_norm"]
     scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
 
     # Set model seed
@@ -208,7 +210,7 @@ if __name__ == '__main__':
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = LossLogger()
-            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [3], "callbacks": [el_stopper, loss_logger]}
+            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger], "gradient_clip_val": max_grad_norm}
             # build the model
             model = models.TransformerModel(input_chunk_length=in_len,
                                             output_chunk_length=out_len, 

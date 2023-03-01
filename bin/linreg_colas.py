@@ -21,12 +21,12 @@ from darts.dataprocessing.transformers import Scaler
 # import data formatter
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from data_formatter.base import *
-from utils import *
+from bin.utils import *
 
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('../config/colas.yaml', 'r') as f:
+    with open('./config/colas.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -113,7 +113,7 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = '../output/linreg_colas.txt'
+    study_file = './output/linreg_colas.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
@@ -141,7 +141,6 @@ if __name__ == '__main__':
     id_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     ood_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
     for seed in seeds:
-        print(seed)
         formatter, series, scalers = reshuffle_data(formatter, seed)
         # build the model
         model = models.LinearRegressionModel(lags = in_len,
@@ -153,7 +152,7 @@ if __name__ == '__main__':
         # backtest on the test set
         forecasts = model.historical_forecasts(series['test']['target'],
                                             forecast_horizon=out_len, 
-                                            stride=out_len,
+                                            stride=stride,
                                             retrain=False,
                                             verbose=False,
                                             last_points_only=False,
@@ -173,7 +172,7 @@ if __name__ == '__main__':
         # backtest on the ood test set
         forecasts = model.historical_forecasts(series['test_ood']['target'],
                                                 forecast_horizon=out_len, 
-                                                stride=out_len,
+                                                stride=stride,
                                                 retrain=False,
                                                 verbose=False,
                                                 last_points_only=False,

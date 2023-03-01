@@ -1,8 +1,9 @@
-Optimization started at 2023-02-15 13:17:27.767688
+Optimization started at 2023-02-27 10:06:31.283471
 --------------------------------
 Loading column definition...
 Checking column definition...
 Loading data...
+Dropping columns / rows...
 Checking for NA values...
 Setting data types...
 Dropping columns / rows...
@@ -11,6 +12,44 @@ Encoding data...
 		id: REAL_VALUED (ID)
 		time: DATE (TIME)
 		gl: REAL_VALUED (TARGET)
+		Height: REAL_VALUED (STATIC_INPUT)
+		Weight: REAL_VALUED (STATIC_INPUT)
+		Gender: REAL_VALUED (STATIC_INPUT)
+		Race: REAL_VALUED (STATIC_INPUT)
+		EduLevel: REAL_VALUED (STATIC_INPUT)
+		AnnualInc: REAL_VALUED (STATIC_INPUT)
+		MaritalStatus: REAL_VALUED (STATIC_INPUT)
+		DaysWkEx: REAL_VALUED (STATIC_INPUT)
+		DaysWkDrinkAlc: REAL_VALUED (STATIC_INPUT)
+		DaysMonBingeAlc: REAL_VALUED (STATIC_INPUT)
+		T1DDiagAge: REAL_VALUED (STATIC_INPUT)
+		NumHospDKA: REAL_VALUED (STATIC_INPUT)
+		NumSHSinceT1DDiag: REAL_VALUED (STATIC_INPUT)
+		InsDeliveryMethod: REAL_VALUED (STATIC_INPUT)
+		UnitsInsTotal: REAL_VALUED (STATIC_INPUT)
+		NumMeterCheckDay: REAL_VALUED (STATIC_INPUT)
+		Aspirin: REAL_VALUED (STATIC_INPUT)
+		Simvastatin: REAL_VALUED (STATIC_INPUT)
+		Lisinopril: REAL_VALUED (STATIC_INPUT)
+		Vitamin D: REAL_VALUED (STATIC_INPUT)
+		Multivitamin preparation: REAL_VALUED (STATIC_INPUT)
+		Omeprazole: REAL_VALUED (STATIC_INPUT)
+		atorvastatin: REAL_VALUED (STATIC_INPUT)
+		Synthroid: REAL_VALUED (STATIC_INPUT)
+		vitamin D3: REAL_VALUED (STATIC_INPUT)
+		Hypertension: REAL_VALUED (STATIC_INPUT)
+		Hyperlipidemia: REAL_VALUED (STATIC_INPUT)
+		Hypothyroidism: REAL_VALUED (STATIC_INPUT)
+		Depression: REAL_VALUED (STATIC_INPUT)
+		Coronary artery disease: REAL_VALUED (STATIC_INPUT)
+		Diabetic peripheral neuropathy: REAL_VALUED (STATIC_INPUT)
+		Dyslipidemia: REAL_VALUED (STATIC_INPUT)
+		Chronic kidney disease: REAL_VALUED (STATIC_INPUT)
+		Osteoporosis: REAL_VALUED (STATIC_INPUT)
+		Proliferative diabetic retinopathy: REAL_VALUED (STATIC_INPUT)
+		Hypercholesterolemia: REAL_VALUED (STATIC_INPUT)
+		Erectile dysfunction: REAL_VALUED (STATIC_INPUT)
+		Type I diabetes mellitus: REAL_VALUED (STATIC_INPUT)
 		time_year: REAL_VALUED (KNOWN_INPUT)
 		time_month: REAL_VALUED (KNOWN_INPUT)
 		time_day: REAL_VALUED (KNOWN_INPUT)
@@ -26,67 +65,67 @@ Splitting data...
 	Val: 96960 (18.58%)
 	Test: 125008 (23.96%)
 Scaling data...
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 Data formatting complete.
 --------------------------------
 	Train: 353965 (68.13%)
 	Val: 98160 (18.89%)
 	Test: 127657 (24.57%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 	Seed: 10 ID errors (MSE, MAE) stats: {'min': [array([9.11877870e-13, 9.47233695e-07])], 'max': [array([18102.49366316,   122.17321079])], 'mean': [array([911.01640112,  18.78554135])], 'std': [array([1826.83395947,   17.60109738])], 'quantile25': [array([60.39027076,  6.31353282])], 'median': [array([262.59222701,  13.4863337 ])], 'quantile75': [array([914.11695254,  25.55796046])]}
 	Seed: 10 OOD errors (MSE, MAE) stats: {'min': [array([1.04188157e-12, 1.01977149e-06])], 'max': [array([30139.259636 ,   166.4067613])], 'mean': [array([821.01950783,  17.97957207])], 'std': [array([1824.90431383,   16.93037289])], 'quantile25': [array([59.72568795,  6.4195978 ])], 'median': [array([234.31061454,  12.83627317])], 'quantile75': [array([792.32595849,  24.19935428])]}
 	Train: 356036 (68.38%)
 	Val: 96720 (18.58%)
 	Test: 127026 (24.40%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 	Seed: 11 ID errors (MSE, MAE) stats: {'min': [array([9.11877870e-13, 9.47233695e-07])], 'max': [array([26767.85781718,   157.34903919])], 'mean': [array([932.4791712 ,  18.98701302])], 'std': [array([1943.59729502,   17.85374424])], 'quantile25': [array([62.53932583,  6.46329815])], 'median': [array([264.37543512,  13.6697208 ])], 'quantile75': [array([916.29343315,  25.83061405])]}
 	Seed: 11 OOD errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([33254.74541083,   153.41665712])], 'mean': [array([837.01490211,  18.25417323])], 'std': [array([1832.1112034,   17.1314833])], 'quantile25': [array([65.46898855,  6.76556991])], 'median': [array([243.32161472,  12.98329973])], 'quantile75': [array([799.57001144,  24.45036977])]}
 	Train: 358161 (68.89%)
 	Val: 96720 (18.60%)
 	Test: 124901 (24.02%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 	Seed: 12 ID errors (MSE, MAE) stats: {'min': [array([9.11877870e-13, 9.47233695e-07])], 'max': [array([26767.85781718,   157.34903919])], 'mean': [array([963.72255715,  19.32126831])], 'std': [array([1994.15933096,   18.16125823])], 'quantile25': [array([64.61427334,  6.57042631])], 'median': [array([272.94790044,  13.86146943])], 'quantile75': [array([948.82915208,  26.09417342])]}
 	Seed: 12 OOD errors (MSE, MAE) stats: {'min': [array([1.31630015e-12, 1.14556797e-06])], 'max': [array([84348.84919129,   255.51413586])], 'mean': [array([867.2910728 ,  18.35266143])], 'std': [array([2214.88650008,   17.54569591])], 'quantile25': [array([64.15443505,  6.64334005])], 'median': [array([232.87767466,  12.91601187])], 'quantile75': [array([813.30477266,  24.42854751])]}
 	Train: 357254 (68.74%)
 	Val: 96240 (18.52%)
 	Test: 126288 (24.30%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 	Seed: 13 ID errors (MSE, MAE) stats: {'min': [array([9.11877870e-13, 9.47233695e-07])], 'max': [array([26767.85781718,   157.34903919])], 'mean': [array([903.60805314,  18.56828762])], 'std': [array([1901.88327784,   17.60841076])], 'quantile25': [array([57.58017352,  6.19601238])], 'median': [array([254.53608714,  13.32984726])], 'quantile75': [array([870.41775042,  25.22122659])]}
 	Seed: 13 OOD errors (MSE, MAE) stats: {'min': [array([1.31630015e-12, 1.14556797e-06])], 'max': [array([57968.69771143,   218.74998791])], 'mean': [array([903.83654622,  18.87935515])], 'std': [array([2116.62441006,   17.81439965])], 'quantile25': [array([66.03788616,  6.76863788])], 'median': [array([255.03454088,  13.39251706])], 'quantile75': [array([884.33989842,  25.49012036])]}
 	Train: 349936 (68.32%)
 	Val: 96480 (18.84%)
 	Test: 133366 (26.04%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 	Seed: 14 ID errors (MSE, MAE) stats: {'min': [array([9.11877870e-13, 9.47233695e-07])], 'max': [array([26767.85781718,   157.34903919])], 'mean': [array([919.31154808,  18.91876718])], 'std': [array([1905.15985092,   17.63189803])], 'quantile25': [array([63.84492666,  6.55480196])], 'median': [array([264.60102441,  13.6025322 ])], 'quantile75': [array([913.83329474,  25.61788462])]}
 	Seed: 14 OOD errors (MSE, MAE) stats: {'min': [array([1.12587113e-12, 1.05524794e-06])], 'max': [array([66722.10047723,   229.68571846])], 'mean': [array([837.65068721,  18.0511962 ])], 'std': [array([1929.44267879,   17.19690493])], 'quantile25': [array([60.00470623,  6.39968535])], 'median': [array([225.88925371,  12.62378127])], 'quantile75': [array([770.29732195,  23.81847909])]}
 	Train: 358159 (68.45%)
 	Val: 98160 (18.76%)
 	Test: 123463 (23.59%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 	Seed: 15 ID errors (MSE, MAE) stats: {'min': [array([9.11877870e-13, 9.47233695e-07])], 'max': [array([26767.85781718,   157.34903919])], 'mean': [array([915.42835206,  18.80641368])], 'std': [array([1921.32588622,   17.66076065])], 'quantile25': [array([62.51048684,  6.43732034])], 'median': [array([263.51251586,  13.54085185])], 'quantile75': [array([898.89977503,  25.49557189])]}
 	Seed: 15 OOD errors (MSE, MAE) stats: {'min': [array([7.51856026e-13, 8.36857452e-07])], 'max': [array([84348.84919129,   255.51413586])], 'mean': [array([985.65651372,  19.57645198])], 'std': [array([2234.50345781,   18.52065392])], 'quantile25': [array([68.05022517,  6.83091277])], 'median': [array([278.18923831,  14.07629055])], 'quantile75': [array([960.62032742,  26.10563631])]}
 	Train: 362751 (68.35%)
 	Val: 99600 (18.77%)
 	Test: 117431 (22.13%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 	Seed: 16 ID errors (MSE, MAE) stats: {'min': [array([9.11877870e-13, 9.47233695e-07])], 'max': [array([26767.85781718,   157.34903919])], 'mean': [array([932.86684635,  18.93965824])], 'std': [array([1945.69756777,   17.94744797])], 'quantile25': [array([60.36997379,  6.31353282])], 'median': [array([256.75512234,  13.468349  ])], 'quantile75': [array([923.50320618,  25.83278476])]}
 	Seed: 16 OOD errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([118900.42872336,    284.94598896])], 'mean': [array([981.47973855,  18.9531745 ])], 'std': [array([2867.05654185,   19.21456191])], 'quantile25': [array([65.09444924,  6.69399049])], 'median': [array([245.05784617,  13.10604501])], 'quantile75': [array([828.63977182,  24.49886645])]}
 	Train: 353339 (68.69%)
 	Val: 93840 (18.24%)
 	Test: 132603 (25.78%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 	Seed: 17 ID errors (MSE, MAE) stats: {'min': [array([9.11877870e-13, 9.47233695e-07])], 'max': [array([26767.85781718,   157.34903919])], 'mean': [array([936.28419655,  18.90979681])], 'std': [array([1978.08918926,   18.05833132])], 'quantile25': [array([60.33697415,  6.26324138])], 'median': [array([258.85839049,  13.43677469])], 'quantile75': [array([912.01471757,  25.62281468])]}
 	Seed: 17 OOD errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([63570.91215749,   252.08332442])], 'mean': [array([1004.95469815,   19.71625735])], 'std': [array([2373.44050318,   19.00741303])], 'quantile25': [array([69.82834075,  6.90228707])], 'median': [array([269.87250651,  13.876074  ])], 'quantile75': [array([947.65874461,  26.18958261])]}
 	Train: 352265 (68.56%)
 	Val: 96000 (18.68%)
 	Test: 131517 (25.60%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 	Seed: 18 ID errors (MSE, MAE) stats: {'min': [array([9.11877870e-13, 9.47233695e-07])], 'max': [array([26767.85781718,   157.34903919])], 'mean': [array([903.57668642,  18.69099221])], 'std': [array([1909.58568486,   17.6202675 ])], 'quantile25': [array([58.73123003,  6.23142825])], 'median': [array([256.75512234,  13.4863337 ])], 'quantile75': [array([912.86741031,  25.79963154])]}
 	Seed: 18 OOD errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([63570.91215749,   252.08332442])], 'mean': [array([997.72988846,  19.85792049])], 'std': [array([2200.78745926,   18.64262835])], 'quantile25': [array([73.03404159,  7.13591494])], 'median': [array([282.9486811 ,  14.18076623])], 'quantile75': [array([977.04211482,  26.63475799])]}
 	Train: 350491 (68.33%)
 	Val: 96720 (18.85%)
 	Test: 132571 (25.84%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([26767.85781718,   157.34903919])], 'mean': [array([941.39028781,  18.96780668])], 'std': [array([1974.06522282,   18.09162283])], 'quantile25': [array([58.49809952,  6.21649368])], 'median': [array([253.84493236,  13.34333573])], 'quantile75': [array([932.36533365,  26.0761612 ])]}
 	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([36523.34066106,   166.69617359])], 'mean': [array([874.71080959,  18.69654964])], 'std': [array([1861.62441456,   17.42568081])], 'quantile25': [array([64.99941073,  6.76870836])], 'median': [array([252.18247192,  13.36551638])], 'quantile75': [array([852.83339836,  24.83442999])]}
 RS ID (MSE, MAE) errors stats: {'mean': array([[925.96840999,  18.88955451]]), 'std': array([[1930.03972651,   17.82348389]]), 'quantile25': array([[60.94157344,  6.35600881]]), 'quantile75': array([[914.31410257,  25.71488232]]), 'median': array([[260.87787575,  13.52255484]]), 'min': array([[9.80528033e-13, 9.78937360e-07]]), 'max': array([[25901.32140178,   153.83145635]])}
