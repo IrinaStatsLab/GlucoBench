@@ -1,4 +1,45 @@
-# Wednesday February 15, 2023
+# Wednesday March 1, 2023
+Next Meeting: Wednesday March 8th, 2023  
+Next Meeting Notetaker: **Nicky?**
+
+## Goals
+* By **Saturday**:
+	* Encode time column in column_definition (See Renat's yaml to be pushed)
+	* Run linreg, xgboost, tft with covariates
+	* Draft bullet points for your sections in overleaf (sections below)
+* By **Wednesday**:
+	* Run nhits, transformer with covariates
+	* Write a paragraph for your sections in overleaf
+
+## Paper Assigned Sections
+* Nathaniel: 5.2, 5.3
+* Valeriya: 5.1, 3.2, 
+* Nicky: 4.2, 3.3 (if Renat qualifies what he means), 4.1 if he wants to try; or help with 5.*
+* Lizzie: 3.1, 4.3
+
+## Updates
+* Lizzie added covariates, ran linreg and xgboost
+	* Need to add encoded time
+* Nathaniel has no covariates, ran linreg and xgboost
+	* Need to add encoded time
+* Valeriya has added covariates but lots of NAs
+	* For example fast and slow insulin some subjects have a lot of NAs
+	* Forward propagate calories until next known measurement 
+		* Linearly interpolate to 0
+	* Forward propagate insulin (fast lasts 2-3 hours, slow lasts 24 hours)
+		* Linearly interpolate to 0
+	* Balance and quality take sum for each subject
+	* HR, BR, posture, activity, HRV interpolate between known values if possible
+		* Set NAs as 0
+	* Coretemp interpolate and fill endpoints with mean
+	* Overall if subject is completely lacking, then code as 0
+* How to report errors to report in paper:
+	* Arima and linreg look at median
+	* Other models look at Key: median{‘mean’}
+
+
+
+# Wednesday February 22, 2023
 Next Meeting: Wednesday March 1st, 2023
 Next Meeting Notetaker: **TBD**
 
