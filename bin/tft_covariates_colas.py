@@ -57,13 +57,15 @@ def load_data(seed = 0, study_file = None):
     for i in range(len(series['train']['target'])):
         static_covs = series['train']['static'][i][0].pd_dataframe()
         series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
-    # attach to validation and test series
     for i in range(len(series['val']['target'])):
         static_covs = series['val']['static'][i][0].pd_dataframe()
         series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
     for i in range(len(series['test']['target'])):
         static_covs = series['test']['static'][i][0].pd_dataframe()
         series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test_ood']['target'])):
+        static_covs = series['test_ood']['static'][i][0].pd_dataframe()
+        series['test_ood']['target'][i] = series['test_ood']['target'][i].with_static_covariates(static_covs)
     
     return formatter, series, scalers
 
@@ -96,13 +98,15 @@ def reshuffle_data(formatter, seed):
     for i in range(len(series['train']['target'])):
         static_covs = series['train']['static'][i][0].pd_dataframe()
         series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
-    # attach to validation and test series
     for i in range(len(series['val']['target'])):
         static_covs = series['val']['static'][i][0].pd_dataframe()
         series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
     for i in range(len(series['test']['target'])):
         static_covs = series['test']['static'][i][0].pd_dataframe()
         series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test_ood']['target'])):
+        static_covs = series['test_ood']['static'][i][0].pd_dataframe()
+        series['test_ood']['target'][i] = series['test_ood']['target'][i].with_static_covariates(static_covs)
     
     return formatter, series, scalers
 
@@ -110,7 +114,7 @@ def reshuffle_data(formatter, seed):
 def objective(trial):
     # set parameters
     out_len = formatter.params['length_pred']
-    model_name = f'tensorboard_tft_covariates_weinstock'
+    model_name = f'tensorboard_tft_covariates_colas'
     work_dir = os.path.join(os.path.dirname(__file__), '../output')
     # suggest hyperparameters: input size
     in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
