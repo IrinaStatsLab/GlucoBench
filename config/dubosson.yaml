@@ -17,37 +17,37 @@ column_definition:
     input_type: target
   - name: fast_insulin
     data_type: real_valued
-    input_type: known_input
+    input_type: observed_input
   - name: slow_insulin
     data_type: real_valued
-    input_type: known_input
+    input_type: observed_input
   - name: calories
     data_type: real_valued
-    input_type: known_input
+    input_type: observed_input
   - name: balance
     data_type: categorical
-    input_type: known_input
+    input_type: observed_input
   - name: quality
     data_type: categorical
-    input_type: known_input
+    input_type: observed_input
   - name: HR
     data_type: real_valued
-    input_type: known_input
+    input_type: observed_input
   - name: BR
     data_type: real_valued
-    input_type: known_input
+    input_type: observed_input
   - name: Posture
     data_type: real_valued
-    input_type: known_input
+    input_type: observed_input
   - name: Activity
     data_type: real_valued
-    input_type: known_input
+    input_type: observed_input
   - name: HRV
     data_type: real_valued
-    input_type: known_input
+    input_type: observed_input
   - name: CoreTemp
     data_type: real_valued
-    input_type: known_input
+    input_type: observed_input
 
 # Drop
 drop:

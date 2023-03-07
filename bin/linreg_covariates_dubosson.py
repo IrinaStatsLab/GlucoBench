@@ -56,13 +56,15 @@ def load_data(seed = 0, study_file = None):
     for i in range(len(series['train']['target'])):
         static_covs = series['train']['static'][i][0].pd_dataframe()
         series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
-    # attach to validation and test series
     for i in range(len(series['val']['target'])):
         static_covs = series['val']['static'][i][0].pd_dataframe()
         series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
     for i in range(len(series['test']['target'])):
         static_covs = series['test']['static'][i][0].pd_dataframe()
         series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test_ood']['target'])):
+        static_covs = series['test_ood']['static'][i][0].pd_dataframe()
+        series['test_ood']['target'][i] = series['test_ood']['target'][i].with_static_covariates(static_covs)
     
     return formatter, series, scalers
 
@@ -95,13 +97,15 @@ def reshuffle_data(formatter, seed):
     for i in range(len(series['train']['target'])):
         static_covs = series['train']['static'][i][0].pd_dataframe()
         series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
-    # attach to validation and test series
     for i in range(len(series['val']['target'])):
         static_covs = series['val']['static'][i][0].pd_dataframe()
         series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
     for i in range(len(series['test']['target'])):
         static_covs = series['test']['static'][i][0].pd_dataframe()
         series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test_ood']['target'])):
+        static_covs = series['test_ood']['static'][i][0].pd_dataframe()
+        series['test_ood']['target'][i] = series['test_ood']['target'][i].with_static_covariates(static_covs)
     
     return formatter, series, scalers
 
@@ -116,16 +120,19 @@ def objective(trial):
 
     # build the Linear Regression model
     model = models.LinearRegressionModel(lags = in_len,
+                                         lags_past_covariates = in_len,
                                          lags_future_covariates = (in_len, formatter.params['length_pred']),
                                          output_chunk_length = formatter.params['length_pred'])
 
     # train the model
     model.fit(series['train']['target'],
-            future_covariates=series['train']['future'],
-            max_samples_per_ts=max_samples_per_ts)
+              past_covariates=series['train']['dynamic'],
+              future_covariates=series['train']['future'],
+              max_samples_per_ts=max_samples_per_ts)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
+                            past_covariates = series['val']['dynamic'],
                             future_covariates = series['val']['future'],
                             forecast_horizon=out_len,
                             stride=out_len,
@@ -171,15 +178,18 @@ if __name__ == '__main__':
         formatter, series, scalers = reshuffle_data(formatter, seed)
         # build the model
         model = models.LinearRegressionModel(lags = in_len,
+                                             lags_past_covariates = in_len,
                                              lags_future_covariates = (in_len, formatter.params['length_pred']),
                                              output_chunk_length = formatter.params['length_pred'])
         # train the model
         model.fit(series['train']['target'],
+                  past_covariates=series['train']['dynamic'],
                   future_covariates=series['train']['future'],
                   max_samples_per_ts=max_samples_per_ts)
 
         # backtest on the test set
         forecasts = model.historical_forecasts(series['test']['target'],
+                                               past_covariates = series['test']['dynamic'],
                                                future_covariates = series['test']['future'],
                                                forecast_horizon=out_len, 
                                                stride=stride,
@@ -201,6 +211,7 @@ if __name__ == '__main__':
 
         # backtest on the ood test set
         forecasts = model.historical_forecasts(series['test_ood']['target'],
+                                               past_covariates = series['test_ood']['dynamic'],
                                                future_covariates = series['test_ood']['future'],
                                                forecast_horizon=out_len, 
                                                stride=stride,

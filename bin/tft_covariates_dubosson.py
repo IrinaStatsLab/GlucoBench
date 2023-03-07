@@ -17,6 +17,7 @@ from darts import models
 from darts import metrics
 from darts import TimeSeries
 from darts.dataprocessing.transformers import Scaler
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 
 # import data formatter
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -97,7 +98,6 @@ def reshuffle_data(formatter, seed):
     for i in range(len(series['train']['target'])):
         static_covs = series['train']['static'][i][0].pd_dataframe()
         series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
-    # attach to validation and test series
     for i in range(len(series['val']['target'])):
         static_covs = series['val']['static'][i][0].pd_dataframe()
         series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
@@ -112,46 +112,66 @@ def reshuffle_data(formatter, seed):
 
 # define objective function
 def objective(trial):
+    # set parameters
     out_len = formatter.params['length_pred']
-    # suggest hyperparameters
-    in_len = trial.suggest_int("in_len", 24, formatter.params['max_length_input'], step=12)
+    model_name = f'tensorboard_tft_covariates_dubosson'
+    work_dir = os.path.join(os.path.dirname(__file__), '../output')
+    # suggest hyperparameters: input size
+    in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
     max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=50)
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
-    lr = trial.suggest_float("lr", 0.001, 1.0, step=0.001)
-    subsample = trial.suggest_float("subsample", 0.6, 1.0, step=0.1)
-    min_child_weight = trial.suggest_float("min_child_weight", 1.0, 5.0, step=1.0)
-    colsample_bytree = trial.suggest_float("colsample_bytree", 0.8, 1.0, step=0.1)
-    max_depth = trial.suggest_int("max_depth", 4, 10, step=1)
-    gamma = trial.suggest_float("gamma", 0.5, 10, step=0.5)
-    alpha = trial.suggest_float("alpha", 0.001, 0.3, step=0.001)
-    lambda_ = trial.suggest_float("lambda_", 0.001, 0.3, step=0.001)
-    n_estimators = trial.suggest_int("n_estimators", 256, 512, step=32)
+    # suggest hyperparameters: model
+    hidden_size = trial.suggest_int("hidden_size", 16, 256, step=16)
+    num_attention_heads = trial.suggest_int("num_attention_heads", 1, 4, step=1)
+    dropout = trial.suggest_float("dropout", 0.1, 0.3)
+    # suggest hyperparameters: training
+    lr = trial.suggest_float("lr", 1e-4, 1e-2)
+    batch_size = trial.suggest_int("batch_size", 32, 64, step=16)
+    max_grad_norm = trial.suggest_float("max_grad_norm", 0.01, 1)
+    # model callbacks
+    el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.02, mode='min') 
+    loss_logger = LossLogger()
+    pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
+    pl_trainer_kwargs = {"accelerator": "gpu", 
+                         "devices": [2], 
+                         "callbacks": [el_stopper, loss_logger, pruner],
+                         "gradient_clip_val": max_grad_norm,}
     
-    # build the XGBoost model
-    model = models.XGBModel(lags=in_len, 
-                            lags_past_covariates = in_len,
-                            lags_future_covariates = (in_len, formatter.params['length_pred']),
-                            learning_rate=lr,
-                            subsample=subsample,
-                            min_child_weight=min_child_weight,
-                            colsample_bytree=colsample_bytree,
-                            max_depth=max_depth,
-                            gamma=gamma,
-                            reg_alpha=alpha,
-                            reg_lambda=lambda_,
-                            n_estimators=n_estimators)
+    # build the TFTModel model
+    model = models.TFTModel(input_chunk_length = in_len, 
+                            output_chunk_length = out_len, 
+                            hidden_size = hidden_size,
+                            lstm_layers = 1,
+                            num_attention_heads = num_attention_heads,
+                            full_attention = False,
+                            dropout = dropout,
+                            hidden_continuous_size = 4,
+                            add_relative_index = True,
+                            model_name = model_name,
+                            work_dir = work_dir,
+                            log_tensorboard = True,
+                            pl_trainer_kwargs = pl_trainer_kwargs,
+                            batch_size = batch_size,
+                            optimizer_kwargs = {'lr': lr},
+                            save_checkpoints = True,
+                            force_reset=True)
 
     # train the model
-    model.fit(series['train']['target'],
-              past_covariates=series['train']['dynamic'],
+    model.fit(series=series['train']['target'],
               future_covariates=series['train']['future'],
-              max_samples_per_ts=max_samples_per_ts)
+              past_covariates=series['train']['dynamic'],
+              val_series=series['val']['target'],
+              val_future_covariates=series['val']['future'],
+              val_past_covariates=series['val']['dynamic'],
+              max_samples_per_ts=max_samples_per_ts,
+              verbose=False,)
+    model.load_from_checkpoint(model_name, work_dir = work_dir)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
-                            past_covariates=series['val']['dynamic'],
                             future_covariates=series['val']['future'],
+                            past_covariates=series['val']['dynamic'],
                             forecast_horizon=out_len,
                             stride=out_len,
                             retrain=False,
@@ -160,12 +180,11 @@ def objective(trial):
                             last_points_only=False,
                             )
     avg_error = np.mean(errors)
-
     return avg_error
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './output/xgboost_covariates_dubosson.txt'
+    study_file = './output/tft_covariates_dubosson.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
@@ -177,25 +196,28 @@ if __name__ == '__main__':
     print_call = partial(print_callback, study_file=study_file)
     study.optimize(objective, n_trials=50, 
                    callbacks=[print_call], 
-                   catch=(np.linalg.LinAlgError, KeyError))
+                   catch=(RuntimeError, KeyError))
     
     # Select best hyperparameters 
     best_params = study.best_trial.params
-    in_len = best_params['in_len']
+    # set parameters
     out_len = formatter.params['length_pred']
     stride = out_len // 2
-    max_samples_per_ts = best_params['max_samples_per_ts']
+    model_name = f'tensorboard_tft_covariates_dubosson'
+    work_dir = os.path.join(os.path.dirname(__file__), '../output')
+    # suggest hyperparameters: input size
+    in_len = best_params["in_len"]
+    max_samples_per_ts = best_params["max_samples_per_ts"]
     if max_samples_per_ts < 100:
-        max_samples_per_ts = None
-    lr = best_params['lr']
-    subsample = best_params['subsample']
-    min_child_weight = best_params['min_child_weight']
-    colsample_bytree = best_params['colsample_bytree']
-    max_depth = best_params['max_depth']
-    gamma = best_params['gamma']
-    alpha = best_params['alpha']
-    lambda_ = best_params['lambda_']
-    n_estimators = best_params['n_estimators']
+        max_samples_per_ts = None # unlimited
+    # suggest hyperparameters: model
+    hidden_size = best_params["hidden_size"]
+    num_attention_heads = best_params["num_attention_heads"]
+    dropout = best_params["dropout"]
+    # suggest hyperparameters: training
+    lr = best_params["lr"]
+    batch_size = best_params["batch_size"]
+    max_grad_norm = best_params["max_grad_norm"]
 
     # Set model seed
     model_seeds = list(range(10, 20))
@@ -208,30 +230,46 @@ if __name__ == '__main__':
         ood_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
         for seed in seeds:
             formatter, series, scalers = reshuffle_data(formatter, seed)
+            # model callbacks
+            el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
+            loss_logger = LossLogger()
+            pl_trainer_kwargs = {"accelerator": "gpu", 
+                                    "devices": [2], 
+                                    "callbacks": [el_stopper, loss_logger],
+                                    "gradient_clip_val": max_grad_norm,}
             # build the model
-            model = models.XGBModel(lags=in_len, 
-                                    lags_past_covariates = in_len,
-                                    lags_future_covariates = (in_len, formatter.params['length_pred']),
-                                    learning_rate=lr,
-                                    subsample=subsample,
-                                    min_child_weight=min_child_weight,
-                                    colsample_bytree=colsample_bytree,
-                                    max_depth=max_depth,
-                                    gamma=gamma,
-                                    reg_alpha=alpha,
-                                    reg_lambda=lambda_,
-                                    n_estimators=n_estimators,
-                                    random_state=model_seed)
+            model = models.TFTModel(input_chunk_length = in_len, 
+                                    output_chunk_length = out_len, 
+                                    hidden_size = hidden_size,
+                                    lstm_layers = 1,
+                                    num_attention_heads = num_attention_heads,
+                                    full_attention = False,
+                                    dropout = dropout,
+                                    hidden_continuous_size = 4,
+                                    add_relative_index = True,
+                                    model_name = model_name,
+                                    work_dir = work_dir,
+                                    log_tensorboard = True,
+                                    pl_trainer_kwargs = pl_trainer_kwargs,
+                                    batch_size = batch_size,
+                                    optimizer_kwargs = {'lr': lr},
+                                    save_checkpoints = True,
+                                    force_reset=True)
             # train the model
-            model.fit(series['train']['target'],
-                      past_covariates=series['train']['dynamic'],
+            model.fit(series=series['train']['target'],
                       future_covariates=series['train']['future'],
-                      max_samples_per_ts=max_samples_per_ts)
+                      past_covariates=series['train']['dynamic'],
+                      val_series=series['val']['target'],
+                      val_future_covariates=series['val']['future'],
+                      val_past_covariates=series['val']['dynamic'],
+                      max_samples_per_ts=max_samples_per_ts,
+                      verbose=False,)
+            model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
-                                                   past_covariates=series['test']['dynamic'],
                                                    future_covariates=series['test']['future'],
+                                                   past_covariates=series['test']['dynamic'],
                                                    forecast_horizon=out_len, 
                                                    stride=stride,
                                                    retrain=False,
@@ -252,8 +290,8 @@ if __name__ == '__main__':
 
             # backtest on the ood test set
             forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                                   past_covariates=series['test_ood']['dynamic'],
                                                    future_covariates=series['test_ood']['future'],
+                                                   past_covariates=series['test_ood']['dynamic'],
                                                    forecast_horizon=out_len, 
                                                    stride=stride,
                                                    retrain=False,
