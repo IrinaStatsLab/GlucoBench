@@ -16,9 +16,9 @@ import optuna
 import darts
 from darts import models, metrics, TimeSeries
 from darts.dataprocessing.transformers import Scaler
-
 from torch.optim.lr_scheduler import StepLR
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+import statsforecast as sf
 
 # built-in packages
 import numpy as np
@@ -37,7 +37,7 @@ import sklearn
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('GitHub/GluNet/config/iglu.yaml', 'r') as f:
+    with open('./GitHub/GluNet/config/iglu.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -62,6 +62,16 @@ def load_data(seed = 0, study_file = None):
                                     'static': static_cols,
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
+    
+    # attach observed covariate series to known input series
+    for i in range(len(series['train']['future'])):
+        series['train']['future'][i] = series['train']['future'][i].concatenate(series['train']['dynamic'][i], axis=1)
+    for i in range(len(series['val']['future'])):
+        series['val']['future'][i] = series['val']['future'][i].concatenate(series['val']['dynamic'][i], axis=1)
+    for i in range(len(series['test']['future'])):
+        series['test']['future'][i] = series['test']['future'][i].concatenate(series['test']['dynamic'][i], axis=1)
+    for i in range(len(series['test_ood']['future'])):
+        series['test_ood']['future'][i] = series['test_ood']['future'][i].concatenate(series['test_ood']['dynamic'][i], axis=1)
     
     return formatter, series, scalers
 
@@ -89,6 +99,17 @@ def reshuffle_data(formatter, seed):
                                     'static': static_cols,
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
+
+    # attach observed covariate series to known input series
+    for i in range(len(series['train']['future'])):
+        series['train']['future'][i] = series['train']['future'][i].concatenate(series['train']['dynamic'][i], axis=1)
+    for i in range(len(series['val']['future'])):
+        series['val']['future'][i] = series['val']['future'][i].concatenate(series['val']['dynamic'][i], axis=1)
+    for i in range(len(series['test']['future'])):
+        series['test']['future'][i] = series['test']['future'][i].concatenate(series['test']['dynamic'][i], axis=1)
+    for i in range(len(series['test_ood']['future'])):
+        series['test_ood']['future'][i] = series['test_ood']['future'][i].concatenate(series['test_ood']['dynamic'][i], axis=1)
+    
     
     return formatter, series, scalers
 
@@ -96,8 +117,8 @@ def reshuffle_data(formatter, seed):
 def objective(trial):
     # set parameters
     out_len = formatter.params['length_pred']
-    model_name = f'tensorboard_transformer_iglu'
-    work_dir = os.path.join(os.path.dirname(__file__), '../output')
+    model_name = f'tensorboard_transformer_covariates_iglu'
+    work_dir = os.path.join(os.path.dirname(__file__), 'GitHub/GluNet/output')
     # suggest hyperparameters: input size
     in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
     max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=50)
@@ -145,13 +166,16 @@ def objective(trial):
 
     # train the model
     model.fit(series=series['train']['target'],
+              past_covariates=series['train']['future'],
               val_series=series['val']['target'],
+              val_past_covariates=series['val']['future'], # potential bug?
               max_samples_per_ts=max_samples_per_ts,
               verbose=False,)
     model.load_from_checkpoint(model_name, work_dir=work_dir)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
+                            past_covariates=series['val']['future'],
                             forecast_horizon=out_len,
                             stride=out_len,
                             retrain=False,
@@ -165,12 +189,13 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = 'GitHub/GluNet/output/transformer_iglu.txt'
+    study_file = './GitHub/GluNet/output/transformer_covariates_iglu.txt'
+
     # check that file exists otherwise create it
-    if not os.path.exists(study_file):
-        with open(study_file, "w") as f:
-            # write current date and time
-            f.write(f"Optimization started at {datetime.datetime.now()}")
+    with open(study_file, "a+") as f:
+        # write current date and time
+        f.write(f"Optimization started at {datetime.datetime.now()}")
+
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
@@ -184,8 +209,9 @@ if __name__ == '__main__':
     # set parameters
     out_len = formatter.params['length_pred']
     stride = out_len // 2
-    model_name = f'tensorboard_transformer_iglu'
-    work_dir = os.path.join(os.path.dirname(__file__), '../output')
+    model_name = f'tensorboard_transformer_covariates_iglu'
+    work_dir = "GitHub/GluNet/output"
+
     # suggest hyperparameters: input size
     in_len = best_params["in_len"]
     max_samples_per_ts = best_params["max_samples_per_ts"]
@@ -242,13 +268,16 @@ if __name__ == '__main__':
 
             # train the model
             model.fit(series=series['train']['target'],
+                    past_covariates=series['train']['future'],
                     val_series=series['val']['target'],
+                    val_past_covariates=series['val']['future'],
                     max_samples_per_ts=max_samples_per_ts,
                     verbose=False,)
             model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
+                                                    past_covariates=series['test']['future'],
                                                     forecast_horizon=out_len, 
                                                     stride=stride,
                                                     retrain=False,
@@ -269,6 +298,7 @@ if __name__ == '__main__':
 
             # backtest on the ood test set
             forecasts = model.historical_forecasts(series['test_ood']['target'],
+                                                    past_covariates=series['test_ood']['future'],
                                                     forecast_horizon=out_len, 
                                                     stride=stride,
                                                     retrain=False,

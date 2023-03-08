@@ -18,8 +18,6 @@ from darts.dataprocessing.transformers import Scaler
 
 import statsforecast as sf
 
-print(sf.__version__)
-
 # built-in packages
 import numpy as np
 from typing import List, Union, Dict
@@ -76,6 +74,9 @@ def load_data(seed = 0, study_file = None):
     for i in range(len(series['test']['target'])):
         static_covs = series['test']['static'][i][0].pd_dataframe()
         series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test_ood']['target'])):
+        static_covs = series['test_ood']['static'][i][0].pd_dataframe()
+        series['test_ood']['target'][i] = series['test_ood']['target'][i].with_static_covariates(static_covs)
     
     return formatter, series, scalers
 
@@ -115,6 +116,9 @@ def reshuffle_data(formatter, seed):
     for i in range(len(series['test']['target'])):
         static_covs = series['test']['static'][i][0].pd_dataframe()
         series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test_ood']['target'])):
+        static_covs = series['test_ood']['static'][i][0].pd_dataframe()
+        series['test_ood']['target'][i] = series['test_ood']['target'][i].with_static_covariates(static_covs)
     
     return formatter, series, scalers
 
@@ -139,6 +143,7 @@ def objective(trial):
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
+                            past_covariates = series['val']['dynamic'],
                             future_covariates = series['val']['future'],
                             forecast_horizon=out_len,
                             stride=out_len,
@@ -154,11 +159,12 @@ def objective(trial):
 if __name__ == '__main__':
     # Optuna study 
     study_file = './GitHub/GluNet/output/linreg_covariates_iglu.txt'
+
     # check that file exists otherwise create it
-    if not os.path.exists(study_file):
-        with open(study_file, "w") as f:
-            # write current date and time
-            f.write(f"Optimization started at {datetime.datetime.now()}\n")
+    with open(study_file, "a+") as f:
+        # write current date and time
+        f.write(f"Optimization started at {datetime.datetime.now()}\n")
+
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
@@ -184,15 +190,18 @@ if __name__ == '__main__':
         formatter, series, scalers = reshuffle_data(formatter, seed)
         # build the model
         model = models.LinearRegressionModel(lags = in_len,
+                                             lags_past_covariates = in_len,
                                              lags_future_covariates = (in_len, formatter.params['length_pred']),
                                              output_chunk_length = formatter.params['length_pred'])
         # train the model
         model.fit(series['train']['target'],
+                  past_covariates=series['train']['dynamic'],
                   future_covariates=series['train']['future'],
                   max_samples_per_ts=max_samples_per_ts)
 
         # backtest on the test set
         forecasts = model.historical_forecasts(series['test']['target'],
+                                               past_covariates = series['test']['dynamic'],
                                                future_covariates = series['test']['future'],
                                                forecast_horizon=out_len, 
                                                stride=stride,
@@ -214,6 +223,7 @@ if __name__ == '__main__':
 
         # backtest on the ood test set
         forecasts = model.historical_forecasts(series['test_ood']['target'],
+                                               past_covariates = series['test_ood']['dynamic'],
                                                future_covariates = series['test_ood']['future'],
                                                forecast_horizon=out_len, 
                                                stride=stride,

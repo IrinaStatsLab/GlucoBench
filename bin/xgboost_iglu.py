@@ -1,6 +1,26 @@
-from typing import List, Union, Dict
+# append proper directories into path
 import sys
 import os
+
+sys.path.append("/content/drive/MyDrive/Colab Notebooks")
+sys.path.append("/content/drive/MyDrive/Colab Notebooks/GitHub/GluNet")
+sys.path.append("/content/drive/MyDrive/Colab Notebooks/GitHub/GluNet/bin")
+
+# GluNet imports
+from data_formatter.base import DataFormatter # in "/Glunet"
+import utils # in "/Glunet/bin"
+
+# installed in "MyDrive/Colab Notebooks"
+import optuna
+
+import darts
+from darts import models, metrics, TimeSeries
+from darts.dataprocessing.transformers import Scaler
+
+# built-in packages
+import numpy as np
+from typing import List, Union, Dict
+
 import yaml
 import datetime
 from functools import partial
@@ -10,23 +30,11 @@ sns.set_style('whitegrid')
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import sklearn
-import optuna
-import darts
-
-from darts import models
-from darts import metrics
-from darts import TimeSeries
-from darts.dataprocessing.transformers import Scaler
-
-# import data formatter
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from data_formatter.base import *
-from bin.utils import *
 
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('./config/iglu.yaml', 'r') as f:
+    with open('GitHub/GluNet/config/iglu.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -41,16 +49,16 @@ def load_data(seed = 0, study_file = None):
     future_cols = formatter.get_column('future_covs')
 
     # build series
-    series, scalers = make_series({'train': formatter.train_data,
-                                    'val': formatter.val_data,
-                                    'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
-                                    'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
-                                    time_col,
-                                    group_col,
-                                    {'target': target_col,
-                                    'static': static_cols,
-                                    'dynamic': dynamic_cols,
-                                    'future': future_cols})
+    series, scalers = utils.make_series({'train': formatter.train_data,
+                                         'val': formatter.val_data,
+                                         'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
+                                         'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
+                                         time_col,
+                                         group_col,
+                                         {'target': target_col,
+                                         'static': static_cols,
+                                         'dynamic': dynamic_cols,
+                                         'future': future_cols})
     
     return formatter, series, scalers
 
@@ -68,7 +76,7 @@ def reshuffle_data(formatter, seed):
     future_cols = formatter.get_column('future_covs')
 
     # build series
-    series, scalers = make_series({'train': formatter.train_data,
+    series, scalers = utils.make_series({'train': formatter.train_data,
                                     'val': formatter.val_data,
                                     'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
                                     'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
@@ -130,7 +138,7 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './output/xgboost_iglu.txt'
+    study_file = 'GitHub/GluNet/output/xgboost_iglu.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
@@ -139,7 +147,7 @@ if __name__ == '__main__':
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
-    print_call = partial(print_callback, study_file=study_file)
+    print_call = partial(utils.print_callback, study_file=study_file)
     study.optimize(objective, n_trials=50, 
                    callbacks=[print_call], 
                    catch=(np.linalg.LinAlgError, KeyError))
@@ -197,13 +205,13 @@ if __name__ == '__main__':
                                                 verbose=False,
                                                 last_points_only=False,
                                                 start=formatter.params["max_length_input"])
-            id_errors_sample = rescale_and_backtest(series['test']['target'],
+            id_errors_sample = utils.rescale_and_backtest(series['test']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],
                                         scalers['target'],
                                         reduction=None)
             id_errors_sample = np.vstack(id_errors_sample)
-            id_error_stats_sample = compute_error_statistics(id_errors_sample)
+            id_error_stats_sample = utils.compute_error_statistics(id_errors_sample)
             for key in id_errors_stats.keys():
                 id_errors_stats[key].append(id_error_stats_sample[key])
             with open(study_file, "a") as f:
@@ -217,13 +225,13 @@ if __name__ == '__main__':
                                                     verbose=False,
                                                     last_points_only=False,
                                                     start=formatter.params["max_length_input"])
-            ood_errors_sample = rescale_and_backtest(series['test_ood']['target'],
+            ood_errors_sample = utils.rescale_and_backtest(series['test_ood']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],
                                         scalers['target'],
                                         reduction=None)
             ood_errors_sample = np.vstack(ood_errors_sample)
-            ood_errors_stats_sample = compute_error_statistics(ood_errors_sample)
+            ood_errors_stats_sample = utils.compute_error_statistics(ood_errors_sample)
             for key in ood_errors_stats.keys():
                 ood_errors_stats[key].append(ood_errors_stats_sample[key])
             with open(study_file, "a") as f:
@@ -243,11 +251,11 @@ if __name__ == '__main__':
                 
     for key in id_model_results.keys():
         errors = np.vstack(id_model_results[key])
-        errors_stats = compute_error_statistics(errors)
+        errors_stats = utils.compute_error_statistics(errors)
         with open(study_file, "a") as f:
             f.write(f"Key: {key} RS ID (MSE, MAE) stats: {errors_stats}\n")
     for key in ood_model_results.keys():
         errors = np.vstack(ood_model_results[key])
-        errors_stats = compute_error_statistics(errors)
+        errors_stats = utils.compute_error_statistics(errors)
         with open(study_file, "a") as f:
             f.write(f"Key: {key} RS OOD (MSE, MAE) stats: {errors_stats}\n")

@@ -1,6 +1,56 @@
-from typing import List, Union, Dict
+# from typing import List, Union, Dict
+# import sys
+# import os
+# import yaml
+# import datetime
+# from functools import partial
+
+# import seaborn as sns
+# sns.set_style('whitegrid')
+# import matplotlib.pyplot as plt
+# import statsmodels.api as sm
+# import sklearn
+# import optuna
+# import darts
+
+# from darts import models
+# from darts import metrics
+# from darts import TimeSeries
+# from darts.dataprocessing.transformers import Scaler
+
+# from statsforecast.models import AutoARIMA
+
+# # import data formatter
+# sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+# from data_formatter.base import *
+# from bin.utils import *
+
+# append proper directories into path
 import sys
 import os
+
+sys.path.append("/content/drive/MyDrive/Colab Notebooks")
+sys.path.append("/content/drive/MyDrive/Colab Notebooks/GitHub/GluNet")
+sys.path.append("/content/drive/MyDrive/Colab Notebooks/GitHub/GluNet/bin")
+
+# GluNet imports
+from data_formatter.base import DataFormatter # in "/Glunet"
+import utils # in "/Glunet/bin"
+
+# installed in "MyDrive/Colab Notebooks"
+import optuna
+
+import darts
+from darts import models, metrics, TimeSeries
+from darts.dataprocessing.transformers import Scaler
+
+# import statsforecast as sf
+from statsforecast.models import AutoARIMA
+
+# built-in packages
+import numpy as np
+from typing import List, Union, Dict
+
 import yaml
 import datetime
 from functools import partial
@@ -10,20 +60,6 @@ sns.set_style('whitegrid')
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import sklearn
-import optuna
-import darts
-
-from darts import models
-from darts import metrics
-from darts import TimeSeries
-from darts.dataprocessing.transformers import Scaler
-
-from statsforecast.models import AutoARIMA
-
-# import data formatter
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from data_formatter.base import *
-from bin.utils import *
 
 def test_model(test_data, scaler, in_len, out_len, stride, target_col, group_col):
     errors = []
@@ -60,14 +96,14 @@ def test_model(test_data, scaler, in_len, out_len, stride, target_col, group_col
 
 if __name__ == '__main__':
     # study file
-    study_file = './output/arima_iglu.txt'
+    study_file = 'GitHub/GluNet/output/arima_iglu.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
             # write current date and time
             f.write(f"Optimization started at {datetime.datetime.now()}\n")
     # load data
-    with open('./config/iglu.yaml', 'r') as f:
+    with open('GitHub/GluNet/config/iglu.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['scaling_params']['scaler'] = 'MinMaxScaler'
     formatter = DataFormatter(config, study_file = study_file)
@@ -90,7 +126,7 @@ if __name__ == '__main__':
         # backtest on the ID test set
         id_errors_sample = test_model(test_data, formatter.scalers[target_col[0]], in_len, out_len, stride, target_col, group_col)
         id_errors_sample = np.vstack(id_errors_sample)
-        id_error_stats_sample = compute_error_statistics(id_errors_sample)
+        id_error_stats_sample = utils.compute_error_statistics(id_errors_sample)
         for key in id_errors_stats.keys():
             id_errors_stats[key].append(id_error_stats_sample[key])
         with open(study_file, "a") as f:
@@ -99,7 +135,7 @@ if __name__ == '__main__':
         # backtest on the ood test set
         ood_errors_sample = test_model(test_data_ood, formatter.scalers[target_col[0]], in_len, out_len, stride, target_col, group_col)
         ood_errors_sample = np.vstack(ood_errors_sample)
-        ood_errors_stats_sample = compute_error_statistics(ood_errors_sample)
+        ood_errors_stats_sample = utils.compute_error_statistics(ood_errors_sample)
         for key in ood_errors_stats.keys():
             ood_errors_stats[key].append(ood_errors_stats_sample[key])
         with open(study_file, "a") as f:

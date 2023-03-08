@@ -16,9 +16,9 @@ import optuna
 import darts
 from darts import models, metrics, TimeSeries
 from darts.dataprocessing.transformers import Scaler
-
 from torch.optim.lr_scheduler import StepLR
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+import statsforecast as sf
 
 # built-in packages
 import numpy as np
@@ -37,7 +37,7 @@ import sklearn
 # define data loader
 def load_data(seed = 0, study_file = None):
     # load data
-    with open('GitHub/GluNet/config/iglu.yaml', 'r') as f:
+    with open('./GitHub/GluNet/config/iglu.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
@@ -62,6 +62,20 @@ def load_data(seed = 0, study_file = None):
                                     'static': static_cols,
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
+    
+    # attach static covariates to series
+    for i in range(len(series['train']['target'])):
+        static_covs = series['train']['static'][i][0].pd_dataframe()
+        series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['val']['target'])):
+        static_covs = series['val']['static'][i][0].pd_dataframe()
+        series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test']['target'])):
+        static_covs = series['test']['static'][i][0].pd_dataframe()
+        series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test_ood']['target'])):
+        static_covs = series['test_ood']['static'][i][0].pd_dataframe()
+        series['test_ood']['target'][i] = series['test_ood']['target'][i].with_static_covariates(static_covs)
     
     return formatter, series, scalers
 
@@ -90,68 +104,84 @@ def reshuffle_data(formatter, seed):
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
     
+    # attach static covariates to series
+    for i in range(len(series['train']['target'])):
+        static_covs = series['train']['static'][i][0].pd_dataframe()
+        series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['val']['target'])):
+        static_covs = series['val']['static'][i][0].pd_dataframe()
+        series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test']['target'])):
+        static_covs = series['test']['static'][i][0].pd_dataframe()
+        series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+    for i in range(len(series['test_ood']['target'])):
+        static_covs = series['test_ood']['static'][i][0].pd_dataframe()
+        series['test_ood']['target'][i] = series['test_ood']['target'][i].with_static_covariates(static_covs)
+    
     return formatter, series, scalers
 
 # define objective function
 def objective(trial):
     # set parameters
     out_len = formatter.params['length_pred']
-    model_name = f'tensorboard_transformer_iglu'
-    work_dir = os.path.join(os.path.dirname(__file__), '../output')
+    model_name = f'tensorboard_tft_covariates_iglu'
+    work_dir = "GitHub/GluNet/output"
     # suggest hyperparameters: input size
     in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
     max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=50)
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
     # suggest hyperparameters: model
-    d_model = trial.suggest_int("d_model", 32, 128, step=32)
-    n_heads = trial.suggest_int("n_heads", 2, 4, step=2)
-    num_encoder_layers = trial.suggest_int("num_encoder_layers", 1, 4, step=1)
-    num_decoder_layers = trial.suggest_int("num_decoder_layers", 1, 4, step=1)
-    dim_feedforward = trial.suggest_int("dim_feedforward", 32, 512, step=32)
-    dropout = trial.suggest_uniform("dropout", 0, 0.2)
+    hidden_size = trial.suggest_int("hidden_size", 16, 256, step=16)
+    num_attention_heads = trial.suggest_int("num_attention_heads", 1, 4, step=1)
+    dropout = trial.suggest_float("dropout", 0.1, 0.3)
     # suggest hyperparameters: training
-    lr = trial.suggest_uniform("lr", 1e-4, 1e-3)
+    lr = trial.suggest_float("lr", 1e-4, 1e-2)
     batch_size = trial.suggest_int("batch_size", 32, 64, step=16)
-    lr_epochs = trial.suggest_int("lr_epochs", 2, 20, step=2)
-    max_grad_norm = trial.suggest_float("max_grad_norm", 0.1, 1)
+    max_grad_norm = trial.suggest_float("max_grad_norm", 0.01, 1)
     # model callbacks
-    el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
+    el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.02, mode='min') 
     loss_logger = utils.LossLogger()
     pruner = utils.PyTorchLightningPruningCallback(trial, monitor="val_loss")
-    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner], "gradient_clip_val": max_grad_norm}
-    # optimizer scheduler
-    scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
+    pl_trainer_kwargs = {"accelerator": "gpu", 
+                         "devices": [0], 
+                         "callbacks": [el_stopper, loss_logger, pruner],
+                         "gradient_clip_val": max_grad_norm,}
     
-    # build the TransformerModel model
-    model = models.TransformerModel(input_chunk_length=in_len,
-                                    output_chunk_length=out_len, 
-                                    d_model=d_model, 
-                                    nhead=n_heads, 
-                                    num_encoder_layers=num_encoder_layers, 
-                                    num_decoder_layers=num_decoder_layers, 
-                                    dim_feedforward=dim_feedforward, 
-                                    dropout=dropout,
-                                    log_tensorboard = True,
-                                    pl_trainer_kwargs = pl_trainer_kwargs,
-                                    batch_size = batch_size,
-                                    optimizer_kwargs = {'lr': lr},
-                                    lr_scheduler_cls = StepLR,
-                                    lr_scheduler_kwargs = scheduler_kwargs,
-                                    save_checkpoints = True,
-                                    model_name = model_name,
-                                    work_dir = work_dir,
-                                    force_reset = True,)
+    # build the TFTModel model
+    model = models.TFTModel(input_chunk_length = in_len, 
+                            output_chunk_length = out_len, 
+                            hidden_size = hidden_size,
+                            lstm_layers = 1,
+                            num_attention_heads = num_attention_heads,
+                            full_attention = False,
+                            dropout = dropout,
+                            hidden_continuous_size = 4,
+                            add_relative_index = True,
+                            model_name = model_name,
+                            work_dir = work_dir,
+                            log_tensorboard = True,
+                            pl_trainer_kwargs = pl_trainer_kwargs,
+                            batch_size = batch_size,
+                            optimizer_kwargs = {'lr': lr},
+                            save_checkpoints = True,
+                            force_reset=True)
 
     # train the model
     model.fit(series=series['train']['target'],
+              future_covariates=series['train']['future'],
+              past_covariates=series['train']['dynamic'],
               val_series=series['val']['target'],
+              val_future_covariates=series['val']['future'],
+              val_past_covariates=series['val']['dynamic'],
               max_samples_per_ts=max_samples_per_ts,
               verbose=False,)
-    model.load_from_checkpoint(model_name, work_dir=work_dir)
+    model.load_from_checkpoint(model_name, work_dir = work_dir)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
+                            future_covariates=series['val']['future'],
+                            past_covariates=series['val']['dynamic'],
                             forecast_horizon=out_len,
                             stride=out_len,
                             retrain=False,
@@ -160,50 +190,45 @@ def objective(trial):
                             last_points_only=False,
                             )
     avg_error = np.mean(errors)
-
     return avg_error
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = 'GitHub/GluNet/output/transformer_iglu.txt'
+    study_file = 'GitHub/GluNet/output/tft_covariates_iglu.txt'
+
     # check that file exists otherwise create it
-    if not os.path.exists(study_file):
-        with open(study_file, "w") as f:
-            # write current date and time
-            f.write(f"Optimization started at {datetime.datetime.now()}")
+    with open(study_file, "a+") as f:
+        # write current date and time
+        (f"Optimization started at {datetime.datetime.now()}\n")
+
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
     study = optuna.create_study(direction="minimize")
     print_call = partial(utils.print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=100, 
+    study.optimize(objective, n_trials=50, 
                    callbacks=[print_call], 
                    catch=(RuntimeError, KeyError))
-
+    
     # Select best hyperparameters 
     best_params = study.best_trial.params
     # set parameters
     out_len = formatter.params['length_pred']
     stride = out_len // 2
-    model_name = f'tensorboard_transformer_iglu'
-    work_dir = os.path.join(os.path.dirname(__file__), '../output')
+    model_name = f'tensorboard_tft_covariates_iglu'
+    work_dir = "GitHub/GluNet/output"
     # suggest hyperparameters: input size
     in_len = best_params["in_len"]
     max_samples_per_ts = best_params["max_samples_per_ts"]
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
     # suggest hyperparameters: model
-    d_model = best_params["d_model"]
-    n_heads = best_params["n_heads"]
-    num_encoder_layers = best_params["num_encoder_layers"]
-    num_decoder_layers = best_params["num_decoder_layers"]
-    dim_feedforward = best_params["dim_feedforward"]
+    hidden_size = best_params["hidden_size"]
+    num_attention_heads = best_params["num_attention_heads"]
     dropout = best_params["dropout"]
     # suggest hyperparameters: training
     lr = best_params["lr"]
     batch_size = best_params["batch_size"]
-    lr_epochs = best_params["lr_epochs"]
     max_grad_norm = best_params["max_grad_norm"]
-    scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
 
     # Set model seed
     model_seeds = list(range(10, 20))
@@ -219,42 +244,49 @@ if __name__ == '__main__':
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = utils.LossLogger()
-            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger], "gradient_clip_val": max_grad_norm}
+            pl_trainer_kwargs = {"accelerator": "gpu", 
+                                    "devices": [0], 
+                                    "callbacks": [el_stopper, loss_logger],
+                                    "gradient_clip_val": max_grad_norm,}
             # build the model
-            model = models.TransformerModel(input_chunk_length=in_len,
-                                            output_chunk_length=out_len, 
-                                            d_model=d_model, 
-                                            nhead=n_heads, 
-                                            num_encoder_layers=num_encoder_layers, 
-                                            num_decoder_layers=num_decoder_layers, 
-                                            dim_feedforward=dim_feedforward, 
-                                            dropout=dropout,
-                                            log_tensorboard = True,
-                                            pl_trainer_kwargs = pl_trainer_kwargs,
-                                            batch_size = batch_size,
-                                            optimizer_kwargs = {'lr': lr},
-                                            lr_scheduler_cls = StepLR,
-                                            lr_scheduler_kwargs = scheduler_kwargs,
-                                            save_checkpoints = True,
-                                            model_name = model_name,
-                                            work_dir = work_dir,
-                                            force_reset = True,)
-
+            model = models.TFTModel(input_chunk_length = in_len, 
+                                    output_chunk_length = out_len, 
+                                    hidden_size = hidden_size,
+                                    lstm_layers = 1,
+                                    num_attention_heads = num_attention_heads,
+                                    full_attention = False,
+                                    dropout = dropout,
+                                    hidden_continuous_size = 4,
+                                    add_relative_index = True,
+                                    model_name = model_name,
+                                    work_dir = work_dir,
+                                    log_tensorboard = True,
+                                    pl_trainer_kwargs = pl_trainer_kwargs,
+                                    batch_size = batch_size,
+                                    optimizer_kwargs = {'lr': lr},
+                                    save_checkpoints = True,
+                                    force_reset=True)
             # train the model
             model.fit(series=series['train']['target'],
-                    val_series=series['val']['target'],
-                    max_samples_per_ts=max_samples_per_ts,
-                    verbose=False,)
+                      future_covariates=series['train']['future'],
+                      past_covariates=series['train']['dynamic'],
+                      val_series=series['val']['target'],
+                      val_future_covariates=series['val']['future'],
+                      val_past_covariates=series['val']['dynamic'],
+                      max_samples_per_ts=max_samples_per_ts,
+                      verbose=False,)
             model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
-                                                    forecast_horizon=out_len, 
-                                                    stride=stride,
-                                                    retrain=False,
-                                                    verbose=False,
-                                                    last_points_only=False,
-                                                    start=formatter.params["max_length_input"])
+                                                   future_covariates=series['test']['future'],
+                                                   past_covariates=series['test']['dynamic'],
+                                                   forecast_horizon=out_len, 
+                                                   stride=stride,
+                                                   retrain=False,
+                                                   verbose=False,
+                                                   last_points_only=False,
+                                                   start=formatter.params["max_length_input"])
             id_errors_sample = utils.rescale_and_backtest(series['test']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],
@@ -269,12 +301,14 @@ if __name__ == '__main__':
 
             # backtest on the ood test set
             forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                                    forecast_horizon=out_len, 
-                                                    stride=stride,
-                                                    retrain=False,
-                                                    verbose=False,
-                                                    last_points_only=False,
-                                                    start=formatter.params["max_length_input"])
+                                                   future_covariates=series['test_ood']['future'],
+                                                   past_covariates=series['test_ood']['dynamic'],
+                                                   forecast_horizon=out_len, 
+                                                   stride=stride,
+                                                   retrain=False,
+                                                   verbose=False,
+                                                   last_points_only=False,
+                                                   start=formatter.params["max_length_input"])
             ood_errors_sample = utils.rescale_and_backtest(series['test_ood']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],
