@@ -1,6 +1,6 @@
 # Dataset
 ds_name: iglu
-data_csv_path: ./raw_data/iglu_example_data_5_subject.csv
+data_csv_path: ./GitHub/GluNet/raw_data/iglu_example_data_5_subject.csv
 index_col: -1
 observation_interval: 5min
 
@@ -25,7 +25,7 @@ nan_vals: null
 # Interpolation parameters
 interpolation_params:
   gap_threshold: 45 # in minutes
-  min_drop_length: 200 # in number of points
+  min_drop_length: 240 # in number of points (20 hrs)
 
 # Splitting parameters
 split_params:
@@ -41,11 +41,12 @@ encoding_params:
     - day
     - hour
     - minute
+    - second
 
 # Scaling parameters
 scaling_params:
   scaler: None
   
 # Model params
-max_length_input: 192
-length_pred: 12
+max_length_input: 192 # in number of points (16 hrs)
+length_pred: 12 # in number of points (predict 1 hr)
