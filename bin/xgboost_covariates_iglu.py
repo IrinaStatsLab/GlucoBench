@@ -170,7 +170,7 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './GitHub/GluNet/output/linreg_iglu.txt'
+    study_file = './GitHub/GluNet/output/xgboost_covariates_iglu.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:

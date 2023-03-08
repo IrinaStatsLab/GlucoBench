@@ -188,11 +188,11 @@ Best value: 0.03953133523464203, Best params: {'in_len': 72, 'max_samples_per_ts
 	Val: 1920 (17.91%)
 	Test: 4252 (39.67%)
 	No scaling applied
-<<<<<<< HEAD
 	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([0.76385766, 0.6685734 ], dtype=float32)], 'max': [array([2645.073   ,   43.435764], dtype=float32)], 'mean': [array([194.02695,   7.82356], dtype=float32)], 'std': [array([475.5505  ,   9.189948], dtype=float32)], 'quantile25': [array([6.35998452, 2.0756045 ])], 'median': [array([31.13866711,  4.64330459])], 'quantile75': [array([139.05262184,   8.38332987])]}
 	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([0.52260464, 0.64275485], dtype=float32)], 'max': [array([7497.059  ,   74.60395], dtype=float32)], 'mean': [array([469.7214  ,  14.620503], dtype=float32)], 'std': [array([733.53253 ,  11.573379], dtype=float32)], 'quantile25': [array([55.33073425,  5.87315369])], 'median': [array([178.11531067,  11.31473064])], 'quantile75': [array([565.55053711,  20.7453022 ])]}
 RS ID (MSE,MAE) errors stats: {'mean': array([[208.06226 ,   8.294787]], dtype=float32), 'std': array([[477.68475 ,   9.067682]], dtype=float32), 'quantile25': array([[11.59053454,  2.42051543]]), 'quantile75': array([[153.48611927,   9.32504952]]), 'median': array([[43.99218569,  5.24996037]]), 'min': array([[0.6694534, 0.6283129]], dtype=float32), 'max': array([[2734.1284  ,   44.313942]], dtype=float32)}
-RS OOD (MSE,MAE) errors stats: {'mean': array([[340.52264 ,  11.564721]], dtype=float32), 'std': array([[683.54803 ,  10.309735]], dtype=float32), 'quantile25': array([[34.60223703,  4.55006437]]), 'quantile75': array([[356.27167053,  15.85989866]]), 'median': array([[106.87675381,   8.28694611]]), 'min': array([[0.5952602, 0.6295377]], dtype=float32), 'max': array([[6312.1626,   65.3495]], dtype=float32)}
+RS OOD (MSE,MAE) errors stats: {'mean': array([[340.52264 ,  11.564721]], dtype=float32), 'std': array([[683.54803 ,  10.309735]], dtype=float32), 'quantile25': array([[34.60223703,  4.55006437]]), 'quantile75': array([[356.27167053,  15.85989866]]), 'median': array([[106.87675381,   8.28694611]]), 'min': array([[0.5952602, 0.6295377]], dtype=float32), 'max': array([[6312.1626,   65.3495]], dtype=float32)}   LINREG w Covariates
+
 --------------------------------
 Loading column definition...
 Checking column definition...
