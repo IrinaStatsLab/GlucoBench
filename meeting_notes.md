@@ -1,3 +1,21 @@
+# Wednesday March 8, 2023
+Next Meeting: Wednesday March 22th, 2023  
+Next Meeting Notetaker: **Nathaniel**
+
+## Tasks
+* **Update Overleaf paper with all model results**
+* Valeriya:
+	* For linear regression, change missing values to mean instead of zero (if successfully fixes OOD, then Nicky implement on Hall)
+* In exploratory analysis, check distribution of covariate columns for each data split (e.g. train, test, validation)
+	* run 'formatter.train_data' / 'formatter.test_data' / 'formatter.validation_data'
+	* Plot the distribution
+
+## Paper Assigned Sections
+* Nathaniel: 5.2, 5.3
+* Valeriya: 5.1, 3.2
+* Nicky: 4.2, 3.3
+* Lizzie: 3.1, 4.3
+
 # Wednesday March 1, 2023
 Next Meeting: Wednesday March 8th, 2023  
 Next Meeting Notetaker: **Nicky?**
