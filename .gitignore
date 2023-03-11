@@ -18,8 +18,9 @@ __pycache__/
 *.py[cod]
 *.pyc
 
-# ignore old notebooks
+# ignore old notebooks and code
 exploratory_analysis/old_notebooks/*
+legacy/*
 
 # ignore cache of quattro for design doc
 design_document_files/
