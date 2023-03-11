@@ -3,6 +3,7 @@ import sys
 import os
 import yaml
 import datetime
+import argparse
 from functools import partial
 
 import seaborn as sns
@@ -26,12 +27,14 @@ from data_formatter.base import *
 from bin.utils import *
 
 # define data loader
-def load_data(seed = 0, study_file = None):
+def load_data(seed = 0, study_file = None, dataset = None, use_covs = None):
     # load data
-    with open('./config/hall.yaml', 'r') as f:
+    with open(f'./config/{dataset}.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
+    assert dataset is not None, 'dataset must be specified in the load_data call'
+    assert use_covs is not None, 'use_covs must be specified in the load_data call'
 
     # convert to series
     time_col = formatter.get_column('time')
@@ -53,12 +56,36 @@ def load_data(seed = 0, study_file = None):
                                     'static': static_cols,
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
-    
+    if use_covs == 'False':
+        # by default no static covariates are attached to the series
+        # also set dynamic and future covariates to None
+        series['train']['dynamic'] = None
+        series['train']['future'] = None
+        series['val']['dynamic'] = None
+        series['val']['future'] = None
+        series['test']['dynamic'] = None
+        series['test']['future'] = None
+        series['test_ood']['dynamic'] = None
+        series['test_ood']['future'] = None
+    else:
+        # transformer does not support static covariates
+        # also does not support future covariates -> merge all dynamic and future covariates
+        if series['train']['dynamic'] is not None:
+            for i in range(len(series['train']['future'])):
+                series['train']['future'][i] = series['train']['future'][i].concatenate(series['train']['dynamic'][i], axis=1)
+            for i in range(len(series['val']['future'])):
+                series['val']['future'][i] = series['val']['future'][i].concatenate(series['val']['dynamic'][i], axis=1)
+            for i in range(len(series['test']['future'])):
+                series['test']['future'][i] = series['test']['future'][i].concatenate(series['test']['dynamic'][i], axis=1)
+            for i in range(len(series['test_ood']['future'])):
+                series['test_ood']['future'][i] = series['test_ood']['future'][i].concatenate(series['test_ood']['dynamic'][i], axis=1)
+        
     return formatter, series, scalers
 
-def reshuffle_data(formatter, seed):
+def reshuffle_data(formatter, seed, use_covs = None):
     # reshuffle
     formatter.reshuffle(seed)
+    assert use_covs is not None, 'use_covs must be specified in the reshuffle_data call'
 
     # convert to series
     time_col = formatter.get_column('time')
@@ -81,13 +108,38 @@ def reshuffle_data(formatter, seed):
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
     
+    if use_covs == 'False':
+        # by default no static covariates are attached to the series
+        # also set dynamic and future covariates to None
+        series['train']['dynamic'] = None
+        series['train']['future'] = None
+        series['val']['dynamic'] = None
+        series['val']['future'] = None
+        series['test']['dynamic'] = None
+        series['test']['future'] = None
+        series['test_ood']['dynamic'] = None
+        series['test_ood']['future'] = None
+    else:
+        # transformer does not support static covariates
+        # also does not support future covariates -> merge all dynamic and future covariates
+        if series['train']['dynamic'] is not None:
+            for i in range(len(series['train']['future'])):
+                series['train']['future'][i] = series['train']['future'][i].concatenate(series['train']['dynamic'][i], axis=1)
+            for i in range(len(series['val']['future'])):
+                series['val']['future'][i] = series['val']['future'][i].concatenate(series['val']['dynamic'][i], axis=1)
+            for i in range(len(series['test']['future'])):
+                series['test']['future'][i] = series['test']['future'][i].concatenate(series['test']['dynamic'][i], axis=1)
+            for i in range(len(series['test_ood']['future'])):
+                series['test_ood']['future'][i] = series['test_ood']['future'][i].concatenate(series['test_ood']['dynamic'][i], axis=1)
+        
     return formatter, series, scalers
 
 # define objective function
 def objective(trial):
     # set parameters
     out_len = formatter.params['length_pred']
-    model_name = f'tensorboard_transformer_hall'
+    model_name = f'tensorboard_transformer_{args.dataset}' if args.use_covs == 'False' \
+        else f'tensorboard_transformer_covariates_{args.dataset}'
     work_dir = os.path.join(os.path.dirname(__file__), '../output')
     # suggest hyperparameters: input size
     in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
@@ -110,7 +162,7 @@ def objective(trial):
     el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
     loss_logger = LossLogger()
     pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
-    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner], "gradient_clip_val": max_grad_norm}
+    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [3], "callbacks": [el_stopper, loss_logger, pruner], "gradient_clip_val": max_grad_norm}
     # optimizer scheduler
     scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
     
@@ -136,13 +188,16 @@ def objective(trial):
 
     # train the model
     model.fit(series=series['train']['target'],
+              past_covariates=series['train']['future'],
               val_series=series['val']['target'],
+              val_past_covariates=series['val']['future'],
               max_samples_per_ts=max_samples_per_ts,
               verbose=False,)
     model.load_from_checkpoint(model_name, work_dir=work_dir)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
+                            past_covariates=series['val']['future'],
                             forecast_horizon=out_len,
                             stride=out_len,
                             retrain=False,
@@ -154,28 +209,41 @@ def objective(trial):
 
     return avg_error
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--dataset', type=str, default='weinstock')
+parser.add_argument('--use_covs', type=str, default='False')
+parser.add_argument('--optuna', type=str, default='True')
+args = parser.parse_args()
 if __name__ == '__main__':
-    # Optuna study 
-    study_file = './output/transformer_hall.txt'
-    # check that file exists otherwise create it
+    # load data
+    study_file = f'./output/transformer_{args.dataset}.txt' if args.use_covs == 'False' \
+        else f'./output/transformer_covariates_{args.dataset}.txt'
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
-            # write current date and time
-            f.write(f"Optimization started at {datetime.datetime.now()}")
-    # load data
-    formatter, series, scalers = load_data(study_file=study_file)
-    study = optuna.create_study(direction="minimize")
-    print_call = partial(print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=100, 
-                   callbacks=[print_call], 
-                   catch=(RuntimeError, KeyError))
+            f.write(f"Optimization started at {datetime.datetime.now()}\n")
+    formatter, series, scalers = load_data(study_file=study_file, 
+                                           dataset=args.dataset,
+                                           use_covs=args.use_covs)
+    
+    # hyperparameter optimization
+    best_params = None
+    if args.optuna == 'True':
+        study = optuna.create_study(direction="minimize")
+        print_call = partial(print_callback, study_file=study_file)
+        study.optimize(objective, n_trials=50, 
+                    callbacks=[print_call], 
+                    catch=(np.linalg.LinAlgError, KeyError))
+        best_params = study.best_trial.params
+    else:
+        key = "transformer_covariates" if args.use_covs == 'True' else "transformer"
+        assert formatter.params[key] is not None, "No saved hyperparameters found for this model"
+        best_params = formatter.params[key]
 
-    # Select best hyperparameters 
-    best_params = study.best_trial.params
     # set parameters
     out_len = formatter.params['length_pred']
     stride = out_len // 2
-    model_name = f'tensorboard_transformer_hall'
+    model_name = f'tensorboard_transformer_{args.dataset}' if args.use_covs == 'False' \
+        else f'tensorboard_transformer_covariates_{args.dataset}'
     work_dir = os.path.join(os.path.dirname(__file__), '../output')
     # suggest hyperparameters: input size
     in_len = best_params["in_len"]
@@ -206,11 +274,11 @@ if __name__ == '__main__':
         id_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
         ood_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
         for seed in seeds:
-            formatter, series, scalers = reshuffle_data(formatter, seed)
+            formatter, series, scalers = reshuffle_data(formatter, seed, args.use_covs)
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = LossLogger()
-            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger], "gradient_clip_val": max_grad_norm}
+            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [3], "callbacks": [el_stopper, loss_logger], "gradient_clip_val": max_grad_norm}
             # build the model
             model = models.TransformerModel(input_chunk_length=in_len,
                                             output_chunk_length=out_len, 
@@ -233,13 +301,16 @@ if __name__ == '__main__':
 
             # train the model
             model.fit(series=series['train']['target'],
+                    past_covariates=series['train']['future'],
                     val_series=series['val']['target'],
+                    val_past_covariates=series['val']['future'],
                     max_samples_per_ts=max_samples_per_ts,
                     verbose=False,)
             model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
+                                                    past_covariates=series['test']['future'],
                                                     forecast_horizon=out_len, 
                                                     stride=stride,
                                                     retrain=False,
@@ -260,6 +331,7 @@ if __name__ == '__main__':
 
             # backtest on the ood test set
             forecasts = model.historical_forecasts(series['test_ood']['target'],
+                                                    past_covariates=series['test_ood']['future'],
                                                     forecast_horizon=out_len, 
                                                     stride=stride,
                                                     retrain=False,
