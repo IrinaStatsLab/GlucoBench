@@ -1,6 +1,6 @@
 # Dataset
 ds_name: dubosson2018
-data_csv_path: ./raw_data/Dubosson_processed_with_covariates1.csv
+data_csv_path: ./raw_data/Dubosson_processed_with_covariates.csv
 index_col: -1
 observation_interval: 5min
 
@@ -67,7 +67,7 @@ interpolation_params:
 # Splitting parameters
 split_params:
   test_percent_subjects: 0.1
-  length_segment: 240
+  length_segment: 144
   random_state: 0
 
 # Encoding parameters
@@ -86,3 +86,87 @@ scaling_params:
 # Model params
 max_length_input: 192
 length_pred: 12
+
+linreg:
+  in_len: 12
+  max_samples_per_ts: 150
+
+linreg_covariates:
+  in_len: 12
+  max_samples_per_ts: 50
+
+tft:
+  in_len: 168
+  max_samples_per_ts: 50
+  hidden_size: 240
+  num_attention_heads: 2
+  dropout: 0.24910705171945197
+  lr: 0.003353965994113796
+  batch_size: 64
+  max_grad_norm: 0.999584070166802
+
+xgboost:
+  in_len: 168
+  max_samples_per_ts: 50
+  lr: 0.6910000000000001
+  subsample: 0.8
+  min_child_weight: 5.0
+  colsample_bytree: 0.8
+  max_depth: 10
+  gamma: 0.5
+  alpha: 0.201
+  lambda_: 0.279
+  n_estimators: 416
+  
+xgboost_covariates:
+  in_len: 36
+  max_samples_per_ts: 50
+  lr: 0.651
+  subsample: 0.8
+  min_child_weight: 2.0
+  colsample_bytree: 1.0
+  max_depth: 6
+  gamma: 1.5
+  alpha: 0.148
+  lambda_: 0.094
+  n_estimators: 480
+
+transformer:
+  in_len: 108
+  max_samples_per_ts: 50
+  d_model: 32
+  n_heads: 2
+  num_encoder_layers: 1
+  num_decoder_layers: 1
+  dim_feedforward: 384
+  dropout: 0.038691123579122515
+  lr: 0.0004450217945481336
+  batch_size: 32
+  lr_epochs: 6
+  max_grad_norm: 0.20863935142150056
+
+transformer_covariates:
+  in_len: 156
+  max_samples_per_ts: 50
+  d_model: 64
+  n_heads: 2
+  num_encoder_layers: 2
+  num_decoder_layers: 1
+  dim_feedforward: 384
+  dropout: 0.0026811942171770446
+  lr: 0.000998963295875978
+  batch_size: 48
+  lr_epochs: 20
+  max_grad_norm: 0.1004169110387992
+
+nhits:
+  in_len: 108
+  max_samples_per_ts: 50
+  kernel_sizes: 3
+  dropout: 0.06496948174462439
+  lr: 0.0003359362814711015
+  batch_size: 32
+  lr_epochs: 2
+
+
+

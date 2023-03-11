@@ -163,4 +163,103 @@ scaling_params:
 # Model params
 max_length_input: 192
 length_pred: 12
-  
+
+linreg:
+  in_len: 84
+  max_samples_per_ts: 50
+
+linreg_covariates:
+  in_len: 84
+  max_samples_per_ts: 50
+
+tft:
+  in_len: 132
+  max_samples_per_ts: 200
+  hidden_size: 96
+  num_attention_heads: 3
+  dropout: 0.14019930679548182
+  lr: 0.003399303384204884
+  batch_size: 48
+  max_grad_norm: 0.9962755235072169
+
+tft_covariates:
+  in_len: 108
+  max_samples_per_ts: 50
+  hidden_size: 112
+  num_attention_heads: 2
+  dropout: 0.1504541564537306
+  lr: 0.0018430630797167395
+  batch_size: 48
+  max_grad_norm: 0.9530046023189843
+
+xgboost:
+  in_len: 84
+  max_samples_per_ts: 200
+  lr: 0.722
+  subsample: 0.9
+  min_child_weight: 5.0
+  colsample_bytree: 1.0
+  max_depth: 10
+  gamma: 0.5
+  alpha: 0.271
+  lambda_: 0.07100000000000001
+  n_estimators: 416
+
+xgboost_covariates:
+  in_len: 96
+  max_samples_per_ts: 50
+  lr: 0.48000000000000004
+  subsample: 1.0
+  min_child_weight: 2.0
+  colsample_bytree: 0.9
+  max_depth: 6
+  gamma: 1.5
+  alpha: 0.159
+  lambda_: 0.025
+  n_estimators: 320
+
+transformer:
+  in_len: 96
+  max_samples_per_ts: 50
+  d_model: 128
+  n_heads: 2
+  num_encoder_layers: 2
+  num_decoder_layers: 4
+  dim_feedforward: 64
+  dropout: 0.0017011626095738697
+  lr: 0.0007790307889667749
+  batch_size: 32
+  lr_epochs: 4
+  max_grad_norm: 0.4226615744655383
+
+transformer_covariates:
+  in_len: 96
+  max_samples_per_ts: 50
+  d_model: 128
+  n_heads: 4
+  num_encoder_layers: 1
+  num_decoder_layers: 4
+  dim_feedforward: 448
+  dropout: 0.1901296977134417
+  lr: 0.000965351785309486
+  batch_size: 48
+  lr_epochs: 4
+  max_grad_norm: 0.19219462323820113
+
+nhits:
+  in_len: 96
+  max_samples_per_ts: 200
+  kernel_sizes: 4
+  dropout: 0.12642017123585755
+  lr: 0.00032840023694932384
+  batch_size: 64
+  lr_epochs: 16
+
+nhits_covariates:
+  in_len: 96
+  max_samples_per_ts: 50
+  kernel_sizes: 3
+  dropout: 0.10162895545943862
+  lr: 0.0009200129411689094
+  batch_size: 32
+  lr_epochs: 2

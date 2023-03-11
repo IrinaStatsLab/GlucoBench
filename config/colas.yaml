@@ -1,6 +1,6 @@
 # Dataset
 ds_name: colas2019
-data_csv_path: ../raw_data/Colas2019_processed.csv
+data_csv_path: ./raw_data/Colas2019_processed.csv
 index_col: -1
 observation_interval: 5min
 
@@ -51,7 +51,7 @@ interpolation_params:
 # Splitting parameters
 split_params:
   test_percent_subjects: 0.1
-  length_segment: 192
+  length_segment: 72
   random_state: 0
 
 # Encoding parameters
@@ -70,4 +70,104 @@ scaling_params:
 # Model params
 max_length_input: 144
 length_pred: 12
+
+linreg: 
+  in_len: 132
+  max_samples_per_ts: 150
+
+linreg_covariates:
+  in_len: 120
+  max_samples_per_ts: 200
+
+tft:
+  in_len: 132
+  max_samples_per_ts: 200
+  hidden_size: 256
+  num_attention_heads: 3
+  dropout: 0.22683125764190215
+  lr: 0.0005939103829095587
+  batch_size: 32
+  max_grad_norm: 0.9791152645996767
+
+tft_covariates:
+  in_len: 120
+  max_samples_per_ts: 100
+  hidden_size: 32
+  num_attention_heads: 3
+  dropout: 0.10643530677029577
+  lr: 0.004702414513886559
+  batch_size: 32
+  max_grad_norm: 0.8047252326588638
+
+xgboost:
+  in_len: 120
+  max_samples_per_ts: 50
+  lr: 0.509
+  subsample: 0.9
+  min_child_weight: 5.0
+  colsample_bytree: 0.9
+  max_depth: 7
+  gamma: 0.5
+  alpha: 0.216
+  lambda_: 0.241
+  n_estimators: 352
+
+xgboost_covariates:
+  in_len: 144
+  max_samples_per_ts: 200
+  lr: 0.883
+  subsample: 0.9
+  min_child_weight: 3.0
+  colsample_bytree: 0.8
+  max_depth: 5
+  gamma: 0.5
+  alpha: 0.055
+  lambda_: 0.08700000000000001
+  n_estimators: 416
+
+transformer:
+  in_len: 108
+  max_samples_per_ts: 200
+  d_model: 64
+  n_heads: 2
+  num_encoder_layers: 3
+  num_decoder_layers: 3
+  dim_feedforward: 480
+  dropout: 0.12434517563324206
+  lr: 0.00048663109178350133
+  batch_size: 32
+  lr_epochs: 8
+  max_grad_norm: 0.8299004621292704
+
+transformer_covariates:
+  in_len: 120
+  max_samples_per_ts: 200
+  d_model: 128
+  n_heads: 4
+  num_encoder_layers: 4
+  num_decoder_layers: 1
+  dim_feedforward: 128
+  dropout: 0.19572808311258694
+  lr: 0.0008814762155445509
+  batch_size: 32
+  lr_epochs: 18
+  max_grad_norm: 0.8168361106999547
+
+nhits:
+  in_len: 132
+  max_samples_per_ts: 100
+  kernel_sizes: 3
+  dropout: 0.18002875427414997
+  lr: 0.0006643638126306677
+  batch_size: 32
+  lr_epochs: 2
+
+nhits_covariates:
+  in_len: 96
+  max_samples_per_ts: 50
+  kernel_sizes: 3
+  dropout: 0.13142967835347927
+  lr: 0.0008921763677516184
+  batch_size: 48
+  lr_epochs: 16
   

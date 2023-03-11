@@ -1,6 +1,6 @@
 # Dataset
 ds_name: hall2018
-data_csv_path: ../raw_data/hall_covariates/hall_covariates.csv
+data_csv_path: ./raw_data/hall_covariates/hall_covariates.csv
 #./raw_data/Hall2018_processed_akhil.csv
 index_col: -1
 observation_interval: 5min
@@ -165,7 +165,7 @@ drop:
   columns: null
 
 # NA values abbreviation
-nan_vals: 'NA'
+nan_vals: NA
 
 # Interpolation parameters
 interpolation_params:
@@ -194,3 +194,103 @@ scaling_params:
 # Model params
 max_length_input: 144
 length_pred: 12
+
+linreg:
+  in_len: 144
+  max_samples_per_ts: 100
+
+linreg_covariates:
+  in_len: 24
+  max_samples_per_ts: 100
+
+tft:
+  in_len: 96
+  max_samples_per_ts: 50
+  hidden_size: 160
+  num_attention_heads: 2
+  dropout: 0.12663651999137013
+  lr: 0.0003909069464830342
+  batch_size: 48
+  max_grad_norm: 0.42691316697261855
+
+tft_covariates:
+  in_len: 132
+  max_samples_per_ts: 50
+  hidden_size: 64
+  num_attention_heads: 3
+  dropout: 0.1514203549391074
+  lr: 0.002278316839625157
+  batch_size: 32
+  max_grad_norm: 0.6617473571712074
+
+xgboost:
+  in_len: 60
+  max_samples_per_ts: 50
+  lr: 0.515
+  subsample: 0.9
+  min_child_weight: 3.0
+  colsample_bytree: 0.9
+  max_depth: 6
+  gamma: 2.0
+  alpha: 0.099
+  lambda_: 0.134
+  n_estimators: 256
+
+xgboost_covariates:
+  in_len: 120
+  max_samples_per_ts: 50
+  lr: 0.17200000000000001
+  subsample: 0.7
+  min_child_weight: 2.0
+  colsample_bytree: 0.9
+  max_depth: 6
+  gamma: 1.0
+  alpha: 0.167
+  lambda_: 0.017
+  n_estimators: 320
+
+transformer:
+  in_len: 144
+  max_samples_per_ts: 200
+  d_model: 64
+  n_heads: 4
+  num_encoder_layers: 1
+  num_decoder_layers: 1
+  dim_feedforward: 96
+  dropout: 0.014744750937083516
+  lr: 0.00035186058101597097
+  batch_size: 48
+  lr_epochs: 14
+  max_grad_norm: 0.43187285340924153
+
+transformer_covariates:
+  in_len: 132
+  max_samples_per_ts: 150
+  d_model: 64
+  n_heads: 4
+  num_encoder_layers: 1
+  num_decoder_layers: 3
+  dim_feedforward: 192
+  dropout: 0.1260638882066075
+  lr: 0.0006944648317764303
+  batch_size: 48
+  lr_epochs: 4
+  max_grad_norm: 0.22914229299130273
+
+nhits:
+  in_len: 144
+  max_samples_per_ts: 100
+  kernel_sizes: 4
+  dropout: 0.046869296882493555
+  lr: 0.00011524084800602483
+  batch_size: 48
+  lr_epochs: 2
+
+nhits_covariates:
+  in_len: 120
+  max_samples_per_ts: 50
+  kernel_sizes: 5
+  dropout: 0.18679300209273494
+  lr: 0.0004763622305085654
+  batch_size: 48
+  lr_epochs: 4

@@ -1,6 +1,6 @@
 # Dataset
 ds_name: iglu
-data_csv_path: ./GitHub/GluNet/raw_data/iglu_example_data_5_subject.csv
+data_csv_path: ./raw_data/iglu_example_data_5_subject.csv
 index_col: -1
 observation_interval: 5min
 
@@ -50,3 +50,95 @@ scaling_params:
 # Model params
 max_length_input: 192 # in number of points (16 hrs)
 length_pred: 12 # in number of points (predict 1 hr)
+
+linreg:
+  in_len: 72
+  max_samples_per_ts: 150
+
+linreg_covariates:
+  in_len: 60
+  max_samples_per_ts: 200
+
+tft:
+  in_len: 168
+  max_samples_per_ts: 50
+  hidden_size: 80
+  num_attention_heads: 4
+  dropout: 0.12792080253276716
+  lr: 0.003164601797779577
+  batch_size: 32
+  max_grad_norm: 0.5265925565310886
+
+tft_covariates:
+  in_len: 96
+  max_samples_per_ts: 50
+  hidden_size: 80
+  num_attention_heads: 3
+  dropout: 0.22790916758695268
+  lr: 0.005050238867376333
+  batch_size: 32
+  max_grad_norm: 0.026706367007025333
+
+xgboost:
+  in_len: 84
+  max_samples_per_ts: 50
+  lr: 0.506
+  subsample: 0.9
+  min_child_weight: 2.0
+  colsample_bytree: 0.8
+  max_depth: 9
+  gamma: 0.5
+  alpha: 0.124
+  lambda_: 0.089
+  n_estimators: 416
+
+xgboost_covariates:
+  in_len: 96
+  max_samples_per_ts: 200
+  lr: 0.387
+  subsample: 0.8
+  min_child_weight: 1.0
+  colsample_bytree: 1.0
+  max_depth: 8
+  gamma: 1.0
+  alpha: 0.199
+  lambda_: 0.018000000000000002
+  n_estimators: 288
+
+transformer:
+  in_len: 96
+  max_samples_per_ts: 50
+  d_model: 96
+  n_heads: 4
+  num_encoder_layers: 4
+  num_decoder_layers: 1
+  dim_feedforward: 448
+  dropout: 0.10161152207464333
+  lr: 0.000840888489686657
+  batch_size: 32
+  lr_epochs: 16
+  max_grad_norm: 0.6740479322943925
+
+transformer_covariates:
+  in_len: 108
+  max_samples_per_ts: 50
+  d_model: 128
+  n_heads: 2
+  num_encoder_layers: 2
+  num_decoder_layers: 2
+  dim_feedforward: 160
+  dropout: 0.044926981080245884
+  lr: 0.00029632347559614453
+  batch_size: 32
+  lr_epochs: 20
+  max_grad_norm: 0.8890169619043728
+
+nhits:
+  in_len: 96
+  max_samples_per_ts: 50
+  kernel_sizes: 5
+  dropout: 0.12695408586813234
+  lr: 0.0004510532358403777
+  batch_size: 64
+  lr_epochs: 16
+
