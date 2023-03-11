@@ -80,6 +80,7 @@ class DataFormatter():
     # split data
     print('Splitting data...')
     self._split_params = self.params['split_params']
+    self._split_params['max_length_input'] = self.params['max_length_input']
     self.__split_data()
 
     # scale

@@ -173,6 +173,7 @@ def split(df: pd.DataFrame,
           column_definition: List[Tuple[str, DataTypes, InputTypes]],
           test_percent_subjects: float, 
           length_segment: int,
+          max_length_input: int,
           random_state: int = 42):
   """Splits data into train, validation and test sets.
 
@@ -181,6 +182,7 @@ def split(df: pd.DataFrame,
     column_definition: List of tuples describing columns (column_name, data_type, input_type).
     test_percent_subjects: Float number from [0, 1], percentage of subjects to use for test set.
     length_segment: Number of points, length of segments saved for validation / test sets.
+    max_length_input: Number of points, maximum length of input sequences for models.
     random_state: Number, Random state for reproducibility.
 
   Returns:
@@ -202,33 +204,98 @@ def split(df: pd.DataFrame,
   # get the remaning data for training and validation
   df = df[~df[id_col].isin(test_ids)]
 
-  # iterate through segments and split into train, val and test
+  # iterate through subjects and split into train, val and test
   train_idx = []; val_idx = []; test_idx = []
-  for id_segment, segment_data in df.groupby(id_segment_col):
-    # handle length of segment = 0 case
-    if length_segment == 0:
-      train_idx += list(segment_data.index)
-      continue
-    # otherwise, split into train, val and test
-    if len(segment_data) >= 3 * length_segment:
-      # get indices for train, val and test
-      train_idx += list(segment_data.iloc[:-length_segment-length_segment].index)
-      val_idx += list(segment_data.iloc[-length_segment-length_segment:-length_segment].index)
-      test_idx += list(segment_data.iloc[-length_segment:].index)
-    elif len(segment_data) >= 2 * length_segment:
-      # get indices for train and test
-      train_idx += list(segment_data.iloc[:-length_segment].index)
-      val_idx += list(segment_data.iloc[-length_segment:].index)
-    elif len(segment_data) >= length_segment:
-      # get indices for train
-      train_idx += list(segment_data.index)
+  for id, id_data in df.groupby(id_col):
+    segment_ids = id_data[id_segment_col].unique()
+    if len(segment_ids) >= 2:
+      train_idx += list(id_data.loc[id_data[id_segment_col].isin(segment_ids[:-2])].index)
+      penultimate_segment = id_data[id_data[id_segment_col] == segment_ids[-2]]
+      last_segment = id_data[id_data[id_segment_col] == segment_ids[-1]]
+      if len(last_segment) >= max_length_input + 3 * length_segment:
+        train_idx += list(penultimate_segment.index)
+        train_idx += list(last_segment.iloc[:-2*length_segment].index)
+        val_idx += list(last_segment.iloc[-2*length_segment-max_length_input:-length_segment].index)
+        test_idx += list(last_segment.iloc[-length_segment-max_length_input:].index)
+      elif len(last_segment) >= max_length_input + 2 * length_segment:
+        train_idx += list(penultimate_segment.index)
+        val_idx += list(last_segment.iloc[:-length_segment].index)
+        test_idx += list(last_segment.iloc[-length_segment-max_length_input:].index)
+      else:
+        test_idx += list(last_segment.index)
+        if len(penultimate_segment) >= max_length_input + 2 * length_segment:
+          val_idx += list(penultimate_segment.iloc[-length_segment-max_length_input:].index)
+          train_idx += list(penultimate_segment.iloc[:-length_segment].index)
+        else:
+          train_idx += list(penultimate_segment.index)
     else:
-      # segment is too short, skip
-      continue
+      if len(id_data) >= max_length_input + 3 * length_segment:
+        train_idx += list(id_data.iloc[:-2*length_segment].index)
+        val_idx += list(id_data.iloc[-2*length_segment-max_length_input:-length_segment].index)
+        test_idx += list(id_data.iloc[-length_segment-max_length_input:].index)
+      elif len(id_data) >= max_length_input + 2 * length_segment:
+        train_idx += list(id_data.iloc[:-length_segment].index)
+        test_idx += list(id_data.iloc[-length_segment-max_length_input:].index)
+      else:
+        train_idx += list(id_data.index)
+  
+
+    # if len(segment_ids) >= 3:
+    #   train_idx += list(id_data.loc[id_data[id_segment_col].isin(segment_ids[:-2])].index)
+    #   val_idx += list(id_data.loc[id_data[id_segment_col] == segment_ids[-2]].index)
+    #   test_idx += list(id_data.loc[id_data[id_segment_col] == segment_ids[-1]].index)
+    # elif len(segment_ids) == 2:
+    #   first_segment = id_data[id_data[id_segment_col] == segment_ids[0]]
+    #   last_segment = id_data[id_data[id_segment_col] == segment_ids[1]]
+    #   if len(last_segment) > 2 * length_segment:
+    #     train_idx += list(first_segment.index)
+    #     val_idx += list(last_segment.iloc[:-length_segment].index)
+    #     test_idx += list(last_segment.iloc[-length_segment:].index)
+    #   else:
+    #     test_idx += list(last_segment.index)
+    #     if len(first_segment) > 2 * length_segment:
+    #       train_idx += list(first_segment.iloc[:-length_segment].index)
+    #       val_idx += list(first_segment.iloc[-length_segment:].index)
+    #     else:
+    #       train_idx += list(first_segment.index)
+    # elif len(segment_ids) == 1:
+    #   if len(id_data) > 3 * length_segment:
+    #     train_idx += list(id_data.iloc[:-length_segment-length_segment].index)
+    #     val_idx += list(id_data.iloc[-length_segment-length_segment:-length_segment].index)
+    #     test_idx += list(id_data.iloc[-length_segment:].index)
+    #   elif len(id_data) > 2 * length_segment:
+    #     train_idx += list(id_data.iloc[:-length_segment].index)
+    #     test_idx += list(id_data.iloc[-length_segment:].index)
+    #   else:
+    #     train_idx += list(id_data.index)
+
+  # for id_segment, segment_data in df.groupby(id_segment_col):
+  #   # handle length of segment = 0 case
+  #   if length_segment == 0:
+  #     train_idx += list(segment_data.index)
+  #     continue
+  #   # otherwise, split into train, val and test
+  #   if len(segment_data) >= 3 * length_segment:
+  #     # get indices for train, val and test
+  #     train_idx += list(segment_data.iloc[:-length_segment-length_segment].index)
+  #     val_idx += list(segment_data.iloc[-length_segment-length_segment:-length_segment].index)
+  #     test_idx += list(segment_data.iloc[-length_segment:].index)
+  #   elif len(segment_data) >= 2 * length_segment:
+  #     # get indices for train and test
+  #     train_idx += list(segment_data.iloc[:-length_segment].index)
+  #     val_idx += list(segment_data.iloc[-length_segment:].index)
+  #   elif len(segment_data) >= length_segment:
+  #     # get indices for train
+  #     train_idx += list(segment_data.index)
+  #   else:
+  #     # segment is too short, skip
+  #     continue
   # print number of points in each set and proportion
-  print('\tTrain: {} ({:.2f}%)'.format(len(train_idx), len(train_idx) / len(df) * 100))
-  print('\tVal: {} ({:.2f}%)'.format(len(val_idx), len(val_idx) / len(df) * 100))
-  print('\tTest: {} ({:.2f}%)'.format(len(test_idx + test_idx_ood), len(test_idx + test_idx_ood) / len(df) * 100))
+  total_len = len(train_idx) + len(val_idx) + len(test_idx) + len(test_idx_ood)
+  print('\tTrain: {} ({:.2f}%)'.format(len(train_idx), len(train_idx) / total_len * 100))
+  print('\tVal: {} ({:.2f}%)'.format(len(val_idx), len(val_idx) / total_len * 100))
+  print('\tTest: {} ({:.2f}%)'.format(len(test_idx), len(test_idx) / total_len * 100))
+  print('\tTest OOD: {} ({:.2f}%)'.format(len(test_idx_ood), len(test_idx_ood) / total_len * 100))
   return train_idx, val_idx, test_idx, test_idx_ood
 
 def encode(df: pd.DataFrame, 
