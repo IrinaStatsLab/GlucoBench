@@ -3,6 +3,7 @@ import sys
 import os
 import yaml
 import datetime
+import argparse
 from functools import partial
 
 import seaborn as sns
@@ -58,16 +59,19 @@ def test_model(test_data, scaler, in_len, out_len, stride, target_col, group_col
     errors = np.vstack(errors)
     return errors
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--dataset', type=str, default='weinstock')
+args = parser.parse_args()
 if __name__ == '__main__':
     # study file
-    study_file = './output/arima_dubosson.txt'
+    study_file = f'./output/arima_{args.dataset}.txt'
     # check that file exists otherwise create it
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
             # write current date and time
             f.write(f"Optimization started at {datetime.datetime.now()}\n")
     # load data
-    with open('./config/dubosson.yaml', 'r') as f:
+    with open(f'./config/{args.dataset}.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['scaling_params']['scaler'] = 'MinMaxScaler'
     formatter = DataFormatter(config, study_file = study_file)
@@ -88,7 +92,13 @@ if __name__ == '__main__':
         test_data_ood = formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]
         
         # backtest on the ID test set
-        id_errors_sample = test_model(test_data, formatter.scalers[target_col[0]], in_len, out_len, stride, target_col, group_col)
+        id_errors_sample = test_model(test_data, 
+                                      formatter.scalers[target_col[0]], 
+                                      in_len, 
+                                      out_len, 
+                                      stride, 
+                                      target_col, 
+                                      group_col)
         id_errors_sample = np.vstack(id_errors_sample)
         id_error_stats_sample = compute_error_statistics(id_errors_sample)
         for key in id_errors_stats.keys():
@@ -97,7 +107,13 @@ if __name__ == '__main__':
             f.write(f"\tSeed: {seed} ID errors (MSE, MAE) stats: {id_error_stats_sample}\n")
         
         # backtest on the ood test set
-        ood_errors_sample = test_model(test_data_ood, formatter.scalers[target_col[0]], in_len, out_len, stride, target_col, group_col)
+        ood_errors_sample = test_model(test_data_ood, 
+                                       formatter.scalers[target_col[0]], 
+                                       in_len, 
+                                       out_len, 
+                                       stride, 
+                                       target_col, 
+                                       group_col)
         ood_errors_sample = np.vstack(ood_errors_sample)
         ood_errors_stats_sample = compute_error_statistics(ood_errors_sample)
         for key in ood_errors_stats.keys():
