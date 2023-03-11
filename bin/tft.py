@@ -3,6 +3,7 @@ import sys
 import os
 import yaml
 import datetime
+import argparse
 from functools import partial
 
 import seaborn as sns
@@ -25,12 +26,66 @@ from data_formatter.base import *
 from bin.utils import *
 
 # define data loader
-def load_data(seed = 0, study_file = None):
+def load_data(seed = 0, study_file = None, dataset = None, use_covs = None):
     # load data
-    with open('./config/weinstock.yaml', 'r') as f:
+    with open(f'./config/{dataset}.yaml', 'r') as f:
         config = yaml.safe_load(f)
     config['split_params']['random_state'] = seed
     formatter = DataFormatter(config, study_file = study_file)
+    assert dataset is not None, 'dataset must be specified in the load_data call'
+    assert use_covs is not None, 'use_covs must be specified in the load_data call'
+
+    # convert to series
+    time_col = formatter.get_column('time')
+    group_col = formatter.get_column('sid')
+    target_col = formatter.get_column('target')
+    static_cols = formatter.get_column('static_covs')
+    static_cols = static_cols + [formatter.get_column('id')] if static_cols is not None else [formatter.get_column('id')]
+    dynamic_cols = formatter.get_column('dynamic_covs')
+    future_cols = formatter.get_column('future_covs')
+
+    # build series
+    series, scalers = make_series({'train': formatter.train_data,
+                                    'val': formatter.val_data,
+                                    'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
+                                    'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
+                                    time_col,
+                                    group_col,
+                                    {'target': target_col,
+                                    'static': static_cols,
+                                    'dynamic': dynamic_cols,
+                                    'future': future_cols})
+    if use_covs == 'False':
+        # set dynamic and future covariates to None
+        series['train']['dynamic'] = None
+        series['train']['future'] = None
+        series['val']['dynamic'] = None
+        series['val']['future'] = None
+        series['test']['dynamic'] = None
+        series['test']['future'] = None
+        series['test_ood']['dynamic'] = None
+        series['test_ood']['future'] = None
+    else:
+        # attach static covariates to series
+        for i in range(len(series['train']['target'])):
+            static_covs = series['train']['static'][i][0].pd_dataframe()
+            series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
+        for i in range(len(series['val']['target'])):
+            static_covs = series['val']['static'][i][0].pd_dataframe()
+            series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
+        for i in range(len(series['test']['target'])):
+            static_covs = series['test']['static'][i][0].pd_dataframe()
+            series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+        for i in range(len(series['test_ood']['target'])):
+            static_covs = series['test_ood']['static'][i][0].pd_dataframe()
+            series['test_ood']['target'][i] = series['test_ood']['target'][i].with_static_covariates(static_covs)
+
+    return formatter, series, scalers
+
+def reshuffle_data(formatter, seed, use_covs = None):
+    # reshuffle
+    formatter.reshuffle(seed)
+    assert use_covs is not None, 'use_covs must be specified in the reshuffle_data call'
 
     # convert to series
     time_col = formatter.get_column('time')
@@ -53,32 +108,30 @@ def load_data(seed = 0, study_file = None):
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
     
-    return formatter, series, scalers
-
-def reshuffle_data(formatter, seed):
-    # reshuffle
-    formatter.reshuffle(seed)
-
-    # convert to series
-    time_col = formatter.get_column('time')
-    group_col = formatter.get_column('sid')
-    target_col = formatter.get_column('target')
-    static_cols = formatter.get_column('static_covs')
-    static_cols = static_cols + [formatter.get_column('id')] if static_cols is not None else [formatter.get_column('id')]
-    dynamic_cols = formatter.get_column('dynamic_covs')
-    future_cols = formatter.get_column('future_covs')
-
-    # build series
-    series, scalers = make_series({'train': formatter.train_data,
-                                    'val': formatter.val_data,
-                                    'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
-                                    'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
-                                    time_col,
-                                    group_col,
-                                    {'target': target_col,
-                                    'static': static_cols,
-                                    'dynamic': dynamic_cols,
-                                    'future': future_cols})
+    if use_covs == 'False':
+        # set dynamic and future covariates to None
+        series['train']['dynamic'] = None
+        series['train']['future'] = None
+        series['val']['dynamic'] = None
+        series['val']['future'] = None
+        series['test']['dynamic'] = None
+        series['test']['future'] = None
+        series['test_ood']['dynamic'] = None
+        series['test_ood']['future'] = None
+    else:
+        # attach static covariates to series
+        for i in range(len(series['train']['target'])):
+            static_covs = series['train']['static'][i][0].pd_dataframe()
+            series['train']['target'][i] = series['train']['target'][i].with_static_covariates(static_covs)
+        for i in range(len(series['val']['target'])):
+            static_covs = series['val']['static'][i][0].pd_dataframe()
+            series['val']['target'][i] = series['val']['target'][i].with_static_covariates(static_covs)
+        for i in range(len(series['test']['target'])):
+            static_covs = series['test']['static'][i][0].pd_dataframe()
+            series['test']['target'][i] = series['test']['target'][i].with_static_covariates(static_covs)
+        for i in range(len(series['test_ood']['target'])):
+            static_covs = series['test_ood']['static'][i][0].pd_dataframe()
+            series['test_ood']['target'][i] = series['test_ood']['target'][i].with_static_covariates(static_covs)
     
     return formatter, series, scalers
 
@@ -86,7 +139,8 @@ def reshuffle_data(formatter, seed):
 def objective(trial):
     # set parameters
     out_len = formatter.params['length_pred']
-    model_name = f'tensorboard_tft_weinstock'
+    model_name = f'tensorboard_tft_{args.dataset}' if args.use_covs == 'False' \
+        else f'tensorboard_tft_covariates_{args.dataset}'
     work_dir = os.path.join(os.path.dirname(__file__), '../output')
     # suggest hyperparameters: input size
     in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
@@ -106,7 +160,7 @@ def objective(trial):
     loss_logger = LossLogger()
     pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
     pl_trainer_kwargs = {"accelerator": "gpu", 
-                         "devices": [2], 
+                         "devices": [1], 
                          "callbacks": [el_stopper, loss_logger, pruner],
                          "gradient_clip_val": max_grad_norm,}
     
@@ -128,16 +182,21 @@ def objective(trial):
                             optimizer_kwargs = {'lr': lr},
                             save_checkpoints = True,
                             force_reset=True)
-
     # train the model
     model.fit(series=series['train']['target'],
+              future_covariates=series['train']['future'],
+              past_covariates=series['train']['dynamic'],
               val_series=series['val']['target'],
+              val_future_covariates=series['val']['future'],
+              val_past_covariates=series['val']['dynamic'],
               max_samples_per_ts=max_samples_per_ts,
               verbose=False,)
     model.load_from_checkpoint(model_name, work_dir = work_dir)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
+                            future_covariates=series['val']['future'],
+                            past_covariates=series['val']['dynamic'],
                             forecast_horizon=out_len,
                             stride=out_len,
                             retrain=False,
@@ -148,28 +207,41 @@ def objective(trial):
     avg_error = np.mean(errors)
     return avg_error
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--dataset', type=str, default='weinstock')
+parser.add_argument('--use_covs', type=str, default='False')
+parser.add_argument('--optuna', type=str, default='True')
+args = parser.parse_args()
 if __name__ == '__main__':
-    # Optuna study 
-    study_file = './output/tft_weinstock.txt'
-    # check that file exists otherwise create it
+    # load data
+    study_file = f'./output/tft_{args.dataset}.txt' if args.use_covs == 'False' \
+        else f'./output/tft_covariates_{args.dataset}.txt'
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
-            # write current date and time
-            (f"Optimization started at {datetime.datetime.now()}\n")
-    # load data
-    formatter, series, scalers = load_data(study_file=study_file)
-    study = optuna.create_study(direction="minimize")
-    print_call = partial(print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=50, 
-                   callbacks=[print_call], 
-                   catch=(RuntimeError, KeyError))
+            f.write(f"Optimization started at {datetime.datetime.now()}\n")
+    formatter, series, scalers = load_data(study_file=study_file, 
+                                           dataset=args.dataset,
+                                           use_covs=args.use_covs)
     
-    # Select best hyperparameters 
-    best_params = study.best_trial.params
+    # hyperparameter optimization
+    best_params = None
+    if args.optuna == 'True':
+        study = optuna.create_study(direction="minimize")
+        print_call = partial(print_callback, study_file=study_file)
+        study.optimize(objective, n_trials=50, 
+                    callbacks=[print_call], 
+                    catch=(np.linalg.LinAlgError, KeyError))
+        best_params = study.best_trial.params
+    else:
+        key = "tft_covariates" if args.use_covs == 'True' else "tft"
+        assert formatter.params[key] is not None, "No saved hyperparameters found for this model"
+        best_params = formatter.params[key]
+
     # set parameters
     out_len = formatter.params['length_pred']
     stride = out_len // 2
-    model_name = f'tensorboard_tft_weinstock'
+    model_name = f'tensorboard_tft_{args.dataset}' if args.use_covs == 'False' \
+        else f'tensorboard_tft_covariates_{args.dataset}'
     work_dir = os.path.join(os.path.dirname(__file__), '../output')
     # suggest hyperparameters: input size
     in_len = best_params["in_len"]
@@ -195,12 +267,12 @@ if __name__ == '__main__':
         id_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
         ood_errors_stats = {'mean': [], 'std': [], 'quantile25': [], 'quantile75': [], 'median': [], 'min': [], 'max': []}
         for seed in seeds:
-            formatter, series, scalers = reshuffle_data(formatter, seed)
+            formatter, series, scalers = reshuffle_data(formatter, seed, use_covs=args.use_covs)
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = LossLogger()
             pl_trainer_kwargs = {"accelerator": "gpu", 
-                                    "devices": [2], 
+                                    "devices": [1], 
                                     "callbacks": [el_stopper, loss_logger],
                                     "gradient_clip_val": max_grad_norm,}
             # build the model
@@ -223,13 +295,19 @@ if __name__ == '__main__':
                                     force_reset=True)
             # train the model
             model.fit(series=series['train']['target'],
+                      future_covariates=series['train']['future'],
+                      past_covariates=series['train']['dynamic'],
                       val_series=series['val']['target'],
+                      val_future_covariates=series['val']['future'],
+                      val_past_covariates=series['val']['dynamic'],
                       max_samples_per_ts=max_samples_per_ts,
                       verbose=False,)
             model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
+                                                   future_covariates=series['test']['future'],
+                                                   past_covariates=series['test']['dynamic'],
                                                    forecast_horizon=out_len, 
                                                    stride=stride,
                                                    retrain=False,
@@ -250,6 +328,8 @@ if __name__ == '__main__':
 
             # backtest on the ood test set
             forecasts = model.historical_forecasts(series['test_ood']['target'],
+                                                   future_covariates=series['test_ood']['future'],
+                                                   past_covariates=series['test_ood']['dynamic'],
                                                    forecast_horizon=out_len, 
                                                    stride=stride,
                                                    retrain=False,
