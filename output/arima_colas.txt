@@ -1,4 +1,4 @@
-Optimization started at 2023-02-25 01:06:40.272008
+Optimization started at 2023-03-10 19:40:52.371711
 --------------------------------
 Loading column definition...
 Checking column definition...
@@ -12,6 +12,13 @@ Encoding data...
 		id: REAL_VALUED (ID)
 		time: DATE (TIME)
 		gl: REAL_VALUED (TARGET)
+		gender: REAL_VALUED (STATIC_INPUT)
+		age: REAL_VALUED (STATIC_INPUT)
+		BMI: REAL_VALUED (STATIC_INPUT)
+		glycaemia: REAL_VALUED (STATIC_INPUT)
+		HbA1c: REAL_VALUED (STATIC_INPUT)
+		follow.up: REAL_VALUED (STATIC_INPUT)
+		T2DM: REAL_VALUED (STATIC_INPUT)
 		time_year: REAL_VALUED (KNOWN_INPUT)
 		time_month: REAL_VALUED (KNOWN_INPUT)
 		time_day: REAL_VALUED (KNOWN_INPUT)
@@ -23,72 +30,83 @@ Interpolating data...
 	Interpolated values: 241
 	Percent of values interpolated: 0.22%
 Splitting data...
-	Train: 37857 (38.80%)
-	Val: 31296 (32.08%)
-	Test: 39658 (40.65%)
+	Train: 72275 (45.89%)
+	Val: 35713 (22.68%)
+	Test: 38253 (24.29%)
+	Test OOD: 11242 (7.14%)
 Scaling data...
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
 Data formatting complete.
 --------------------------------
-	Train: 37639 (38.66%)
-	Val: 31488 (32.34%)
-	Test: 39684 (40.76%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 10 ID errors (MSE, MAE) stats: {'min': [array([0.26693892, 0.38706313])], 'max': [array([3633.61612353,   52.59781779])], 'mean': [array([152.07357527,   7.45107078])], 'std': [array([346.31089855,   7.04737054])], 'quantile25': [array([10.28380615,  2.67346405])], 'median': [array([38.68072483,  5.24898224])], 'quantile75': [array([139.2515112 ,   9.65698118])]}
+	Train: 72173 (45.75%)
+	Val: 35885 (22.74%)
+	Test: 38253 (24.25%)
+	Test OOD: 11460 (7.26%)
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 10 ID errors (MSE, MAE) stats: {'min': [array([0.20810051, 0.25000142])], 'max': [array([4241.8297055 ,   53.68167107])], 'mean': [array([120.67737318,   6.64761864])], 'std': [array([289.23849886,   6.24195939])], 'quantile25': [array([9.07948468, 2.52345394])], 'median': [array([34.11909901,  4.82656906])], 'quantile75': [array([108.4519307 ,   8.57986416])]}
 	Seed: 10 OOD errors (MSE, MAE) stats: {'min': [array([0.13452932, 0.16666686])], 'max': [array([4018.78960199,   51.14950623])], 'mean': [array([98.49733495,  5.96256387])], 'std': [array([236.93631236,   5.61658599])], 'quantile25': [array([6.86991839, 2.16879196])], 'median': [array([25.74905132,  4.25000039])], 'quantile75': [array([86.83258998,  7.78083303])]}
-	Train: 37839 (38.94%)
-	Val: 31104 (32.01%)
-	Test: 39868 (41.03%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 11 ID errors (MSE, MAE) stats: {'min': [array([0.16666535, 0.16666908])], 'max': [array([2963.84886557,   48.18993721])], 'mean': [array([139.377249  ,   7.28060345])], 'std': [array([292.57677189,   6.60305699])], 'quantile25': [array([10.05338248,  2.63919977])], 'median': [array([37.55586494,  5.07729191])], 'quantile75': [array([137.30902452,   9.53605523])]}
+	Train: 71945 (45.73%)
+	Val: 35713 (22.70%)
+	Test: 38037 (24.18%)
+	Test OOD: 11644 (7.40%)
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 11 ID errors (MSE, MAE) stats: {'min': [array([0.0701089 , 0.16666908])], 'max': [array([3155.09810657,   49.77553797])], 'mean': [array([110.98849348,   6.51209232])], 'std': [array([237.62162684,   5.85577938])], 'quantile25': [array([9.33141329, 2.53802553])], 'median': [array([33.80005681,  4.80610997])], 'quantile75': [array([106.27689505,   8.49038014])]}
 	Seed: 11 OOD errors (MSE, MAE) stats: {'min': [array([0.10332284, 0.21430927])], 'max': [array([4605.30869932,   56.94258796])], 'mean': [array([143.86608116,   6.89374988])], 'std': [array([359.92579334,   7.01540597])], 'quantile25': [array([7.33542864, 2.25721245])], 'median': [array([31.02752645,  4.53481493])], 'quantile75': [array([117.93972764,   8.95569667])]}
-	Train: 38155 (39.45%)
-	Val: 30912 (31.96%)
-	Test: 39744 (41.09%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 12 ID errors (MSE, MAE) stats: {'min': [array([0.16666535, 0.16666908])], 'max': [array([3633.61612353,   52.59781779])], 'mean': [array([144.83216866,   7.26788602])], 'std': [array([335.42344363,   6.88512756])], 'quantile25': [array([9.16140831, 2.571258  ])], 'median': [array([37.80832051,  5.12058462])], 'quantile75': [array([135.0279276 ,   9.46388968])]}
+	Train: 71565 (45.53%)
+	Val: 35497 (22.58%)
+	Test: 38037 (24.20%)
+	Test OOD: 12096 (7.69%)
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 12 ID errors (MSE, MAE) stats: {'min': [array([0.0701089 , 0.16666908])], 'max': [array([4241.8297055 ,   53.68167107])], 'mean': [array([116.43544051,   6.52242235])], 'std': [array([284.62869006,   6.1507774 ])], 'quantile25': [array([9.02347988, 2.51837459])], 'median': [array([33.0868935 ,  4.79554789])], 'quantile75': [array([104.95843342,   8.43828325])]}
 	Seed: 12 OOD errors (MSE, MAE) stats: {'min': [array([1.26734608e-11, 3.55998046e-06])], 'max': [array([16329.70209427,   103.00623316])], 'mean': [array([172.39000789,   7.70536262])], 'std': [array([631.29761273,   7.6930165 ])], 'quantile25': [array([10.68436032,  2.71165727])], 'median': [array([45.87820419,  5.54495763])], 'quantile75': [array([146.4199923 ,   9.92579903])]}
-	Train: 37362 (37.89%)
-	Val: 31872 (32.32%)
-	Test: 39577 (40.13%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 13 ID errors (MSE, MAE) stats: {'min': [array([0.16666535, 0.16666908])], 'max': [array([3633.61612353,   52.59781779])], 'mean': [array([145.38306   ,   7.32847692])], 'std': [array([331.04870122,   6.84902446])], 'quantile25': [array([9.99806871, 2.64436047])], 'median': [array([37.98050006,  5.19962701])], 'quantile75': [array([134.4101334 ,   9.45784679])]}
+	Train: 73201 (46.27%)
+	Val: 36332 (22.97%)
+	Test: 38469 (24.32%)
+	Test OOD: 10201 (6.45%)
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 13 ID errors (MSE, MAE) stats: {'min': [array([0.0701089 , 0.16666908])], 'max': [array([4241.8297055 ,   53.68167107])], 'mean': [array([120.10565412,   6.67014375])], 'std': [array([286.56424581,   6.19883603])], 'quantile25': [array([9.66475276, 2.57405048])], 'median': [array([34.19618027,  4.84739309])], 'quantile75': [array([109.15531071,   8.6022574 ])]}
 	Seed: 13 OOD errors (MSE, MAE) stats: {'min': [array([0.16078272, 0.32618243])], 'max': [array([7500.91063782,   72.85116035])], 'mean': [array([156.3209028 ,   7.36687788])], 'std': [array([435.76230136,   7.25754313])], 'quantile25': [array([9.97521492, 2.65110978])], 'median': [array([40.9180193 ,  5.31255204])], 'quantile75': [array([129.85345997,   9.44161862])]}
-	Train: 37474 (38.18%)
-	Val: 31872 (32.47%)
-	Test: 39465 (40.21%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 14 ID errors (MSE, MAE) stats: {'min': [array([0.16666535, 0.16666908])], 'max': [array([3633.61612353,   52.59781779])], 'mean': [array([148.48804072,   7.41413329])], 'std': [array([338.00356712,   6.93502314])], 'quantile25': [array([10.51158064,  2.67910221])], 'median': [array([38.83371371,  5.24898224])], 'quantile75': [array([135.94637261,   9.57622428])]}
+	Train: 72721 (45.97%)
+	Val: 36577 (23.12%)
+	Test: 38240 (24.17%)
+	Test OOD: 10665 (6.74%)
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 14 ID errors (MSE, MAE) stats: {'min': [array([0.16666535, 0.16666908])], 'max': [array([4241.8297055 ,   53.68167107])], 'mean': [array([119.96416493,   6.67782441])], 'std': [array([281.48620105,   6.18527233])], 'quantile25': [array([9.72673296, 2.60579826])], 'median': [array([34.3505087 ,  4.84580129])], 'quantile75': [array([108.87244263,   8.61958079])]}
 	Seed: 14 OOD errors (MSE, MAE) stats: {'min': [array([0.05709214, 0.15763216])], 'max': [array([4483.22904076,   55.2832853 ])], 'mean': [array([116.36936192,   6.32492114])], 'std': [array([288.69260583,   6.18739059])], 'quantile25': [array([7.11514696, 2.2525616 ])], 'median': [array([28.11721839,  4.37117413])], 'quantile75': [array([96.42700126,  8.16050838])]}
-	Train: 37862 (38.80%)
-	Val: 31296 (32.07%)
-	Test: 39653 (40.64%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 15 ID errors (MSE, MAE) stats: {'min': [array([0.16666535, 0.16666908])], 'max': [array([3633.61612353,   52.59781779])], 'mean': [array([149.04877856,   7.35109794])], 'std': [array([342.98579342,   7.02366273])], 'quantile25': [array([9.2914883 , 2.59539348])], 'median': [array([37.2715449 ,  5.03580221])], 'quantile75': [array([132.44914206,   9.46388968])]}
+	Train: 72280 (45.90%)
+	Val: 35929 (22.81%)
+	Test: 38037 (24.15%)
+	Test OOD: 11237 (7.14%)
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 15 ID errors (MSE, MAE) stats: {'min': [array([0.0701089 , 0.16666908])], 'max': [array([4241.8297055 ,   53.68167107])], 'mean': [array([115.49432265,   6.48332704])], 'std': [array([284.89946929,   6.13602586])], 'quantile25': [array([8.83418438, 2.47687713])], 'median': [array([32.41810862,  4.71869955])], 'quantile75': [array([103.24570902,   8.40624347])]}
 	Seed: 15 OOD errors (MSE, MAE) stats: {'min': [array([0.03234548, 0.15849708])], 'max': [array([4623.82815351,   54.66663155])], 'mean': [array([141.04209618,   7.00637396])], 'std': [array([333.08167218,   6.87858417])], 'quantile25': [array([8.7131194 , 2.43026127])], 'median': [array([32.61929274,  4.84992109])], 'quantile75': [array([121.72799215,   9.29134075])]}
-	Train: 37912 (39.07%)
-	Val: 31104 (32.05%)
-	Test: 39795 (41.01%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 16 ID errors (MSE, MAE) stats: {'min': [array([0.16666535, 0.16666908])], 'max': [array([3633.61612353,   52.59781779])], 'mean': [array([148.78186463,   7.32169177])], 'std': [array([343.65529094,   7.03922666])], 'quantile25': [array([9.1664514 , 2.55955754])], 'median': [array([37.41052895,  5.07729191])], 'quantile75': [array([132.44914206,   9.46388968])]}
+	Train: 71826 (45.65%)
+	Val: 35713 (22.70%)
+	Test: 38037 (24.18%)
+	Test OOD: 11763 (7.48%)
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 16 ID errors (MSE, MAE) stats: {'min': [array([0.0701089 , 0.16666908])], 'max': [array([4241.8297055 ,   53.68167107])], 'mean': [array([118.60316999,   6.57068541])], 'std': [array([287.91767541,   6.22417691])], 'quantile25': [array([9.02347988, 2.51181732])], 'median': [array([32.99226248,  4.77651408])], 'quantile75': [array([106.05750927,   8.49038014])]}
 	Seed: 16 OOD errors (MSE, MAE) stats: {'min': [array([1.26734608e-11, 3.55998046e-06])], 'max': [array([16329.70209427,   103.00623316])], 'mean': [array([172.53892555,   7.46915317])], 'std': [array([641.78296262,   7.81279183])], 'quantile25': [array([8.80154738, 2.50507016])], 'median': [array([37.72254219,  5.02578226])], 'quantile75': [array([142.11908104,   9.81002871])]}
-	Train: 37625 (38.65%)
-	Val: 31104 (31.95%)
-	Test: 40082 (41.18%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 17 ID errors (MSE, MAE) stats: {'min': [array([0.16666535, 0.16666908])], 'max': [array([3633.61612353,   52.59781779])], 'mean': [array([146.35088426,   7.32839849])], 'std': [array([329.97561136,   6.87630618])], 'quantile25': [array([9.99806871, 2.65458983])], 'median': [array([37.2715449,  5.0995781])], 'quantile75': [array([130.38224788,   9.45784679])]}
+	Train: 72187 (45.92%)
+	Val: 35497 (22.58%)
+	Test: 38037 (24.20%)
+	Test OOD: 11474 (7.30%)
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 17 ID errors (MSE, MAE) stats: {'min': [array([0.0701089 , 0.16666908])], 'max': [array([4241.8297055 ,   53.68167107])], 'mean': [array([118.42262761,   6.56582463])], 'std': [array([288.24692811,   6.20301643])], 'quantile25': [array([9.06396411, 2.51364487])], 'median': [array([32.75335854,  4.77651408])], 'quantile75': [array([104.6586331 ,   8.46101444])]}
 	Seed: 17 OOD errors (MSE, MAE) stats: {'min': [array([0.03234548, 0.15849708])], 'max': [array([6994.08576791,   67.75001346])], 'mean': [array([120.57096069,   6.71886055])], 'std': [array([304.85594324,   6.09755479])], 'quantile25': [array([9.27512362, 2.51584341])], 'median': [array([36.18948092,  4.91666708])], 'quantile75': [array([112.13033838,   8.86705721])]}
-	Train: 38086 (39.25%)
-	Val: 30912 (31.86%)
-	Test: 39813 (41.03%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 18 ID errors (MSE, MAE) stats: {'min': [array([0.26693892, 0.38706313])], 'max': [array([3633.61612353,   52.59781779])], 'mean': [array([146.38294688,   7.31603024])], 'std': [array([336.46707617,   6.91863934])], 'quantile25': [array([9.48951493, 2.60281268])], 'median': [array([37.41052895,  5.16964597])], 'quantile75': [array([125.94732609,   9.43033404])]}
+	Train: 71880 (45.73%)
+	Val: 35497 (22.58%)
+	Test: 38037 (24.20%)
+	Test OOD: 11781 (7.49%)
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 18 ID errors (MSE, MAE) stats: {'min': [array([0.0701089 , 0.18409886])], 'max': [array([4241.8297055 ,   53.68167107])], 'mean': [array([118.39438829,   6.60487046])], 'std': [array([284.56073589,   6.16766974])], 'quantile25': [array([9.25078265, 2.54384118])], 'median': [array([34.34616205,  4.82553436])], 'quantile75': [array([107.0371507 ,   8.51630266])]}
 	Seed: 18 OOD errors (MSE, MAE) stats: {'min': [array([0.15444199, 0.33450923])], 'max': [array([3928.19129812,   49.96255156])], 'mean': [array([146.72023391,   7.26702094])], 'std': [array([316.89635883,   6.92420587])], 'quantile25': [array([9.43384847, 2.50940636])], 'median': [array([34.7017113 ,  4.99999871])], 'quantile75': [array([129.47313165,   9.49999844])]}
-	Train: 37811 (38.70%)
-	Val: 31488 (32.22%)
-	Test: 39512 (40.44%)
-	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([0.16666535, 0.16666908])], 'max': [array([3633.61612353,   52.59781779])], 'mean': [array([151.08120095,   7.39482453])], 'std': [array([345.59480164,   7.05620428])], 'quantile25': [array([9.87352417, 2.6316356 ])], 'median': [array([37.41052895,  5.0995781 ])], 'quantile75': [array([136.36391148,   9.48207265])]}
+	Train: 72349 (45.90%)
+	Val: 36145 (22.93%)
+	Test: 38037 (24.13%)
+	Test OOD: 11096 (7.04%)
+	Scaled columns: ['id', 'gl', 'gender', 'age', 'BMI', 'glycaemia', 'HbA1c', 'follow.up', 'T2DM', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([0.0701089 , 0.16666908])], 'max': [array([4241.8297055 ,   53.68167107])], 'mean': [array([121.40247352,   6.65563317])], 'std': [array([291.20093208,   6.28052237])], 'quantile25': [array([9.07340532, 2.52107342])], 'median': [array([33.92787207,  4.81699414])], 'quantile75': [array([107.88498889,   8.54498887])]}
 	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([0.09992516, 0.27758816])], 'max': [array([7500.91063782,   72.85116035])], 'mean': [array([137.02534903,   6.89557662])], 'std': [array([405.54790218,   6.78387248])], 'quantile25': [array([9.43042306, 2.56211572])], 'median': [array([36.76665325,  4.9435582 ])], 'quantile75': [array([111.15905959,   8.9191929 ])]}
-RS ID (MSE, MAE) errors stats: {'mean': array([[147.17997689,   7.34542134]]), 'std': array([[334.20419559,   6.92336419]]), 'quantile25': array([[9.78272938, 2.62513736]]), 'quantile75': array([[133.95367389,   9.498903  ]]), 'median': array([[37.76338007,  5.13773643]]), 'min': array([[0.18672006, 0.21074789]]), 'max': array([[3566.63939773,   52.15702973]])}
+RS ID (MSE, MAE) errors stats: {'mean': array([[118.04881083,   6.59104422]]), 'std': array([[281.63650034,   6.16440358]]), 'quantile25': array([[9.20716799, 2.53269567]]), 'quantile75': array([[106.65990035,   8.51492953]]), 'median': array([[33.59905021,  4.80356775]]), 'min': array([[0.09356371, 0.17674529]]), 'max': array([[4133.15654561,   53.29105776]])}
 RS OOD (MSE, MAE) errors stats: {'mean': array([[140.53412541,   6.96104606]]), 'std': array([[395.47794647,   6.82669513]]), 'quantile25': array([[8.76341311, 2.456403  ]]), 'quantile75': array([[119.4082374 ,   9.06520737]]), 'median': array([[34.96897001,  4.87494265]]), 'min': array([[0.07747851, 0.17938894]]), 'max': array([[7631.46580258,   68.74693631]])}
