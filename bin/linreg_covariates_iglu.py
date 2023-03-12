@@ -190,7 +190,7 @@ if __name__ == '__main__':
         formatter, series, scalers = reshuffle_data(formatter, seed)
         # build the model
         model = models.LinearRegressionModel(lags = in_len,
-                                             lags_past_covariates = in_len,
+                                             # lags_past_covariates = in_len,
                                              lags_future_covariates = (in_len, formatter.params['length_pred']),
                                              output_chunk_length = formatter.params['length_pred'])
         # train the model
@@ -201,7 +201,7 @@ if __name__ == '__main__':
 
         # backtest on the test set
         forecasts = model.historical_forecasts(series['test']['target'],
-                                               past_covariates = series['test']['dynamic'],
+                                               # past_covariates = series['test']['dynamic'], # there are no past covariates for iglu
                                                future_covariates = series['test']['future'],
                                                forecast_horizon=out_len, 
                                                stride=stride,
@@ -223,7 +223,7 @@ if __name__ == '__main__':
 
         # backtest on the ood test set
         forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                               past_covariates = series['test_ood']['dynamic'],
+                                               # past_covariates = series['test_ood']['dynamic'],
                                                future_covariates = series['test_ood']['future'],
                                                forecast_horizon=out_len, 
                                                stride=stride,
@@ -244,6 +244,7 @@ if __name__ == '__main__':
             f.write(f"\tSeed: {seed} OOD errors (MSE, MAE) stats: {ood_errors_stats_sample}\n")
 
     # report estimation error for each statistic
+    print("writing errors")
     with open(study_file, "a") as f:
         for key in id_errors_stats.keys():
             id_errors_stats[key] = np.mean(id_errors_stats[key], axis=0)

@@ -1,7 +1,6 @@
 # append proper directories into path
 import sys
 import os
-
 sys.path.append("/content/drive/MyDrive/Colab Notebooks")
 sys.path.append("/content/drive/MyDrive/Colab Notebooks/GitHub/GluNet")
 sys.path.append("/content/drive/MyDrive/Colab Notebooks/GitHub/GluNet/bin")
@@ -63,16 +62,6 @@ def load_data(seed = 0, study_file = None):
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
     
-    # attach observed covariate series to known input series
-    for i in range(len(series['train']['future'])):
-        series['train']['future'][i] = series['train']['future'][i].concatenate(series['train']['dynamic'][i], axis=1)
-    for i in range(len(series['val']['future'])):
-        series['val']['future'][i] = series['val']['future'][i].concatenate(series['val']['dynamic'][i], axis=1)
-    for i in range(len(series['test']['future'])):
-        series['test']['future'][i] = series['test']['future'][i].concatenate(series['test']['dynamic'][i], axis=1)
-    for i in range(len(series['test_ood']['future'])):
-        series['test_ood']['future'][i] = series['test_ood']['future'][i].concatenate(series['test_ood']['dynamic'][i], axis=1)
-    
     return formatter, series, scalers
 
 def reshuffle_data(formatter, seed):
@@ -99,77 +88,79 @@ def reshuffle_data(formatter, seed):
                                     'static': static_cols,
                                     'dynamic': dynamic_cols,
                                     'future': future_cols})
-
-    # attach observed covariate series to known input series
-    for i in range(len(series['train']['future'])):
-        series['train']['future'][i] = series['train']['future'][i].concatenate(series['train']['dynamic'][i], axis=1)
-    for i in range(len(series['val']['future'])):
-        series['val']['future'][i] = series['val']['future'][i].concatenate(series['val']['dynamic'][i], axis=1)
-    for i in range(len(series['test']['future'])):
-        series['test']['future'][i] = series['test']['future'][i].concatenate(series['test']['dynamic'][i], axis=1)
-    for i in range(len(series['test_ood']['future'])):
-        series['test_ood']['future'][i] = series['test_ood']['future'][i].concatenate(series['test_ood']['dynamic'][i], axis=1)
-    
     
     return formatter, series, scalers
 
 # define objective function
+# define objective function
 def objective(trial):
     # set parameters
     out_len = formatter.params['length_pred']
-    model_name = f'tensorboard_transformer_covariates_iglu'
-    work_dir = './GitHub/GluNet/output'
-    
+    model_name = f'tensorboard_nhits_covariates_iglu'
+    work_dir = "./GitHub/GluNet/output"
+
     # suggest hyperparameters: input size
     in_len = trial.suggest_int("in_len", 96, formatter.params['max_length_input'], step=12)
     max_samples_per_ts = trial.suggest_int("max_samples_per_ts", 50, 200, step=50)
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
+
     # suggest hyperparameters: model
-    d_model = trial.suggest_int("d_model", 32, 128, step=32)
-    n_heads = trial.suggest_int("n_heads", 2, 4, step=2)
-    num_encoder_layers = trial.suggest_int("num_encoder_layers", 1, 4, step=1)
-    num_decoder_layers = trial.suggest_int("num_decoder_layers", 1, 4, step=1)
-    dim_feedforward = trial.suggest_int("dim_feedforward", 32, 512, step=32)
+    kernel_sizes = trial.suggest_int("kernel_sizes", 1, 5)
+    if kernel_sizes == 1:
+        kernel_sizes = [[2], [2], [2]]
+    elif kernel_sizes == 2:
+        kernel_sizes = [[4], [4], [4]]
+    elif kernel_sizes == 3:
+        kernel_sizes = [[8], [8], [8]]
+    elif kernel_sizes == 4:
+        kernel_sizes = [[8], [4], [1]]
+    elif kernel_sizes == 5:
+        kernel_sizes = [[16], [8], [1]]
+
     dropout = trial.suggest_uniform("dropout", 0, 0.2)
+
     # suggest hyperparameters: training
     lr = trial.suggest_uniform("lr", 1e-4, 1e-3)
     batch_size = trial.suggest_int("batch_size", 32, 64, step=16)
     lr_epochs = trial.suggest_int("lr_epochs", 2, 20, step=2)
-    max_grad_norm = trial.suggest_float("max_grad_norm", 0.1, 1)
+
     # model callbacks
     el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
     loss_logger = utils.LossLogger()
     pruner = utils.PyTorchLightningPruningCallback(trial, monitor="val_loss")
-    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner], "gradient_clip_val": max_grad_norm}
+    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger, pruner]}
+    
     # optimizer scheduler
     scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
     
-    # build the TransformerModel model
-    model = models.TransformerModel(input_chunk_length=in_len,
-                                    output_chunk_length=out_len, 
-                                    d_model=d_model, 
-                                    nhead=n_heads, 
-                                    num_encoder_layers=num_encoder_layers, 
-                                    num_decoder_layers=num_decoder_layers, 
-                                    dim_feedforward=dim_feedforward, 
-                                    dropout=dropout,
-                                    log_tensorboard = True,
-                                    pl_trainer_kwargs = pl_trainer_kwargs,
-                                    batch_size = batch_size,
-                                    optimizer_kwargs = {'lr': lr},
-                                    lr_scheduler_cls = StepLR,
-                                    lr_scheduler_kwargs = scheduler_kwargs,
-                                    save_checkpoints = True,
-                                    model_name = model_name,
-                                    work_dir = work_dir,
-                                    force_reset = True,)
+    # build the NHiTSModel model
+    model = models.NHiTSModel(input_chunk_length=in_len, 
+                                output_chunk_length=out_len, 
+                                num_stacks=3, 
+                                num_blocks=1, 
+                                num_layers=2, 
+                                layer_widths=512, 
+                                pooling_kernel_sizes=kernel_sizes, 
+                                n_freq_downsample=None, 
+                                dropout=dropout, 
+                                activation='ReLU',
+                                log_tensorboard = True,
+                                pl_trainer_kwargs = pl_trainer_kwargs,
+                                batch_size = batch_size,
+                                optimizer_kwargs = {'lr': lr},
+                                lr_scheduler_cls = StepLR,
+                                lr_scheduler_kwargs = scheduler_kwargs,
+                                save_checkpoints = True,
+                                model_name = model_name,
+                                work_dir = work_dir,
+                                force_reset = True,)
 
     # train the model
     model.fit(series=series['train']['target'],
               past_covariates=series['train']['future'],
               val_series=series['val']['target'],
-              val_past_covariates=series['val']['future'], # potential bug?
+              val_past_covariates=series['val']['future'],
               max_samples_per_ts=max_samples_per_ts,
               verbose=False,)
     model.load_from_checkpoint(model_name, work_dir=work_dir)
@@ -190,9 +181,8 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './GitHub/GluNet/output/transformer_covariates_iglu.txt'
+    study_file = './output/nhits_covariates_iglu.txt'
 
-    # check that file exists otherwise create it
     with open(study_file, "a+") as f:
         # write current date and time
         f.write(f"Optimization started at {datetime.datetime.now()}")
@@ -207,29 +197,37 @@ if __name__ == '__main__':
 
     # Select best hyperparameters 
     best_params = study.best_trial.params
+
     # set parameters
     out_len = formatter.params['length_pred']
     stride = out_len // 2
-    model_name = f'tensorboard_transformer_covariates_iglu'
-    work_dir = "GitHub/GluNet/output"
+    model_name = f'tensorboard_nhits_covariates_iglu'
+    work_dir = "./GitHub/GluNet/output"
 
     # suggest hyperparameters: input size
     in_len = best_params["in_len"]
     max_samples_per_ts = best_params["max_samples_per_ts"]
     if max_samples_per_ts < 100:
         max_samples_per_ts = None # unlimited
+
     # suggest hyperparameters: model
-    d_model = best_params["d_model"]
-    n_heads = best_params["n_heads"]
-    num_encoder_layers = best_params["num_encoder_layers"]
-    num_decoder_layers = best_params["num_decoder_layers"]
-    dim_feedforward = best_params["dim_feedforward"]
+    kernel_sizes = best_params["kernel_sizes"]
     dropout = best_params["dropout"]
+    if kernel_sizes == 1:
+        kernel_sizes = [[2], [2], [2]]
+    elif kernel_sizes == 2:
+        kernel_sizes = [[4], [4], [4]]
+    elif kernel_sizes == 3:
+        kernel_sizes = [[8], [8], [8]]
+    elif kernel_sizes == 4:
+        kernel_sizes = [[8], [4], [1]]
+    elif kernel_sizes == 5:
+        kernel_sizes = [[16], [8], [1]]
+
     # suggest hyperparameters: training
     lr = best_params["lr"]
     batch_size = best_params["batch_size"]
     lr_epochs = best_params["lr_epochs"]
-    max_grad_norm = best_params["max_grad_norm"]
     scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
 
     # Set model seed
@@ -246,27 +244,28 @@ if __name__ == '__main__':
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = utils.LossLogger()
-            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger], "gradient_clip_val": max_grad_norm}
+            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [1], "callbacks": [el_stopper, loss_logger]}
             # build the model
-            model = models.TransformerModel(input_chunk_length=in_len,
-                                            output_chunk_length=out_len, 
-                                            d_model=d_model, 
-                                            nhead=n_heads, 
-                                            num_encoder_layers=num_encoder_layers, 
-                                            num_decoder_layers=num_decoder_layers, 
-                                            dim_feedforward=dim_feedforward, 
-                                            dropout=dropout,
-                                            log_tensorboard = True,
-                                            pl_trainer_kwargs = pl_trainer_kwargs,
-                                            batch_size = batch_size,
-                                            optimizer_kwargs = {'lr': lr},
-                                            lr_scheduler_cls = StepLR,
-                                            lr_scheduler_kwargs = scheduler_kwargs,
-                                            save_checkpoints = True,
-                                            model_name = model_name,
-                                            work_dir = work_dir,
-                                            force_reset = True,)
-
+            model = models.NHiTSModel(input_chunk_length=in_len, 
+                                        output_chunk_length=out_len, 
+                                        num_stacks=3, 
+                                        num_blocks=1, 
+                                        num_layers=2, 
+                                        layer_widths=512, 
+                                        pooling_kernel_sizes=kernel_sizes, 
+                                        n_freq_downsample=None, 
+                                        dropout=dropout, 
+                                        activation='ReLU',
+                                        log_tensorboard = True,
+                                        pl_trainer_kwargs = pl_trainer_kwargs,
+                                        lr_scheduler_cls = StepLR,
+                                        lr_scheduler_kwargs = scheduler_kwargs,
+                                        batch_size = batch_size,
+                                        optimizer_kwargs = {'lr': lr},
+                                        save_checkpoints = True,
+                                        model_name = model_name,
+                                        work_dir = work_dir,
+                                        force_reset = True,)
             # train the model
             model.fit(series=series['train']['target'],
                     past_covariates=series['train']['future'],
@@ -278,13 +277,13 @@ if __name__ == '__main__':
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
-                                                    past_covariates=series['test']['future'],
-                                                    forecast_horizon=out_len, 
-                                                    stride=stride,
-                                                    retrain=False,
-                                                    verbose=False,
-                                                    last_points_only=False,
-                                                    start=formatter.params["max_length_input"])
+                                                   past_covariates=series['test']['future'],
+                                                   forecast_horizon=out_len, 
+                                                   stride=stride,
+                                                   retrain=False,
+                                                   verbose=False,
+                                                   last_points_only=False,
+                                                   start=formatter.params["max_length_input"])
             id_errors_sample = utils.rescale_and_backtest(series['test']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],
@@ -299,13 +298,13 @@ if __name__ == '__main__':
 
             # backtest on the ood test set
             forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                                    past_covariates=series['test_ood']['future'],
-                                                    forecast_horizon=out_len, 
-                                                    stride=stride,
-                                                    retrain=False,
-                                                    verbose=False,
-                                                    last_points_only=False,
-                                                    start=formatter.params["max_length_input"])
+                                                   past_covariates=series['test_ood']['future'],
+                                                   forecast_horizon=out_len, 
+                                                   stride=stride,
+                                                   retrain=False,
+                                                   verbose=False,
+                                                   last_points_only=False,
+                                                   start=formatter.params["max_length_input"])
             ood_errors_sample = utils.rescale_and_backtest(series['test_ood']['target'],
                                         forecasts,  
                                         [metrics.mse, metrics.mae],
