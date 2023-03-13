@@ -92,7 +92,6 @@ def reshuffle_data(formatter, seed):
     return formatter, series, scalers
 
 # define objective function
-# define objective function
 def objective(trial):
     # set parameters
     out_len = formatter.params['length_pred']
@@ -158,16 +157,16 @@ def objective(trial):
 
     # train the model
     model.fit(series=series['train']['target'],
-              past_covariates=series['train']['future'],
+              # past_covariates=series['train']['future'],
               val_series=series['val']['target'],
-              val_past_covariates=series['val']['future'],
+              # val_past_covariates=series['val']['future'],
               max_samples_per_ts=max_samples_per_ts,
               verbose=False,)
     model.load_from_checkpoint(model_name, work_dir=work_dir)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
-                            past_covariates=series['val']['future'],
+                            # past_covariates=series['val']['future'],
                             forecast_horizon=out_len,
                             stride=out_len,
                             retrain=False,
@@ -181,7 +180,7 @@ def objective(trial):
 
 if __name__ == '__main__':
     # Optuna study 
-    study_file = './output/nhits_covariates_iglu.txt'
+    study_file = './GitHub/GluNet/output/nhits_covariates_iglu.txt'
 
     with open(study_file, "a+") as f:
         # write current date and time
@@ -189,14 +188,15 @@ if __name__ == '__main__':
 
     # load data
     formatter, series, scalers = load_data(study_file=study_file)
-    study = optuna.create_study(direction="minimize")
-    print_call = partial(utils.print_callback, study_file=study_file)
-    study.optimize(objective, n_trials=100, 
-                   callbacks=[print_call], 
-                   catch=(RuntimeError, KeyError))
+    # study = optuna.create_study(direction="minimize")
+    # print_call = partial(utils.print_callback, study_file=study_file)
+    # study.optimize(objective, n_trials=100, 
+    #               callbacks=[print_call], 
+    #               catch=(RuntimeError, KeyError))
 
     # Select best hyperparameters 
-    best_params = study.best_trial.params
+    # best_params = study.best_trial.params
+    best_params = {'in_len': 96, 'max_samples_per_ts': 200, 'kernel_sizes': 3, 'dropout': 0.11076038717130482, 'lr': 0.0008843796483462655, 'batch_size': 32, 'lr_epochs': 4}
 
     # set parameters
     out_len = formatter.params['length_pred']
@@ -244,7 +244,7 @@ if __name__ == '__main__':
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = utils.LossLogger()
-            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [1], "callbacks": [el_stopper, loss_logger]}
+            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [0], "callbacks": [el_stopper, loss_logger]}
             # build the model
             model = models.NHiTSModel(input_chunk_length=in_len, 
                                         output_chunk_length=out_len, 
@@ -268,16 +268,16 @@ if __name__ == '__main__':
                                         force_reset = True,)
             # train the model
             model.fit(series=series['train']['target'],
-                    past_covariates=series['train']['future'],
+                  #  past_covariates=series['train']['future'],
                     val_series=series['val']['target'],
-                    val_past_covariates=series['val']['future'],
+                  #  val_past_covariates=series['val']['future'],
                     max_samples_per_ts=max_samples_per_ts,
                     verbose=False,)
             model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
-                                                   past_covariates=series['test']['future'],
+                                                  # past_covariates=series['test']['future'],
                                                    forecast_horizon=out_len, 
                                                    stride=stride,
                                                    retrain=False,
@@ -298,7 +298,7 @@ if __name__ == '__main__':
 
             # backtest on the ood test set
             forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                                   past_covariates=series['test_ood']['future'],
+                                                  # past_covariates=series['test_ood']['future'],
                                                    forecast_horizon=out_len, 
                                                    stride=stride,
                                                    retrain=False,

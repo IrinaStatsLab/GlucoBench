@@ -64,14 +64,15 @@ def load_data(seed = 0, study_file = None):
                                     'future': future_cols})
     
     # attach observed covariate series to known input series
-    for i in range(len(series['train']['future'])):
-        series['train']['future'][i] = series['train']['future'][i].concatenate(series['train']['dynamic'][i], axis=1)
-    for i in range(len(series['val']['future'])):
-        series['val']['future'][i] = series['val']['future'][i].concatenate(series['val']['dynamic'][i], axis=1)
-    for i in range(len(series['test']['future'])):
-        series['test']['future'][i] = series['test']['future'][i].concatenate(series['test']['dynamic'][i], axis=1)
-    for i in range(len(series['test_ood']['future'])):
-        series['test_ood']['future'][i] = series['test_ood']['future'][i].concatenate(series['test_ood']['dynamic'][i], axis=1)
+    # there are no dynamic nor future covariates
+    # for i in range(len(series['train']['future'])):
+    #     series['train']['future'][i] = series['train']['future'][i].concatenate(series['train']['dynamic'][i], axis=1)
+    # for i in range(len(series['val']['future'])):
+    #     series['val']['future'][i] = series['val']['future'][i].concatenate(series['val']['dynamic'][i], axis=1)
+    # for i in range(len(series['test']['future'])):
+    #     series['test']['future'][i] = series['test']['future'][i].concatenate(series['test']['dynamic'][i], axis=1)
+    # for i in range(len(series['test_ood']['future'])):
+    #     series['test_ood']['future'][i] = series['test_ood']['future'][i].concatenate(series['test_ood']['dynamic'][i], axis=1)
     
     return formatter, series, scalers
 
@@ -101,14 +102,14 @@ def reshuffle_data(formatter, seed):
                                     'future': future_cols})
 
     # attach observed covariate series to known input series
-    for i in range(len(series['train']['future'])):
-        series['train']['future'][i] = series['train']['future'][i].concatenate(series['train']['dynamic'][i], axis=1)
-    for i in range(len(series['val']['future'])):
-        series['val']['future'][i] = series['val']['future'][i].concatenate(series['val']['dynamic'][i], axis=1)
-    for i in range(len(series['test']['future'])):
-        series['test']['future'][i] = series['test']['future'][i].concatenate(series['test']['dynamic'][i], axis=1)
-    for i in range(len(series['test_ood']['future'])):
-        series['test_ood']['future'][i] = series['test_ood']['future'][i].concatenate(series['test_ood']['dynamic'][i], axis=1)
+    # for i in range(len(series['train']['future'])):
+    #     series['train']['future'][i] = series['train']['future'][i].concatenate(series['train']['dynamic'][i], axis=1)
+    # for i in range(len(series['val']['future'])):
+    #     series['val']['future'][i] = series['val']['future'][i].concatenate(series['val']['dynamic'][i], axis=1)
+    # for i in range(len(series['test']['future'])):
+    #     series['test']['future'][i] = series['test']['future'][i].concatenate(series['test']['dynamic'][i], axis=1)
+    # for i in range(len(series['test_ood']['future'])):
+    #     series['test_ood']['future'][i] = series['test_ood']['future'][i].concatenate(series['test_ood']['dynamic'][i], axis=1)
     
     
     return formatter, series, scalers
@@ -167,16 +168,16 @@ def objective(trial):
 
     # train the model
     model.fit(series=series['train']['target'],
-              past_covariates=series['train']['future'],
+              # past_covariates=series['train']['future'], # no future covariates
               val_series=series['val']['target'],
-              val_past_covariates=series['val']['future'], # potential bug?
+              # val_past_covariates=series['val']['future'], # potential bug?
               max_samples_per_ts=max_samples_per_ts,
               verbose=False,)
     model.load_from_checkpoint(model_name, work_dir=work_dir)
 
     # backtest on the validation set
     errors = model.backtest(series['val']['target'],
-                            past_covariates=series['val']['future'],
+                            # past_covariates=series['val']['future'],
                             forecast_horizon=out_len,
                             stride=out_len,
                             retrain=False,
@@ -211,7 +212,8 @@ if __name__ == '__main__':
     out_len = formatter.params['length_pred']
     stride = out_len // 2
     model_name = f'tensorboard_transformer_covariates_iglu'
-    work_dir = "GitHub/GluNet/output"
+    work_dir = os.path.join(os.path.dirname(__file__), '../output')
+    print("work directory: ", work_dir)
 
     # suggest hyperparameters: input size
     in_len = best_params["in_len"]
@@ -269,16 +271,16 @@ if __name__ == '__main__':
 
             # train the model
             model.fit(series=series['train']['target'],
-                    past_covariates=series['train']['future'],
+                   #  past_covariates=series['train']['future'],
                     val_series=series['val']['target'],
-                    val_past_covariates=series['val']['future'],
+                   #  val_past_covariates=series['val']['future'],
                     max_samples_per_ts=max_samples_per_ts,
                     verbose=False,)
             model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
             forecasts = model.historical_forecasts(series['test']['target'],
-                                                    past_covariates=series['test']['future'],
+                                                  #  past_covariates=series['test']['future'],
                                                     forecast_horizon=out_len, 
                                                     stride=stride,
                                                     retrain=False,
@@ -294,12 +296,13 @@ if __name__ == '__main__':
             id_error_stats_sample = utils.compute_error_statistics(id_errors_sample)
             for key in id_errors_stats.keys():
                 id_errors_stats[key].append(id_error_stats_sample[key])
+                
             with open(study_file, "a") as f:
                 f.write(f"\t\tModel Seed: {model_seed} Seed: {seed} ID errors (MSE, MAE) stats: {id_error_stats_sample}\n")
 
             # backtest on the ood test set
             forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                                    past_covariates=series['test_ood']['future'],
+                                                  #  past_covariates=series['test_ood']['future'],
                                                     forecast_horizon=out_len, 
                                                     stride=stride,
                                                     retrain=False,
