@@ -229,157 +229,220 @@ Current value: 0.010755602270364761, Current params: {'in_len': 108, 'max_sample
 Best value: 0.06063088774681091, Best params: {'in_len': 108, 'max_samples_per_ts': 50, 'd_model': 32, 'n_heads': 2, 'num_encoder_layers': 1, 'num_decoder_layers': 1, 'dim_feedforward': 384, 'dropout': 0.038691123579122515, 'lr': 0.0004450217945481336, 'batch_size': 32, 'lr_epochs': 6, 'max_grad_norm': 0.20863935142150056}
 Current value: 0.00992836244404316, Current params: {'in_len': 120, 'max_samples_per_ts': 50, 'd_model': 96, 'n_heads': 2, 'num_encoder_layers': 1, 'num_decoder_layers': 1, 'dim_feedforward': 416, 'dropout': 0.02192551509487981, 'lr': 0.0005128221718987462, 'batch_size': 32, 'lr_epochs': 8, 'max_grad_norm': 0.5140442050836517}
 Best value: 0.06063088774681091, Best params: {'in_len': 108, 'max_samples_per_ts': 50, 'd_model': 32, 'n_heads': 2, 'num_encoder_layers': 1, 'num_decoder_layers': 1, 'dim_feedforward': 384, 'dropout': 0.038691123579122515, 'lr': 0.0004450217945481336, 'batch_size': 32, 'lr_epochs': 6, 'max_grad_norm': 0.20863935142150056}
-	Train: 3975 (60.09%)
-	Val: 1440 (21.77%)
-	Test: 2340 (35.37%)
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		fast_insulin: REAL_VALUED (OBSERVED_INPUT)
+		slow_insulin: REAL_VALUED (OBSERVED_INPUT)
+		calories: REAL_VALUED (OBSERVED_INPUT)
+		balance: REAL_VALUED (OBSERVED_INPUT)
+		quality: REAL_VALUED (OBSERVED_INPUT)
+		HR: REAL_VALUED (OBSERVED_INPUT)
+		BR: REAL_VALUED (OBSERVED_INPUT)
+		Posture: REAL_VALUED (OBSERVED_INPUT)
+		Activity: REAL_VALUED (OBSERVED_INPUT)
+		HRV: REAL_VALUED (OBSERVED_INPUT)
+		CoreTemp: REAL_VALUED (OBSERVED_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 1
+	Extracted segments: 8
+	Interpolated values: 0
+	Percent of values interpolated: 0.00%
+Splitting data...
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
+Scaling data...
 	No scaling applied
-		Model Seed: 10 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([12.367505 ,  2.5879314], dtype=float32)], 'max': [array([8737.797   ,   84.453575], dtype=float32)], 'mean': [array([1384.2101  ,   24.537054], dtype=float32)], 'std': [array([2162.601  ,   20.97736], dtype=float32)], 'quantile25': [array([84.95919418,  7.85561371])], 'median': [array([483.32168579,  17.80042839])], 'quantile75': [array([1320.29827881,   30.2961874 ])]}
-		Model Seed: 10 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([3.1581132, 1.4235344], dtype=float32)], 'max': [array([3903.5476  ,   56.202213], dtype=float32)], 'mean': [array([691.82355 ,  19.020077], dtype=float32)], 'std': [array([828.834   ,  12.005602], dtype=float32)], 'quantile25': [array([141.85801697,  10.09768486])], 'median': [array([411.87191772,  16.85330009])], 'quantile75': [array([854.08447266,  24.73964691])]}
-	Train: 3835 (59.23%)
-	Val: 1440 (22.24%)
-	Test: 2480 (38.30%)
+Data formatting complete.
+--------------------------------
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
 	No scaling applied
-		Model Seed: 10 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([14.980717 ,  3.0197957], dtype=float32)], 'max': [array([7419.529  ,   80.35154], dtype=float32)], 'mean': [array([1503.6754  ,   26.611202], dtype=float32)], 'std': [array([2071.4534  ,   21.415699], dtype=float32)], 'quantile25': [array([139.65393829,   9.39623785])], 'median': [array([438.31069946,  19.81014442])], 'quantile75': [array([2549.73986816,   43.79501724])]}
-		Model Seed: 10 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([3.7114067, 1.4618174], dtype=float32)], 'max': [array([3798.7324 ,   52.71281], dtype=float32)], 'mean': [array([485.3347  ,  16.230673], dtype=float32)], 'std': [array([632.3329  ,  10.679036], dtype=float32)], 'quantile25': [array([89.93961334,  8.42932415])], 'median': [array([235.6335144 ,  13.43050528])], 'quantile75': [array([625.97816467,  21.91137791])]}
-	Model seed: 10 RS ID (MSE, MAE) errors stats: {'mean': array([[1443.9427  ,   25.574127]], dtype=float32), 'std': array([[2117.0273 ,   21.19653]], dtype=float32), 'quantile25': array([[112.30656624,   8.62592578]]), 'quantile75': array([[1935.01907349,   37.04560232]]), 'median': array([[460.81619263,  18.80528641]]), 'min': array([[13.67411  ,  2.8038635]], dtype=float32), 'max': array([[8078.663  ,   82.40256]], dtype=float32)}
-	Model seed: 10 RS OOD (MSE, MAE) errors stats: {'mean': array([[588.5791  ,  17.625374]], dtype=float32), 'std': array([[730.58344  ,  11.3423195]], dtype=float32), 'quantile25': array([[115.89881516,   9.26350451]]), 'quantile75': array([[740.03131866,  23.32551241]]), 'median': array([[323.75271606,  15.14190269]]), 'min': array([[3.43476  , 1.4426758]], dtype=float32), 'max': array([[3851.1401 ,   54.45751]], dtype=float32)}
-	Train: 3975 (60.09%)
-	Val: 1440 (21.77%)
-	Test: 2340 (35.37%)
+		Model Seed: 10 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([1.7986788, 1.2003225], dtype=float32)], 'max': [array([17599.309  ,   117.81116], dtype=float32)], 'mean': [array([951.92255 ,  18.610197], dtype=float32)], 'std': [array([2095.4707  ,   18.905472], dtype=float32)], 'quantile25': [array([62.79222298,  6.63058364])], 'median': [array([207.48254395,  11.82056475])], 'quantile75': [array([661.4559021 ,  22.31454277])]}
+		Model Seed: 10 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([5.6720314, 1.981781 ], dtype=float32)], 'max': [array([5645.0566 ,   67.43684], dtype=float32)], 'mean': [array([692.5456 ,  18.85213], dtype=float32)], 'std': [array([911.87354,  12.58844], dtype=float32)], 'quantile25': [array([123.70475006,   9.54259586])], 'median': [array([394.63830566,  16.39406013])], 'quantile75': [array([851.91107178,  25.86619568])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
 	No scaling applied
-		Model Seed: 11 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([12.367505 ,  2.5879314], dtype=float32)], 'max': [array([8737.797   ,   84.453575], dtype=float32)], 'mean': [array([1384.2101  ,   24.537054], dtype=float32)], 'std': [array([2162.601  ,   20.97736], dtype=float32)], 'quantile25': [array([84.95919418,  7.85561371])], 'median': [array([483.32168579,  17.80042839])], 'quantile75': [array([1320.29827881,   30.2961874 ])]}
-		Model Seed: 11 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([3.1581132, 1.4235344], dtype=float32)], 'max': [array([3903.5476  ,   56.202213], dtype=float32)], 'mean': [array([691.82355 ,  19.020077], dtype=float32)], 'std': [array([828.834   ,  12.005602], dtype=float32)], 'quantile25': [array([141.85801697,  10.09768486])], 'median': [array([411.87191772,  16.85330009])], 'quantile75': [array([854.08447266,  24.73964691])]}
-	Train: 3835 (59.23%)
-	Val: 1440 (22.24%)
-	Test: 2480 (38.30%)
+		Model Seed: 10 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([6.2259135, 2.125595 ], dtype=float32)], 'max': [array([18438.443   ,   121.616005], dtype=float32)], 'mean': [array([974.1313 ,  20.44478], dtype=float32)], 'std': [array([2110.1726  ,   18.241356], dtype=float32)], 'quantile25': [array([88.74232101,  8.23859954])], 'median': [array([314.86727905,  15.09465551])], 'quantile75': [array([820.27371216,  26.0898304 ])]}
+		Model Seed: 10 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([1.1251054 , 0.79498035], dtype=float32)], 'max': [array([4736.664   ,   59.007828], dtype=float32)], 'mean': [array([442.38    ,  14.416112], dtype=float32)], 'std': [array([754.6349  ,  11.370817], dtype=float32)], 'quantile25': [array([51.61812019,  5.89686525])], 'median': [array([187.49406433,  11.50052881])], 'quantile75': [array([409.66448212,  17.43476582])]}
+	Model seed: 10 RS ID (MSE, MAE) errors stats: {'mean': array([[963.0269  ,  19.527489]], dtype=float32), 'std': array([[2102.8218  ,   18.573414]], dtype=float32), 'quantile25': array([[75.767272  ,  7.43459159]]), 'quantile75': array([[740.86480713,  24.20218658]]), 'median': array([[261.1749115 ,  13.45761013]]), 'min': array([[4.012296 , 1.6629589]], dtype=float32), 'max': array([[18018.875  ,   119.71358]], dtype=float32)}
+	Model seed: 10 RS OOD (MSE, MAE) errors stats: {'mean': array([[567.46277,  16.63412]], dtype=float32), 'std': array([[833.2542  ,  11.979629]], dtype=float32), 'quantile25': array([[87.66143513,  7.71973056]]), 'quantile75': array([[630.78777695,  21.65048075]]), 'median': array([[291.066185  ,  13.94729447]]), 'min': array([[3.3985684, 1.3883806]], dtype=float32), 'max': array([[5190.8604  ,   63.222332]], dtype=float32)}
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
 	No scaling applied
-		Model Seed: 11 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([14.980717 ,  3.0197957], dtype=float32)], 'max': [array([7419.529  ,   80.35154], dtype=float32)], 'mean': [array([1503.6754  ,   26.611202], dtype=float32)], 'std': [array([2071.4534  ,   21.415699], dtype=float32)], 'quantile25': [array([139.65393829,   9.39623785])], 'median': [array([438.31069946,  19.81014442])], 'quantile75': [array([2549.73986816,   43.79501724])]}
-		Model Seed: 11 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([3.7114067, 1.4618174], dtype=float32)], 'max': [array([3798.7324 ,   52.71281], dtype=float32)], 'mean': [array([485.3347  ,  16.230673], dtype=float32)], 'std': [array([632.3329  ,  10.679036], dtype=float32)], 'quantile25': [array([89.93961334,  8.42932415])], 'median': [array([235.6335144 ,  13.43050528])], 'quantile75': [array([625.97816467,  21.91137791])]}
-	Model seed: 11 RS ID (MSE, MAE) errors stats: {'mean': array([[1443.9427  ,   25.574127]], dtype=float32), 'std': array([[2117.0273 ,   21.19653]], dtype=float32), 'quantile25': array([[112.30656624,   8.62592578]]), 'quantile75': array([[1935.01907349,   37.04560232]]), 'median': array([[460.81619263,  18.80528641]]), 'min': array([[13.67411  ,  2.8038635]], dtype=float32), 'max': array([[8078.663  ,   82.40256]], dtype=float32)}
-	Model seed: 11 RS OOD (MSE, MAE) errors stats: {'mean': array([[588.5791  ,  17.625374]], dtype=float32), 'std': array([[730.58344  ,  11.3423195]], dtype=float32), 'quantile25': array([[115.89881516,   9.26350451]]), 'quantile75': array([[740.03131866,  23.32551241]]), 'median': array([[323.75271606,  15.14190269]]), 'min': array([[3.43476  , 1.4426758]], dtype=float32), 'max': array([[3851.1401 ,   54.45751]], dtype=float32)}
-	Train: 3975 (60.09%)
-	Val: 1440 (21.77%)
-	Test: 2340 (35.37%)
+		Model Seed: 11 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([1.7986788, 1.2003225], dtype=float32)], 'max': [array([17599.309  ,   117.81116], dtype=float32)], 'mean': [array([951.92255 ,  18.610197], dtype=float32)], 'std': [array([2095.4707  ,   18.905472], dtype=float32)], 'quantile25': [array([62.79222298,  6.63058364])], 'median': [array([207.48254395,  11.82056475])], 'quantile75': [array([661.4559021 ,  22.31454277])]}
+		Model Seed: 11 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([5.6720314, 1.981781 ], dtype=float32)], 'max': [array([5645.0566 ,   67.43684], dtype=float32)], 'mean': [array([692.5456 ,  18.85213], dtype=float32)], 'std': [array([911.87354,  12.58844], dtype=float32)], 'quantile25': [array([123.70475006,   9.54259586])], 'median': [array([394.63830566,  16.39406013])], 'quantile75': [array([851.91107178,  25.86619568])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
 	No scaling applied
-		Model Seed: 12 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([12.367505 ,  2.5879314], dtype=float32)], 'max': [array([8737.797   ,   84.453575], dtype=float32)], 'mean': [array([1384.2101  ,   24.537054], dtype=float32)], 'std': [array([2162.601  ,   20.97736], dtype=float32)], 'quantile25': [array([84.95919418,  7.85561371])], 'median': [array([483.32168579,  17.80042839])], 'quantile75': [array([1320.29827881,   30.2961874 ])]}
-		Model Seed: 12 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([3.1581132, 1.4235344], dtype=float32)], 'max': [array([3903.5476  ,   56.202213], dtype=float32)], 'mean': [array([691.82355 ,  19.020077], dtype=float32)], 'std': [array([828.834   ,  12.005602], dtype=float32)], 'quantile25': [array([141.85801697,  10.09768486])], 'median': [array([411.87191772,  16.85330009])], 'quantile75': [array([854.08447266,  24.73964691])]}
-	Train: 3835 (59.23%)
-	Val: 1440 (22.24%)
-	Test: 2480 (38.30%)
+		Model Seed: 11 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([6.2259135, 2.125595 ], dtype=float32)], 'max': [array([18438.443   ,   121.616005], dtype=float32)], 'mean': [array([974.1313 ,  20.44478], dtype=float32)], 'std': [array([2110.1726  ,   18.241356], dtype=float32)], 'quantile25': [array([88.74232101,  8.23859954])], 'median': [array([314.86727905,  15.09465551])], 'quantile75': [array([820.27371216,  26.0898304 ])]}
+		Model Seed: 11 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([1.1251054 , 0.79498035], dtype=float32)], 'max': [array([4736.664   ,   59.007828], dtype=float32)], 'mean': [array([442.38    ,  14.416112], dtype=float32)], 'std': [array([754.6349  ,  11.370817], dtype=float32)], 'quantile25': [array([51.61812019,  5.89686525])], 'median': [array([187.49406433,  11.50052881])], 'quantile75': [array([409.66448212,  17.43476582])]}
+	Model seed: 11 RS ID (MSE, MAE) errors stats: {'mean': array([[963.0269  ,  19.527489]], dtype=float32), 'std': array([[2102.8218  ,   18.573414]], dtype=float32), 'quantile25': array([[75.767272  ,  7.43459159]]), 'quantile75': array([[740.86480713,  24.20218658]]), 'median': array([[261.1749115 ,  13.45761013]]), 'min': array([[4.012296 , 1.6629589]], dtype=float32), 'max': array([[18018.875  ,   119.71358]], dtype=float32)}
+	Model seed: 11 RS OOD (MSE, MAE) errors stats: {'mean': array([[567.46277,  16.63412]], dtype=float32), 'std': array([[833.2542  ,  11.979629]], dtype=float32), 'quantile25': array([[87.66143513,  7.71973056]]), 'quantile75': array([[630.78777695,  21.65048075]]), 'median': array([[291.066185  ,  13.94729447]]), 'min': array([[3.3985684, 1.3883806]], dtype=float32), 'max': array([[5190.8604  ,   63.222332]], dtype=float32)}
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
 	No scaling applied
-		Model Seed: 12 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([14.980717 ,  3.0197957], dtype=float32)], 'max': [array([7419.529  ,   80.35154], dtype=float32)], 'mean': [array([1503.6754  ,   26.611202], dtype=float32)], 'std': [array([2071.4534  ,   21.415699], dtype=float32)], 'quantile25': [array([139.65393829,   9.39623785])], 'median': [array([438.31069946,  19.81014442])], 'quantile75': [array([2549.73986816,   43.79501724])]}
-		Model Seed: 12 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([3.7114067, 1.4618174], dtype=float32)], 'max': [array([3798.7324 ,   52.71281], dtype=float32)], 'mean': [array([485.3347  ,  16.230673], dtype=float32)], 'std': [array([632.3329  ,  10.679036], dtype=float32)], 'quantile25': [array([89.93961334,  8.42932415])], 'median': [array([235.6335144 ,  13.43050528])], 'quantile75': [array([625.97816467,  21.91137791])]}
-	Model seed: 12 RS ID (MSE, MAE) errors stats: {'mean': array([[1443.9427  ,   25.574127]], dtype=float32), 'std': array([[2117.0273 ,   21.19653]], dtype=float32), 'quantile25': array([[112.30656624,   8.62592578]]), 'quantile75': array([[1935.01907349,   37.04560232]]), 'median': array([[460.81619263,  18.80528641]]), 'min': array([[13.67411  ,  2.8038635]], dtype=float32), 'max': array([[8078.663  ,   82.40256]], dtype=float32)}
-	Model seed: 12 RS OOD (MSE, MAE) errors stats: {'mean': array([[588.5791  ,  17.625374]], dtype=float32), 'std': array([[730.58344  ,  11.3423195]], dtype=float32), 'quantile25': array([[115.89881516,   9.26350451]]), 'quantile75': array([[740.03131866,  23.32551241]]), 'median': array([[323.75271606,  15.14190269]]), 'min': array([[3.43476  , 1.4426758]], dtype=float32), 'max': array([[3851.1401 ,   54.45751]], dtype=float32)}
-	Train: 3975 (60.09%)
-	Val: 1440 (21.77%)
-	Test: 2340 (35.37%)
+		Model Seed: 12 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([1.7986788, 1.2003225], dtype=float32)], 'max': [array([17599.309  ,   117.81116], dtype=float32)], 'mean': [array([951.92255 ,  18.610197], dtype=float32)], 'std': [array([2095.4707  ,   18.905472], dtype=float32)], 'quantile25': [array([62.79222298,  6.63058364])], 'median': [array([207.48254395,  11.82056475])], 'quantile75': [array([661.4559021 ,  22.31454277])]}
+		Model Seed: 12 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([5.6720314, 1.981781 ], dtype=float32)], 'max': [array([5645.0566 ,   67.43684], dtype=float32)], 'mean': [array([692.5456 ,  18.85213], dtype=float32)], 'std': [array([911.87354,  12.58844], dtype=float32)], 'quantile25': [array([123.70475006,   9.54259586])], 'median': [array([394.63830566,  16.39406013])], 'quantile75': [array([851.91107178,  25.86619568])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
 	No scaling applied
-		Model Seed: 13 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([12.367505 ,  2.5879314], dtype=float32)], 'max': [array([8737.797   ,   84.453575], dtype=float32)], 'mean': [array([1384.2101  ,   24.537054], dtype=float32)], 'std': [array([2162.601  ,   20.97736], dtype=float32)], 'quantile25': [array([84.95919418,  7.85561371])], 'median': [array([483.32168579,  17.80042839])], 'quantile75': [array([1320.29827881,   30.2961874 ])]}
-		Model Seed: 13 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([3.1581132, 1.4235344], dtype=float32)], 'max': [array([3903.5476  ,   56.202213], dtype=float32)], 'mean': [array([691.82355 ,  19.020077], dtype=float32)], 'std': [array([828.834   ,  12.005602], dtype=float32)], 'quantile25': [array([141.85801697,  10.09768486])], 'median': [array([411.87191772,  16.85330009])], 'quantile75': [array([854.08447266,  24.73964691])]}
-	Train: 3835 (59.23%)
-	Val: 1440 (22.24%)
-	Test: 2480 (38.30%)
+		Model Seed: 12 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([6.2259135, 2.125595 ], dtype=float32)], 'max': [array([18438.443   ,   121.616005], dtype=float32)], 'mean': [array([974.1313 ,  20.44478], dtype=float32)], 'std': [array([2110.1726  ,   18.241356], dtype=float32)], 'quantile25': [array([88.74232101,  8.23859954])], 'median': [array([314.86727905,  15.09465551])], 'quantile75': [array([820.27371216,  26.0898304 ])]}
+		Model Seed: 12 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([1.1251054 , 0.79498035], dtype=float32)], 'max': [array([4736.664   ,   59.007828], dtype=float32)], 'mean': [array([442.38    ,  14.416112], dtype=float32)], 'std': [array([754.6349  ,  11.370817], dtype=float32)], 'quantile25': [array([51.61812019,  5.89686525])], 'median': [array([187.49406433,  11.50052881])], 'quantile75': [array([409.66448212,  17.43476582])]}
+	Model seed: 12 RS ID (MSE, MAE) errors stats: {'mean': array([[963.0269  ,  19.527489]], dtype=float32), 'std': array([[2102.8218  ,   18.573414]], dtype=float32), 'quantile25': array([[75.767272  ,  7.43459159]]), 'quantile75': array([[740.86480713,  24.20218658]]), 'median': array([[261.1749115 ,  13.45761013]]), 'min': array([[4.012296 , 1.6629589]], dtype=float32), 'max': array([[18018.875  ,   119.71358]], dtype=float32)}
+	Model seed: 12 RS OOD (MSE, MAE) errors stats: {'mean': array([[567.46277,  16.63412]], dtype=float32), 'std': array([[833.2542  ,  11.979629]], dtype=float32), 'quantile25': array([[87.66143513,  7.71973056]]), 'quantile75': array([[630.78777695,  21.65048075]]), 'median': array([[291.066185  ,  13.94729447]]), 'min': array([[3.3985684, 1.3883806]], dtype=float32), 'max': array([[5190.8604  ,   63.222332]], dtype=float32)}
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
 	No scaling applied
-		Model Seed: 13 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([14.980717 ,  3.0197957], dtype=float32)], 'max': [array([7419.529  ,   80.35154], dtype=float32)], 'mean': [array([1503.6754  ,   26.611202], dtype=float32)], 'std': [array([2071.4534  ,   21.415699], dtype=float32)], 'quantile25': [array([139.65393829,   9.39623785])], 'median': [array([438.31069946,  19.81014442])], 'quantile75': [array([2549.73986816,   43.79501724])]}
-		Model Seed: 13 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([3.7114067, 1.4618174], dtype=float32)], 'max': [array([3798.7324 ,   52.71281], dtype=float32)], 'mean': [array([485.3347  ,  16.230673], dtype=float32)], 'std': [array([632.3329  ,  10.679036], dtype=float32)], 'quantile25': [array([89.93961334,  8.42932415])], 'median': [array([235.6335144 ,  13.43050528])], 'quantile75': [array([625.97816467,  21.91137791])]}
-	Model seed: 13 RS ID (MSE, MAE) errors stats: {'mean': array([[1443.9427  ,   25.574127]], dtype=float32), 'std': array([[2117.0273 ,   21.19653]], dtype=float32), 'quantile25': array([[112.30656624,   8.62592578]]), 'quantile75': array([[1935.01907349,   37.04560232]]), 'median': array([[460.81619263,  18.80528641]]), 'min': array([[13.67411  ,  2.8038635]], dtype=float32), 'max': array([[8078.663  ,   82.40256]], dtype=float32)}
-	Model seed: 13 RS OOD (MSE, MAE) errors stats: {'mean': array([[588.5791  ,  17.625374]], dtype=float32), 'std': array([[730.58344  ,  11.3423195]], dtype=float32), 'quantile25': array([[115.89881516,   9.26350451]]), 'quantile75': array([[740.03131866,  23.32551241]]), 'median': array([[323.75271606,  15.14190269]]), 'min': array([[3.43476  , 1.4426758]], dtype=float32), 'max': array([[3851.1401 ,   54.45751]], dtype=float32)}
-	Train: 3975 (60.09%)
-	Val: 1440 (21.77%)
-	Test: 2340 (35.37%)
+		Model Seed: 13 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([1.7986788, 1.2003225], dtype=float32)], 'max': [array([17599.309  ,   117.81116], dtype=float32)], 'mean': [array([951.92255 ,  18.610197], dtype=float32)], 'std': [array([2095.4707  ,   18.905472], dtype=float32)], 'quantile25': [array([62.79222298,  6.63058364])], 'median': [array([207.48254395,  11.82056475])], 'quantile75': [array([661.4559021 ,  22.31454277])]}
+		Model Seed: 13 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([5.6720314, 1.981781 ], dtype=float32)], 'max': [array([5645.0566 ,   67.43684], dtype=float32)], 'mean': [array([692.5456 ,  18.85213], dtype=float32)], 'std': [array([911.87354,  12.58844], dtype=float32)], 'quantile25': [array([123.70475006,   9.54259586])], 'median': [array([394.63830566,  16.39406013])], 'quantile75': [array([851.91107178,  25.86619568])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
 	No scaling applied
-		Model Seed: 14 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([12.367505 ,  2.5879314], dtype=float32)], 'max': [array([8737.797   ,   84.453575], dtype=float32)], 'mean': [array([1384.2101  ,   24.537054], dtype=float32)], 'std': [array([2162.601  ,   20.97736], dtype=float32)], 'quantile25': [array([84.95919418,  7.85561371])], 'median': [array([483.32168579,  17.80042839])], 'quantile75': [array([1320.29827881,   30.2961874 ])]}
-		Model Seed: 14 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([3.1581132, 1.4235344], dtype=float32)], 'max': [array([3903.5476  ,   56.202213], dtype=float32)], 'mean': [array([691.82355 ,  19.020077], dtype=float32)], 'std': [array([828.834   ,  12.005602], dtype=float32)], 'quantile25': [array([141.85801697,  10.09768486])], 'median': [array([411.87191772,  16.85330009])], 'quantile75': [array([854.08447266,  24.73964691])]}
-	Train: 3835 (59.23%)
-	Val: 1440 (22.24%)
-	Test: 2480 (38.30%)
+		Model Seed: 13 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([6.2259135, 2.125595 ], dtype=float32)], 'max': [array([18438.443   ,   121.616005], dtype=float32)], 'mean': [array([974.1313 ,  20.44478], dtype=float32)], 'std': [array([2110.1726  ,   18.241356], dtype=float32)], 'quantile25': [array([88.74232101,  8.23859954])], 'median': [array([314.86727905,  15.09465551])], 'quantile75': [array([820.27371216,  26.0898304 ])]}
+		Model Seed: 13 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([1.1251054 , 0.79498035], dtype=float32)], 'max': [array([4736.664   ,   59.007828], dtype=float32)], 'mean': [array([442.38    ,  14.416112], dtype=float32)], 'std': [array([754.6349  ,  11.370817], dtype=float32)], 'quantile25': [array([51.61812019,  5.89686525])], 'median': [array([187.49406433,  11.50052881])], 'quantile75': [array([409.66448212,  17.43476582])]}
+	Model seed: 13 RS ID (MSE, MAE) errors stats: {'mean': array([[963.0269  ,  19.527489]], dtype=float32), 'std': array([[2102.8218  ,   18.573414]], dtype=float32), 'quantile25': array([[75.767272  ,  7.43459159]]), 'quantile75': array([[740.86480713,  24.20218658]]), 'median': array([[261.1749115 ,  13.45761013]]), 'min': array([[4.012296 , 1.6629589]], dtype=float32), 'max': array([[18018.875  ,   119.71358]], dtype=float32)}
+	Model seed: 13 RS OOD (MSE, MAE) errors stats: {'mean': array([[567.46277,  16.63412]], dtype=float32), 'std': array([[833.2542  ,  11.979629]], dtype=float32), 'quantile25': array([[87.66143513,  7.71973056]]), 'quantile75': array([[630.78777695,  21.65048075]]), 'median': array([[291.066185  ,  13.94729447]]), 'min': array([[3.3985684, 1.3883806]], dtype=float32), 'max': array([[5190.8604  ,   63.222332]], dtype=float32)}
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
 	No scaling applied
-		Model Seed: 14 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([14.980717 ,  3.0197957], dtype=float32)], 'max': [array([7419.529  ,   80.35154], dtype=float32)], 'mean': [array([1503.6754  ,   26.611202], dtype=float32)], 'std': [array([2071.4534  ,   21.415699], dtype=float32)], 'quantile25': [array([139.65393829,   9.39623785])], 'median': [array([438.31069946,  19.81014442])], 'quantile75': [array([2549.73986816,   43.79501724])]}
-		Model Seed: 14 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([3.7114067, 1.4618174], dtype=float32)], 'max': [array([3798.7324 ,   52.71281], dtype=float32)], 'mean': [array([485.3347  ,  16.230673], dtype=float32)], 'std': [array([632.3329  ,  10.679036], dtype=float32)], 'quantile25': [array([89.93961334,  8.42932415])], 'median': [array([235.6335144 ,  13.43050528])], 'quantile75': [array([625.97816467,  21.91137791])]}
-	Model seed: 14 RS ID (MSE, MAE) errors stats: {'mean': array([[1443.9427  ,   25.574127]], dtype=float32), 'std': array([[2117.0273 ,   21.19653]], dtype=float32), 'quantile25': array([[112.30656624,   8.62592578]]), 'quantile75': array([[1935.01907349,   37.04560232]]), 'median': array([[460.81619263,  18.80528641]]), 'min': array([[13.67411  ,  2.8038635]], dtype=float32), 'max': array([[8078.663  ,   82.40256]], dtype=float32)}
-	Model seed: 14 RS OOD (MSE, MAE) errors stats: {'mean': array([[588.5791  ,  17.625374]], dtype=float32), 'std': array([[730.58344  ,  11.3423195]], dtype=float32), 'quantile25': array([[115.89881516,   9.26350451]]), 'quantile75': array([[740.03131866,  23.32551241]]), 'median': array([[323.75271606,  15.14190269]]), 'min': array([[3.43476  , 1.4426758]], dtype=float32), 'max': array([[3851.1401 ,   54.45751]], dtype=float32)}
-	Train: 3975 (60.09%)
-	Val: 1440 (21.77%)
-	Test: 2340 (35.37%)
+		Model Seed: 14 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([1.7986788, 1.2003225], dtype=float32)], 'max': [array([17599.309  ,   117.81116], dtype=float32)], 'mean': [array([951.92255 ,  18.610197], dtype=float32)], 'std': [array([2095.4707  ,   18.905472], dtype=float32)], 'quantile25': [array([62.79222298,  6.63058364])], 'median': [array([207.48254395,  11.82056475])], 'quantile75': [array([661.4559021 ,  22.31454277])]}
+		Model Seed: 14 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([5.6720314, 1.981781 ], dtype=float32)], 'max': [array([5645.0566 ,   67.43684], dtype=float32)], 'mean': [array([692.5456 ,  18.85213], dtype=float32)], 'std': [array([911.87354,  12.58844], dtype=float32)], 'quantile25': [array([123.70475006,   9.54259586])], 'median': [array([394.63830566,  16.39406013])], 'quantile75': [array([851.91107178,  25.86619568])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
 	No scaling applied
-		Model Seed: 15 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([12.367505 ,  2.5879314], dtype=float32)], 'max': [array([8737.797   ,   84.453575], dtype=float32)], 'mean': [array([1384.2101  ,   24.537054], dtype=float32)], 'std': [array([2162.601  ,   20.97736], dtype=float32)], 'quantile25': [array([84.95919418,  7.85561371])], 'median': [array([483.32168579,  17.80042839])], 'quantile75': [array([1320.29827881,   30.2961874 ])]}
-		Model Seed: 15 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([3.1581132, 1.4235344], dtype=float32)], 'max': [array([3903.5476  ,   56.202213], dtype=float32)], 'mean': [array([691.82355 ,  19.020077], dtype=float32)], 'std': [array([828.834   ,  12.005602], dtype=float32)], 'quantile25': [array([141.85801697,  10.09768486])], 'median': [array([411.87191772,  16.85330009])], 'quantile75': [array([854.08447266,  24.73964691])]}
-	Train: 3835 (59.23%)
-	Val: 1440 (22.24%)
-	Test: 2480 (38.30%)
+		Model Seed: 14 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([6.2259135, 2.125595 ], dtype=float32)], 'max': [array([18438.443   ,   121.616005], dtype=float32)], 'mean': [array([974.1313 ,  20.44478], dtype=float32)], 'std': [array([2110.1726  ,   18.241356], dtype=float32)], 'quantile25': [array([88.74232101,  8.23859954])], 'median': [array([314.86727905,  15.09465551])], 'quantile75': [array([820.27371216,  26.0898304 ])]}
+		Model Seed: 14 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([1.1251054 , 0.79498035], dtype=float32)], 'max': [array([4736.664   ,   59.007828], dtype=float32)], 'mean': [array([442.38    ,  14.416112], dtype=float32)], 'std': [array([754.6349  ,  11.370817], dtype=float32)], 'quantile25': [array([51.61812019,  5.89686525])], 'median': [array([187.49406433,  11.50052881])], 'quantile75': [array([409.66448212,  17.43476582])]}
+	Model seed: 14 RS ID (MSE, MAE) errors stats: {'mean': array([[963.0269  ,  19.527489]], dtype=float32), 'std': array([[2102.8218  ,   18.573414]], dtype=float32), 'quantile25': array([[75.767272  ,  7.43459159]]), 'quantile75': array([[740.86480713,  24.20218658]]), 'median': array([[261.1749115 ,  13.45761013]]), 'min': array([[4.012296 , 1.6629589]], dtype=float32), 'max': array([[18018.875  ,   119.71358]], dtype=float32)}
+	Model seed: 14 RS OOD (MSE, MAE) errors stats: {'mean': array([[567.46277,  16.63412]], dtype=float32), 'std': array([[833.2542  ,  11.979629]], dtype=float32), 'quantile25': array([[87.66143513,  7.71973056]]), 'quantile75': array([[630.78777695,  21.65048075]]), 'median': array([[291.066185  ,  13.94729447]]), 'min': array([[3.3985684, 1.3883806]], dtype=float32), 'max': array([[5190.8604  ,   63.222332]], dtype=float32)}
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
 	No scaling applied
-		Model Seed: 15 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([14.980717 ,  3.0197957], dtype=float32)], 'max': [array([7419.529  ,   80.35154], dtype=float32)], 'mean': [array([1503.6754  ,   26.611202], dtype=float32)], 'std': [array([2071.4534  ,   21.415699], dtype=float32)], 'quantile25': [array([139.65393829,   9.39623785])], 'median': [array([438.31069946,  19.81014442])], 'quantile75': [array([2549.73986816,   43.79501724])]}
-		Model Seed: 15 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([3.7114067, 1.4618174], dtype=float32)], 'max': [array([3798.7324 ,   52.71281], dtype=float32)], 'mean': [array([485.3347  ,  16.230673], dtype=float32)], 'std': [array([632.3329  ,  10.679036], dtype=float32)], 'quantile25': [array([89.93961334,  8.42932415])], 'median': [array([235.6335144 ,  13.43050528])], 'quantile75': [array([625.97816467,  21.91137791])]}
-	Model seed: 15 RS ID (MSE, MAE) errors stats: {'mean': array([[1443.9427  ,   25.574127]], dtype=float32), 'std': array([[2117.0273 ,   21.19653]], dtype=float32), 'quantile25': array([[112.30656624,   8.62592578]]), 'quantile75': array([[1935.01907349,   37.04560232]]), 'median': array([[460.81619263,  18.80528641]]), 'min': array([[13.67411  ,  2.8038635]], dtype=float32), 'max': array([[8078.663  ,   82.40256]], dtype=float32)}
-	Model seed: 15 RS OOD (MSE, MAE) errors stats: {'mean': array([[588.5791  ,  17.625374]], dtype=float32), 'std': array([[730.58344  ,  11.3423195]], dtype=float32), 'quantile25': array([[115.89881516,   9.26350451]]), 'quantile75': array([[740.03131866,  23.32551241]]), 'median': array([[323.75271606,  15.14190269]]), 'min': array([[3.43476  , 1.4426758]], dtype=float32), 'max': array([[3851.1401 ,   54.45751]], dtype=float32)}
-	Train: 3975 (60.09%)
-	Val: 1440 (21.77%)
-	Test: 2340 (35.37%)
+		Model Seed: 15 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([1.7986788, 1.2003225], dtype=float32)], 'max': [array([17599.309  ,   117.81116], dtype=float32)], 'mean': [array([951.92255 ,  18.610197], dtype=float32)], 'std': [array([2095.4707  ,   18.905472], dtype=float32)], 'quantile25': [array([62.79222298,  6.63058364])], 'median': [array([207.48254395,  11.82056475])], 'quantile75': [array([661.4559021 ,  22.31454277])]}
+		Model Seed: 15 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([5.6720314, 1.981781 ], dtype=float32)], 'max': [array([5645.0566 ,   67.43684], dtype=float32)], 'mean': [array([692.5456 ,  18.85213], dtype=float32)], 'std': [array([911.87354,  12.58844], dtype=float32)], 'quantile25': [array([123.70475006,   9.54259586])], 'median': [array([394.63830566,  16.39406013])], 'quantile75': [array([851.91107178,  25.86619568])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
 	No scaling applied
-		Model Seed: 16 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([12.367505 ,  2.5879314], dtype=float32)], 'max': [array([8737.797   ,   84.453575], dtype=float32)], 'mean': [array([1384.2101  ,   24.537054], dtype=float32)], 'std': [array([2162.601  ,   20.97736], dtype=float32)], 'quantile25': [array([84.95919418,  7.85561371])], 'median': [array([483.32168579,  17.80042839])], 'quantile75': [array([1320.29827881,   30.2961874 ])]}
-		Model Seed: 16 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([3.1581132, 1.4235344], dtype=float32)], 'max': [array([3903.5476  ,   56.202213], dtype=float32)], 'mean': [array([691.82355 ,  19.020077], dtype=float32)], 'std': [array([828.834   ,  12.005602], dtype=float32)], 'quantile25': [array([141.85801697,  10.09768486])], 'median': [array([411.87191772,  16.85330009])], 'quantile75': [array([854.08447266,  24.73964691])]}
-	Train: 3835 (59.23%)
-	Val: 1440 (22.24%)
-	Test: 2480 (38.30%)
+		Model Seed: 15 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([6.2259135, 2.125595 ], dtype=float32)], 'max': [array([18438.443   ,   121.616005], dtype=float32)], 'mean': [array([974.1313 ,  20.44478], dtype=float32)], 'std': [array([2110.1726  ,   18.241356], dtype=float32)], 'quantile25': [array([88.74232101,  8.23859954])], 'median': [array([314.86727905,  15.09465551])], 'quantile75': [array([820.27371216,  26.0898304 ])]}
+		Model Seed: 15 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([1.1251054 , 0.79498035], dtype=float32)], 'max': [array([4736.664   ,   59.007828], dtype=float32)], 'mean': [array([442.38    ,  14.416112], dtype=float32)], 'std': [array([754.6349  ,  11.370817], dtype=float32)], 'quantile25': [array([51.61812019,  5.89686525])], 'median': [array([187.49406433,  11.50052881])], 'quantile75': [array([409.66448212,  17.43476582])]}
+	Model seed: 15 RS ID (MSE, MAE) errors stats: {'mean': array([[963.0269  ,  19.527489]], dtype=float32), 'std': array([[2102.8218  ,   18.573414]], dtype=float32), 'quantile25': array([[75.767272  ,  7.43459159]]), 'quantile75': array([[740.86480713,  24.20218658]]), 'median': array([[261.1749115 ,  13.45761013]]), 'min': array([[4.012296 , 1.6629589]], dtype=float32), 'max': array([[18018.875  ,   119.71358]], dtype=float32)}
+	Model seed: 15 RS OOD (MSE, MAE) errors stats: {'mean': array([[567.46277,  16.63412]], dtype=float32), 'std': array([[833.2542  ,  11.979629]], dtype=float32), 'quantile25': array([[87.66143513,  7.71973056]]), 'quantile75': array([[630.78777695,  21.65048075]]), 'median': array([[291.066185  ,  13.94729447]]), 'min': array([[3.3985684, 1.3883806]], dtype=float32), 'max': array([[5190.8604  ,   63.222332]], dtype=float32)}
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
 	No scaling applied
-		Model Seed: 16 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([14.980717 ,  3.0197957], dtype=float32)], 'max': [array([7419.529  ,   80.35154], dtype=float32)], 'mean': [array([1503.6754  ,   26.611202], dtype=float32)], 'std': [array([2071.4534  ,   21.415699], dtype=float32)], 'quantile25': [array([139.65393829,   9.39623785])], 'median': [array([438.31069946,  19.81014442])], 'quantile75': [array([2549.73986816,   43.79501724])]}
-		Model Seed: 16 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([3.7114067, 1.4618174], dtype=float32)], 'max': [array([3798.7324 ,   52.71281], dtype=float32)], 'mean': [array([485.3347  ,  16.230673], dtype=float32)], 'std': [array([632.3329  ,  10.679036], dtype=float32)], 'quantile25': [array([89.93961334,  8.42932415])], 'median': [array([235.6335144 ,  13.43050528])], 'quantile75': [array([625.97816467,  21.91137791])]}
-	Model seed: 16 RS ID (MSE, MAE) errors stats: {'mean': array([[1443.9427  ,   25.574127]], dtype=float32), 'std': array([[2117.0273 ,   21.19653]], dtype=float32), 'quantile25': array([[112.30656624,   8.62592578]]), 'quantile75': array([[1935.01907349,   37.04560232]]), 'median': array([[460.81619263,  18.80528641]]), 'min': array([[13.67411  ,  2.8038635]], dtype=float32), 'max': array([[8078.663  ,   82.40256]], dtype=float32)}
-	Model seed: 16 RS OOD (MSE, MAE) errors stats: {'mean': array([[588.5791  ,  17.625374]], dtype=float32), 'std': array([[730.58344  ,  11.3423195]], dtype=float32), 'quantile25': array([[115.89881516,   9.26350451]]), 'quantile75': array([[740.03131866,  23.32551241]]), 'median': array([[323.75271606,  15.14190269]]), 'min': array([[3.43476  , 1.4426758]], dtype=float32), 'max': array([[3851.1401 ,   54.45751]], dtype=float32)}
-	Train: 3975 (60.09%)
-	Val: 1440 (21.77%)
-	Test: 2340 (35.37%)
+		Model Seed: 16 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([1.7986788, 1.2003225], dtype=float32)], 'max': [array([17599.309  ,   117.81116], dtype=float32)], 'mean': [array([951.92255 ,  18.610197], dtype=float32)], 'std': [array([2095.4707  ,   18.905472], dtype=float32)], 'quantile25': [array([62.79222298,  6.63058364])], 'median': [array([207.48254395,  11.82056475])], 'quantile75': [array([661.4559021 ,  22.31454277])]}
+		Model Seed: 16 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([5.6720314, 1.981781 ], dtype=float32)], 'max': [array([5645.0566 ,   67.43684], dtype=float32)], 'mean': [array([692.5456 ,  18.85213], dtype=float32)], 'std': [array([911.87354,  12.58844], dtype=float32)], 'quantile25': [array([123.70475006,   9.54259586])], 'median': [array([394.63830566,  16.39406013])], 'quantile75': [array([851.91107178,  25.86619568])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
 	No scaling applied
-		Model Seed: 17 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([12.367505 ,  2.5879314], dtype=float32)], 'max': [array([8737.797   ,   84.453575], dtype=float32)], 'mean': [array([1384.2101  ,   24.537054], dtype=float32)], 'std': [array([2162.601  ,   20.97736], dtype=float32)], 'quantile25': [array([84.95919418,  7.85561371])], 'median': [array([483.32168579,  17.80042839])], 'quantile75': [array([1320.29827881,   30.2961874 ])]}
-		Model Seed: 17 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([3.1581132, 1.4235344], dtype=float32)], 'max': [array([3903.5476  ,   56.202213], dtype=float32)], 'mean': [array([691.82355 ,  19.020077], dtype=float32)], 'std': [array([828.834   ,  12.005602], dtype=float32)], 'quantile25': [array([141.85801697,  10.09768486])], 'median': [array([411.87191772,  16.85330009])], 'quantile75': [array([854.08447266,  24.73964691])]}
-	Train: 3835 (59.23%)
-	Val: 1440 (22.24%)
-	Test: 2480 (38.30%)
+		Model Seed: 16 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([6.2259135, 2.125595 ], dtype=float32)], 'max': [array([18438.443   ,   121.616005], dtype=float32)], 'mean': [array([974.1313 ,  20.44478], dtype=float32)], 'std': [array([2110.1726  ,   18.241356], dtype=float32)], 'quantile25': [array([88.74232101,  8.23859954])], 'median': [array([314.86727905,  15.09465551])], 'quantile75': [array([820.27371216,  26.0898304 ])]}
+		Model Seed: 16 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([1.1251054 , 0.79498035], dtype=float32)], 'max': [array([4736.664   ,   59.007828], dtype=float32)], 'mean': [array([442.38    ,  14.416112], dtype=float32)], 'std': [array([754.6349  ,  11.370817], dtype=float32)], 'quantile25': [array([51.61812019,  5.89686525])], 'median': [array([187.49406433,  11.50052881])], 'quantile75': [array([409.66448212,  17.43476582])]}
+	Model seed: 16 RS ID (MSE, MAE) errors stats: {'mean': array([[963.0269  ,  19.527489]], dtype=float32), 'std': array([[2102.8218  ,   18.573414]], dtype=float32), 'quantile25': array([[75.767272  ,  7.43459159]]), 'quantile75': array([[740.86480713,  24.20218658]]), 'median': array([[261.1749115 ,  13.45761013]]), 'min': array([[4.012296 , 1.6629589]], dtype=float32), 'max': array([[18018.875  ,   119.71358]], dtype=float32)}
+	Model seed: 16 RS OOD (MSE, MAE) errors stats: {'mean': array([[567.46277,  16.63412]], dtype=float32), 'std': array([[833.2542  ,  11.979629]], dtype=float32), 'quantile25': array([[87.66143513,  7.71973056]]), 'quantile75': array([[630.78777695,  21.65048075]]), 'median': array([[291.066185  ,  13.94729447]]), 'min': array([[3.3985684, 1.3883806]], dtype=float32), 'max': array([[5190.8604  ,   63.222332]], dtype=float32)}
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
 	No scaling applied
-		Model Seed: 17 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([14.980717 ,  3.0197957], dtype=float32)], 'max': [array([7419.529  ,   80.35154], dtype=float32)], 'mean': [array([1503.6754  ,   26.611202], dtype=float32)], 'std': [array([2071.4534  ,   21.415699], dtype=float32)], 'quantile25': [array([139.65393829,   9.39623785])], 'median': [array([438.31069946,  19.81014442])], 'quantile75': [array([2549.73986816,   43.79501724])]}
-		Model Seed: 17 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([3.7114067, 1.4618174], dtype=float32)], 'max': [array([3798.7324 ,   52.71281], dtype=float32)], 'mean': [array([485.3347  ,  16.230673], dtype=float32)], 'std': [array([632.3329  ,  10.679036], dtype=float32)], 'quantile25': [array([89.93961334,  8.42932415])], 'median': [array([235.6335144 ,  13.43050528])], 'quantile75': [array([625.97816467,  21.91137791])]}
-	Model seed: 17 RS ID (MSE, MAE) errors stats: {'mean': array([[1443.9427  ,   25.574127]], dtype=float32), 'std': array([[2117.0273 ,   21.19653]], dtype=float32), 'quantile25': array([[112.30656624,   8.62592578]]), 'quantile75': array([[1935.01907349,   37.04560232]]), 'median': array([[460.81619263,  18.80528641]]), 'min': array([[13.67411  ,  2.8038635]], dtype=float32), 'max': array([[8078.663  ,   82.40256]], dtype=float32)}
-	Model seed: 17 RS OOD (MSE, MAE) errors stats: {'mean': array([[588.5791  ,  17.625374]], dtype=float32), 'std': array([[730.58344  ,  11.3423195]], dtype=float32), 'quantile25': array([[115.89881516,   9.26350451]]), 'quantile75': array([[740.03131866,  23.32551241]]), 'median': array([[323.75271606,  15.14190269]]), 'min': array([[3.43476  , 1.4426758]], dtype=float32), 'max': array([[3851.1401 ,   54.45751]], dtype=float32)}
-	Train: 3975 (60.09%)
-	Val: 1440 (21.77%)
-	Test: 2340 (35.37%)
+		Model Seed: 17 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([1.7986788, 1.2003225], dtype=float32)], 'max': [array([17599.309  ,   117.81116], dtype=float32)], 'mean': [array([951.92255 ,  18.610197], dtype=float32)], 'std': [array([2095.4707  ,   18.905472], dtype=float32)], 'quantile25': [array([62.79222298,  6.63058364])], 'median': [array([207.48254395,  11.82056475])], 'quantile75': [array([661.4559021 ,  22.31454277])]}
+		Model Seed: 17 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([5.6720314, 1.981781 ], dtype=float32)], 'max': [array([5645.0566 ,   67.43684], dtype=float32)], 'mean': [array([692.5456 ,  18.85213], dtype=float32)], 'std': [array([911.87354,  12.58844], dtype=float32)], 'quantile25': [array([123.70475006,   9.54259586])], 'median': [array([394.63830566,  16.39406013])], 'quantile75': [array([851.91107178,  25.86619568])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
 	No scaling applied
-		Model Seed: 18 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([12.367505 ,  2.5879314], dtype=float32)], 'max': [array([8737.797   ,   84.453575], dtype=float32)], 'mean': [array([1384.2101  ,   24.537054], dtype=float32)], 'std': [array([2162.601  ,   20.97736], dtype=float32)], 'quantile25': [array([84.95919418,  7.85561371])], 'median': [array([483.32168579,  17.80042839])], 'quantile75': [array([1320.29827881,   30.2961874 ])]}
-		Model Seed: 18 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([3.1581132, 1.4235344], dtype=float32)], 'max': [array([3903.5476  ,   56.202213], dtype=float32)], 'mean': [array([691.82355 ,  19.020077], dtype=float32)], 'std': [array([828.834   ,  12.005602], dtype=float32)], 'quantile25': [array([141.85801697,  10.09768486])], 'median': [array([411.87191772,  16.85330009])], 'quantile75': [array([854.08447266,  24.73964691])]}
-	Train: 3835 (59.23%)
-	Val: 1440 (22.24%)
-	Test: 2480 (38.30%)
+		Model Seed: 17 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([6.2259135, 2.125595 ], dtype=float32)], 'max': [array([18438.443   ,   121.616005], dtype=float32)], 'mean': [array([974.1313 ,  20.44478], dtype=float32)], 'std': [array([2110.1726  ,   18.241356], dtype=float32)], 'quantile25': [array([88.74232101,  8.23859954])], 'median': [array([314.86727905,  15.09465551])], 'quantile75': [array([820.27371216,  26.0898304 ])]}
+		Model Seed: 17 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([1.1251054 , 0.79498035], dtype=float32)], 'max': [array([4736.664   ,   59.007828], dtype=float32)], 'mean': [array([442.38    ,  14.416112], dtype=float32)], 'std': [array([754.6349  ,  11.370817], dtype=float32)], 'quantile25': [array([51.61812019,  5.89686525])], 'median': [array([187.49406433,  11.50052881])], 'quantile75': [array([409.66448212,  17.43476582])]}
+	Model seed: 17 RS ID (MSE, MAE) errors stats: {'mean': array([[963.0269  ,  19.527489]], dtype=float32), 'std': array([[2102.8218  ,   18.573414]], dtype=float32), 'quantile25': array([[75.767272  ,  7.43459159]]), 'quantile75': array([[740.86480713,  24.20218658]]), 'median': array([[261.1749115 ,  13.45761013]]), 'min': array([[4.012296 , 1.6629589]], dtype=float32), 'max': array([[18018.875  ,   119.71358]], dtype=float32)}
+	Model seed: 17 RS OOD (MSE, MAE) errors stats: {'mean': array([[567.46277,  16.63412]], dtype=float32), 'std': array([[833.2542  ,  11.979629]], dtype=float32), 'quantile25': array([[87.66143513,  7.71973056]]), 'quantile75': array([[630.78777695,  21.65048075]]), 'median': array([[291.066185  ,  13.94729447]]), 'min': array([[3.3985684, 1.3883806]], dtype=float32), 'max': array([[5190.8604  ,   63.222332]], dtype=float32)}
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
 	No scaling applied
-		Model Seed: 18 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([14.980717 ,  3.0197957], dtype=float32)], 'max': [array([7419.529  ,   80.35154], dtype=float32)], 'mean': [array([1503.6754  ,   26.611202], dtype=float32)], 'std': [array([2071.4534  ,   21.415699], dtype=float32)], 'quantile25': [array([139.65393829,   9.39623785])], 'median': [array([438.31069946,  19.81014442])], 'quantile75': [array([2549.73986816,   43.79501724])]}
-		Model Seed: 18 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([3.7114067, 1.4618174], dtype=float32)], 'max': [array([3798.7324 ,   52.71281], dtype=float32)], 'mean': [array([485.3347  ,  16.230673], dtype=float32)], 'std': [array([632.3329  ,  10.679036], dtype=float32)], 'quantile25': [array([89.93961334,  8.42932415])], 'median': [array([235.6335144 ,  13.43050528])], 'quantile75': [array([625.97816467,  21.91137791])]}
-	Model seed: 18 RS ID (MSE, MAE) errors stats: {'mean': array([[1443.9427  ,   25.574127]], dtype=float32), 'std': array([[2117.0273 ,   21.19653]], dtype=float32), 'quantile25': array([[112.30656624,   8.62592578]]), 'quantile75': array([[1935.01907349,   37.04560232]]), 'median': array([[460.81619263,  18.80528641]]), 'min': array([[13.67411  ,  2.8038635]], dtype=float32), 'max': array([[8078.663  ,   82.40256]], dtype=float32)}
-	Model seed: 18 RS OOD (MSE, MAE) errors stats: {'mean': array([[588.5791  ,  17.625374]], dtype=float32), 'std': array([[730.58344  ,  11.3423195]], dtype=float32), 'quantile25': array([[115.89881516,   9.26350451]]), 'quantile75': array([[740.03131866,  23.32551241]]), 'median': array([[323.75271606,  15.14190269]]), 'min': array([[3.43476  , 1.4426758]], dtype=float32), 'max': array([[3851.1401 ,   54.45751]], dtype=float32)}
-	Train: 3975 (60.09%)
-	Val: 1440 (21.77%)
-	Test: 2340 (35.37%)
+		Model Seed: 18 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([1.7986788, 1.2003225], dtype=float32)], 'max': [array([17599.309  ,   117.81116], dtype=float32)], 'mean': [array([951.92255 ,  18.610197], dtype=float32)], 'std': [array([2095.4707  ,   18.905472], dtype=float32)], 'quantile25': [array([62.79222298,  6.63058364])], 'median': [array([207.48254395,  11.82056475])], 'quantile75': [array([661.4559021 ,  22.31454277])]}
+		Model Seed: 18 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([5.6720314, 1.981781 ], dtype=float32)], 'max': [array([5645.0566 ,   67.43684], dtype=float32)], 'mean': [array([692.5456 ,  18.85213], dtype=float32)], 'std': [array([911.87354,  12.58844], dtype=float32)], 'quantile25': [array([123.70475006,   9.54259586])], 'median': [array([394.63830566,  16.39406013])], 'quantile75': [array([851.91107178,  25.86619568])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
 	No scaling applied
-		Model Seed: 19 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([12.367505 ,  2.5879314], dtype=float32)], 'max': [array([8737.797   ,   84.453575], dtype=float32)], 'mean': [array([1384.2101  ,   24.537054], dtype=float32)], 'std': [array([2162.601  ,   20.97736], dtype=float32)], 'quantile25': [array([84.95919418,  7.85561371])], 'median': [array([483.32168579,  17.80042839])], 'quantile75': [array([1320.29827881,   30.2961874 ])]}
-		Model Seed: 19 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([3.1581132, 1.4235344], dtype=float32)], 'max': [array([3903.5476  ,   56.202213], dtype=float32)], 'mean': [array([691.82355 ,  19.020077], dtype=float32)], 'std': [array([828.834   ,  12.005602], dtype=float32)], 'quantile25': [array([141.85801697,  10.09768486])], 'median': [array([411.87191772,  16.85330009])], 'quantile75': [array([854.08447266,  24.73964691])]}
-	Train: 3835 (59.23%)
-	Val: 1440 (22.24%)
-	Test: 2480 (38.30%)
+		Model Seed: 18 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([6.2259135, 2.125595 ], dtype=float32)], 'max': [array([18438.443   ,   121.616005], dtype=float32)], 'mean': [array([974.1313 ,  20.44478], dtype=float32)], 'std': [array([2110.1726  ,   18.241356], dtype=float32)], 'quantile25': [array([88.74232101,  8.23859954])], 'median': [array([314.86727905,  15.09465551])], 'quantile75': [array([820.27371216,  26.0898304 ])]}
+		Model Seed: 18 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([1.1251054 , 0.79498035], dtype=float32)], 'max': [array([4736.664   ,   59.007828], dtype=float32)], 'mean': [array([442.38    ,  14.416112], dtype=float32)], 'std': [array([754.6349  ,  11.370817], dtype=float32)], 'quantile25': [array([51.61812019,  5.89686525])], 'median': [array([187.49406433,  11.50052881])], 'quantile75': [array([409.66448212,  17.43476582])]}
+	Model seed: 18 RS ID (MSE, MAE) errors stats: {'mean': array([[963.0269  ,  19.527489]], dtype=float32), 'std': array([[2102.8218  ,   18.573414]], dtype=float32), 'quantile25': array([[75.767272  ,  7.43459159]]), 'quantile75': array([[740.86480713,  24.20218658]]), 'median': array([[261.1749115 ,  13.45761013]]), 'min': array([[4.012296 , 1.6629589]], dtype=float32), 'max': array([[18018.875  ,   119.71358]], dtype=float32)}
+	Model seed: 18 RS OOD (MSE, MAE) errors stats: {'mean': array([[567.46277,  16.63412]], dtype=float32), 'std': array([[833.2542  ,  11.979629]], dtype=float32), 'quantile25': array([[87.66143513,  7.71973056]]), 'quantile75': array([[630.78777695,  21.65048075]]), 'median': array([[291.066185  ,  13.94729447]]), 'min': array([[3.3985684, 1.3883806]], dtype=float32), 'max': array([[5190.8604  ,   63.222332]], dtype=float32)}
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
 	No scaling applied
-		Model Seed: 19 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([14.980717 ,  3.0197957], dtype=float32)], 'max': [array([7419.529  ,   80.35154], dtype=float32)], 'mean': [array([1503.6754  ,   26.611202], dtype=float32)], 'std': [array([2071.4534  ,   21.415699], dtype=float32)], 'quantile25': [array([139.65393829,   9.39623785])], 'median': [array([438.31069946,  19.81014442])], 'quantile75': [array([2549.73986816,   43.79501724])]}
-		Model Seed: 19 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([3.7114067, 1.4618174], dtype=float32)], 'max': [array([3798.7324 ,   52.71281], dtype=float32)], 'mean': [array([485.3347  ,  16.230673], dtype=float32)], 'std': [array([632.3329  ,  10.679036], dtype=float32)], 'quantile25': [array([89.93961334,  8.42932415])], 'median': [array([235.6335144 ,  13.43050528])], 'quantile75': [array([625.97816467,  21.91137791])]}
-	Model seed: 19 RS ID (MSE, MAE) errors stats: {'mean': array([[1443.9427  ,   25.574127]], dtype=float32), 'std': array([[2117.0273 ,   21.19653]], dtype=float32), 'quantile25': array([[112.30656624,   8.62592578]]), 'quantile75': array([[1935.01907349,   37.04560232]]), 'median': array([[460.81619263,  18.80528641]]), 'min': array([[13.67411  ,  2.8038635]], dtype=float32), 'max': array([[8078.663  ,   82.40256]], dtype=float32)}
-	Model seed: 19 RS OOD (MSE, MAE) errors stats: {'mean': array([[588.5791  ,  17.625374]], dtype=float32), 'std': array([[730.58344  ,  11.3423195]], dtype=float32), 'quantile25': array([[115.89881516,   9.26350451]]), 'quantile75': array([[740.03131866,  23.32551241]]), 'median': array([[323.75271606,  15.14190269]]), 'min': array([[3.43476  , 1.4426758]], dtype=float32), 'max': array([[3851.1401 ,   54.45751]], dtype=float32)}
-Key: mean RS ID (MSE, MAE) stats: {'min': [array([1443.9427  ,   25.574127], dtype=float32)], 'max': [array([1443.9427  ,   25.574127], dtype=float32)], 'mean': [array([1443.9426  ,   25.574127], dtype=float32)], 'std': [array([0.00012207, 0.        ], dtype=float32)], 'quantile25': [array([1443.94274902,   25.5741272 ])], 'median': [array([1443.94274902,   25.5741272 ])], 'quantile75': [array([1443.94274902,   25.5741272 ])]}
-Key: std RS ID (MSE, MAE) stats: {'min': [array([2117.0273 ,   21.19653], dtype=float32)], 'max': [array([2117.0273 ,   21.19653], dtype=float32)], 'mean': [array([2117.0273  ,   21.196531], dtype=float32)], 'std': [array([0.0000000e+00, 1.9073486e-06], dtype=float32)], 'quantile25': [array([2117.02734375,   21.19652939])], 'median': [array([2117.02734375,   21.19652939])], 'quantile75': [array([2117.02734375,   21.19652939])]}
-Key: quantile25 RS ID (MSE, MAE) stats: {'min': [array([112.30656624,   8.62592578])], 'max': [array([112.30656624,   8.62592578])], 'mean': [array([112.30656624,   8.62592578])], 'std': [array([0., 0.])], 'quantile25': [array([112.30656624,   8.62592578])], 'median': [array([112.30656624,   8.62592578])], 'quantile75': [array([112.30656624,   8.62592578])]}
-Key: quantile75 RS ID (MSE, MAE) stats: {'min': [array([1935.01907349,   37.04560232])], 'max': [array([1935.01907349,   37.04560232])], 'mean': [array([1935.01907349,   37.04560232])], 'std': [array([0., 0.])], 'quantile25': [array([1935.01907349,   37.04560232])], 'median': [array([1935.01907349,   37.04560232])], 'quantile75': [array([1935.01907349,   37.04560232])]}
-Key: median RS ID (MSE, MAE) stats: {'min': [array([460.81619263,  18.80528641])], 'max': [array([460.81619263,  18.80528641])], 'mean': [array([460.81619263,  18.80528641])], 'std': [array([0., 0.])], 'quantile25': [array([460.81619263,  18.80528641])], 'median': [array([460.81619263,  18.80528641])], 'quantile75': [array([460.81619263,  18.80528641])]}
-Key: min RS ID (MSE, MAE) stats: {'min': [array([13.67411  ,  2.8038635], dtype=float32)], 'max': [array([13.67411  ,  2.8038635], dtype=float32)], 'mean': [array([13.67411  ,  2.8038635], dtype=float32)], 'std': [array([0., 0.], dtype=float32)], 'quantile25': [array([13.67411041,  2.80386353])], 'median': [array([13.67411041,  2.80386353])], 'quantile75': [array([13.67411041,  2.80386353])]}
-Key: max RS ID (MSE, MAE) stats: {'min': [array([8078.663  ,   82.40256], dtype=float32)], 'max': [array([8078.663  ,   82.40256], dtype=float32)], 'mean': [array([8078.663   ,   82.402565], dtype=float32)], 'std': [array([0.0000000e+00, 7.6293945e-06], dtype=float32)], 'quantile25': [array([8078.66308594,   82.40255737])], 'median': [array([8078.66308594,   82.40255737])], 'quantile75': [array([8078.66308594,   82.40255737])]}
-Key: mean RS OOD (MSE, MAE) stats: {'min': [array([588.5791  ,  17.625374], dtype=float32)], 'max': [array([588.5791  ,  17.625374], dtype=float32)], 'mean': [array([588.5791  ,  17.625372], dtype=float32)], 'std': [array([0.0000000e+00, 1.9073486e-06], dtype=float32)], 'quantile25': [array([588.57910156,  17.62537384])], 'median': [array([588.57910156,  17.62537384])], 'quantile75': [array([588.57910156,  17.62537384])]}
-Key: std RS OOD (MSE, MAE) stats: {'min': [array([730.58344  ,  11.3423195], dtype=float32)], 'max': [array([730.58344  ,  11.3423195], dtype=float32)], 'mean': [array([730.58344 ,  11.342319], dtype=float32)], 'std': [array([0.000000e+00, 9.536743e-07], dtype=float32)], 'quantile25': [array([730.58343506,  11.34231949])], 'median': [array([730.58343506,  11.34231949])], 'quantile75': [array([730.58343506,  11.34231949])]}
-Key: quantile25 RS OOD (MSE, MAE) stats: {'min': [array([115.89881516,   9.26350451])], 'max': [array([115.89881516,   9.26350451])], 'mean': [array([115.89881516,   9.26350451])], 'std': [array([0., 0.])], 'quantile25': [array([115.89881516,   9.26350451])], 'median': [array([115.89881516,   9.26350451])], 'quantile75': [array([115.89881516,   9.26350451])]}
-Key: quantile75 RS OOD (MSE, MAE) stats: {'min': [array([740.03131866,  23.32551241])], 'max': [array([740.03131866,  23.32551241])], 'mean': [array([740.03131866,  23.32551241])], 'std': [array([0., 0.])], 'quantile25': [array([740.03131866,  23.32551241])], 'median': [array([740.03131866,  23.32551241])], 'quantile75': [array([740.03131866,  23.32551241])]}
-Key: median RS OOD (MSE, MAE) stats: {'min': [array([323.75271606,  15.14190269])], 'max': [array([323.75271606,  15.14190269])], 'mean': [array([323.75271606,  15.14190269])], 'std': [array([0., 0.])], 'quantile25': [array([323.75271606,  15.14190269])], 'median': [array([323.75271606,  15.14190269])], 'quantile75': [array([323.75271606,  15.14190269])]}
-Key: min RS OOD (MSE, MAE) stats: {'min': [array([3.43476  , 1.4426758], dtype=float32)], 'max': [array([3.43476  , 1.4426758], dtype=float32)], 'mean': [array([3.4347606, 1.4426757], dtype=float32)], 'std': [array([4.7683716e-07, 1.1920929e-07], dtype=float32)], 'quantile25': [array([3.43476009, 1.44267583])], 'median': [array([3.43476009, 1.44267583])], 'quantile75': [array([3.43476009, 1.44267583])]}
-Key: max RS OOD (MSE, MAE) stats: {'min': [array([3851.1401 ,   54.45751], dtype=float32)], 'max': [array([3851.1401 ,   54.45751], dtype=float32)], 'mean': [array([3851.1401 ,   54.45751], dtype=float32)], 'std': [array([0., 0.], dtype=float32)], 'quantile25': [array([3851.14013672,   54.4575119 ])], 'median': [array([3851.14013672,   54.4575119 ])], 'quantile75': [array([3851.14013672,   54.4575119 ])]}
+		Model Seed: 19 Seed: 1 ID errors (MSE, MAE) stats: {'min': [array([1.7986788, 1.2003225], dtype=float32)], 'max': [array([17599.309  ,   117.81116], dtype=float32)], 'mean': [array([951.92255 ,  18.610197], dtype=float32)], 'std': [array([2095.4707  ,   18.905472], dtype=float32)], 'quantile25': [array([62.79222298,  6.63058364])], 'median': [array([207.48254395,  11.82056475])], 'quantile75': [array([661.4559021 ,  22.31454277])]}
+		Model Seed: 19 Seed: 1 OOD errors (MSE, MAE) stats: {'min': [array([5.6720314, 1.981781 ], dtype=float32)], 'max': [array([5645.0566 ,   67.43684], dtype=float32)], 'mean': [array([692.5456 ,  18.85213], dtype=float32)], 'std': [array([911.87354,  12.58844], dtype=float32)], 'quantile25': [array([123.70475006,   9.54259586])], 'median': [array([394.63830566,  16.39406013])], 'quantile75': [array([851.91107178,  25.86619568])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
+	No scaling applied
+		Model Seed: 19 Seed: 2 ID errors (MSE, MAE) stats: {'min': [array([6.2259135, 2.125595 ], dtype=float32)], 'max': [array([18438.443   ,   121.616005], dtype=float32)], 'mean': [array([974.1313 ,  20.44478], dtype=float32)], 'std': [array([2110.1726  ,   18.241356], dtype=float32)], 'quantile25': [array([88.74232101,  8.23859954])], 'median': [array([314.86727905,  15.09465551])], 'quantile75': [array([820.27371216,  26.0898304 ])]}
+		Model Seed: 19 Seed: 2 OOD errors (MSE, MAE) stats: {'min': [array([1.1251054 , 0.79498035], dtype=float32)], 'max': [array([4736.664   ,   59.007828], dtype=float32)], 'mean': [array([442.38    ,  14.416112], dtype=float32)], 'std': [array([754.6349  ,  11.370817], dtype=float32)], 'quantile25': [array([51.61812019,  5.89686525])], 'median': [array([187.49406433,  11.50052881])], 'quantile75': [array([409.66448212,  17.43476582])]}
+	Model seed: 19 RS ID (MSE, MAE) errors stats: {'mean': array([[963.0269  ,  19.527489]], dtype=float32), 'std': array([[2102.8218  ,   18.573414]], dtype=float32), 'quantile25': array([[75.767272  ,  7.43459159]]), 'quantile75': array([[740.86480713,  24.20218658]]), 'median': array([[261.1749115 ,  13.45761013]]), 'min': array([[4.012296 , 1.6629589]], dtype=float32), 'max': array([[18018.875  ,   119.71358]], dtype=float32)}
+	Model seed: 19 RS OOD (MSE, MAE) errors stats: {'mean': array([[567.46277,  16.63412]], dtype=float32), 'std': array([[833.2542  ,  11.979629]], dtype=float32), 'quantile25': array([[87.66143513,  7.71973056]]), 'quantile75': array([[630.78777695,  21.65048075]]), 'median': array([[291.066185  ,  13.94729447]]), 'min': array([[3.3985684, 1.3883806]], dtype=float32), 'max': array([[5190.8604  ,   63.222332]], dtype=float32)}
+Key: mean RS ID (MSE, MAE) stats: {'min': [array([963.0269  ,  19.527489], dtype=float32)], 'max': [array([963.0269  ,  19.527489], dtype=float32)], 'mean': [array([963.027  ,  19.52749], dtype=float32)], 'std': [array([6.1035156e-05, 1.9073486e-06], dtype=float32)], 'quantile25': [array([963.0269165 ,  19.52748871])], 'median': [array([963.0269165 ,  19.52748871])], 'quantile75': [array([963.0269165 ,  19.52748871])]}
+Key: std RS ID (MSE, MAE) stats: {'min': [array([2102.8218  ,   18.573414], dtype=float32)], 'max': [array([2102.8218  ,   18.573414], dtype=float32)], 'mean': [array([2102.822   ,   18.573412], dtype=float32)], 'std': [array([2.4414062e-04, 1.9073486e-06], dtype=float32)], 'quantile25': [array([2102.82177734,   18.57341385])], 'median': [array([2102.82177734,   18.57341385])], 'quantile75': [array([2102.82177734,   18.57341385])]}
+Key: quantile25 RS ID (MSE, MAE) stats: {'min': [array([75.767272  ,  7.43459159])], 'max': [array([75.767272  ,  7.43459159])], 'mean': [array([75.767272  ,  7.43459159])], 'std': [array([0., 0.])], 'quantile25': [array([75.767272  ,  7.43459159])], 'median': [array([75.767272  ,  7.43459159])], 'quantile75': [array([75.767272  ,  7.43459159])]}
+Key: quantile75 RS ID (MSE, MAE) stats: {'min': [array([740.86480713,  24.20218658])], 'max': [array([740.86480713,  24.20218658])], 'mean': [array([740.86480713,  24.20218658])], 'std': [array([0., 0.])], 'quantile25': [array([740.86480713,  24.20218658])], 'median': [array([740.86480713,  24.20218658])], 'quantile75': [array([740.86480713,  24.20218658])]}
+Key: median RS ID (MSE, MAE) stats: {'min': [array([261.1749115 ,  13.45761013])], 'max': [array([261.1749115 ,  13.45761013])], 'mean': [array([261.1749115 ,  13.45761013])], 'std': [array([0., 0.])], 'quantile25': [array([261.1749115 ,  13.45761013])], 'median': [array([261.1749115 ,  13.45761013])], 'quantile75': [array([261.1749115 ,  13.45761013])]}
+Key: min RS ID (MSE, MAE) stats: {'min': [array([4.012296 , 1.6629589], dtype=float32)], 'max': [array([4.012296 , 1.6629589], dtype=float32)], 'mean': [array([4.0122957, 1.6629589], dtype=float32)], 'std': [array([4.7683716e-07, 0.0000000e+00], dtype=float32)], 'quantile25': [array([4.0122962 , 1.66295886])], 'median': [array([4.0122962 , 1.66295886])], 'quantile75': [array([4.0122962 , 1.66295886])]}
+Key: max RS ID (MSE, MAE) stats: {'min': [array([18018.875  ,   119.71358], dtype=float32)], 'max': [array([18018.875  ,   119.71358], dtype=float32)], 'mean': [array([18018.875  ,   119.71358], dtype=float32)], 'std': [array([0., 0.], dtype=float32)], 'quantile25': [array([18018.875     ,   119.71357727])], 'median': [array([18018.875     ,   119.71357727])], 'quantile75': [array([18018.875     ,   119.71357727])]}
+Key: mean RS OOD (MSE, MAE) stats: {'min': [array([567.46277,  16.63412], dtype=float32)], 'max': [array([567.46277,  16.63412], dtype=float32)], 'mean': [array([567.4628  ,  16.634123], dtype=float32)], 'std': [array([6.1035156e-05, 1.9073486e-06], dtype=float32)], 'quantile25': [array([567.46276855,  16.63412094])], 'median': [array([567.46276855,  16.63412094])], 'quantile75': [array([567.46276855,  16.63412094])]}
+Key: std RS OOD (MSE, MAE) stats: {'min': [array([833.2542  ,  11.979629], dtype=float32)], 'max': [array([833.2542  ,  11.979629], dtype=float32)], 'mean': [array([833.2543  ,  11.979629], dtype=float32)], 'std': [array([6.1035156e-05, 0.0000000e+00], dtype=float32)], 'quantile25': [array([833.25421143,  11.97962856])], 'median': [array([833.25421143,  11.97962856])], 'quantile75': [array([833.25421143,  11.97962856])]}
+Key: quantile25 RS OOD (MSE, MAE) stats: {'min': [array([87.66143513,  7.71973056])], 'max': [array([87.66143513,  7.71973056])], 'mean': [array([87.66143513,  7.71973056])], 'std': [array([0., 0.])], 'quantile25': [array([87.66143513,  7.71973056])], 'median': [array([87.66143513,  7.71973056])], 'quantile75': [array([87.66143513,  7.71973056])]}
+Key: quantile75 RS OOD (MSE, MAE) stats: {'min': [array([630.78777695,  21.65048075])], 'max': [array([630.78777695,  21.65048075])], 'mean': [array([630.78777695,  21.65048075])], 'std': [array([0., 0.])], 'quantile25': [array([630.78777695,  21.65048075])], 'median': [array([630.78777695,  21.65048075])], 'quantile75': [array([630.78777695,  21.65048075])]}
+Key: median RS OOD (MSE, MAE) stats: {'min': [array([291.066185  ,  13.94729447])], 'max': [array([291.066185  ,  13.94729447])], 'mean': [array([291.066185  ,  13.94729447])], 'std': [array([0., 0.])], 'quantile25': [array([291.066185  ,  13.94729447])], 'median': [array([291.066185  ,  13.94729447])], 'quantile75': [array([291.066185  ,  13.94729447])]}
+Key: min RS OOD (MSE, MAE) stats: {'min': [array([3.3985684, 1.3883806], dtype=float32)], 'max': [array([3.3985684, 1.3883806], dtype=float32)], 'mean': [array([3.3985686, 1.3883808], dtype=float32)], 'std': [array([2.3841858e-07, 1.1920929e-07], dtype=float32)], 'quantile25': [array([3.39856839, 1.38838065])], 'median': [array([3.39856839, 1.38838065])], 'quantile75': [array([3.39856839, 1.38838065])]}
+Key: max RS OOD (MSE, MAE) stats: {'min': [array([5190.8604  ,   63.222332], dtype=float32)], 'max': [array([5190.8604  ,   63.222332], dtype=float32)], 'mean': [array([5190.86    ,   63.222332], dtype=float32)], 'std': [array([0.00048828, 0.        ], dtype=float32)], 'quantile25': [array([5190.86035156,   63.222332  ])], 'median': [array([5190.86035156,   63.222332  ])], 'quantile75': [array([5190.86035156,   63.222332  ])]}
