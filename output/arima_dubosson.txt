@@ -114,3 +114,118 @@ Data formatting complete.
 	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([1.766641  , 1.16245531])], 'max': [array([17290.26712038,   110.22726607])], 'mean': [array([1267.98867954,   21.3231924 ])], 'std': [array([2555.53338543,   20.3369967 ])], 'quantile25': [array([97.11213785,  7.5658806 ])], 'median': [array([307.5687438 ,  14.88132306])], 'quantile75': [array([1268.600962  ,   28.95429114])]}
 RS ID (MSE, MAE) errors stats: {'mean': array([[1236.12349918,   17.75389165]]), 'std': array([[4164.63895389,   21.37768251]]), 'quantile25': array([[41.73602185,  5.19719513]]), 'quantile75': array([[786.92088953,  21.86278663]]), 'median': array([[183.10967254,  11.05906792]]), 'min': array([[0.2667102 , 0.26105259]]), 'max': array([[42352.13646138,   157.28762633]])}
 RS OOD (MSE, MAE) errors stats: {'mean': array([[1152.4934879 ,   19.71157586]]), 'std': array([[2054.50687839,   16.94269188]]), 'quantile25': array([[120.59547265,   8.11318564]]), 'quantile75': array([[1149.7220432 ,   26.13506495]]), 'median': array([[351.52634453,  14.57706873]]), 'min': array([[1.02751498, 0.6774192 ]]), 'max': array([[13149.54346553,    88.73220082]])}
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		fast_insulin: REAL_VALUED (OBSERVED_INPUT)
+		slow_insulin: REAL_VALUED (OBSERVED_INPUT)
+		calories: REAL_VALUED (OBSERVED_INPUT)
+		balance: REAL_VALUED (OBSERVED_INPUT)
+		quality: REAL_VALUED (OBSERVED_INPUT)
+		HR: REAL_VALUED (OBSERVED_INPUT)
+		BR: REAL_VALUED (OBSERVED_INPUT)
+		Posture: REAL_VALUED (OBSERVED_INPUT)
+		Activity: REAL_VALUED (OBSERVED_INPUT)
+		HRV: REAL_VALUED (OBSERVED_INPUT)
+		CoreTemp: REAL_VALUED (OBSERVED_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 1
+	Extracted segments: 8
+	Interpolated values: 0
+	Percent of values interpolated: 0.00%
+Splitting data...
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
+Scaling data...
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+Data formatting complete.
+--------------------------------
+	Train: 4825 (48.90%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 969 (9.82%)
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 10 ID errors (MSE, MAE) stats: {'min': [array([0.88903403, 0.87013799])], 'max': [array([9613.92073408,   79.43810281])], 'mean': [array([726.13751868,  15.82712352])], 'std': [array([1434.51322976,   15.0501366 ])], 'quantile25': [array([46.30333458,  5.50933168])], 'median': [array([198.57293095,  11.0476324 ])], 'quantile75': [array([602.02660349,  20.34186213])]}
+	Seed: 10 OOD errors (MSE, MAE) stats: {'min': [array([2.55813190e-10, 1.59941611e-05])], 'max': [array([24128.51613215,   125.84989756])], 'mean': [array([2311.55266883,   29.38818599])], 'std': [array([3978.55548334,   25.70468741])], 'quantile25': [array([245.4265341,  12.1500623])], 'median': [array([686.33978955,  21.14996454])], 'quantile75': [array([2282.72090101,   39.07505193])]}
+	Train: 4825 (48.90%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 969 (9.82%)
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 11 ID errors (MSE, MAE) stats: {'min': [array([0.88903403, 0.87013799])], 'max': [array([9613.92073408,   79.43810281])], 'mean': [array([726.13751868,  15.82712352])], 'std': [array([1434.51322976,   15.0501366 ])], 'quantile25': [array([46.30333458,  5.50933168])], 'median': [array([198.57293095,  11.0476324 ])], 'quantile75': [array([602.02660349,  20.34186213])]}
+	Seed: 11 OOD errors (MSE, MAE) stats: {'min': [array([2.55813190e-10, 1.59941611e-05])], 'max': [array([24128.51613215,   125.84989756])], 'mean': [array([2311.55266883,   29.38818599])], 'std': [array([3978.55548334,   25.70468741])], 'quantile25': [array([245.4265341,  12.1500623])], 'median': [array([686.33978955,  21.14996454])], 'quantile75': [array([2282.72090101,   39.07505193])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 12 ID errors (MSE, MAE) stats: {'min': [array([2.55813190e-10, 1.59941611e-05])], 'max': [array([57897.39756025,   196.87177314])], 'mean': [array([1664.80667344,   20.81884648])], 'std': [array([5521.47858412,   25.32059993])], 'quantile25': [array([54.63868235,  6.31981822])], 'median': [array([243.65156908,  12.69721128])], 'quantile75': [array([1053.27629997,   24.70754766])]}
+	Seed: 12 OOD errors (MSE, MAE) stats: {'min': [array([0.40062298, 0.5564237 ])], 'max': [array([7870.85120905,   73.15002398])], 'mean': [array([393.46038442,  11.38995272])], 'std': [array([979.73859131,  11.79705425])], 'quantile25': [array([20.91820965,  3.904005  ])], 'median': [array([76.18417733,  7.48609307])], 'quantile75': [array([341.62834393,  14.80504844])]}
+	Train: 4738 (48.02%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1056 (10.70%)
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 13 ID errors (MSE, MAE) stats: {'min': [array([2.55813190e-10, 1.59941611e-05])], 'max': [array([57897.39756025,   196.87177314])], 'mean': [array([1335.21707351,   16.91785306])], 'std': [array([5455.71603853,   24.16456819])], 'quantile25': [array([33.11013945,  4.88569166])], 'median': [array([146.23532317,   9.82497049])], 'quantile75': [array([538.44824124,  18.2921585 ])]}
+	Seed: 13 OOD errors (MSE, MAE) stats: {'min': [array([1.766641  , 1.16245531])], 'max': [array([17290.26712038,   110.22726607])], 'mean': [array([1267.98867954,   21.3231924 ])], 'std': [array([2555.53338543,   20.3369967 ])], 'quantile25': [array([97.11213785,  7.5658806 ])], 'median': [array([307.5687438 ,  14.88132306])], 'quantile75': [array([1268.600962  ,   28.95429114])]}
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 14 ID errors (MSE, MAE) stats: {'min': [array([2.55813190e-10, 1.59941611e-05])], 'max': [array([57897.39756025,   196.87177314])], 'mean': [array([1658.69219555,   20.43629807])], 'std': [array([5527.56187861,   25.58147897])], 'quantile25': [array([43.83462284,  5.32809769])], 'median': [array([221.84122583,  12.42467677])], 'quantile75': [array([1053.27629997,   24.70754766])]}
+	Seed: 14 OOD errors (MSE, MAE) stats: {'min': [array([1.24194565e-13, 3.52412492e-07])], 'max': [array([5279.34403999,   62.18477783])], 'mean': [array([575.30407315,  15.90084426])], 'std': [array([897.64194721,  12.46528753])], 'quantile25': [array([69.96548868,  6.61319244])], 'median': [array([243.24603853,  12.62975297])], 'quantile75': [array([561.35692046,  20.43095071])]}
+	Train: 4885 (49.51%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 909 (9.21%)
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 15 ID errors (MSE, MAE) stats: {'min': [array([2.55813190e-10, 1.59941611e-05])], 'max': [array([57897.39756025,   196.87177314])], 'mean': [array([1625.05026987,   20.05970718])], 'std': [array([5526.36543118,   25.47888588])], 'quantile25': [array([41.2028965 ,  5.32809769])], 'median': [array([217.86243381,  12.36619556])], 'quantile75': [array([940.90683085,  24.34740352])]}
+	Seed: 15 OOD errors (MSE, MAE) stats: {'min': [array([0.75855704, 0.7724531 ])], 'max': [array([3498.79714075,   46.11199372])], 'mean': [array([284.94930477,  10.47488091])], 'std': [array([507.43804918,   9.07656897])], 'quantile25': [array([26.01986246,  3.98350683])], 'median': [array([87.30684258,  7.44223641])], 'quantile75': [array([294.48779751,  13.16050202])]}
+	Train: 4825 (48.90%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 969 (9.82%)
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 16 ID errors (MSE, MAE) stats: {'min': [array([0.88903403, 0.87013799])], 'max': [array([9613.92073408,   79.43810281])], 'mean': [array([726.13751868,  15.82712352])], 'std': [array([1434.51322976,   15.0501366 ])], 'quantile25': [array([46.30333458,  5.50933168])], 'median': [array([198.57293095,  11.0476324 ])], 'quantile75': [array([602.02660349,  20.34186213])]}
+	Seed: 16 OOD errors (MSE, MAE) stats: {'min': [array([2.55813190e-10, 1.59941611e-05])], 'max': [array([24128.51613215,   125.84989756])], 'mean': [array([2311.55266883,   29.38818599])], 'std': [array([3978.55548334,   25.70468741])], 'quantile25': [array([245.4265341,  12.1500623])], 'median': [array([686.33978955,  21.14996454])], 'quantile75': [array([2282.72090101,   39.07505193])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 17 ID errors (MSE, MAE) stats: {'min': [array([2.55813190e-10, 1.59941611e-05])], 'max': [array([57897.39756025,   196.87177314])], 'mean': [array([1664.80667344,   20.81884648])], 'std': [array([5521.47858412,   25.32059993])], 'quantile25': [array([54.63868235,  6.31981822])], 'median': [array([243.65156908,  12.69721128])], 'quantile75': [array([1053.27629997,   24.70754766])]}
+	Seed: 17 OOD errors (MSE, MAE) stats: {'min': [array([0.40062298, 0.5564237 ])], 'max': [array([7870.85120905,   73.15002398])], 'mean': [array([393.46038442,  11.38995272])], 'std': [array([979.73859131,  11.79705425])], 'quantile25': [array([20.91820965,  3.904005  ])], 'median': [array([76.18417733,  7.48609307])], 'quantile75': [array([341.62834393,  14.80504844])]}
+	Train: 4514 (45.75%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1280 (12.97%)
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 18 ID errors (MSE, MAE) stats: {'min': [array([2.55813190e-10, 1.59941611e-05])], 'max': [array([57897.39756025,   196.87177314])], 'mean': [array([1664.80667344,   20.81884648])], 'std': [array([5521.47858412,   25.32059993])], 'quantile25': [array([54.63868235,  6.31981822])], 'median': [array([243.65156908,  12.69721128])], 'quantile75': [array([1053.27629997,   24.70754766])]}
+	Seed: 18 OOD errors (MSE, MAE) stats: {'min': [array([0.40062298, 0.5564237 ])], 'max': [array([7870.85120905,   73.15002398])], 'mean': [array([393.46038442,  11.38995272])], 'std': [array([979.73859131,  11.79705425])], 'quantile25': [array([20.91820965,  3.904005  ])], 'median': [array([76.18417733,  7.48609307])], 'quantile75': [array([341.62834393,  14.80504844])]}
+	Train: 4738 (48.02%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1056 (10.70%)
+	Scaled columns: ['id', 'gl', 'fast_insulin', 'slow_insulin', 'calories', 'balance', 'quality', 'HR', 'BR', 'Posture', 'Activity', 'HRV', 'CoreTemp', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
+	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([2.55813190e-10, 1.59941611e-05])], 'max': [array([57897.39756025,   196.87177314])], 'mean': [array([1335.21707351,   16.91785306])], 'std': [array([5455.71603853,   24.16456819])], 'quantile25': [array([33.11013945,  4.88569166])], 'median': [array([146.23532317,   9.82497049])], 'quantile75': [array([538.44824124,  18.2921585 ])]}
+	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([1.766641  , 1.16245531])], 'max': [array([17290.26712038,   110.22726607])], 'mean': [array([1267.98867954,   21.3231924 ])], 'std': [array([2555.53338543,   20.3369967 ])], 'quantile25': [array([97.11213785,  7.5658806 ])], 'median': [array([307.5687438 ,  14.88132306])], 'quantile75': [array([1268.600962  ,   28.95429114])]}
+RS ID (MSE, MAE) errors stats: {'mean': array([[1312.70091888,   18.42696213]]), 'std': array([[4283.33348285,   22.05017108]]), 'quantile25': array([[45.4083849 ,  5.59150284]]), 'quantile75': array([[803.69883237,  22.07874975]]), 'median': array([[205.88478061,  11.56753444]]), 'min': array([[0.26671021, 0.26105259]]), 'max': array([[43412.3545124 ,   161.64167204]])}
+RS OOD (MSE, MAE) errors stats: {'mean': array([[1151.12698968,   19.13565261]]), 'std': array([[2139.10289912,   17.47210749]]), 'quantile25': array([[108.92438581,   7.38906624]]), 'quantile75': array([[1126.60943768,   25.31403361]]), 'median': array([[323.32622693,  13.57428083]]), 'min': array([[0.5493708 , 0.47666832]]), 'max': array([[13935.67774451,    92.57510683]])}

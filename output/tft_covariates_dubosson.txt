@@ -316,3 +316,97 @@ Key: quantile75 RS OOD (MSE, MAE) stats: {'min': [array([934.3003006 ,  25.11475
 Key: median RS OOD (MSE, MAE) stats: {'min': [array([417.57218933,  16.73710489])], 'max': [array([674.63406372,  20.0766778 ])], 'mean': [array([540.51422119,  18.33786259])], 'std': [array([81.61425681,  1.1529452 ])], 'quantile25': [array([498.02499199,  17.44634032])], 'median': [array([515.20911026,  17.90933943])], 'quantile75': [array([597.51420403,  19.54531217])]}
 Key: min RS OOD (MSE, MAE) stats: {'min': [array([19.436584,  3.285483], dtype=float32)], 'max': [array([57.796913 ,  5.9971123], dtype=float32)], 'mean': [array([38.69407 ,  4.848952], dtype=float32)], 'std': [array([12.3895035 ,  0.85700387], dtype=float32)], 'quantile25': [array([28.35694504,  4.29360962])], 'median': [array([38.84305954,  4.91829562])], 'quantile75': [array([47.71209431,  5.57909417])]}
 Key: max RS OOD (MSE, MAE) stats: {'min': [array([4692.7534  ,   59.127037], dtype=float32)], 'max': [array([6501.5933  ,   67.831795], dtype=float32)], 'mean': [array([5552.428   ,   63.332294], dtype=float32)], 'std': [array([591.8107   ,   2.8351865], dtype=float32)], 'quantile25': [array([5057.77294922,   60.82907486])], 'median': [array([5494.15063477,   63.25219345])], 'quantile75': [array([6104.13842773,   65.62664413])]}
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		fast_insulin: REAL_VALUED (OBSERVED_INPUT)
+		slow_insulin: REAL_VALUED (OBSERVED_INPUT)
+		calories: REAL_VALUED (OBSERVED_INPUT)
+		balance: REAL_VALUED (OBSERVED_INPUT)
+		quality: REAL_VALUED (OBSERVED_INPUT)
+		HR: REAL_VALUED (OBSERVED_INPUT)
+		BR: REAL_VALUED (OBSERVED_INPUT)
+		Posture: REAL_VALUED (OBSERVED_INPUT)
+		Activity: REAL_VALUED (OBSERVED_INPUT)
+		HRV: REAL_VALUED (OBSERVED_INPUT)
+		CoreTemp: REAL_VALUED (OBSERVED_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 1
+	Extracted segments: 8
+	Interpolated values: 0
+	Percent of values interpolated: 0.00%
+Splitting data...
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		fast_insulin: REAL_VALUED (OBSERVED_INPUT)
+		slow_insulin: REAL_VALUED (OBSERVED_INPUT)
+		calories: REAL_VALUED (OBSERVED_INPUT)
+		balance: REAL_VALUED (OBSERVED_INPUT)
+		quality: REAL_VALUED (OBSERVED_INPUT)
+		HR: REAL_VALUED (OBSERVED_INPUT)
+		BR: REAL_VALUED (OBSERVED_INPUT)
+		Posture: REAL_VALUED (OBSERVED_INPUT)
+		Activity: REAL_VALUED (OBSERVED_INPUT)
+		HRV: REAL_VALUED (OBSERVED_INPUT)
+		CoreTemp: REAL_VALUED (OBSERVED_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 1
+	Extracted segments: 8
+	Interpolated values: 0
+	Percent of values interpolated: 0.00%
+Splitting data...
+	Train: 4654 (47.17%)
+	Val: 2016 (20.43%)
+	Test: 2057 (20.85%)
+	Test OOD: 1140 (11.55%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
+Current value: 0.09274544566869736, Current params: {'in_len': 156, 'max_samples_per_ts': 150, 'hidden_size': 208, 'num_attention_heads': 1, 'dropout': 0.10618484887835633, 'lr': 0.0032478742751566713, 'batch_size': 64, 'max_grad_norm': 0.7763717321392726}
+Best value: 0.09274544566869736, Best params: {'in_len': 156, 'max_samples_per_ts': 150, 'hidden_size': 208, 'num_attention_heads': 1, 'dropout': 0.10618484887835633, 'lr': 0.0032478742751566713, 'batch_size': 64, 'max_grad_norm': 0.7763717321392726}
+Current value: 0.11197689920663834, Current params: {'in_len': 192, 'max_samples_per_ts': 200, 'hidden_size': 160, 'num_attention_heads': 3, 'dropout': 0.24230399973517006, 'lr': 0.004683691525092744, 'batch_size': 64, 'max_grad_norm': 0.9838652689629245}
+Best value: 0.09274544566869736, Best params: {'in_len': 156, 'max_samples_per_ts': 150, 'hidden_size': 208, 'num_attention_heads': 1, 'dropout': 0.10618484887835633, 'lr': 0.0032478742751566713, 'batch_size': 64, 'max_grad_norm': 0.7763717321392726}
+Current value: 0.14751550555229187, Current params: {'in_len': 180, 'max_samples_per_ts': 100, 'hidden_size': 208, 'num_attention_heads': 4, 'dropout': 0.17081656619528263, 'lr': 0.0011968694667351713, 'batch_size': 48, 'max_grad_norm': 0.6243924249445076}
+Best value: 0.09274544566869736, Best params: {'in_len': 156, 'max_samples_per_ts': 150, 'hidden_size': 208, 'num_attention_heads': 1, 'dropout': 0.10618484887835633, 'lr': 0.0032478742751566713, 'batch_size': 64, 'max_grad_norm': 0.7763717321392726}
+Current value: 0.19914543628692627, Current params: {'in_len': 120, 'max_samples_per_ts': 150, 'hidden_size': 32, 'num_attention_heads': 2, 'dropout': 0.1723456705312499, 'lr': 0.002136428056073154, 'batch_size': 48, 'max_grad_norm': 0.04776109961718547}
+Best value: 0.09274544566869736, Best params: {'in_len': 156, 'max_samples_per_ts': 150, 'hidden_size': 208, 'num_attention_heads': 1, 'dropout': 0.10618484887835633, 'lr': 0.0032478742751566713, 'batch_size': 64, 'max_grad_norm': 0.7763717321392726}
