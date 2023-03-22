@@ -197,11 +197,9 @@ length_pred: 12
 
 linreg:
   in_len: 144
-  max_samples_per_ts: 100
 
 linreg_covariates:
   in_len: 24
-  max_samples_per_ts: 100
 
 tft:
   in_len: 96
@@ -225,7 +223,6 @@ tft_covariates:
 
 xgboost:
   in_len: 60
-  max_samples_per_ts: 50
   lr: 0.515
   subsample: 0.9
   min_child_weight: 3.0
@@ -238,7 +235,6 @@ xgboost:
 
 xgboost_covariates:
   in_len: 120
-  max_samples_per_ts: 50
   lr: 0.17200000000000001
   subsample: 0.7
   min_child_weight: 2.0

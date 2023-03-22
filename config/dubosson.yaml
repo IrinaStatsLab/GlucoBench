@@ -89,11 +89,9 @@ length_pred: 12
 
 linreg:
   in_len: 12
-  max_samples_per_ts: 150
 
 linreg_covariates:
   in_len: 12
-  max_samples_per_ts: 50
 
 tft:
   in_len: 168
@@ -105,9 +103,18 @@ tft:
   batch_size: 64
   max_grad_norm: 0.999584070166802
 
+tft_covariates:
+  in_len: 120
+  max_samples_per_ts: 50
+  hidden_size: 240
+  num_attention_heads: 1
+  dropout: 0.2354005483884536
+  lr: 0.0014372065280028868
+  batch_size: 32
+  max_grad_norm: 0.08770929102027172
+
 xgboost:
   in_len: 168
-  max_samples_per_ts: 50
   lr: 0.6910000000000001
   subsample: 0.8
   min_child_weight: 5.0
@@ -120,7 +127,6 @@ xgboost:
   
 xgboost_covariates:
   in_len: 36
-  max_samples_per_ts: 50
   lr: 0.651
   subsample: 0.8
   min_child_weight: 2.0
