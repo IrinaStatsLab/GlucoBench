@@ -1,6 +1,5 @@
 # ignore model and data files
 *.pth
-*.csv
 *.npy
 *.pkl
 cache/*
@@ -8,9 +7,8 @@ cache/*
 track_*
 output/tensorboard_*/*
 
-# ignore unpreprocessed data
-raw_data/Weinstock2016_allfiles/*
-raw_data/Colas2019/*
+# ignore csv files in the raw data folder
+raw_data/*.csv
 
 # ignore pre-complied code
 *.cpython-37.pyc
@@ -19,11 +17,7 @@ __pycache__/
 *.pyc
 
 # ignore old notebooks and code
-exploratory_analysis/old_notebooks/*
 legacy/*
-
-# ignore cache of quattro for design doc
-design_document_files/
 
 # ignore workspace 
 *.code-workspace
