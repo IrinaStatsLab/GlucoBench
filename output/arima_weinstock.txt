@@ -1,4 +1,4 @@
-Optimization started at 2023-03-10 19:40:52.293185
+Optimization started at 2023-03-22 17:28:57.136340
 --------------------------------
 Loading column definition...
 Checking column definition...
@@ -74,70 +74,92 @@ Data formatting complete.
 	Test: 73116 (11.78%)
 	Test OOD: 60217 (9.70%)
 	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 10 ID errors (MSE, MAE) stats: {'min': [array([1.02296288e-12, 1.01141627e-06])], 'max': [array([62748.75320378,   243.87722989])], 'mean': [array([747.8655978 ,  16.60781664])], 'std': [array([1955.15465401,   16.72860454])], 'quantile25': [array([46.30611911,  5.56569566])], 'median': [array([182.73254114,  11.34426081])], 'quantile75': [array([651.92969379,  21.63723204])]}
-	Seed: 10 OOD errors (MSE, MAE) stats: {'min': [array([1.04188157e-12, 1.01977149e-06])], 'max': [array([30139.259636 ,   166.4067613])], 'mean': [array([821.01950783,  17.97957207])], 'std': [array([1824.90431383,   16.93037289])], 'quantile25': [array([59.72568795,  6.4195978 ])], 'median': [array([234.31061454,  12.83627317])], 'quantile75': [array([792.32595849,  24.19935428])]}
+	Seed: 10 ID mean of (MSE, MAE): [747.8655978045025, 16.607816643918525]
+	Seed: 10 OOD mean of (MSE, MAE) stats: [821.0195078321021, 17.97957206711372]
+	Seed: 10 ID median of (MSE, MAE): [182.73254113864016, 11.344260811731695]
+	Seed: 10 OOD median of (MSE, MAE) stats: [234.31061454485814, 12.836273169508326]
 	Train: 429967 (69.36%)
 	Val: 58465 (9.43%)
 	Test: 72372 (11.67%)
 	Test OOD: 59106 (9.53%)
 	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 11 ID errors (MSE, MAE) stats: {'min': [array([1.02296288e-12, 1.01141627e-06])], 'max': [array([62748.75320378,   243.87722989])], 'mean': [array([744.27859527,  16.64220196])], 'std': [array([1918.0708996 ,   16.63348427])], 'quantile25': [array([46.65391579,  5.61021464])], 'median': [array([186.29401454,  11.44376579])], 'quantile75': [array([662.81409861,  21.76190821])]}
-	Seed: 11 OOD errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([33254.74541083,   153.41665712])], 'mean': [array([837.01490211,  18.25417323])], 'std': [array([1832.1112034,   17.1314833])], 'quantile25': [array([65.46898855,  6.76556991])], 'median': [array([243.32161472,  12.98329973])], 'quantile75': [array([799.57001144,  24.45036977])]}
+	Seed: 11 ID mean of (MSE, MAE): [744.278595270701, 16.642201962977467]
+	Seed: 11 OOD mean of (MSE, MAE) stats: [837.0149021052963, 18.254173227346133]
+	Seed: 11 ID median of (MSE, MAE): [186.29401454166796, 11.443765793388797]
+	Seed: 11 OOD median of (MSE, MAE) stats: [243.32161471532635, 12.983299733089979]
 	Train: 430782 (69.60%)
 	Val: 55990 (9.05%)
 	Test: 72317 (11.68%)
 	Test OOD: 59861 (9.67%)
 	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 12 ID errors (MSE, MAE) stats: {'min': [array([1.02296288e-12, 1.01141627e-06])], 'max': [array([46513.87430341,   179.91652633])], 'mean': [array([735.04571345,  16.4805698 ])], 'std': [array([1817.97076745,   16.5082699 ])], 'quantile25': [array([45.25161668,  5.51526805])], 'median': [array([178.41681041,  11.20790723])], 'quantile75': [array([647.73836015,  21.54423499])]}
-	Seed: 12 OOD errors (MSE, MAE) stats: {'min': [array([1.31630015e-12, 1.14556797e-06])], 'max': [array([84348.84919129,   255.51413586])], 'mean': [array([867.2910728 ,  18.35266143])], 'std': [array([2214.88650008,   17.54569591])], 'quantile25': [array([64.15443505,  6.64334005])], 'median': [array([232.87767466,  12.91601187])], 'quantile75': [array([813.30477266,  24.42854751])]}
+	Seed: 12 ID mean of (MSE, MAE): [735.0457134546973, 16.480569797620213]
+	Seed: 12 OOD mean of (MSE, MAE) stats: [867.2910728004425, 18.35266143163228]
+	Seed: 12 ID median of (MSE, MAE): [178.41681040908156, 11.207907231568404]
+	Seed: 12 OOD median of (MSE, MAE) stats: [232.877674659537, 12.916011866813554]
 	Train: 429588 (69.32%)
 	Val: 57592 (9.29%)
 	Test: 72490 (11.70%)
 	Test OOD: 60048 (9.69%)
 	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 13 ID errors (MSE, MAE) stats: {'min': [array([1.02296288e-12, 1.01141627e-06])], 'max': [array([62748.75320378,   243.87722989])], 'mean': [array([741.55781415,  16.42279846])], 'std': [array([1986.69737641,   16.73589126])], 'quantile25': [array([43.39238946,  5.43790905])], 'median': [array([177.14978058,  11.16452175])], 'quantile75': [array([640.95784147,  21.45850243])]}
-	Seed: 13 OOD errors (MSE, MAE) stats: {'min': [array([1.31630015e-12, 1.14556797e-06])], 'max': [array([57968.69771143,   218.74998791])], 'mean': [array([903.83654622,  18.87935515])], 'std': [array([2116.62441006,   17.81439965])], 'quantile25': [array([66.03788616,  6.76863788])], 'median': [array([255.03454088,  13.39251706])], 'quantile75': [array([884.33989842,  25.49012036])]}
+	Seed: 13 ID mean of (MSE, MAE): [741.5578141528916, 16.42279846254476]
+	Seed: 13 OOD mean of (MSE, MAE) stats: [903.8365462231527, 18.879355150614693]
+	Seed: 13 ID median of (MSE, MAE): [177.149780583931, 11.164521749051238]
+	Seed: 13 OOD median of (MSE, MAE) stats: [255.0345408800255, 13.392517060315903]
 	Train: 421878 (68.10%)
 	Val: 57592 (9.30%)
 	Test: 72450 (11.69%)
 	Test OOD: 67606 (10.91%)
 	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 14 ID errors (MSE, MAE) stats: {'min': [array([1.02296288e-12, 1.01141627e-06])], 'max': [array([62748.75320378,   243.87722989])], 'mean': [array([746.6249146 ,  16.55496135])], 'std': [array([1980.23002679,   16.72461667])], 'quantile25': [array([45.64453883,  5.54515636])], 'median': [array([182.16835005,  11.36023805])], 'quantile75': [array([648.64891652,  21.6066052 ])]}
-	Seed: 14 OOD errors (MSE, MAE) stats: {'min': [array([1.12587113e-12, 1.05524794e-06])], 'max': [array([66722.10047723,   229.68571846])], 'mean': [array([837.65068721,  18.0511962 ])], 'std': [array([1929.44267879,   17.19690493])], 'quantile25': [array([60.00470623,  6.39968535])], 'median': [array([225.88925371,  12.62378127])], 'quantile75': [array([770.29732195,  23.81847909])]}
+	Seed: 14 ID mean of (MSE, MAE): [746.6249146030514, 16.554961353387586]
+	Seed: 14 OOD mean of (MSE, MAE) stats: [837.6506872100771, 18.051196196254725]
+	Seed: 14 ID median of (MSE, MAE): [182.1683500499272, 11.36023804869616]
+	Seed: 14 OOD median of (MSE, MAE) stats: [225.88925370942113, 12.623781269973241]
 	Train: 432386 (69.84%)
 	Val: 57484 (9.28%)
 	Test: 72769 (11.75%)
 	Test OOD: 56503 (9.13%)
 	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 15 ID errors (MSE, MAE) stats: {'min': [array([1.02296288e-12, 1.01141627e-06])], 'max': [array([62748.75320378,   243.87722989])], 'mean': [array([733.61786556,  16.44334559])], 'std': [array([1957.82961036,   16.57612388])], 'quantile25': [array([45.51787041,  5.52399601])], 'median': [array([179.92482141,  11.26199282])], 'quantile75': [array([644.43333482,  21.52645743])]}
-	Seed: 15 OOD errors (MSE, MAE) stats: {'min': [array([7.51856026e-13, 8.36857452e-07])], 'max': [array([84348.84919129,   255.51413586])], 'mean': [array([985.65651372,  19.57645198])], 'std': [array([2234.50345781,   18.52065392])], 'quantile25': [array([68.05022517,  6.83091277])], 'median': [array([278.18923831,  14.07629055])], 'quantile75': [array([960.62032742,  26.10563631])]}
+	Seed: 15 ID mean of (MSE, MAE): [733.6178655569515, 16.443345594974367]
+	Seed: 15 OOD mean of (MSE, MAE) stats: [985.6565137213247, 19.57645198175924]
+	Seed: 15 ID median of (MSE, MAE): [179.92482140560944, 11.261992817304522]
+	Seed: 15 OOD median of (MSE, MAE) stats: [278.1892383066512, 14.076290554625382]
 	Train: 440247 (71.04%)
 	Val: 57712 (9.31%)
 	Test: 72728 (11.74%)
 	Test OOD: 49031 (7.91%)
 	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 16 ID errors (MSE, MAE) stats: {'min': [array([1.02296288e-12, 1.01141627e-06])], 'max': [array([62748.75320378,   243.87722989])], 'mean': [array([726.20245092,  16.39584273])], 'std': [array([1858.246794 ,   16.4274749])], 'quantile25': [array([44.178971  ,  5.46603032])], 'median': [array([178.35762062,  11.19245361])], 'quantile75': [array([649.00988356,  21.54981067])]}
-	Seed: 16 OOD errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([118900.42872336,    284.94598896])], 'mean': [array([981.47973855,  18.9531745 ])], 'std': [array([2867.05654185,   19.21456191])], 'quantile25': [array([65.09444924,  6.69399049])], 'median': [array([245.05784617,  13.10604501])], 'quantile75': [array([828.63977182,  24.49886645])]}
+	Seed: 16 ID mean of (MSE, MAE): [726.20245092088, 16.3958427268518]
+	Seed: 16 OOD mean of (MSE, MAE) stats: [981.4797385485332, 18.953174499474528]
+	Seed: 16 ID median of (MSE, MAE): [178.35762061854493, 11.192453606664209]
+	Seed: 16 OOD median of (MSE, MAE) stats: [245.05784616709715, 13.106045007980432]
 	Train: 424721 (68.43%)
 	Val: 58780 (9.47%)
 	Test: 71774 (11.56%)
 	Test OOD: 65403 (10.54%)
 	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 17 ID errors (MSE, MAE) stats: {'min': [array([1.02296288e-12, 1.01141627e-06])], 'max': [array([46513.87430341,   179.91652633])], 'mean': [array([727.06651823,  16.41856433])], 'std': [array([1789.33977568,   16.39494716])], 'quantile25': [array([44.87693766,  5.51093978])], 'median': [array([177.83269862,  11.21580863])], 'quantile75': [array([646.72445879,  21.49049388])]}
-	Seed: 17 OOD errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([63570.91215749,   252.08332442])], 'mean': [array([1004.95469815,   19.71625735])], 'std': [array([2373.44050318,   19.00741303])], 'quantile25': [array([69.82834075,  6.90228707])], 'median': [array([269.87250651,  13.876074  ])], 'quantile75': [array([947.65874461,  26.18958261])]}
+	Seed: 17 ID mean of (MSE, MAE): [727.0665182315788, 16.41856433328879]
+	Seed: 17 OOD mean of (MSE, MAE) stats: [1004.9546981488567, 19.716257354965638]
+	Seed: 17 ID median of (MSE, MAE): [177.83269862178253, 11.215808631600613]
+	Seed: 17 OOD median of (MSE, MAE) stats: [269.8725065103039, 13.876074003407432]
 	Train: 423608 (68.50%)
 	Val: 56273 (9.10%)
 	Test: 72496 (11.72%)
 	Test OOD: 65997 (10.67%)
 	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 18 ID errors (MSE, MAE) stats: {'min': [array([1.02296288e-12, 1.01141627e-06])], 'max': [array([62748.75320378,   243.87722989])], 'mean': [array([722.19099527,  16.36869347])], 'std': [array([1866.78178062,   16.37773254])], 'quantile25': [array([45.72271288,  5.52372875])], 'median': [array([177.48505234,  11.20052441])], 'quantile75': [array([632.81503879,  21.38016579])]}
-	Seed: 18 OOD errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([63570.91215749,   252.08332442])], 'mean': [array([997.72988846,  19.85792049])], 'std': [array([2200.78745926,   18.64262835])], 'quantile25': [array([73.03404159,  7.13591494])], 'median': [array([282.9486811 ,  14.18076623])], 'quantile75': [array([977.04211482,  26.63475799])]}
+	Seed: 18 ID mean of (MSE, MAE): [722.1909952687499, 16.36869346719989]
+	Seed: 18 OOD mean of (MSE, MAE) stats: [997.7298884575196, 19.85792049427079]
+	Seed: 18 ID median of (MSE, MAE): [177.48505233786102, 11.200524413129683]
+	Seed: 18 OOD median of (MSE, MAE) stats: [282.9486811027375, 14.180766225075985]
 	Train: 422428 (68.44%)
 	Val: 55913 (9.06%)
 	Test: 72070 (11.68%)
 	Test OOD: 66811 (10.82%)
 	Scaled columns: ['id', 'gl', 'Height', 'Weight', 'Gender', 'Race', 'EduLevel', 'AnnualInc', 'MaritalStatus', 'DaysWkEx', 'DaysWkDrinkAlc', 'DaysMonBingeAlc', 'T1DDiagAge', 'NumHospDKA', 'NumSHSinceT1DDiag', 'InsDeliveryMethod', 'UnitsInsTotal', 'NumMeterCheckDay', 'Aspirin', 'Simvastatin', 'Lisinopril', 'Vitamin D', 'Multivitamin preparation', 'Omeprazole', 'atorvastatin', 'Synthroid', 'vitamin D3', 'Hypertension', 'Hyperlipidemia', 'Hypothyroidism', 'Depression', 'Coronary artery disease', 'Diabetic peripheral neuropathy', 'Dyslipidemia', 'Chronic kidney disease', 'Osteoporosis', 'Proliferative diabetic retinopathy', 'Hypercholesterolemia', 'Erectile dysfunction', 'Type I diabetes mellitus', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([1.02296288e-12, 1.01141627e-06])], 'max': [array([62748.75320378,   243.87722989])], 'mean': [array([739.56024546,  16.3933163 ])], 'std': [array([1976.5250628 ,   16.69942463])], 'quantile25': [array([43.41993685,  5.44344411])], 'median': [array([175.03996268,  11.09315614])], 'quantile75': [array([640.22257162,  21.44720007])]}
-	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([1.59837951e-12, 1.26427035e-06])], 'max': [array([36523.34066106,   166.69617359])], 'mean': [array([874.71080959,  18.69654964])], 'std': [array([1861.62441456,   17.42568081])], 'quantile25': [array([64.99941073,  6.76870836])], 'median': [array([252.18247192,  13.36551638])], 'quantile75': [array([852.83339836,  24.83442999])]}
-RS ID (MSE, MAE) errors stats: {'mean': array([[736.40107107,  16.47281106]]), 'std': array([[1910.68467477,   16.58065698]]), 'quantile25': array([[45.09650087,  5.51423827]]), 'quantile75': array([[646.52941981,  21.54026107]]), 'median': array([[179.54016524,  11.24846292]]), 'min': array([[1.02296288e-12, 1.01141627e-06]]), 'max': array([[59501.77742371,   231.08508918]])}
-RS OOD (MSE, MAE) errors stats: {'mean': array([[911.13443646,  18.8317312 ]]), 'std': array([[2145.53814828,   17.94297947]]), 'quantile25': array([[65.63981714,  6.73286446]]), 'quantile75': array([[862.663232  ,  25.06501443]]), 'median': array([[251.96844425,  13.33565753]]), 'min': array([[1.35441066e-12, 1.15243645e-06]]), 'max': array([[63934.80953175,   223.50962079]])}
+	Seed: 19 ID mean of (MSE, MAE): [739.5602454603428, 16.39331629557157]
+	Seed: 19 OOD mean of (MSE, MAE) stats: [874.7108095852512, 18.696549641847426]
+	Seed: 19 ID median of (MSE, MAE): [175.03996268269026, 11.093156136811842]
+	Seed: 19 OOD median of (MSE, MAE) stats: [252.1824719200251, 13.36551637696292]
+ID mean of (MSE, MAE): [736.4010710724349, 16.472811063833493]
+OOD mean of (MSE, MAE): [911.1344364632556, 18.83173120452792]
+ID median of (MSE, MAE): [179.54016523897357, 11.248462923994717]
+OOD median of (MSE, MAE): [251.96844425159824, 13.335657526775316]

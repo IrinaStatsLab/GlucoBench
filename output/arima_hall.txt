@@ -1,4 +1,4 @@
-Optimization started at 2023-03-10 19:40:52.457473
+Optimization started at 2023-03-22 17:28:57.436784
 --------------------------------
 Loading column definition...
 Checking column definition...
@@ -83,70 +83,92 @@ Data formatting complete.
 	Test: 16009 (15.80%)
 	Test OOD: 9684 (9.56%)
 	Scaled columns: ['id', 'gl', 'Age', 'BMI', 'A1C', 'FBG', 'ogtt.2hr', 'insulin', 'hs.CRP', 'Tchol', 'Trg', 'HDL', 'LDL', 'mean_glucose', 'sd_glucose', 'range_glucose', 'min_glucose', 'max_glucose', 'quartile.25_glucose', 'median_glucose', 'quartile.75_glucose', 'mean_slope', 'max_slope', 'number_Random140', 'number_Random200', 'percent_below.80', 'se_glucose_mean', 'numGE', 'mage', 'j_index', 'IQR', 'modd', 'distance_traveled', 'coef_variation', 'number_Random140_normByDays', 'number_Random200_normByDays', 'numGE_normByDays', 'distance_traveled_normByDays', 'diagnosis', 'freq_low', 'freq_moderate', 'freq_severe', 'glucotype', 'Height', 'Weight', 'Insulin_rate_dd', 'perc_cgm_prediabetic_range', 'perc_cgm_diabetic_range', 'SSPG', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 10 ID errors (MSE, MAE) stats: {'min': [array([0.16666642, 0.16666717])], 'max': [array([18188.42081461,   128.85917833])], 'mean': [array([344.22118993,  10.74591045])], 'std': [array([1134.6789327 ,   12.30867565])], 'quantile25': [array([17.46173239,  3.52004681])], 'median': [array([73.69408721,  7.26750823])], 'quantile75': [array([243.58817354,  13.31743511])]}
-	Seed: 10 OOD errors (MSE, MAE) stats: {'min': [array([0.05666669, 0.08333448])], 'max': [array([6649.75953828,   79.10538774])], 'mean': [array([275.8830333,  11.9687312])], 'std': [array([390.4868727 ,   8.61190966])], 'quantile25': [array([35.99420681,  5.01095696])], 'median': [array([137.79738913,  10.18835002])], 'quantile75': [array([369.41222041,  17.29291863])]}
+	Seed: 10 ID mean of (MSE, MAE): [344.2211899316389, 10.745910452869762]
+	Seed: 10 OOD mean of (MSE, MAE) stats: [275.8830333047019, 11.96873119751728]
+	Seed: 10 ID median of (MSE, MAE): [73.69408721366875, 7.267508227846345]
+	Seed: 10 OOD median of (MSE, MAE) stats: [137.79738912762681, 10.188350022754905]
 	Train: 63249 (62.26%)
 	Val: 12497 (12.30%)
 	Test: 16368 (16.11%)
 	Test OOD: 9478 (9.33%)
 	Scaled columns: ['id', 'gl', 'Age', 'BMI', 'A1C', 'FBG', 'ogtt.2hr', 'insulin', 'hs.CRP', 'Tchol', 'Trg', 'HDL', 'LDL', 'mean_glucose', 'sd_glucose', 'range_glucose', 'min_glucose', 'max_glucose', 'quartile.25_glucose', 'median_glucose', 'quartile.75_glucose', 'mean_slope', 'max_slope', 'number_Random140', 'number_Random200', 'percent_below.80', 'se_glucose_mean', 'numGE', 'mage', 'j_index', 'IQR', 'modd', 'distance_traveled', 'coef_variation', 'number_Random140_normByDays', 'number_Random200_normByDays', 'numGE_normByDays', 'distance_traveled_normByDays', 'diagnosis', 'freq_low', 'freq_moderate', 'freq_severe', 'glucotype', 'Height', 'Weight', 'Insulin_rate_dd', 'perc_cgm_prediabetic_range', 'perc_cgm_diabetic_range', 'SSPG', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 11 ID errors (MSE, MAE) stats: {'min': [array([0.16666642, 0.16666717])], 'max': [array([18188.42081461,   128.85917833])], 'mean': [array([311.40870547,  10.55421026])], 'std': [array([1022.29109904,   11.58872114])], 'quantile25': [array([17.93818993,  3.56047224])], 'median': [array([74.27415763,  7.29760991])], 'quantile75': [array([242.55674947,  13.23770491])]}
-	Seed: 11 OOD errors (MSE, MAE) stats: {'min': [array([0.18608904, 0.33333376])], 'max': [array([7317.12935022,   78.13139334])], 'mean': [array([278.92668396,  10.12651264])], 'std': [array([652.305025  ,  10.27800787])], 'quantile25': [array([16.11660573,  3.40070795])], 'median': [array([61.91665078,  6.78822507])], 'quantile75': [array([244.06229488,  13.38098035])]}
+	Seed: 11 ID mean of (MSE, MAE): [311.4087054685909, 10.554210263091093]
+	Seed: 11 OOD mean of (MSE, MAE) stats: [278.92668396099305, 10.126512638787379]
+	Seed: 11 ID median of (MSE, MAE): [74.27415762519446, 7.297609905091431]
+	Seed: 11 OOD median of (MSE, MAE) stats: [61.91665077985625, 6.788225074996617]
 	Train: 62878 (61.98%)
 	Val: 12502 (12.32%)
 	Test: 16426 (16.19%)
 	Test OOD: 9642 (9.50%)
 	Scaled columns: ['id', 'gl', 'Age', 'BMI', 'A1C', 'FBG', 'ogtt.2hr', 'insulin', 'hs.CRP', 'Tchol', 'Trg', 'HDL', 'LDL', 'mean_glucose', 'sd_glucose', 'range_glucose', 'min_glucose', 'max_glucose', 'quartile.25_glucose', 'median_glucose', 'quartile.75_glucose', 'mean_slope', 'max_slope', 'number_Random140', 'number_Random200', 'percent_below.80', 'se_glucose_mean', 'numGE', 'mage', 'j_index', 'IQR', 'modd', 'distance_traveled', 'coef_variation', 'number_Random140_normByDays', 'number_Random200_normByDays', 'numGE_normByDays', 'distance_traveled_normByDays', 'diagnosis', 'freq_low', 'freq_moderate', 'freq_severe', 'glucotype', 'Height', 'Weight', 'Insulin_rate_dd', 'perc_cgm_prediabetic_range', 'perc_cgm_diabetic_range', 'SSPG', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 12 ID errors (MSE, MAE) stats: {'min': [array([0.16666642, 0.16666717])], 'max': [array([18188.42081461,   128.85917833])], 'mean': [array([348.22412443,  10.94982221])], 'std': [array([1111.9092255,   12.2429464])], 'quantile25': [array([18.97349439,  3.65062949])], 'median': [array([74.98127929,  7.39640883])], 'quantile75': [array([259.30832243,  13.7981698 ])]}
-	Seed: 12 OOD errors (MSE, MAE) stats: {'min': [array([0.00333322, 0.01666668])], 'max': [array([6661.53184033,   72.81593251])], 'mean': [array([204.47259711,   9.25545933])], 'std': [array([466.23877291,   8.43903963])], 'quantile25': [array([18.8191677 ,  3.58996202])], 'median': [array([61.34034463,  6.83120228])], 'quantile75': [array([206.87568226,  12.30014745])]}
+	Seed: 12 ID mean of (MSE, MAE): [348.22412443443693, 10.949822208309971]
+	Seed: 12 OOD mean of (MSE, MAE) stats: [204.4725971114515, 9.25545933115473]
+	Seed: 12 ID median of (MSE, MAE): [74.98127929333232, 7.3964088270201005]
+	Seed: 12 OOD median of (MSE, MAE) stats: [61.34034462616695, 6.8312022822746306]
 	Train: 63355 (62.45%)
 	Val: 12166 (11.99%)
 	Test: 16278 (16.05%)
 	Test OOD: 9649 (9.51%)
 	Scaled columns: ['id', 'gl', 'Age', 'BMI', 'A1C', 'FBG', 'ogtt.2hr', 'insulin', 'hs.CRP', 'Tchol', 'Trg', 'HDL', 'LDL', 'mean_glucose', 'sd_glucose', 'range_glucose', 'min_glucose', 'max_glucose', 'quartile.25_glucose', 'median_glucose', 'quartile.75_glucose', 'mean_slope', 'max_slope', 'number_Random140', 'number_Random200', 'percent_below.80', 'se_glucose_mean', 'numGE', 'mage', 'j_index', 'IQR', 'modd', 'distance_traveled', 'coef_variation', 'number_Random140_normByDays', 'number_Random200_normByDays', 'numGE_normByDays', 'distance_traveled_normByDays', 'diagnosis', 'freq_low', 'freq_moderate', 'freq_severe', 'glucotype', 'Height', 'Weight', 'Insulin_rate_dd', 'perc_cgm_prediabetic_range', 'perc_cgm_diabetic_range', 'SSPG', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 13 ID errors (MSE, MAE) stats: {'min': [array([0.16666642, 0.16666717])], 'max': [array([18188.42081461,   128.85917833])], 'mean': [array([345.32251003,  10.87084321])], 'std': [array([1116.71346291,   12.2542143 ])], 'quantile25': [array([17.90319402,  3.57432244])], 'median': [array([73.30925798,  7.37637935])], 'quantile75': [array([251.86804026,  13.66550769])]}
-	Seed: 13 OOD errors (MSE, MAE) stats: {'min': [array([0.17510362, 0.34454435])], 'max': [array([5444.47234643,   70.17786807])], 'mean': [array([190.80678307,   8.74158763])], 'std': [array([430.31273247,   8.17551275])], 'quantile25': [array([16.00530385,  3.3729121 ])], 'median': [array([52.10862654,  6.2191986 ])], 'quantile75': [array([176.08669437,  11.32209967])]}
+	Seed: 13 ID mean of (MSE, MAE): [345.32251002787746, 10.870843209379222]
+	Seed: 13 OOD mean of (MSE, MAE) stats: [190.80678306585628, 8.741587626787705]
+	Seed: 13 ID median of (MSE, MAE): [73.30925797838181, 7.3763793517616705]
+	Seed: 13 OOD median of (MSE, MAE) stats: [52.10862654103983, 6.219198601366882]
 	Train: 63970 (62.97%)
 	Val: 12502 (12.31%)
 	Test: 16207 (15.95%)
 	Test OOD: 8913 (8.77%)
 	Scaled columns: ['id', 'gl', 'Age', 'BMI', 'A1C', 'FBG', 'ogtt.2hr', 'insulin', 'hs.CRP', 'Tchol', 'Trg', 'HDL', 'LDL', 'mean_glucose', 'sd_glucose', 'range_glucose', 'min_glucose', 'max_glucose', 'quartile.25_glucose', 'median_glucose', 'quartile.75_glucose', 'mean_slope', 'max_slope', 'number_Random140', 'number_Random200', 'percent_below.80', 'se_glucose_mean', 'numGE', 'mage', 'j_index', 'IQR', 'modd', 'distance_traveled', 'coef_variation', 'number_Random140_normByDays', 'number_Random200_normByDays', 'numGE_normByDays', 'distance_traveled_normByDays', 'diagnosis', 'freq_low', 'freq_moderate', 'freq_severe', 'glucotype', 'Height', 'Weight', 'Insulin_rate_dd', 'perc_cgm_prediabetic_range', 'perc_cgm_diabetic_range', 'SSPG', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 14 ID errors (MSE, MAE) stats: {'min': [array([0.16666642, 0.16666717])], 'max': [array([18188.42081461,   128.85917833])], 'mean': [array([278.52885712,  10.37095554])], 'std': [array([788.81744632,  10.11633635])], 'quantile25': [array([18.32353753,  3.61116307])], 'median': [array([76.70853103,  7.43575026])], 'quantile75': [array([249.29884082,  13.66357929])]}
-	Seed: 14 OOD errors (MSE, MAE) stats: {'min': [array([0.27100747, 0.2889766 ])], 'max': [array([12907.34523032,   108.50794287])], 'mean': [array([313.60916969,  10.71417539])], 'std': [array([1012.110112  ,   11.98511868])], 'quantile25': [array([18.81534373,  3.54992239])], 'median': [array([69.71680557,  7.14420772])], 'quantile75': [array([238.01282804,  13.2151101 ])]}
+	Seed: 14 ID mean of (MSE, MAE): [278.52885711887114, 10.37095553947114]
+	Seed: 14 OOD mean of (MSE, MAE) stats: [313.6091696944201, 10.714175394315795]
+	Seed: 14 ID median of (MSE, MAE): [76.70853102933339, 7.435750264885436]
+	Seed: 14 OOD median of (MSE, MAE) stats: [69.71680557335415, 7.144207720879514]
 	Train: 62763 (62.13%)
 	Val: 11344 (11.23%)
 	Test: 16397 (16.23%)
 	Test OOD: 10512 (10.41%)
 	Scaled columns: ['id', 'gl', 'Age', 'BMI', 'A1C', 'FBG', 'ogtt.2hr', 'insulin', 'hs.CRP', 'Tchol', 'Trg', 'HDL', 'LDL', 'mean_glucose', 'sd_glucose', 'range_glucose', 'min_glucose', 'max_glucose', 'quartile.25_glucose', 'median_glucose', 'quartile.75_glucose', 'mean_slope', 'max_slope', 'number_Random140', 'number_Random200', 'percent_below.80', 'se_glucose_mean', 'numGE', 'mage', 'j_index', 'IQR', 'modd', 'distance_traveled', 'coef_variation', 'number_Random140_normByDays', 'number_Random200_normByDays', 'numGE_normByDays', 'distance_traveled_normByDays', 'diagnosis', 'freq_low', 'freq_moderate', 'freq_severe', 'glucotype', 'Height', 'Weight', 'Insulin_rate_dd', 'perc_cgm_prediabetic_range', 'perc_cgm_diabetic_range', 'SSPG', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 15 ID errors (MSE, MAE) stats: {'min': [array([0.16666724, 0.16666838])], 'max': [array([12908.22567867,   108.51183955])], 'mean': [array([310.79763392,  10.44514433])], 'std': [array([984.99870328,  11.5042601 ])], 'quantile25': [array([18.05178655,  3.53177801])], 'median': [array([71.99088649,  7.11990298])], 'quantile75': [array([234.22208412,  13.00715095])]}
-	Seed: 15 OOD errors (MSE, MAE) stats: {'min': [array([0.23047087, 0.25000057])], 'max': [array([10237.56674334,    92.00679743])], 'mean': [array([281.02263974,   9.49388309])], 'std': [array([772.51794573,  10.98188002])], 'quantile25': [array([11.02663023,  2.74999927])], 'median': [array([44.31206479,  5.62316   ])], 'quantile75': [array([179.76482765,  11.49999928])]}
+	Seed: 15 ID mean of (MSE, MAE): [310.79763392207275, 10.445144329064295]
+	Seed: 15 OOD mean of (MSE, MAE) stats: [281.0226397427112, 9.493883092930195]
+	Seed: 15 ID median of (MSE, MAE): [71.99088648764571, 7.119902981135887]
+	Seed: 15 OOD median of (MSE, MAE) stats: [44.31206479028027, 5.623160002394567]
 	Train: 62059 (61.70%)
 	Val: 11494 (11.43%)
 	Test: 16330 (16.24%)
 	Test OOD: 10701 (10.64%)
 	Scaled columns: ['id', 'gl', 'Age', 'BMI', 'A1C', 'FBG', 'ogtt.2hr', 'insulin', 'hs.CRP', 'Tchol', 'Trg', 'HDL', 'LDL', 'mean_glucose', 'sd_glucose', 'range_glucose', 'min_glucose', 'max_glucose', 'quartile.25_glucose', 'median_glucose', 'quartile.75_glucose', 'mean_slope', 'max_slope', 'number_Random140', 'number_Random200', 'percent_below.80', 'se_glucose_mean', 'numGE', 'mage', 'j_index', 'IQR', 'modd', 'distance_traveled', 'coef_variation', 'number_Random140_normByDays', 'number_Random200_normByDays', 'numGE_normByDays', 'distance_traveled_normByDays', 'diagnosis', 'freq_low', 'freq_moderate', 'freq_severe', 'glucotype', 'Height', 'Weight', 'Insulin_rate_dd', 'perc_cgm_prediabetic_range', 'perc_cgm_diabetic_range', 'SSPG', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 16 ID errors (MSE, MAE) stats: {'min': [array([0.16666633, 0.16666733])], 'max': [array([12197.79281881,   105.49987648])], 'mean': [array([317.56423337,  10.57521584])], 'std': [array([961.88756404,  11.56972545])], 'quantile25': [array([16.87096891,  3.48511052])], 'median': [array([72.64516631,  7.22338716])], 'quantile75': [array([247.12063832,  13.25649005])]}
-	Seed: 16 OOD errors (MSE, MAE) stats: {'min': [array([0.25848546, 0.33191638])], 'max': [array([10237.56498797,    92.00678843])], 'mean': [array([314.70537149,  11.15063969])], 'std': [array([727.55151184,  10.62502731])], 'quantile25': [array([23.4912868 ,  4.05865219])], 'median': [array([77.4867893 ,  7.44613048])], 'quantile75': [array([289.29828796,  14.79555606])]}
+	Seed: 16 ID mean of (MSE, MAE): [317.56423337328164, 10.57521583757307]
+	Seed: 16 OOD mean of (MSE, MAE) stats: [314.7053714934443, 11.15063969437197]
+	Seed: 16 ID median of (MSE, MAE): [72.64516631016511, 7.223387160237253]
+	Seed: 16 OOD median of (MSE, MAE) stats: [77.48678929817078, 7.446130484147104]
 	Train: 62375 (61.66%)
 	Val: 12166 (12.03%)
 	Test: 16481 (16.29%)
 	Test OOD: 10138 (10.02%)
 	Scaled columns: ['id', 'gl', 'Age', 'BMI', 'A1C', 'FBG', 'ogtt.2hr', 'insulin', 'hs.CRP', 'Tchol', 'Trg', 'HDL', 'LDL', 'mean_glucose', 'sd_glucose', 'range_glucose', 'min_glucose', 'max_glucose', 'quartile.25_glucose', 'median_glucose', 'quartile.75_glucose', 'mean_slope', 'max_slope', 'number_Random140', 'number_Random200', 'percent_below.80', 'se_glucose_mean', 'numGE', 'mage', 'j_index', 'IQR', 'modd', 'distance_traveled', 'coef_variation', 'number_Random140_normByDays', 'number_Random200_normByDays', 'numGE_normByDays', 'distance_traveled_normByDays', 'diagnosis', 'freq_low', 'freq_moderate', 'freq_severe', 'glucotype', 'Height', 'Weight', 'Insulin_rate_dd', 'perc_cgm_prediabetic_range', 'perc_cgm_diabetic_range', 'SSPG', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 17 ID errors (MSE, MAE) stats: {'min': [array([0.16666642, 0.16666717])], 'max': [array([18188.42081461,   128.85917833])], 'mean': [array([335.04550174,  10.6472653 ])], 'std': [array([1103.98373777,   12.13746126])], 'quantile25': [array([17.33076186,  3.50857897])], 'median': [array([71.55300959,  7.1218296 ])], 'quantile75': [array([242.21015608,  13.1199957 ])]}
-	Seed: 17 OOD errors (MSE, MAE) stats: {'min': [array([0.18608904, 0.25000232])], 'max': [array([5493.03527435,   65.13266817])], 'mean': [array([203.6580864 ,   9.43389983])], 'std': [array([405.51786681,   8.1230494 ])], 'quantile25': [array([20.07122455,  3.67514525])], 'median': [array([65.0999124 ,  6.91666702])], 'quantile75': [array([211.70921497,  12.70120939])]}
+	Seed: 17 ID mean of (MSE, MAE): [335.0455017404718, 10.647265299375706]
+	Seed: 17 OOD mean of (MSE, MAE) stats: [203.658086400355, 9.43389982782804]
+	Seed: 17 ID median of (MSE, MAE): [71.55300958937, 7.121829598363589]
+	Seed: 17 OOD median of (MSE, MAE) stats: [65.09991239586557, 6.916667023673673]
 	Train: 62790 (61.89%)
 	Val: 12430 (12.25%)
 	Test: 16398 (16.16%)
 	Test OOD: 9830 (9.69%)
 	Scaled columns: ['id', 'gl', 'Age', 'BMI', 'A1C', 'FBG', 'ogtt.2hr', 'insulin', 'hs.CRP', 'Tchol', 'Trg', 'HDL', 'LDL', 'mean_glucose', 'sd_glucose', 'range_glucose', 'min_glucose', 'max_glucose', 'quartile.25_glucose', 'median_glucose', 'quartile.75_glucose', 'mean_slope', 'max_slope', 'number_Random140', 'number_Random200', 'percent_below.80', 'se_glucose_mean', 'numGE', 'mage', 'j_index', 'IQR', 'modd', 'distance_traveled', 'coef_variation', 'number_Random140_normByDays', 'number_Random200_normByDays', 'numGE_normByDays', 'distance_traveled_normByDays', 'diagnosis', 'freq_low', 'freq_moderate', 'freq_severe', 'glucotype', 'Height', 'Weight', 'Insulin_rate_dd', 'perc_cgm_prediabetic_range', 'perc_cgm_diabetic_range', 'SSPG', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 18 ID errors (MSE, MAE) stats: {'min': [array([0.16666642, 0.16666717])], 'max': [array([18188.42081461,   128.85917833])], 'mean': [array([353.64633834,  11.1219259 ])], 'std': [array([1114.42163826,   12.28681599])], 'quantile25': [array([20.62093377,  3.76156277])], 'median': [array([78.32497261,  7.62077129])], 'quantile75': [array([262.58769754,  13.83155171])]}
-	Seed: 18 OOD errors (MSE, MAE) stats: {'min': [array([0.00333322, 0.01666668])], 'max': [array([5895.57525167,   72.81593251])], 'mean': [array([175.79308195,   8.63767667])], 'std': [array([337.92183723,   7.66824143])], 'quantile25': [array([13.01339758,  3.06851458])], 'median': [array([49.94740341,  6.09184922])], 'quantile75': [array([198.6270231 ,  12.34001667])]}
+	Seed: 18 ID mean of (MSE, MAE): [353.6463383445102, 11.121925901803282]
+	Seed: 18 OOD mean of (MSE, MAE) stats: [175.79308195340738, 8.637676672177104]
+	Seed: 18 ID median of (MSE, MAE): [78.32497261214961, 7.620771290157825]
+	Seed: 18 OOD median of (MSE, MAE) stats: [49.9474034071217, 6.091849215264423]
 	Train: 63058 (62.25%)
 	Val: 12013 (11.86%)
 	Test: 16332 (16.12%)
 	Test OOD: 9901 (9.77%)
 	Scaled columns: ['id', 'gl', 'Age', 'BMI', 'A1C', 'FBG', 'ogtt.2hr', 'insulin', 'hs.CRP', 'Tchol', 'Trg', 'HDL', 'LDL', 'mean_glucose', 'sd_glucose', 'range_glucose', 'min_glucose', 'max_glucose', 'quartile.25_glucose', 'median_glucose', 'quartile.75_glucose', 'mean_slope', 'max_slope', 'number_Random140', 'number_Random200', 'percent_below.80', 'se_glucose_mean', 'numGE', 'mage', 'j_index', 'IQR', 'modd', 'distance_traveled', 'coef_variation', 'number_Random140_normByDays', 'number_Random200_normByDays', 'numGE_normByDays', 'distance_traveled_normByDays', 'diagnosis', 'freq_low', 'freq_moderate', 'freq_severe', 'glucotype', 'Height', 'Weight', 'Insulin_rate_dd', 'perc_cgm_prediabetic_range', 'perc_cgm_diabetic_range', 'SSPG', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute']
-	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([0.16666642, 0.16666717])], 'max': [array([18188.42081461,   128.85917833])], 'mean': [array([344.03872123,  10.97746561])], 'std': [array([1110.07007453,   12.13388317])], 'quantile25': [array([20.37946874,  3.75711364])], 'median': [array([77.73560107,  7.55452159])], 'quantile75': [array([253.639776 ,  13.6849008])]}
-	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([0.00333322, 0.01666668])], 'max': [array([5895.57525167,   72.81593251])], 'mean': [array([206.40160637,   9.03361787])], 'std': [array([469.59352532,   8.6685946 ])], 'quantile25': [array([13.07688609,  3.0833313 ])], 'median': [array([55.80779673,  6.43287329])], 'quantile75': [array([205.79075936,  12.65069829])]}
-RS ID (MSE, MAE) errors stats: {'mean': array([[328.87978156,  10.72587586]]), 'std': array([[1044.97718843,   11.81430398]]), 'quantile25': array([[18.38540681,  3.5960778 ]]), 'quantile75': array([[248.64004786,  13.4582486 ]]), 'median': array([[74.52169492,  7.34140692]]), 'min': array([[0.16666649, 0.1666673 ]]), 'max': array([[17061.33850144,   124.48851427]])}
-RS OOD (MSE, MAE) errors stats: {'mean': array([[244.52790531,   9.85561833]]), 'std': array([[566.4556202 ,   9.35563814]]), 'quantile25': array([[18.64300531,  3.5560104 ]]), 'quantile75': array([[231.9639833 ,  13.14987359]]), 'median': array([[67.55337833,  6.96818637]]), 'min': array([[0.13739118, 0.19321085]]), 'max': array([[7673.95558146,   80.35166436]])}
+	Seed: 19 ID mean of (MSE, MAE): [344.03872122615064, 10.977465607335379]
+	Seed: 19 OOD mean of (MSE, MAE) stats: [206.40160636915414, 9.033617869696416]
+	Seed: 19 ID median of (MSE, MAE): [77.73560106532517, 7.554521590192092]
+	Seed: 19 OOD median of (MSE, MAE) stats: [55.807796725857465, 6.432873289311914]
+ID mean of (MSE, MAE): [328.8797815587903, 10.725875864827291]
+OOD mean of (MSE, MAE): [244.52790530964944, 9.855618334556663]
+ID median of (MSE, MAE): [74.52169492045664, 7.341406919669163]
+OOD median of (MSE, MAE): [67.55337832653397, 6.968186371706423]

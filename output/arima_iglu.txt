@@ -1,4 +1,4 @@
-Optimization started at 2023-03-10 19:40:52.526037
+Optimization started at 2023-03-22 17:28:57.399282
 --------------------------------
 Loading column definition...
 Checking column definition...
@@ -37,70 +37,92 @@ Data formatting complete.
 	Test: 1848 (13.22%)
 	Test OOD: 1300 (9.30%)
 	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute', 'time_second']
-	Seed: 10 ID errors (MSE, MAE) stats: {'min': [array([1.29966416, 1.05724984])], 'max': [array([3827.83290569,   60.01592256])], 'mean': [array([389.26519238,  13.15837641])], 'std': [array([618.13187824,  10.96199918])], 'quantile25': [array([40.01034738,  5.4225091 ])], 'median': [array([137.96437105,   9.47241788])], 'quantile75': [array([414.37747395,  17.23122242])]}
-	Seed: 10 OOD errors (MSE, MAE) stats: {'min': [array([0.98056825, 0.74869965])], 'max': [array([11595.07750645,    90.52277573])], 'mean': [array([444.11241996,  12.28000759])], 'std': [array([1179.32765368,   13.09891929])], 'quantile25': [array([16.04635348,  3.13472586])], 'median': [array([73.18435077,  7.07892926])], 'quantile75': [array([405.37156299,  16.45444501])]}
+	Seed: 10 ID mean of (MSE, MAE): [389.2651923831744, 13.158376410922166]
+	Seed: 10 OOD mean of (MSE, MAE) stats: [444.1124199595163, 12.280007585027754]
+	Seed: 10 ID median of (MSE, MAE): [137.96437105020195, 9.472417880109182]
+	Seed: 10 OOD median of (MSE, MAE) stats: [73.18435077204008, 7.078929258345878]
 	Train: 9056 (64.79%)
 	Val: 1774 (12.69%)
 	Test: 1848 (13.22%)
 	Test OOD: 1300 (9.30%)
 	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute', 'time_second']
-	Seed: 11 ID errors (MSE, MAE) stats: {'min': [array([1.29966416, 1.05724984])], 'max': [array([3827.83290569,   60.01592256])], 'mean': [array([389.26519238,  13.15837641])], 'std': [array([618.13187824,  10.96199918])], 'quantile25': [array([40.01034738,  5.4225091 ])], 'median': [array([137.96437105,   9.47241788])], 'quantile75': [array([414.37747395,  17.23122242])]}
-	Seed: 11 OOD errors (MSE, MAE) stats: {'min': [array([0.98056825, 0.74869965])], 'max': [array([11595.07750645,    90.52277573])], 'mean': [array([444.11241996,  12.28000759])], 'std': [array([1179.32765368,   13.09891929])], 'quantile25': [array([16.04635348,  3.13472586])], 'median': [array([73.18435077,  7.07892926])], 'quantile75': [array([405.37156299,  16.45444501])]}
+	Seed: 11 ID mean of (MSE, MAE): [389.2651923831744, 13.158376410922166]
+	Seed: 11 OOD mean of (MSE, MAE) stats: [444.1124199595163, 12.280007585027754]
+	Seed: 11 ID median of (MSE, MAE): [137.96437105020195, 9.472417880109182]
+	Seed: 11 OOD median of (MSE, MAE) stats: [73.18435077204008, 7.078929258345878]
 	Train: 8110 (59.66%)
 	Val: 1342 (9.87%)
 	Test: 2017 (14.84%)
 	Test OOD: 2125 (15.63%)
 	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute', 'time_second']
-	Seed: 12 ID errors (MSE, MAE) stats: {'min': [array([0.99969999, 0.78127632])], 'max': [array([11595.07750645,    90.52277573])], 'mean': [array([427.01679339,  12.99514973])], 'std': [array([987.74899261,  12.14844851])], 'quantile25': [array([28.1139311 ,  4.19085315])], 'median': [array([122.93745002,   9.25376004])], 'quantile75': [array([427.21821446,  17.83602894])]}
-	Seed: 12 OOD errors (MSE, MAE) stats: {'min': [array([0.40962051, 0.53594736])], 'max': [array([9392.40334355,   75.55542618])], 'mean': [array([531.89625026,  14.27677579])], 'std': [array([1123.70114895,   13.61363542])], 'quantile25': [array([36.78378519,  5.04937483])], 'median': [array([144.73854389,  10.21613421])], 'quantile75': [array([456.5485905 ,  18.53061061])]}
+	Seed: 12 ID mean of (MSE, MAE): [427.0167933906876, 12.995149726570737]
+	Seed: 12 OOD mean of (MSE, MAE) stats: [531.8962502619843, 14.276775793295084]
+	Seed: 12 ID median of (MSE, MAE): [122.93745002201426, 9.253760038373024]
+	Seed: 12 OOD median of (MSE, MAE) stats: [144.73854388702725, 10.216134214504272]
 	Train: 7661 (55.57%)
 	Val: 1296 (9.40%)
 	Test: 2017 (14.63%)
 	Test OOD: 2812 (20.40%)
 	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute', 'time_second']
-	Seed: 13 ID errors (MSE, MAE) stats: {'min': [array([0.99969999, 0.78127632])], 'max': [array([11595.07750645,    90.52277573])], 'mean': [array([433.35034412,  12.76526223])], 'std': [array([1008.08630844,   12.59098317])], 'quantile25': [array([26.22720208,  4.17374192])], 'median': [array([93.73748299,  8.11884471])], 'quantile75': [array([420.48938663,  17.41577276])]}
-	Seed: 13 OOD errors (MSE, MAE) stats: {'min': [array([1.28414027, 0.92337264])], 'max': [array([5333.21981637,   60.07934995])], 'mean': [array([376.08592954,  13.03139887])], 'std': [array([645.19290579,  10.60716372])], 'quantile25': [array([44.42613219,  5.50411228])], 'median': [array([140.69631926,  10.14154025])], 'quantile75': [array([354.33276284,  16.57914948])]}
+	Seed: 13 ID mean of (MSE, MAE): [433.3503441184686, 12.76526222735374]
+	Seed: 13 OOD mean of (MSE, MAE) stats: [376.08592954422636, 13.031398874300812]
+	Seed: 13 ID median of (MSE, MAE): [93.73748299466513, 8.118844711107416]
+	Seed: 13 OOD median of (MSE, MAE) stats: [140.69631926285496, 10.14154025440078]
 	Train: 7661 (55.57%)
 	Val: 1296 (9.40%)
 	Test: 2017 (14.63%)
 	Test OOD: 2812 (20.40%)
 	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute', 'time_second']
-	Seed: 14 ID errors (MSE, MAE) stats: {'min': [array([0.99969999, 0.78127632])], 'max': [array([11595.07750645,    90.52277573])], 'mean': [array([433.35034412,  12.76526223])], 'std': [array([1008.08630844,   12.59098317])], 'quantile25': [array([26.22720208,  4.17374192])], 'median': [array([93.73748299,  8.11884471])], 'quantile75': [array([420.48938663,  17.41577276])]}
-	Seed: 14 OOD errors (MSE, MAE) stats: {'min': [array([1.28414027, 0.92337264])], 'max': [array([5333.21981637,   60.07934995])], 'mean': [array([376.08592954,  13.03139887])], 'std': [array([645.19290579,  10.60716372])], 'quantile25': [array([44.42613219,  5.50411228])], 'median': [array([140.69631926,  10.14154025])], 'quantile75': [array([354.33276284,  16.57914948])]}
+	Seed: 14 ID mean of (MSE, MAE): [433.3503441184686, 12.76526222735374]
+	Seed: 14 OOD mean of (MSE, MAE) stats: [376.08592954422636, 13.031398874300812]
+	Seed: 14 ID median of (MSE, MAE): [93.73748299466513, 8.118844711107416]
+	Seed: 14 OOD median of (MSE, MAE) stats: [140.69631926285496, 10.14154025440078]
 	Train: 9056 (64.79%)
 	Val: 1774 (12.69%)
 	Test: 1848 (13.22%)
 	Test OOD: 1300 (9.30%)
 	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute', 'time_second']
-	Seed: 15 ID errors (MSE, MAE) stats: {'min': [array([1.29966416, 1.05724984])], 'max': [array([3827.83290569,   60.01592256])], 'mean': [array([389.26519238,  13.15837641])], 'std': [array([618.13187824,  10.96199918])], 'quantile25': [array([40.01034738,  5.4225091 ])], 'median': [array([137.96437105,   9.47241788])], 'quantile75': [array([414.37747395,  17.23122242])]}
-	Seed: 15 OOD errors (MSE, MAE) stats: {'min': [array([0.98056825, 0.74869965])], 'max': [array([11595.07750645,    90.52277573])], 'mean': [array([444.11241996,  12.28000759])], 'std': [array([1179.32765368,   13.09891929])], 'quantile25': [array([16.04635348,  3.13472586])], 'median': [array([73.18435077,  7.07892926])], 'quantile75': [array([405.37156299,  16.45444501])]}
+	Seed: 15 ID mean of (MSE, MAE): [389.2651923831744, 13.158376410922166]
+	Seed: 15 OOD mean of (MSE, MAE) stats: [444.1124199595163, 12.280007585027754]
+	Seed: 15 ID median of (MSE, MAE): [137.96437105020195, 9.472417880109182]
+	Seed: 15 OOD median of (MSE, MAE) stats: [73.18435077204008, 7.078929258345878]
 	Train: 8110 (59.66%)
 	Val: 1342 (9.87%)
 	Test: 2017 (14.84%)
 	Test OOD: 2125 (15.63%)
 	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute', 'time_second']
-	Seed: 16 ID errors (MSE, MAE) stats: {'min': [array([0.99969999, 0.78127632])], 'max': [array([11595.07750645,    90.52277573])], 'mean': [array([427.01679339,  12.99514973])], 'std': [array([987.74899261,  12.14844851])], 'quantile25': [array([28.1139311 ,  4.19085315])], 'median': [array([122.93745002,   9.25376004])], 'quantile75': [array([427.21821446,  17.83602894])]}
-	Seed: 16 OOD errors (MSE, MAE) stats: {'min': [array([0.40962051, 0.53594736])], 'max': [array([9392.40334355,   75.55542618])], 'mean': [array([531.89625026,  14.27677579])], 'std': [array([1123.70114895,   13.61363542])], 'quantile25': [array([36.78378519,  5.04937483])], 'median': [array([144.73854389,  10.21613421])], 'quantile75': [array([456.5485905 ,  18.53061061])]}
+	Seed: 16 ID mean of (MSE, MAE): [427.0167933906876, 12.995149726570737]
+	Seed: 16 OOD mean of (MSE, MAE) stats: [531.8962502619843, 14.276775793295084]
+	Seed: 16 ID median of (MSE, MAE): [122.93745002201426, 9.253760038373024]
+	Seed: 16 OOD median of (MSE, MAE) stats: [144.73854388702725, 10.216134214504272]
 	Train: 7643 (55.44%)
 	Val: 1342 (9.73%)
 	Test: 1897 (13.76%)
 	Test OOD: 2904 (21.06%)
 	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute', 'time_second']
-	Seed: 17 ID errors (MSE, MAE) stats: {'min': [array([0.99969612, 0.78127812])], 'max': [array([11595.0766937 ,    90.52277306])], 'mean': [array([415.6937885 ,  12.25817585])], 'std': [array([1018.28479177,   12.48061266])], 'quantile25': [array([19.9268728 ,  3.66687894])], 'median': [array([83.99256709,  7.69768349])], 'quantile75': [array([366.69803704,  15.72418014])]}
-	Seed: 17 OOD errors (MSE, MAE) stats: {'min': [array([0.5337313 , 0.64747255])], 'max': [array([15160.09928803,   104.53776747])], 'mean': [array([917.81324679,  18.64202957])], 'std': [array([1828.72537528,   17.63951791])], 'quantile25': [array([61.89319447,  6.52754278])], 'median': [array([224.85990324,  12.49820278])], 'quantile75': [array([971.1185676 ,  26.25728393])]}
+	Seed: 17 ID mean of (MSE, MAE): [415.69378849524696, 12.258175847193586]
+	Seed: 17 OOD mean of (MSE, MAE) stats: [917.813246785934, 18.642029569388345]
+	Seed: 17 ID median of (MSE, MAE): [83.99256708897218, 7.697683488797355]
+	Seed: 17 OOD median of (MSE, MAE) stats: [224.85990324440925, 12.498202781002497]
 	Train: 7643 (55.44%)
 	Val: 1342 (9.73%)
 	Test: 1897 (13.76%)
 	Test OOD: 2904 (21.06%)
 	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute', 'time_second']
-	Seed: 18 ID errors (MSE, MAE) stats: {'min': [array([0.99969612, 0.78127812])], 'max': [array([11595.0766937 ,    90.52277306])], 'mean': [array([415.6937885 ,  12.25817585])], 'std': [array([1018.28479177,   12.48061266])], 'quantile25': [array([19.9268728 ,  3.66687894])], 'median': [array([83.99256709,  7.69768349])], 'quantile75': [array([366.69803704,  15.72418014])]}
-	Seed: 18 OOD errors (MSE, MAE) stats: {'min': [array([0.5337313 , 0.64747255])], 'max': [array([15160.09928803,   104.53776747])], 'mean': [array([917.81324679,  18.64202957])], 'std': [array([1828.72537528,   17.63951791])], 'quantile25': [array([61.89319447,  6.52754278])], 'median': [array([224.85990324,  12.49820278])], 'quantile75': [array([971.1185676 ,  26.25728393])]}
+	Seed: 18 ID mean of (MSE, MAE): [415.69378849524696, 12.258175847193586]
+	Seed: 18 OOD mean of (MSE, MAE) stats: [917.813246785934, 18.642029569388345]
+	Seed: 18 ID median of (MSE, MAE): [83.99256708897218, 7.697683488797355]
+	Seed: 18 OOD median of (MSE, MAE) stats: [224.85990324440925, 12.498202781002497]
 	Train: 7661 (55.57%)
 	Val: 1296 (9.40%)
 	Test: 2017 (14.63%)
 	Test OOD: 2812 (20.40%)
 	Scaled columns: ['id', 'gl', 'time_year', 'time_month', 'time_day', 'time_hour', 'time_minute', 'time_second']
-	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([0.99969999, 0.78127632])], 'max': [array([11595.07750645,    90.52277573])], 'mean': [array([433.35034412,  12.76526223])], 'std': [array([1008.08630844,   12.59098317])], 'quantile25': [array([26.22720208,  4.17374192])], 'median': [array([93.73748299,  8.11884471])], 'quantile75': [array([420.48938663,  17.41577276])]}
-	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([1.28414027, 0.92337264])], 'max': [array([5333.21981637,   60.07934995])], 'mean': [array([376.08592954,  13.03139887])], 'std': [array([645.19290579,  10.60716372])], 'quantile25': [array([44.42613219,  5.50411228])], 'median': [array([140.69631926,  10.14154025])], 'quantile75': [array([354.33276284,  16.57914948])]}
-RS ID (MSE, MAE) errors stats: {'mean': array([[415.32677733,  12.82775671]]), 'std': array([[889.07221288,  11.99170694]]), 'quantile25': array([[29.47942562,  4.45042172]]), 'quantile75': array([[409.24330848,  17.10614037]]), 'median': array([[110.89655964,   8.66766748]]), 'min': array([[1.08968847, 0.86406874]]), 'max': array([[9264.90396368,   81.37071925]])}
-RS OOD (MSE, MAE) errors stats: {'mean': array([[536.00140426,  14.17718301]]), 'std': array([[1137.84147269,   13.36245557]]), 'quantile25': array([[37.87714163,  4.90703496]]), 'quantile75': array([[513.44472937,  18.86765725]]), 'median': array([[138.08389044,   9.70900825]]), 'min': array([[0.86808292, 0.73830567]]), 'max': array([[9988.98972316,   81.19927644]])}
+	Seed: 19 ID mean of (MSE, MAE): [433.3503441184686, 12.76526222735374]
+	Seed: 19 OOD mean of (MSE, MAE) stats: [376.08592954422636, 13.031398874300812]
+	Seed: 19 ID median of (MSE, MAE): [93.73748299466513, 8.118844711107416]
+	Seed: 19 OOD median of (MSE, MAE) stats: [140.69631926285496, 10.14154025440078]
+ID mean of (MSE, MAE): [415.3267773276798, 12.827756706235636]
+OOD mean of (MSE, MAE): [536.0014042607065, 14.177183010335256]
+ID median of (MSE, MAE): [110.89655963565743, 8.667667482799056]
+OOD median of (MSE, MAE): [138.0838904367558, 9.709008252925353]
