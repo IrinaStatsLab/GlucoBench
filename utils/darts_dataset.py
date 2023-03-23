@@ -21,6 +21,9 @@ from darts.logging import get_logger, raise_if_not
 from darts.utils.data.training_dataset import PastCovariatesTrainingDataset, \
                                               DualCovariatesTrainingDataset, \
                                               MixedCovariatesTrainingDataset
+from darts.utils.data.inference_dataset import PastCovariatesInferenceDataset, \
+                                                DualCovariatesInferenceDataset, \
+                                                MixedCovariatesInferenceDataset
 from darts.utils.data.utils import CovariateType
 
 # import data formatter
@@ -383,3 +386,425 @@ class SamplingDatasetMixed(MixedCovariatesTrainingDataset):
                 future_covariates,
                 static_covariates,
                 future_target_series,)
+
+class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
+    def __init__(
+        self,
+        target_series: Union[TimeSeries, Sequence[TimeSeries]],
+        past_covariates: Optional[Union[TimeSeries, Sequence[TimeSeries]]] = None,
+        future_covariates: Optional[Union[TimeSeries, Sequence[TimeSeries]]] = None,
+        n: int = 1,
+        input_chunk_length: int = 12,
+        output_chunk_length: int = 1,
+        use_static_covariates: bool = True,
+        random_state: Optional[int] = 0,
+        max_samples_per_ts: Optional[int] = None,
+    ):
+        """
+        Parameters
+        ----------
+        target_series
+            One or a sequence of target `TimeSeries`.
+        past_covariates
+            Optionally, one or a sequence of `TimeSeries` containing past-observed covariates. If this parameter is set,
+            the provided sequence must have the same length as that of `target_series`. Moreover, all
+            covariates in the sequence must have a time span large enough to contain all the required slices.
+            The joint slicing of the target and covariates is relying on the time axes of both series.
+        future_covariates
+            Optionally, one or a sequence of `TimeSeries` containing future-known covariates. This has to follow
+            the same constraints as `past_covariates`.
+        n
+            Number of predictions into the future, could be greater than the output chunk length, in which case, the model
+            will be called autorregressively.
+        output_chunk_length
+            The length of the "output" series emitted by the model
+        input_chunk_length
+            The length of the "input" series fed to the model
+        use_static_covariates
+            Whether to use/include static covariate data from input series.
+        random_state
+            The random state to use for sampling.
+        max_samples_per_ts
+            The maximum number of samples to be drawn from each time series. If None, all samples will be drawn.
+        """
+        super().__init__(target_series = target_series,
+                         past_covariates = past_covariates,
+                         future_covariates = future_covariates,
+                         n = n,
+                         input_chunk_length = input_chunk_length,
+                         output_chunk_length = output_chunk_length,)
+
+        self.target_series = (
+            [target_series] if isinstance(target_series, TimeSeries) else target_series
+        )
+        self.past_covariates = (
+            [past_covariates] if isinstance(past_covariates, TimeSeries) else past_covariates
+        )
+        self.future_covariates = (
+            [future_covariates] if isinstance(future_covariates, TimeSeries) else future_covariates
+        )
+
+        # checks
+        raise_if_not(
+            future_covariates is None or len(self.target_series) == len(self.future_covariates),
+            "The provided sequence of target series must have the same length as "
+            "the provided sequence of covariate series.",
+        )
+        raise_if_not(
+            past_covariates is None or len(self.target_series) == len(self.past_covariates),
+            "The provided sequence of target series must have the same length as "
+            "the provided sequence of covariate series.",
+        )
+
+        # get valid sampling locations
+        self.valid_sampling_locations = get_valid_sampling_locations(target_series,
+                                                                     output_chunk_length,
+                                                                     input_chunk_length,
+                                                                     max_samples_per_ts,
+                                                                     random_state)
+        
+        # set parameters
+        self.output_chunk_length = output_chunk_length
+        self.input_chunk_length = input_chunk_length
+        self.total_length = input_chunk_length + output_chunk_length
+        self.total_number_samples = sum([len(v) for v in self.valid_sampling_locations.values()])
+        self.use_static_covariates = use_static_covariates
+
+    def __len__(self):
+        """
+        Returns the total number of possible (input, target) splits.
+        """
+        return self.total_number_samples
+
+    def __getitem__(
+        self, idx: int
+    ) -> Tuple[np.ndarray, 
+               Optional[np.ndarray], 
+               Optional[np.ndarray], 
+               Optional[np.ndarray],
+               Optional[np.ndarray],
+               Optional[np.ndarray],
+               TimeSeries]:
+        # get idx of target series
+        target_idx = 0
+        while idx >= len(self.valid_sampling_locations[target_idx]):
+            idx -= len(self.valid_sampling_locations[target_idx])
+            target_idx += 1
+        # get sampling location within the target series
+        sampling_location = self.valid_sampling_locations[target_idx][idx]
+        # get target series
+        target_series = self.target_series[target_idx]
+        past_target_series_with_time = target_series[sampling_location : sampling_location + self.input_chunk_length]
+        target_series = self.target_series[target_idx].values()
+        past_target_series = target_series[sampling_location : sampling_location + self.input_chunk_length]
+        # get past covariates
+        if self.past_covariates is not None:
+            past_covariates = self.past_covariates[target_idx].values()
+            past_covariates = past_covariates[sampling_location : sampling_location + self.input_chunk_length]
+            future_past_covariates = past_covariates[sampling_location + self.input_chunk_length : sampling_location + self.total_length]
+        else:
+            past_covariates = None
+            future_past_covariates = None
+        # get future covariates
+        if self.future_covariates is not None:
+            future_covariates = self.future_covariates[target_idx].values()
+            historic_future_covariates = future_covariates[sampling_location : sampling_location + self.input_chunk_length]
+            future_covariates = future_covariates[sampling_location + self.input_chunk_length : sampling_location + self.total_length]
+        else:
+            future_covariates = None
+            historic_future_covariates = None
+        # get static covariates
+        if self.use_static_covariates:
+            static_covariates = self.target_series[target_idx].static_covariates_values(copy=True)
+        else:
+            static_covariates = None
+        return (past_target_series,
+                past_covariates,
+                historic_future_covariates,
+                future_covariates,
+                future_past_covariates,
+                static_covariates,
+                past_target_series_with_time)
+
+    def evalsample(
+            self, idx: int
+        ) -> TimeSeries:
+        """
+        Returns the same sample as getitem, but with the future target values which are to be predicted.
+        """
+        # get idx of target series
+        target_idx = 0
+        while idx >= len(self.valid_sampling_locations[target_idx]):
+            idx -= len(self.valid_sampling_locations[target_idx])
+            target_idx += 1
+        # get sampling location within the target series
+        sampling_location = self.valid_sampling_locations[target_idx][idx]
+        # get target series
+        target_series = self.target_series[target_idx][sampling_location : sampling_location + self.total_length]
+
+        return target_series
+
+class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
+    def __init__(
+        self,
+        target_series: Union[TimeSeries, Sequence[TimeSeries]],
+        covariates: Optional[Union[TimeSeries, Sequence[TimeSeries]]] = None,
+        n: int = 1,
+        input_chunk_length: int = 12,
+        output_chunk_length: int = 1,
+        use_static_covariates: bool = True,
+        random_state: Optional[int] = 0,
+        max_samples_per_ts: Optional[int] = None,
+    ):
+        """
+        Parameters
+        ----------
+        target_series
+            One or a sequence of target `TimeSeries`.
+        past_covariates
+            Optionally, one or a sequence of `TimeSeries` containing past-observed covariates. If this parameter is set,
+            the provided sequence must have the same length as that of `target_series`. Moreover, all
+            covariates in the sequence must have a time span large enough to contain all the required slices.
+            The joint slicing of the target and covariates is relying on the time axes of both series.
+        n
+            Number of predictions into the future, could be greater than the output chunk length, in which case, the model
+            will be called autorregressively.
+        output_chunk_length
+            The length of the "output" series emitted by the model
+        input_chunk_length
+            The length of the "input" series fed to the model
+        use_static_covariates
+            Whether to use/include static covariate data from input series.
+        random_state
+            The random state to use for sampling.
+        max_samples_per_ts
+            The maximum number of samples to be drawn from each time series. If None, all samples will be drawn.
+        """
+        super().__init__(target_series = target_series,
+                         covariates = covariates,
+                         n = n,
+                         input_chunk_length = input_chunk_length,
+                         output_chunk_length = output_chunk_length,)
+
+        self.target_series = (
+            [target_series] if isinstance(target_series, TimeSeries) else target_series
+        )
+        self.covariates = (
+            [covariates] if isinstance(covariates, TimeSeries) else covariates
+        )
+
+        raise_if_not(
+            covariates is None or len(self.target_series) == len(self.covariates),
+            "The provided sequence of target series must have the same length as "
+            "the provided sequence of covariate series.",
+        )
+
+        # get valid sampling locations
+        self.valid_sampling_locations = get_valid_sampling_locations(target_series,
+                                                                     output_chunk_length,
+                                                                     input_chunk_length,
+                                                                     max_samples_per_ts,
+                                                                     random_state)
+        
+        # set parameters
+        self.output_chunk_length = output_chunk_length
+        self.input_chunk_length = input_chunk_length
+        self.total_length = input_chunk_length + output_chunk_length
+        self.total_number_samples = sum([len(v) for v in self.valid_sampling_locations.values()])
+        self.use_static_covariates = use_static_covariates
+
+    def __len__(self):
+        """
+        Returns the total number of possible (input, target) splits.
+        """
+        return self.total_number_samples
+
+    def __getitem__(
+        self, idx: int
+    ) -> Tuple[
+        np.ndarray,
+        Optional[np.ndarray],
+        Optional[np.ndarray],
+        Optional[np.ndarray],
+        TimeSeries,
+        ]:
+        # get idx of target series
+        target_idx = 0
+        while idx >= len(self.valid_sampling_locations[target_idx]):
+            idx -= len(self.valid_sampling_locations[target_idx])
+            target_idx += 1
+        # get sampling location within the target series
+        sampling_location = self.valid_sampling_locations[target_idx][idx]
+        # get target series
+        target_series = self.target_series[target_idx]
+        past_target_series_with_time = target_series[sampling_location : sampling_location + self.input_chunk_length]
+        target_series = self.target_series[target_idx].values()
+        past_target_series = target_series[sampling_location : sampling_location + self.input_chunk_length]
+        # get past covariates
+        if self.covariates is not None:
+            past_covariates = self.covariates[target_idx].values()
+            past_covariates = past_covariates[sampling_location : sampling_location + self.input_chunk_length]
+            future_past_covariates = past_covariates[sampling_location + self.input_chunk_length : sampling_location + self.total_length]
+        else:
+            past_covariates = None
+            future_past_covariates = None
+        # get static covariates
+        if self.use_static_covariates:
+            static_covariates = self.target_series[target_idx].static_covariates_values(copy=True)
+        else:
+            static_covariates = None
+        return (past_target_series,
+                past_covariates,
+                future_past_covariates,
+                static_covariates,
+                past_target_series_with_time)
+
+    def evalsample(
+            self, idx: int
+        ) -> TimeSeries:
+        """
+        Returns the same sample as getitem, but with the future target values which are to be predicted.
+        """
+        # get idx of target series
+        target_idx = 0
+        while idx >= len(self.valid_sampling_locations[target_idx]):
+            idx -= len(self.valid_sampling_locations[target_idx])
+            target_idx += 1
+        # get sampling location within the target series
+        sampling_location = self.valid_sampling_locations[target_idx][idx]
+        # get target series
+        target_series = self.target_series[target_idx][sampling_location : sampling_location + self.total_length]
+
+        return target_series
+
+class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
+    def __init__(
+        self,
+        target_series: Union[TimeSeries, Sequence[TimeSeries]],
+        covariates: Optional[Union[TimeSeries, Sequence[TimeSeries]]] = None,
+        n: int = 1,
+        input_chunk_length: int = 12,
+        output_chunk_length: int = 1,
+        use_static_covariates: bool = True,
+        random_state: Optional[int] = 0,
+        max_samples_per_ts: Optional[int] = None,
+    ):
+        """
+        Parameters
+        ----------
+        target_series
+            One or a sequence of target `TimeSeries`.
+        covariates
+            Optionally, some future-known covariates that are used for predictions. This argument is required
+            if the model was trained with future-known covariates.
+        n
+            Number of predictions into the future, could be greater than the output chunk length, in which case, the model
+            will be called autorregressively.
+        output_chunk_length
+            The length of the "output" series emitted by the model
+        input_chunk_length
+            The length of the "input" series fed to the model
+        use_static_covariates
+            Whether to use/include static covariate data from input series.
+        random_state
+            The random state to use for sampling.
+        max_samples_per_ts
+            The maximum number of samples to be drawn from each time series. If None, all samples will be drawn.
+        """
+        super().__init__(target_series = target_series,
+                         covariates = covariates,
+                         n = n,
+                         input_chunk_length = input_chunk_length,
+                         output_chunk_length = output_chunk_length,)
+
+        self.target_series = (
+            [target_series] if isinstance(target_series, TimeSeries) else target_series
+        )
+        self.covariates = (
+            [covariates] if isinstance(covariates, TimeSeries) else covariates
+        )
+
+        raise_if_not(
+            covariates is None or len(self.target_series) == len(self.covariates),
+            "The provided sequence of target series must have the same length as "
+            "the provided sequence of covariate series.",
+        )
+
+        # get valid sampling locations
+        self.valid_sampling_locations = get_valid_sampling_locations(target_series,
+                                                                     output_chunk_length,
+                                                                     input_chunk_length,
+                                                                     max_samples_per_ts,
+                                                                     random_state)
+        
+        # set parameters
+        self.output_chunk_length = output_chunk_length
+        self.input_chunk_length = input_chunk_length
+        self.total_length = input_chunk_length + output_chunk_length
+        self.total_number_samples = sum([len(v) for v in self.valid_sampling_locations.values()])
+        self.use_static_covariates = use_static_covariates
+
+    def __len__(self):
+        """
+        Returns the total number of possible (input, target) splits.
+        """
+        return self.total_number_samples
+
+    def __getitem__(
+        self, idx: int
+    ) -> Tuple[
+        np.ndarray,
+        Optional[np.ndarray],
+        Optional[np.ndarray],
+        Optional[np.ndarray],
+        TimeSeries,
+        ]:
+        # get idx of target series
+        target_idx = 0
+        while idx >= len(self.valid_sampling_locations[target_idx]):
+            idx -= len(self.valid_sampling_locations[target_idx])
+            target_idx += 1
+        # get sampling location within the target series
+        sampling_location = self.valid_sampling_locations[target_idx][idx]
+        # get target series
+        target_series = self.target_series[target_idx]
+        past_target_series_with_time = target_series[sampling_location : sampling_location + self.input_chunk_length]
+        target_series = self.target_series[target_idx].values()
+        past_target_series = target_series[sampling_location : sampling_location + self.input_chunk_length]
+        # get past covariates
+        if self.covariates is not None:
+            future_covariates = self.covariates[target_idx].values()
+            historic_future_covariates = future_covariates[sampling_location : sampling_location + self.input_chunk_length]
+            future_covariates = future_covariates[sampling_location + self.input_chunk_length : sampling_location + self.total_length]
+        else:
+            historic_future_covariates = None
+            future_covariates = None
+        # get static covariates
+        if self.use_static_covariates:
+            static_covariates = self.target_series[target_idx].static_covariates_values(copy=True)
+        else:
+            static_covariates = None
+        return (past_target_series,
+                historic_future_covariates,
+                future_covariates,
+                static_covariates,
+                past_target_series_with_time)
+
+    def evalsample(
+            self, idx: int
+        ) -> TimeSeries:
+        """
+        Returns the same sample as getitem, but with the future target values which are to be predicted.
+        """
+        # get idx of target series
+        target_idx = 0
+        while idx >= len(self.valid_sampling_locations[target_idx]):
+            idx -= len(self.valid_sampling_locations[target_idx])
+            target_idx += 1
+        # get sampling location within the target series
+        sampling_location = self.valid_sampling_locations[target_idx][idx]
+        # get target series
+        target_series = self.target_series[target_idx][sampling_location : sampling_location + self.total_length]
+
+        return target_series
+        

@@ -17,9 +17,9 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from data_formatter.base import *
 from utils.darts_processing import load_data, reshuffle_data
-from utils.darts_evaluation import rescale_and_backtest
+from utils.darts_evaluation import rescale_and_test
 from utils.darts_training import *
-from utils.darts_dataset import SamplingDatasetPast
+from utils.darts_dataset import SamplingDatasetPast, SamplingDatasetInferencePast
 
 # define objective function
 def objective(trial):
@@ -54,7 +54,7 @@ def objective(trial):
     el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
     loss_logger = LossLogger()
     pruner = PyTorchLightningPruningCallback(trial, monitor="val_loss")
-    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [3], "callbacks": [el_stopper, loss_logger, pruner]}
+    pl_trainer_kwargs = {"accelerator": "gpu", "devices": [1], "callbacks": [el_stopper, loss_logger, pruner]}
     # optimizer scheduler
     scheduler_kwargs = {'step_size': lr_epochs, 'gamma': 0.5}
 
@@ -200,7 +200,7 @@ if __name__ == '__main__':
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = LossLogger()
-            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [3], "callbacks": [el_stopper, loss_logger]}
+            pl_trainer_kwargs = {"accelerator": "gpu", "devices": [1], "callbacks": [el_stopper, loss_logger]}
             # create datasets
             train_dataset = SamplingDatasetPast(target_series=series['train']['target'],
                                                 covariates=series['train']['dynamic'],
@@ -214,6 +214,20 @@ if __name__ == '__main__':
                                              input_chunk_length=in_len,
                                              output_chunk_length=out_len,
                                              use_static_covariates=False)
+            test_dataset = SamplingDatasetInferencePast(target_series=series['test']['target'],
+                                                        covariates=series['test']['dynamic'],
+                                                        n=out_len,
+                                                        input_chunk_length=in_len,
+                                                        output_chunk_length=out_len,
+                                                        use_static_covariates=False,
+                                                        max_samples_per_ts = None)
+            test_ood_dataset = SamplingDatasetInferencePast(target_series=series['test_ood']['target'],
+                                                            covariates=series['test_ood']['dynamic'],
+                                                            n=out_len,
+                                                            input_chunk_length=in_len,
+                                                            output_chunk_length=out_len,
+                                                            use_static_covariates=False,
+                                                            max_samples_per_ts = None)
             # build the model
             model = models.NHiTSModel(input_chunk_length=in_len, 
                                         output_chunk_length=out_len, 
@@ -240,37 +254,27 @@ if __name__ == '__main__':
             model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
-            forecasts = model.historical_forecasts(series['test']['target'],
-                                                    past_covariates=series['test']['dynamic'],
-                                                    forecast_horizon=out_len, 
-                                                    stride=stride,
-                                                    retrain=False,
-                                                    verbose=False,
-                                                    last_points_only=False,
-                                                    start=formatter.params["max_length_input"])
+            forecasts = model.predict_from_dataset(n=out_len, 
+                                                   input_series_dataset=test_dataset,
+                                                   verbose=False)
+            trues = [test_dataset.evalsample(i) for i in range(len(test_dataset))]
             id_errors_sample, \
                 id_likelihood_sample, \
-                    id_cal_errors_sample = rescale_and_backtest(series['test']['target'],
-                                                                forecasts,  
-                                                                [metrics.mse, metrics.mae],
-                                                                scalers['target'],
-                                                                reduction=None)
+                    id_cal_errors_sample = rescale_and_test(trues,
+                                                            forecasts,  
+                                                            [metrics.mse, metrics.mae],
+                                                            scalers['target'])
             # backtest on the ood test set
-            forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                                   past_covariates=series['test_ood']['dynamic'],
-                                                   forecast_horizon=out_len, 
-                                                   stride=stride,
-                                                   retrain=False,
-                                                   verbose=False,
-                                                   last_points_only=False,
-                                                   start=formatter.params["max_length_input"])
+            forecasts = model.predict_from_dataset(n=out_len, 
+                                                   input_series_dataset=test_ood_dataset,
+                                                   verbose=False)
+            trues = [test_ood_dataset.evalsample(i) for i in range(len(test_ood_dataset))]
             ood_errors_sample, \
                 ood_likelihood_sample, \
-                    ood_cal_errors_sample = rescale_and_backtest(series['test_ood']['target'],
-                                                                 forecasts,  
-                                                                 [metrics.mse, metrics.mae],
-                                                                 scalers['target'],
-                                                                 reduction=None)
+                    ood_cal_errors_sample = rescale_and_test(trues,
+                                                            forecasts,  
+                                                            [metrics.mse, metrics.mae],
+                                                            scalers['target'])
             
             # compute, save, and print results
             with open(study_file, "a") as f:

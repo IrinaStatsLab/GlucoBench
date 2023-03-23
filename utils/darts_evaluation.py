@@ -84,8 +84,11 @@ def _get_values_or_raise(
         series_b_det, isnan_mask, axis=0
     )
 
-def rescale_and_backtest(series: Union[TimeSeries, Sequence[TimeSeries]],
-                         forecasts: Union[TimeSeries, Sequence[TimeSeries]], 
+def rescale_and_backtest(series: Union[TimeSeries, 
+                                    Sequence[TimeSeries]],
+                         forecasts: Union[TimeSeries, 
+                                            Sequence[TimeSeries],
+                                            Sequence[Sequence[TimeSeries]]], 
                          metric: Union[
                                     Callable[[TimeSeries, TimeSeries], float],
                                     List[Callable[[TimeSeries, TimeSeries], float]],
@@ -96,7 +99,7 @@ def rescale_and_backtest(series: Union[TimeSeries, Sequence[TimeSeries]],
                          cal_thresholds: Optional[np.ndarray] = np.linspace(0, 1, 11),
                         ):
     """
-    Backtest the forecasts on the series.
+    Backtest the historical forecasts (as provided by Darts) on the series.
 
     Parameters
     ----------
@@ -117,10 +120,10 @@ def rescale_and_backtest(series: Union[TimeSeries, Sequence[TimeSeries]],
 
     Returns
     -------
-    List[np.ndarray]
-        List of error arrays on each series. If the reduction is none, each array is of shape (n, p)
-        where n is the number of samples (forecasts) for a series and p is the number of metrics.
-        If the reduction is not none, each array is of shape (p,). 
+    np.ndarray
+        Error array. If the reduction is none, array is of shape (n, p)
+        where n is the total number of samples (forecasts) and p is the number of metrics.
+        If the reduction is not none, array is of shape (k, p), where k is the number of series. 
     float
         The estimated log-likelihood of the model on the data.
     np.ndarray
@@ -132,25 +135,25 @@ def rescale_and_backtest(series: Union[TimeSeries, Sequence[TimeSeries]],
     if not isinstance(metric, list):
         metric = [metric]
 
+    # compute errors: 1) reverse scaling forecasts and true values, 2)compute errors
+    backtest_list = []
+    for idx in range(len(series)):
+        if scaler is not None:
+            series[idx] = scaler.inverse_transform(series[idx])
+            forecasts[idx] = [scaler.inverse_transform(f) for f in forecasts[idx]]
+        errors = [
+            [metric_f(series[idx], f) for metric_f in metric]
+            if len(metric) > 1
+            else metric[0](series[idx], f)
+            for f in forecasts[idx]
+        ]
+        if reduction is None:
+            backtest_list.append(np.array(errors))
+        else:
+            backtest_list.append(reduction(np.array(errors), axis=0))
+    backtest_list = np.vstack(backtest_list)
+    
     if likelihood == "GaussianMean":
-        # compute errors: 1) reverse scaling forecasts and true values, 2)compute errors
-        backtest_list = []
-        for idx in range(len(series)):
-            if scaler is not None:
-                series[idx] = scaler.inverse_transform(series[idx])
-                forecasts[idx] = [scaler.inverse_transform(f) for f in forecasts[idx]]
-            errors = [
-                [metric_f(series[idx], f) for metric_f in metric]
-                if len(metric) > 1
-                else metric[0](series[idx], f)
-                for f in forecasts[idx]
-            ]
-            if reduction is None:
-                backtest_list.append(np.array(errors))
-            else:
-                backtest_list.append(reduction(np.array(errors), axis=0))
-        backtest_list = np.vstack(backtest_list)
-        
         # compute likelihood
         est_var = []
         for idx, target_ts in enumerate(series):
@@ -182,3 +185,103 @@ def rescale_and_backtest(series: Union[TimeSeries, Sequence[TimeSeries]],
         cal_error = np.array(cal_error)
 
     return backtest_list, log_likelihood, cal_error
+
+def rescale_and_test(series: Union[TimeSeries, 
+                                   Sequence[TimeSeries]],
+                    forecasts: Union[TimeSeries, 
+                                    Sequence[TimeSeries]], 
+                    metric: Union[
+                            Callable[[TimeSeries, TimeSeries], float],
+                            List[Callable[[TimeSeries, TimeSeries], float]],
+                        ], 
+                    scaler: Callable[[TimeSeries], TimeSeries] = None,
+                    likelihood: str = "GaussianMean",
+                    cal_thresholds: Optional[np.ndarray] = np.linspace(0, 1, 11),
+                ):
+    """
+    Test the forecasts on the series.
+
+    Parameters
+    ----------
+    series
+        The target time series.
+    forecasts
+        The forecasts.
+    scaler
+        The scaler used to scale the series.
+    metric
+        The metric or metrics to use for backtesting.
+    reduction
+        The reduction to apply to the metric.
+    likelihood
+        The likelihood to use for evaluating the likelihood and calibration of model.
+    cal_thresholds
+        The thresholds to use for computing the calibration error.
+
+    Returns
+    -------
+    np.ndarray
+        Error array. If the reduction is none, array is of shape (n, p)
+        where n is the total number of samples (forecasts) and p is the number of metrics.
+        If the reduction is not none, array is of shape (k, p), where k is the number of series. 
+    float
+        The estimated log-likelihood of the model on the data.
+    np.ndarray
+        The ECE for each time point in the forecast.
+    """
+    series = [series] if isinstance(series, TimeSeries) else series
+    forecasts = [forecasts] if isinstance(forecasts, TimeSeries) else forecasts
+    metric = [metric] if not isinstance(metric, list) else metric
+
+    # compute errors: 1) reverse scaling forecasts and true values, 2)compute errors
+    series = scaler.inverse_transform(series)
+    forecasts = scaler.inverse_transform(forecasts)
+    errors = [
+        [metric_f(t, f) for metric_f in metric]
+        if len(metric) > 1
+        else metric[0](t, f)
+        for (t, f) in zip(series, forecasts)
+        ]
+    errors = np.array(errors)
+
+    if likelihood == "GaussianMean":        
+        # compute likelihood
+        est_var = [metrics.mse(t, f) for (t, f) in zip(series, forecasts)]
+        est_var = np.mean(est_var)
+        forecast_len = forecasts[0].n_timesteps
+        log_likelihood = -0.5*forecast_len - 0.5*np.log(2*np.pi*est_var)
+
+        # compute calibration error: 1) cdf values 2) compute calibration error
+        # compute the cdf values
+        cdf_vals = []
+        for t, f in zip(series, forecasts):
+            t, f = _get_values_or_raise(t, f, intersect=True, remove_nan_union=True)
+            cdf_vals.append(stats.norm.cdf(t, loc=f, scale=est_var))
+        cdf_vals = np.vstack(cdf_vals)
+        # compute the prediction calibration
+        cal_error = []
+        for j in range(cdf_vals.shape[1]):
+            cal_error_j = 0
+            for p in cal_thresholds:
+                est_p = (cdf_vals[:, j] <= p).astype(float)
+                est_p = np.mean(est_p)
+                cal_error_j += (est_p - p) ** 2
+            cal_error.append(cal_error_j / len(cal_thresholds))
+        cal_error = np.array(cal_error)
+
+    if likelihood == "Quantile":
+        # no likelihood since we don't have a parametric model
+        log_likelihood = 0
+
+        # compute calibration error: 1) get quantiles 2) compute calibration error
+        cal_error = np.zeros(forecasts[0].n_timesteps)
+        for p in cal_thresholds:
+            est_p = 0
+            for t, f in zip(series, forecasts):
+                q = f.quantile(p)
+                t, q = _get_values_or_raise(t, q, intersect=True, remove_nan_union=True)
+                est_p += (t <= q).astype(float)
+            est_p = (est_p / len(series)).flatten()
+            cal_error += (est_p - p) ** 2
+
+    return errors, log_likelihood, cal_error

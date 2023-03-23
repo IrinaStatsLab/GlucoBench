@@ -4,7 +4,7 @@ import os
 import yaml
 import datetime
 import argparse
-from functools import partialmethod
+from functools import partial
 import optuna
 
 from darts import models
@@ -16,9 +16,9 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from data_formatter.base import *
 from utils.darts_processing import load_data, reshuffle_data
-from utils.darts_evaluation import rescale_and_backtest
+from utils.darts_evaluation import rescale_and_test
 from utils.darts_training import *
-from utils.darts_dataset import SamplingDatasetMixed
+from utils.darts_dataset import SamplingDatasetMixed, SamplingDatasetInferenceMixed
 
 # define objective function
 def objective(trial):
@@ -57,7 +57,7 @@ def objective(trial):
                                          input_chunk_length=in_len,
                                          output_chunk_length=out_len,
                                          use_static_covariates=True)
-    val_dataset = SamplingDatasetPast(target_series=series['val']['target'],
+    val_dataset = SamplingDatasetMixed(target_series=series['val']['target'],
                                       past_covariates=series['val']['dynamic'],
                                       future_covariates=series['val']['future'],
                                       max_samples_per_ts=max_samples_per_ts,
@@ -198,6 +198,22 @@ if __name__ == '__main__':
                                             input_chunk_length=in_len,
                                             output_chunk_length=out_len,
                                             use_static_covariates=True)
+            test_dataset = SamplingDatasetInferenceMixed(target_series = series['test']['target'],
+                                                        past_covariates = series['test']['dynamic'],
+                                                        future_covariates = series['test']['future'],
+                                                        n=out_len,
+                                                        input_chunk_length = in_len,
+                                                        output_chunk_length = out_len,
+                                                        use_static_covariates = True,
+                                                        max_samples_per_ts = None)
+            test_ood_dataset = SamplingDatasetInferenceMixed(target_series = series['test_ood']['target'],
+                                                            past_covariates = series['test_ood']['dynamic'],
+                                                            future_covariates = series['test_ood']['future'],
+                                                            n = out_len,
+                                                            input_chunk_length = in_len,
+                                                            output_chunk_length = out_len,
+                                                            use_static_covariates = True,
+                                                            max_samples_per_ts = None,)
             # build the model
             model = models.TFTModel(input_chunk_length = in_len, 
                                     output_chunk_length = out_len, 
@@ -221,39 +237,31 @@ if __name__ == '__main__':
             model.load_from_checkpoint(model_name, work_dir = work_dir)
 
             # backtest on the test set
-            forecasts = model.historical_forecasts(series['test']['target'],
-                                                   future_covariates=series['test']['future'],
-                                                   past_covariates=series['test']['dynamic'],
-                                                   forecast_horizon=out_len, 
-                                                   stride=stride,
-                                                   retrain=False,
-                                                   verbose=False,
-                                                   last_points_only=False,
-                                                   start=formatter.params["max_length_input"])
+            forecasts = model.predict_from_dataset(n=out_len, 
+                                                   input_series_dataset=test_dataset, 
+                                                   num_samples=20,
+                                                   verbose=False)
+            trues = [test_dataset.evalsample(i) for i in range(len(test_dataset))]
             id_errors_sample, \
                 id_likelihood_sample, \
-                    id_cal_errors_sample = rescale_and_backtest(series['test']['target'],
-                                                                forecasts,  
-                                                                [metrics.mse, metrics.mae],
-                                                                scalers['target'],
-                                                                reduction=None)
+                    id_cal_errors_sample = rescale_and_test(trues,
+                                                            forecasts,  
+                                                            [metrics.mse, metrics.mae],
+                                                            scalers['target'],
+                                                            likelihood="Quantile")
             # backtest on the ood test set
-            forecasts = model.historical_forecasts(series['test_ood']['target'],
-                                                   future_covariates=series['test_ood']['future'],
-                                                   past_covariates=series['test_ood']['dynamic'],
-                                                   forecast_horizon=out_len, 
-                                                   stride=stride,
-                                                   retrain=False,
-                                                   verbose=False,
-                                                   last_points_only=False,
-                                                   start=formatter.params["max_length_input"])                      
+            forecasts = model.predict_from_dataset(n=out_len, 
+                                                   input_series_dataset=test_ood_dataset, 
+                                                   num_samples=20,
+                                                   verbose=False)
+            trues = [test_ood_dataset.evalsample(i) for i in range(len(test_ood_dataset))]
             ood_errors_sample, \
                 ood_likelihood_sample, \
-                    ood_cal_errors_sample = rescale_and_backtest(series['test_ood']['target'],
-                                                                 forecasts,  
-                                                                 [metrics.mse, metrics.mae],
-                                                                 scalers['target'],
-                                                                 reduction=None)
+                    ood_cal_errors_sample = rescale_and_test(trues,
+                                                            forecasts,  
+                                                            [metrics.mse, metrics.mae],
+                                                            scalers['target'],
+                                                            likelihood="Quantile")
             
             # compute, save, and print results
             with open(study_file, "a") as f:
