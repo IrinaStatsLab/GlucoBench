@@ -174,5 +174,13 @@ nhits:
   batch_size: 32
   lr_epochs: 2
 
+nhits_covariates:
+  in_len: 120
+  max_samples_per_ts: 50
+  kernel_sizes: 2
+  dropout: 0.16272090435698405
+  lr: 0.0004806891979994542
+  batch_size: 48
+  lr_epochs: 12
 
 
