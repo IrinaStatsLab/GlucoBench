@@ -71,3 +71,174 @@ Current value: 0.09474323689937592, Current params: {'in_len': 180, 'max_samples
 Best value: 0.09474323689937592, Best params: {'in_len': 180, 'max_samples_per_ts': 150, 'hidden_size': 80, 'num_attention_heads': 3, 'dropout': 0.22869834840044573, 'lr': 0.0003965761934934222, 'batch_size': 48, 'max_grad_norm': 0.49510422682222904}
 Current value: 0.08801671862602234, Current params: {'in_len': 180, 'max_samples_per_ts': 50, 'hidden_size': 48, 'num_attention_heads': 3, 'dropout': 0.1540959423204858, 'lr': 0.004506789334668041, 'batch_size': 32, 'max_grad_norm': 0.5248505158679704}
 Best value: 0.08801671862602234, Best params: {'in_len': 180, 'max_samples_per_ts': 50, 'hidden_size': 48, 'num_attention_heads': 3, 'dropout': 0.1540959423204858, 'lr': 0.004506789334668041, 'batch_size': 32, 'max_grad_norm': 0.5248505158679704}
+Current value: 0.10275181382894516, Current params: {'in_len': 180, 'max_samples_per_ts': 200, 'hidden_size': 144, 'num_attention_heads': 2, 'dropout': 0.10678587815280127, 'lr': 0.009524038981658654, 'batch_size': 32, 'max_grad_norm': 0.7377520660603355}
+Best value: 0.08801671862602234, Best params: {'in_len': 180, 'max_samples_per_ts': 50, 'hidden_size': 48, 'num_attention_heads': 3, 'dropout': 0.1540959423204858, 'lr': 0.004506789334668041, 'batch_size': 32, 'max_grad_norm': 0.5248505158679704}
+Current value: 0.09100145101547241, Current params: {'in_len': 144, 'max_samples_per_ts': 150, 'hidden_size': 208, 'num_attention_heads': 1, 'dropout': 0.2668922473608931, 'lr': 0.008390793030900966, 'batch_size': 64, 'max_grad_norm': 0.1236168715185916}
+Best value: 0.08801671862602234, Best params: {'in_len': 180, 'max_samples_per_ts': 50, 'hidden_size': 48, 'num_attention_heads': 3, 'dropout': 0.1540959423204858, 'lr': 0.004506789334668041, 'batch_size': 32, 'max_grad_norm': 0.5248505158679704}
+Current value: 0.08783876895904541, Current params: {'in_len': 144, 'max_samples_per_ts': 200, 'hidden_size': 16, 'num_attention_heads': 2, 'dropout': 0.21982871186596353, 'lr': 0.005424839041416716, 'batch_size': 48, 'max_grad_norm': 0.9730429066069279}
+Best value: 0.08783876895904541, Best params: {'in_len': 144, 'max_samples_per_ts': 200, 'hidden_size': 16, 'num_attention_heads': 2, 'dropout': 0.21982871186596353, 'lr': 0.005424839041416716, 'batch_size': 48, 'max_grad_norm': 0.9730429066069279}
+Current value: 0.08874011039733887, Current params: {'in_len': 192, 'max_samples_per_ts': 200, 'hidden_size': 48, 'num_attention_heads': 2, 'dropout': 0.16566179842901974, 'lr': 0.0013732530569643122, 'batch_size': 32, 'max_grad_norm': 0.3798847873061824}
+Best value: 0.08783876895904541, Best params: {'in_len': 144, 'max_samples_per_ts': 200, 'hidden_size': 16, 'num_attention_heads': 2, 'dropout': 0.21982871186596353, 'lr': 0.005424839041416716, 'batch_size': 48, 'max_grad_norm': 0.9730429066069279}
+Current value: 0.09055887162685394, Current params: {'in_len': 132, 'max_samples_per_ts': 50, 'hidden_size': 112, 'num_attention_heads': 3, 'dropout': 0.23729539052561813, 'lr': 0.003836132732292066, 'batch_size': 32, 'max_grad_norm': 0.6789495438478501}
+Best value: 0.08783876895904541, Best params: {'in_len': 144, 'max_samples_per_ts': 200, 'hidden_size': 16, 'num_attention_heads': 2, 'dropout': 0.21982871186596353, 'lr': 0.005424839041416716, 'batch_size': 48, 'max_grad_norm': 0.9730429066069279}
+Current value: 0.30399829149246216, Current params: {'in_len': 108, 'max_samples_per_ts': 150, 'hidden_size': 176, 'num_attention_heads': 2, 'dropout': 0.17306707251383288, 'lr': 0.006206794309649241, 'batch_size': 48, 'max_grad_norm': 0.5592346779568934}
+Best value: 0.08783876895904541, Best params: {'in_len': 144, 'max_samples_per_ts': 200, 'hidden_size': 16, 'num_attention_heads': 2, 'dropout': 0.21982871186596353, 'lr': 0.005424839041416716, 'batch_size': 48, 'max_grad_norm': 0.9730429066069279}
+Current value: 0.0793653354048729, Current params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.304718941450119, Current params: {'in_len': 120, 'max_samples_per_ts': 100, 'hidden_size': 224, 'num_attention_heads': 2, 'dropout': 0.2504329571526954, 'lr': 0.0009733518247976271, 'batch_size': 32, 'max_grad_norm': 0.3890448492324838}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.2994464635848999, Current params: {'in_len': 96, 'max_samples_per_ts': 100, 'hidden_size': 128, 'num_attention_heads': 4, 'dropout': 0.29577563659526673, 'lr': 0.002649475608462103, 'batch_size': 64, 'max_grad_norm': 0.9908938663703903}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.29833847284317017, Current params: {'in_len': 156, 'max_samples_per_ts': 200, 'hidden_size': 16, 'num_attention_heads': 1, 'dropout': 0.20552610006042146, 'lr': 0.006416610594376341, 'batch_size': 48, 'max_grad_norm': 0.9671675400096977}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.2811185121536255, Current params: {'in_len': 156, 'max_samples_per_ts': 200, 'hidden_size': 16, 'num_attention_heads': 1, 'dropout': 0.28434021772266593, 'lr': 0.006128818874820053, 'batch_size': 48, 'max_grad_norm': 0.8275992262175671}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.08572036772966385, Current params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.21279090200581557, 'lr': 0.003021022170069057, 'batch_size': 64, 'max_grad_norm': 0.8636699127004543}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.2757709324359894, Current params: {'in_len': 96, 'max_samples_per_ts': 150, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.1974546479498289, 'lr': 0.0026950609948999935, 'batch_size': 64, 'max_grad_norm': 0.8070823048399995}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.08298715949058533, Current params: {'in_len': 108, 'max_samples_per_ts': 200, 'hidden_size': 160, 'num_attention_heads': 1, 'dropout': 0.2646324451651484, 'lr': 0.0022127063068408796, 'batch_size': 64, 'max_grad_norm': 0.6325670329227235}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.2923476994037628, Current params: {'in_len': 120, 'max_samples_per_ts': 100, 'hidden_size': 160, 'num_attention_heads': 4, 'dropout': 0.25792624379804685, 'lr': 0.0017211961006106968, 'batch_size': 64, 'max_grad_norm': 0.6228918674194983}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.32823485136032104, Current params: {'in_len': 108, 'max_samples_per_ts': 150, 'hidden_size': 192, 'num_attention_heads': 1, 'dropout': 0.27359313427353293, 'lr': 0.00021239208711752874, 'batch_size': 48, 'max_grad_norm': 0.042979523991507174}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.2719453275203705, Current params: {'in_len': 120, 'max_samples_per_ts': 200, 'hidden_size': 240, 'num_attention_heads': 1, 'dropout': 0.24538105424504428, 'lr': 0.00212165290557411, 'batch_size': 32, 'max_grad_norm': 0.27189731807014605}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.2858860492706299, Current params: {'in_len': 108, 'max_samples_per_ts': 150, 'hidden_size': 256, 'num_attention_heads': 2, 'dropout': 0.2977502097768895, 'lr': 0.0037928271350544476, 'batch_size': 64, 'max_grad_norm': 0.6918263612187123}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.2916630208492279, Current params: {'in_len': 132, 'max_samples_per_ts': 200, 'hidden_size': 128, 'num_attention_heads': 1, 'dropout': 0.19165686640498183, 'lr': 0.0037034350756994378, 'batch_size': 48, 'max_grad_norm': 0.40656985117088895}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.08495630323886871, Current params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.22108496976661782, 'lr': 0.003172815649053539, 'batch_size': 64, 'max_grad_norm': 0.8467764227153112}
+Best value: 0.0793653354048729, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.25305944938410385, 'lr': 0.0012085771132017077, 'batch_size': 32, 'max_grad_norm': 0.7315689984828031}
+Current value: 0.07913843542337418, Current params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.28106486797332764, Current params: {'in_len': 108, 'max_samples_per_ts': 200, 'hidden_size': 48, 'num_attention_heads': 1, 'dropout': 0.2616046053023917, 'lr': 0.001075324167117865, 'batch_size': 64, 'max_grad_norm': 0.7514815071140891}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.28206852078437805, Current params: {'in_len': 96, 'max_samples_per_ts': 150, 'hidden_size': 160, 'num_attention_heads': 2, 'dropout': 0.2401016730674648, 'lr': 0.0019732179619418437, 'batch_size': 64, 'max_grad_norm': 0.6107851312578784}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.2806072235107422, Current params: {'in_len': 108, 'max_samples_per_ts': 200, 'hidden_size': 112, 'num_attention_heads': 1, 'dropout': 0.2764765838530255, 'lr': 0.0009493354077337399, 'batch_size': 64, 'max_grad_norm': 0.8958298170086814}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.27332010865211487, Current params: {'in_len': 120, 'max_samples_per_ts': 150, 'hidden_size': 64, 'num_attention_heads': 2, 'dropout': 0.2357827125838408, 'lr': 0.0048509524370300115, 'batch_size': 48, 'max_grad_norm': 0.7569105609549378}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.2694808840751648, Current params: {'in_len': 132, 'max_samples_per_ts': 200, 'hidden_size': 144, 'num_attention_heads': 1, 'dropout': 0.2824849874857351, 'lr': 0.002363148908582315, 'batch_size': 48, 'max_grad_norm': 0.6475705582859987}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.31474536657333374, Current params: {'in_len': 96, 'max_samples_per_ts': 100, 'hidden_size': 112, 'num_attention_heads': 3, 'dropout': 0.25764302639411213, 'lr': 0.00026079797347159945, 'batch_size': 64, 'max_grad_norm': 0.887205972378821}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.2819129228591919, Current params: {'in_len': 108, 'max_samples_per_ts': 150, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.23166369990059213, 'lr': 0.0075700411875922, 'batch_size': 32, 'max_grad_norm': 0.44153996907885046}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.27899032831192017, Current params: {'in_len': 168, 'max_samples_per_ts': 200, 'hidden_size': 176, 'num_attention_heads': 2, 'dropout': 0.18646296935931006, 'lr': 0.001486794078178733, 'batch_size': 64, 'max_grad_norm': 0.4845039087260298}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.08727876096963882, Current params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.2223145740158499, 'lr': 0.0032377630278836154, 'batch_size': 64, 'max_grad_norm': 0.7873406161555072}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.27683570981025696, Current params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 64, 'num_attention_heads': 1, 'dropout': 0.22277751618499675, 'lr': 0.0032597778365518774, 'batch_size': 64, 'max_grad_norm': 0.9107429786387459}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.27157413959503174, Current params: {'in_len': 108, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.24946083809094294, 'lr': 0.00421422489003135, 'batch_size': 64, 'max_grad_norm': 0.5658392314759281}
+Best value: 0.07913843542337418, Best params: {'in_len': 96, 'max_samples_per_ts': 200, 'hidden_size': 80, 'num_attention_heads': 1, 'dropout': 0.23386673765413968, 'lr': 0.0018769954660235563, 'batch_size': 64, 'max_grad_norm': 0.8748220727487463}
+Current value: 0.07627468556165695, Current params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Best value: 0.07627468556165695, Best params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Current value: 0.08005280047655106, Current params: {'in_len': 120, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.11636903783605461, 'lr': 0.0005442639484917811, 'batch_size': 64, 'max_grad_norm': 0.6872733559888218}
+Best value: 0.07627468556165695, Best params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Current value: 0.07754843682050705, Current params: {'in_len': 120, 'max_samples_per_ts': 50, 'hidden_size': 48, 'num_attention_heads': 2, 'dropout': 0.12683107338345095, 'lr': 0.000766445990154049, 'batch_size': 48, 'max_grad_norm': 0.7064066205200504}
+Best value: 0.07627468556165695, Best params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Current value: 0.08472408354282379, Current params: {'in_len': 132, 'max_samples_per_ts': 50, 'hidden_size': 32, 'num_attention_heads': 3, 'dropout': 0.1293833257269471, 'lr': 0.0007446530382314315, 'batch_size': 32, 'max_grad_norm': 0.7222607161749214}
+Best value: 0.07627468556165695, Best params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Current value: 0.0785297229886055, Current params: {'in_len': 120, 'max_samples_per_ts': 50, 'hidden_size': 64, 'num_attention_heads': 2, 'dropout': 0.13639468744456168, 'lr': 0.0014867501939919894, 'batch_size': 48, 'max_grad_norm': 0.2953216134035859}
+Best value: 0.07627468556165695, Best params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Current value: 0.08972711116075516, Current params: {'in_len': 144, 'max_samples_per_ts': 50, 'hidden_size': 32, 'num_attention_heads': 2, 'dropout': 0.13906342885172598, 'lr': 0.009641729448866211, 'batch_size': 48, 'max_grad_norm': 0.2926708594772486}
+Best value: 0.07627468556165695, Best params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Current value: 0.25924739241600037, Current params: {'in_len': 192, 'max_samples_per_ts': 50, 'hidden_size': 64, 'num_attention_heads': 2, 'dropout': 0.15042069194001795, 'lr': 0.0015506241532358064, 'batch_size': 48, 'max_grad_norm': 0.22798341743393685}
+Best value: 0.07627468556165695, Best params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Current value: 0.07997370511293411, Current params: {'in_len': 120, 'max_samples_per_ts': 50, 'hidden_size': 48, 'num_attention_heads': 2, 'dropout': 0.10240245228059314, 'lr': 0.0013771612741770634, 'batch_size': 32, 'max_grad_norm': 0.16293834087865292}
+Best value: 0.07627468556165695, Best params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Current value: 0.08315221965312958, Current params: {'in_len': 144, 'max_samples_per_ts': 50, 'hidden_size': 64, 'num_attention_heads': 3, 'dropout': 0.11922436280442539, 'lr': 0.00018527539578123053, 'batch_size': 48, 'max_grad_norm': 0.5331301623232102}
+Best value: 0.07627468556165695, Best params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Current value: 0.3021567761898041, Current params: {'in_len': 96, 'max_samples_per_ts': 100, 'hidden_size': 32, 'num_attention_heads': 2, 'dropout': 0.16164136610342897, 'lr': 0.0009650674579928318, 'batch_size': 32, 'max_grad_norm': 0.7838287428273203}
+Best value: 0.07627468556165695, Best params: {'in_len': 96, 'max_samples_per_ts': 50, 'hidden_size': 96, 'num_attention_heads': 1, 'dropout': 0.14180635714600212, 'lr': 0.0007559568420232418, 'batch_size': 64, 'max_grad_norm': 0.7057947208255668}
+Current value: 0.07596633583307266, Current params: {'in_len': 108, 'max_samples_per_ts': 50, 'hidden_size': 112, 'num_attention_heads': 2, 'dropout': 0.1504541564537306, 'lr': 0.0018430630797167395, 'batch_size': 48, 'max_grad_norm': 0.9530046023189843}
+Best value: 0.07596633583307266, Best params: {'in_len': 108, 'max_samples_per_ts': 50, 'hidden_size': 112, 'num_attention_heads': 2, 'dropout': 0.1504541564537306, 'lr': 0.0018430630797167395, 'batch_size': 48, 'max_grad_norm': 0.9530046023189843}
+Current value: 0.08067645877599716, Current params: {'in_len': 108, 'max_samples_per_ts': 50, 'hidden_size': 112, 'num_attention_heads': 2, 'dropout': 0.14378733538782998, 'lr': 0.0017877027667314, 'batch_size': 48, 'max_grad_norm': 0.937464014866254}
+Best value: 0.07596633583307266, Best params: {'in_len': 108, 'max_samples_per_ts': 50, 'hidden_size': 112, 'num_attention_heads': 2, 'dropout': 0.1504541564537306, 'lr': 0.0018430630797167395, 'batch_size': 48, 'max_grad_norm': 0.9530046023189843}
+Current value: 0.07903483510017395, Current params: {'in_len': 120, 'max_samples_per_ts': 50, 'hidden_size': 128, 'num_attention_heads': 2, 'dropout': 0.12982977876933344, 'lr': 0.002713236959805231, 'batch_size': 48, 'max_grad_norm': 0.9994163390126644}
+Best value: 0.07596633583307266, Best params: {'in_len': 108, 'max_samples_per_ts': 50, 'hidden_size': 112, 'num_attention_heads': 2, 'dropout': 0.1504541564537306, 'lr': 0.0018430630797167395, 'batch_size': 48, 'max_grad_norm': 0.9530046023189843}
+Current value: 0.07725610584020615, Current params: {'in_len': 132, 'max_samples_per_ts': 50, 'hidden_size': 128, 'num_attention_heads': 3, 'dropout': 0.12632150119281293, 'lr': 0.0026182747784861153, 'batch_size': 48, 'max_grad_norm': 0.9865961016128295}
+Best value: 0.07596633583307266, Best params: {'in_len': 108, 'max_samples_per_ts': 50, 'hidden_size': 112, 'num_attention_heads': 2, 'dropout': 0.1504541564537306, 'lr': 0.0018430630797167395, 'batch_size': 48, 'max_grad_norm': 0.9530046023189843}
+Current value: 0.07792942970991135, Current params: {'in_len': 132, 'max_samples_per_ts': 50, 'hidden_size': 144, 'num_attention_heads': 3, 'dropout': 0.11262849357417276, 'lr': 0.0006229290704763214, 'batch_size': 48, 'max_grad_norm': 0.3232236212418971}
+Best value: 0.07596633583307266, Best params: {'in_len': 108, 'max_samples_per_ts': 50, 'hidden_size': 112, 'num_attention_heads': 2, 'dropout': 0.1504541564537306, 'lr': 0.0018430630797167395, 'batch_size': 48, 'max_grad_norm': 0.9530046023189843}
+Current value: 0.2565698027610779, Current params: {'in_len': 156, 'max_samples_per_ts': 50, 'hidden_size': 144, 'num_attention_heads': 3, 'dropout': 0.11336847396368255, 'lr': 0.0006738639956425143, 'batch_size': 48, 'max_grad_norm': 0.9472775943705964}
+Best value: 0.07596633583307266, Best params: {'in_len': 108, 'max_samples_per_ts': 50, 'hidden_size': 112, 'num_attention_heads': 2, 'dropout': 0.1504541564537306, 'lr': 0.0018430630797167395, 'batch_size': 48, 'max_grad_norm': 0.9530046023189843}
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		Height: REAL_VALUED (STATIC_INPUT)
+		Weight: REAL_VALUED (STATIC_INPUT)
+		Gender: REAL_VALUED (STATIC_INPUT)
+		Race: REAL_VALUED (STATIC_INPUT)
+		EduLevel: REAL_VALUED (STATIC_INPUT)
+		AnnualInc: REAL_VALUED (STATIC_INPUT)
+		MaritalStatus: REAL_VALUED (STATIC_INPUT)
+		DaysWkEx: REAL_VALUED (STATIC_INPUT)
+		DaysWkDrinkAlc: REAL_VALUED (STATIC_INPUT)
+		DaysMonBingeAlc: REAL_VALUED (STATIC_INPUT)
+		T1DDiagAge: REAL_VALUED (STATIC_INPUT)
+		NumHospDKA: REAL_VALUED (STATIC_INPUT)
+		NumSHSinceT1DDiag: REAL_VALUED (STATIC_INPUT)
+		InsDeliveryMethod: REAL_VALUED (STATIC_INPUT)
+		UnitsInsTotal: REAL_VALUED (STATIC_INPUT)
+		NumMeterCheckDay: REAL_VALUED (STATIC_INPUT)
+		Aspirin: REAL_VALUED (STATIC_INPUT)
+		Simvastatin: REAL_VALUED (STATIC_INPUT)
+		Lisinopril: REAL_VALUED (STATIC_INPUT)
+		Vitamin D: REAL_VALUED (STATIC_INPUT)
+		Multivitamin preparation: REAL_VALUED (STATIC_INPUT)
+		Omeprazole: REAL_VALUED (STATIC_INPUT)
+		atorvastatin: REAL_VALUED (STATIC_INPUT)
+		Synthroid: REAL_VALUED (STATIC_INPUT)
+		vitamin D3: REAL_VALUED (STATIC_INPUT)
+		Hypertension: REAL_VALUED (STATIC_INPUT)
+		Hyperlipidemia: REAL_VALUED (STATIC_INPUT)
+		Hypothyroidism: REAL_VALUED (STATIC_INPUT)
+		Depression: REAL_VALUED (STATIC_INPUT)
+		Coronary artery disease: REAL_VALUED (STATIC_INPUT)
+		Diabetic peripheral neuropathy: REAL_VALUED (STATIC_INPUT)
+		Dyslipidemia: REAL_VALUED (STATIC_INPUT)
+		Chronic kidney disease: REAL_VALUED (STATIC_INPUT)
+		Osteoporosis: REAL_VALUED (STATIC_INPUT)
+		Proliferative diabetic retinopathy: REAL_VALUED (STATIC_INPUT)
+		Hypercholesterolemia: REAL_VALUED (STATIC_INPUT)
+		Erectile dysfunction: REAL_VALUED (STATIC_INPUT)
+		Type I diabetes mellitus: REAL_VALUED (STATIC_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 1416
+	Extracted segments: 681
+	Interpolated values: 140564
+	Percent of values interpolated: 24.24%
+Splitting data...
+	Train: 431798 (69.72%)
+	Val: 57067 (9.21%)
+	Test: 72421 (11.69%)
+	Test OOD: 58048 (9.37%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
+	Train: 425413 (68.73%)
+	Val: 56593 (9.14%)
+	Test: 72022 (11.64%)
+	Test OOD: 64922 (10.49%)
+	No scaling applied
