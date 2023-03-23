@@ -1,173 +1,4 @@
-Optimization started at 2023-03-02 16:23:14.922076
---------------------------------
-Loading column definition...
-Checking column definition...
-Loading data...
-Dropping columns / rows...
-Checking for NA values...
-Setting data types...
-Dropping columns / rows...
-Encoding data...
-	Updated column definition:
-		id: REAL_VALUED (ID)
-		time: DATE (TIME)
-		gl: REAL_VALUED (TARGET)
-		Height: REAL_VALUED (STATIC_INPUT)
-		Weight: REAL_VALUED (STATIC_INPUT)
-		Gender: REAL_VALUED (STATIC_INPUT)
-		Race: REAL_VALUED (STATIC_INPUT)
-		EduLevel: REAL_VALUED (STATIC_INPUT)
-		AnnualInc: REAL_VALUED (STATIC_INPUT)
-		MaritalStatus: REAL_VALUED (STATIC_INPUT)
-		DaysWkEx: REAL_VALUED (STATIC_INPUT)
-		DaysWkDrinkAlc: REAL_VALUED (STATIC_INPUT)
-		DaysMonBingeAlc: REAL_VALUED (STATIC_INPUT)
-		T1DDiagAge: REAL_VALUED (STATIC_INPUT)
-		NumHospDKA: REAL_VALUED (STATIC_INPUT)
-		NumSHSinceT1DDiag: REAL_VALUED (STATIC_INPUT)
-		InsDeliveryMethod: REAL_VALUED (STATIC_INPUT)
-		UnitsInsTotal: REAL_VALUED (STATIC_INPUT)
-		NumMeterCheckDay: REAL_VALUED (STATIC_INPUT)
-		Aspirin: REAL_VALUED (STATIC_INPUT)
-		Simvastatin: REAL_VALUED (STATIC_INPUT)
-		Lisinopril: REAL_VALUED (STATIC_INPUT)
-		Vitamin D: REAL_VALUED (STATIC_INPUT)
-		Multivitamin preparation: REAL_VALUED (STATIC_INPUT)
-		Omeprazole: REAL_VALUED (STATIC_INPUT)
-		atorvastatin: REAL_VALUED (STATIC_INPUT)
-		Synthroid: REAL_VALUED (STATIC_INPUT)
-		vitamin D3: REAL_VALUED (STATIC_INPUT)
-		Hypertension: REAL_VALUED (STATIC_INPUT)
-		Hyperlipidemia: REAL_VALUED (STATIC_INPUT)
-		Hypothyroidism: REAL_VALUED (STATIC_INPUT)
-		Depression: REAL_VALUED (STATIC_INPUT)
-		Coronary artery disease: REAL_VALUED (STATIC_INPUT)
-		Diabetic peripheral neuropathy: REAL_VALUED (STATIC_INPUT)
-		Dyslipidemia: REAL_VALUED (STATIC_INPUT)
-		Chronic kidney disease: REAL_VALUED (STATIC_INPUT)
-		Osteoporosis: REAL_VALUED (STATIC_INPUT)
-		Proliferative diabetic retinopathy: REAL_VALUED (STATIC_INPUT)
-		Hypercholesterolemia: REAL_VALUED (STATIC_INPUT)
-		Erectile dysfunction: REAL_VALUED (STATIC_INPUT)
-		Type I diabetes mellitus: REAL_VALUED (STATIC_INPUT)
-		time_year: REAL_VALUED (KNOWN_INPUT)
-		time_month: REAL_VALUED (KNOWN_INPUT)
-		time_day: REAL_VALUED (KNOWN_INPUT)
-		time_hour: REAL_VALUED (KNOWN_INPUT)
-		time_minute: REAL_VALUED (KNOWN_INPUT)
-Interpolating data...
-	Dropped segments: 1416
-	Extracted segments: 681
-	Interpolated values: 140564
-	Percent of values interpolated: 24.24%
-Splitting data...
-	Train: 357814 (68.58%)
-	Val: 96960 (18.58%)
-	Test: 125008 (23.96%)
-Scaling data...
-	No scaling applied
-Data formatting complete.
---------------------------------
-Current value: 0.0528765469789505, Current params: {'in_len': 36, 'max_samples_per_ts': 200}
-Best value: 0.0528765469789505, Best params: {'in_len': 36, 'max_samples_per_ts': 200}
-Current value: 0.05294123664498329, Current params: {'in_len': 108, 'max_samples_per_ts': 200}
-Best value: 0.0528765469789505, Best params: {'in_len': 36, 'max_samples_per_ts': 200}
-Current value: 0.055976349860429764, Current params: {'in_len': 168, 'max_samples_per_ts': 100}
-Best value: 0.0528765469789505, Best params: {'in_len': 36, 'max_samples_per_ts': 200}
-Current value: 0.05579501390457153, Current params: {'in_len': 180, 'max_samples_per_ts': 200}
-Best value: 0.0528765469789505, Best params: {'in_len': 36, 'max_samples_per_ts': 200}
-Current value: 0.05303351581096649, Current params: {'in_len': 96, 'max_samples_per_ts': 100}
-Best value: 0.0528765469789505, Best params: {'in_len': 36, 'max_samples_per_ts': 200}
-Current value: 0.053486645221710205, Current params: {'in_len': 12, 'max_samples_per_ts': 200}
-Best value: 0.0528765469789505, Best params: {'in_len': 36, 'max_samples_per_ts': 200}
-Current value: 0.05551933869719505, Current params: {'in_len': 168, 'max_samples_per_ts': 150}
-Best value: 0.0528765469789505, Best params: {'in_len': 36, 'max_samples_per_ts': 200}
-Current value: 0.05256735160946846, Current params: {'in_len': 96, 'max_samples_per_ts': 150}
-Best value: 0.05256735160946846, Best params: {'in_len': 96, 'max_samples_per_ts': 150}
-Current value: 0.05593156814575195, Current params: {'in_len': 192, 'max_samples_per_ts': 200}
-Best value: 0.05256735160946846, Best params: {'in_len': 96, 'max_samples_per_ts': 150}
-Current value: 0.05429784208536148, Current params: {'in_len': 156, 'max_samples_per_ts': 50}
-Best value: 0.05256735160946846, Best params: {'in_len': 96, 'max_samples_per_ts': 150}
-Current value: 0.052426163107156754, Current params: {'in_len': 84, 'max_samples_per_ts': 150}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.052426163107156754, Current params: {'in_len': 84, 'max_samples_per_ts': 150}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.05254322290420532, Current params: {'in_len': 60, 'max_samples_per_ts': 150}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.05305056646466255, Current params: {'in_len': 72, 'max_samples_per_ts': 100}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.05402494966983795, Current params: {'in_len': 132, 'max_samples_per_ts': 150}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.052535563707351685, Current params: {'in_len': 60, 'max_samples_per_ts': 50}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.05362492799758911, Current params: {'in_len': 120, 'max_samples_per_ts': 150}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.052894432097673416, Current params: {'in_len': 84, 'max_samples_per_ts': 100}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.05277681723237038, Current params: {'in_len': 48, 'max_samples_per_ts': 150}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.05440748855471611, Current params: {'in_len': 132, 'max_samples_per_ts': 100}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.05325354263186455, Current params: {'in_len': 24, 'max_samples_per_ts': 150}
-Best value: 0.052426163107156754, Best params: {'in_len': 84, 'max_samples_per_ts': 150}
-Current value: 0.05229296162724495, Current params: {'in_len': 72, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.05229296162724495, Current params: {'in_len': 72, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.05229296162724495, Current params: {'in_len': 72, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.05259628966450691, Current params: {'in_len': 48, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.052535563707351685, Current params: {'in_len': 60, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.05229296162724495, Current params: {'in_len': 72, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.052827976644039154, Current params: {'in_len': 108, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.05277719721198082, Current params: {'in_len': 36, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.05277719721198082, Current params: {'in_len': 36, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.05305056646466255, Current params: {'in_len': 72, 'max_samples_per_ts': 100}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.05229296162724495, Current params: {'in_len': 72, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.05259628966450691, Current params: {'in_len': 48, 'max_samples_per_ts': 50}
-Best value: 0.05229296162724495, Best params: {'in_len': 72, 'max_samples_per_ts': 50}
-Current value: 0.052225515246391296, Current params: {'in_len': 84, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.05233478918671608, Current params: {'in_len': 96, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.05423077940940857, Current params: {'in_len': 120, 'max_samples_per_ts': 100}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.052225515246391296, Current params: {'in_len': 84, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.05303351581096649, Current params: {'in_len': 96, 'max_samples_per_ts': 100}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.052827976644039154, Current params: {'in_len': 108, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.052225515246391296, Current params: {'in_len': 84, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.05423077940940857, Current params: {'in_len': 120, 'max_samples_per_ts': 100}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.052225515246391296, Current params: {'in_len': 84, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.052225515246391296, Current params: {'in_len': 84, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.052225515246391296, Current params: {'in_len': 84, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.052827976644039154, Current params: {'in_len': 108, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.05233478918671608, Current params: {'in_len': 96, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.052225515246391296, Current params: {'in_len': 84, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.05298236757516861, Current params: {'in_len': 60, 'max_samples_per_ts': 100}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.052225515246391296, Current params: {'in_len': 84, 'max_samples_per_ts': 50}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
-Current value: 0.05426038056612015, Current params: {'in_len': 144, 'max_samples_per_ts': 200}
-Best value: 0.052225515246391296, Best params: {'in_len': 84, 'max_samples_per_ts': 50}
+Optimization started at 2023-03-22 15:46:45.042768
 --------------------------------
 Loading column definition...
 Checking column definition...
@@ -238,75 +69,241 @@ Scaling data...
 	No scaling applied
 Data formatting complete.
 --------------------------------
+Current value: 0.5127847790718079, Current params: {'in_len': 132}
+Best value: 0.5127847790718079, Best params: {'in_len': 132}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.43116363883018494, Current params: {'in_len': 108}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.23969872295856476, Current params: {'in_len': 60}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.23969872295856476, Current params: {'in_len': 60}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 1.0487319231033325, Current params: {'in_len': 180}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.6156737804412842, Current params: {'in_len': 156}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.41716623306274414, Current params: {'in_len': 96}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.43116363883018494, Current params: {'in_len': 108}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.6156737804412842, Current params: {'in_len': 156}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.13832956552505493, Current params: {'in_len': 48}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.056795597076416016, Current params: {'in_len': 24}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.1241467297077179, Current params: {'in_len': 36}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.2331569343805313, Current params: {'in_len': 84}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.18916799128055573, Current params: {'in_len': 72}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.1241467297077179, Current params: {'in_len': 36}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.1241467297077179, Current params: {'in_len': 36}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.056795597076416016, Current params: {'in_len': 24}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.13832956552505493, Current params: {'in_len': 48}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.056795597076416016, Current params: {'in_len': 24}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.13832956552505493, Current params: {'in_len': 48}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.18916799128055573, Current params: {'in_len': 72}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.056795597076416016, Current params: {'in_len': 24}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.9374341368675232, Current params: {'in_len': 192}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.5475040078163147, Current params: {'in_len': 144}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.056795597076416016, Current params: {'in_len': 24}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.1241467297077179, Current params: {'in_len': 36}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.23969872295856476, Current params: {'in_len': 60}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.5193987488746643, Current params: {'in_len': 120}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.23969872295856476, Current params: {'in_len': 60}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.1241467297077179, Current params: {'in_len': 36}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.13832956552505493, Current params: {'in_len': 48}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.056795597076416016, Current params: {'in_len': 24}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.056795597076416016, Current params: {'in_len': 24}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.1241467297077179, Current params: {'in_len': 36}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.41716623306274414, Current params: {'in_len': 96}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.604113757610321, Current params: {'in_len': 168}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
+Current value: 0.05479263514280319, Current params: {'in_len': 12}
+Best value: 0.05479263514280319, Best params: {'in_len': 12}
 	Train: 428864 (69.12%)
 	Val: 58289 (9.39%)
 	Test: 73116 (11.78%)
 	Test OOD: 60217 (9.70%)
 	No scaling applied
-	Seed: 10 ID errors (MSE, MAE) stats: {'min': [array([0.28581837, 0.39488983], dtype=float32)], 'max': [array([41162.613  ,   186.55263], dtype=float32)], 'mean': [array([610.90283 ,  15.702779], dtype=float32)], 'std': [array([1529.2958  ,   14.523441], dtype=float32)], 'quantile25': [array([57.57376766,  6.29957914])], 'median': [array([182.53479004,  11.44935799])], 'quantile75': [array([560.59928894,  19.97697496])]}
-	Seed: 10 OOD errors (MSE, MAE) stats: {'min': [array([0.15278009, 0.32710138], dtype=float32)], 'max': [array([29725.162  ,   162.04938], dtype=float32)], 'mean': [array([691.2834  ,  16.863073], dtype=float32)], 'std': [array([1529.82    ,   15.168136], dtype=float32)], 'quantile25': [array([65.80284882,  6.68659735])], 'median': [array([218.75794983,  12.37826824])], 'quantile75': [array([659.78582764,  21.88270569])]}
+	Seed: 10 ID mean of (MSE, MAE): [614.0311279296875, 15.735742568969727]
+	Seed: 10 OOD mean of (MSE, MAE) stats: [690.6971435546875, 16.809226989746094]
+	Seed: 10 ID median of (MSE, MAE): [183.0157928466797, 11.491626739501953]
+	Seed: 10 OOD median of (MSE, MAE) stats: [217.18275451660156, 12.32532787322998]
+	Seed: 10 ID likelihoods: -10.128961295412285
+	Seed: 10 OOD likelihoods: -10.187789783662225
+	Seed: 10 ID calibration errors: [0.05454604277385535, 0.054554004537171095, 0.05453234808139886, 0.054522047191083, 0.05452817993171495, 0.05452940004609319, 0.05450054009017817, 0.054493970773779994, 0.05448296446893659, 0.054461452772497365, 0.054424189881966, 0.05437661001674841]
+	Seed: 10 OOD calibration errors: [0.05454766727525691, 0.05455441159701971, 0.054591206244983266, 0.054591797879760644, 0.054597289068713056, 0.05459480325855001, 0.0545825620832465, 0.05457090247234119, 0.054522698714154674, 0.05448082293049133, 0.05447932779388103, 0.05442381986378864]
 	Train: 429967 (69.36%)
 	Val: 58465 (9.43%)
 	Test: 72372 (11.67%)
 	Test OOD: 59106 (9.53%)
 	No scaling applied
-	Seed: 11 ID errors (MSE, MAE) stats: {'min': [array([0.27235606, 0.43304762], dtype=float32)], 'max': [array([40892.395  ,   187.60674], dtype=float32)], 'mean': [array([615.38434 ,  15.754694], dtype=float32)], 'std': [array([1523.5398  ,   14.572906], dtype=float32)], 'quantile25': [array([57.18745422,  6.27931976])], 'median': [array([184.92033386,  11.49950504])], 'quantile75': [array([571.8805542 ,  20.25202751])]}
-	Seed: 11 OOD errors (MSE, MAE) stats: {'min': [array([0.31303486, 0.44997406], dtype=float32)], 'max': [array([40614.8    ,   194.54254], dtype=float32)], 'mean': [array([689.2702  ,  16.995398], dtype=float32)], 'std': [array([1546.4696   ,   15.0256405], dtype=float32)], 'quantile25': [array([72.51218224,  7.08087742])], 'median': [array([230.18768311,  12.72130442])], 'quantile75': [array([658.34994507,  22.01378393])]}
+	Seed: 11 ID mean of (MSE, MAE): [618.5950927734375, 15.790035247802734]
+	Seed: 11 OOD mean of (MSE, MAE) stats: [691.7869262695312, 17.021217346191406]
+	Seed: 11 ID median of (MSE, MAE): [183.57081604003906, 11.499329566955566]
+	Seed: 11 OOD median of (MSE, MAE) stats: [226.07864379882812, 12.67489242553711]
+	Seed: 11 ID likelihoods: -10.13266375024876
+	Seed: 11 OOD likelihoods: -10.188577708755421
+	Seed: 11 ID calibration errors: [0.054547800420955375, 0.05453928978086675, 0.05451837230232681, 0.054511336921812405, 0.05451967781248206, 0.05452150297336556, 0.05449762079048895, 0.054497205164474274, 0.054492628549916926, 0.05445899121310573, 0.0544195109972693, 0.05438250373257813]
+	Seed: 11 OOD calibration errors: [0.054548567737633495, 0.05454650686839225, 0.05454573909357689, 0.054538818344451734, 0.05454083880449216, 0.05456228935525476, 0.054559002740255665, 0.05453294587734423, 0.054506771154263764, 0.05449478342810054, 0.05443790579424568, 0.05440506793069519]
 	Train: 430782 (69.60%)
 	Val: 55990 (9.05%)
 	Test: 72317 (11.68%)
 	Test OOD: 59861 (9.67%)
 	No scaling applied
-	Seed: 12 ID errors (MSE, MAE) stats: {'min': [array([0.17164338, 0.33162943], dtype=float32)], 'max': [array([40720.676  ,   169.75114], dtype=float32)], 'mean': [array([604.21674 ,  15.627359], dtype=float32)], 'std': [array([1459.2472 ,   14.38306], dtype=float32)], 'quantile25': [array([56.83155823,  6.22981024])], 'median': [array([179.84593201,  11.31559372])], 'quantile75': [array([559.71887207,  20.03757286])]}
-	Seed: 12 OOD errors (MSE, MAE) stats: {'min': [array([0.3116761 , 0.45520782], dtype=float32)], 'max': [array([37158.77   ,   186.07524], dtype=float32)], 'mean': [array([689.09265 ,  17.023815], dtype=float32)], 'std': [array([1464.2688  ,   14.919518], dtype=float32)], 'quantile25': [array([73.33555603,  7.06674099])], 'median': [array([230.61799622,  12.76920986])], 'quantile75': [array([663.17687988,  22.07295513])]}
+	Seed: 12 ID mean of (MSE, MAE): [606.759033203125, 15.654142379760742]
+	Seed: 12 OOD mean of (MSE, MAE) stats: [689.3843994140625, 17.05813980102539]
+	Seed: 12 ID median of (MSE, MAE): [181.3053741455078, 11.30541706085205]
+	Seed: 12 OOD median of (MSE, MAE) stats: [229.5042266845703, 12.773113250732422]
+	Seed: 12 ID likelihoods: -10.123004047305308
+	Seed: 12 OOD likelihoods: -10.186837691363746
+	Seed: 12 ID calibration errors: [0.05455216939316228, 0.05453603592903926, 0.05454915477902848, 0.054564976224723644, 0.05458185337186643, 0.054574334431556085, 0.054556080180524935, 0.05456785477067084, 0.054566925753396923, 0.05449618437239281, 0.05445688881850879, 0.05439223062384624]
+	Seed: 12 OOD calibration errors: [0.05458508966894553, 0.05463557976326916, 0.054650576599513515, 0.05466150227245608, 0.05464507477702005, 0.05471459132840714, 0.054700701119989655, 0.05468724135560412, 0.05466293772501114, 0.054661118164270155, 0.0546076587411082, 0.05462419137098115]
 	Train: 429588 (69.32%)
 	Val: 57592 (9.29%)
 	Test: 72490 (11.70%)
 	Test OOD: 60048 (9.69%)
 	No scaling applied
-	Seed: 13 ID errors (MSE, MAE) stats: {'min': [array([0.24271296, 0.37893295], dtype=float32)], 'max': [array([40567.664  ,   188.87987], dtype=float32)], 'mean': [array([608.4496  ,  15.576371], dtype=float32)], 'std': [array([1562.5446 ,   14.55051], dtype=float32)], 'quantile25': [array([55.91903782,  6.15184212])], 'median': [array([177.60010529,  11.35030222])], 'quantile75': [array([556.89276123,  20.02140045])]}
-	Seed: 13 OOD errors (MSE, MAE) stats: {'min': [array([0.16411883, 0.36179733], dtype=float32)], 'max': [array([45760.793  ,   198.65169], dtype=float32)], 'mean': [array([732.118   ,  17.650776], dtype=float32)], 'std': [array([1589.0186  ,   15.445392], dtype=float32)], 'quantile25': [array([79.10967255,  7.37234545])], 'median': [array([243.99871826,  13.19069815])], 'quantile75': [array([714.96192932,  23.03099155])]}
+	Seed: 13 ID mean of (MSE, MAE): [611.4273071289062, 15.6007719039917]
+	Seed: 13 OOD mean of (MSE, MAE) stats: [733.8162231445312, 17.680469512939453]
+	Seed: 13 ID median of (MSE, MAE): [181.35763549804688, 11.32896614074707]
+	Seed: 13 OOD median of (MSE, MAE) stats: [249.31808471679688, 13.273176193237305]
+	Seed: 13 ID likelihoods: -10.126836119865484
+	Seed: 13 OOD likelihoods: -10.21806721943068
+	Seed: 13 ID calibration errors: [0.05454690723087673, 0.05452365357235706, 0.054539217062896175, 0.05452916866350868, 0.05454715871977702, 0.054537575179724615, 0.05450402535179182, 0.05451278748539911, 0.05449324200979552, 0.05443635066492874, 0.0543904881077872, 0.05434470643616993]
+	Seed: 13 OOD calibration errors: [0.05455927083014514, 0.05458206882072981, 0.05459150073276371, 0.05458918431942998, 0.05457323133024654, 0.0545955566977881, 0.054596909184282956, 0.05458446630853024, 0.0545804925388177, 0.05455346410497852, 0.05449978309404435, 0.054505697793961506]
 	Train: 421878 (68.10%)
 	Val: 57592 (9.30%)
 	Test: 72450 (11.69%)
 	Test OOD: 67606 (10.91%)
 	No scaling applied
-	Seed: 14 ID errors (MSE, MAE) stats: {'min': [array([0.36076412, 0.49500784], dtype=float32)], 'max': [array([41316.82  ,   186.6391], dtype=float32)], 'mean': [array([615.49725 ,  15.717441], dtype=float32)], 'std': [array([1560.5767   ,   14.5813875], dtype=float32)], 'quantile25': [array([56.66718769,  6.2638377 ])], 'median': [array([180.31958008,  11.44810104])], 'quantile75': [array([566.59918213,  20.19478035])]}
-	Seed: 14 OOD errors (MSE, MAE) stats: {'min': [array([0.2557148 , 0.41128922], dtype=float32)], 'max': [array([3.6437701e+10, 1.5543247e+05], dtype=float32)], 'mean': [array([1.3386714e+07, 1.0906727e+02], dtype=float32)], 'std': [array([5.528557e+08, 3.060740e+03], dtype=float32)], 'quantile25': [array([67.31695557,  6.82168341])], 'median': [array([215.03625488,  12.29676342])], 'quantile75': [array([638.97570801,  21.71107483])]}
+	Seed: 14 ID mean of (MSE, MAE): [618.5848999023438, 15.760649681091309]
+	Seed: 14 OOD mean of (MSE, MAE) stats: [31090.283203125, 19.392972946166992]
+	Seed: 14 ID median of (MSE, MAE): [182.33993530273438, 11.457771301269531]
+	Seed: 14 OOD median of (MSE, MAE) stats: [214.48667907714844, 12.300617218017578]
+	Seed: 14 ID likelihoods: -10.1326555114507
+	Seed: 14 OOD likelihoods: -12.09126588096048
+	Seed: 14 ID calibration errors: [0.05454799056824943, 0.05454985963335062, 0.05453068739417169, 0.05452761016687952, 0.05455343148988214, 0.054552015602040725, 0.05452293354522964, 0.054508398804483923, 0.05451380293166285, 0.05447876483086624, 0.05443377872072596, 0.05441264473168253]
+	Seed: 14 OOD calibration errors: [0.054546554455631474, 0.054575234905772124, 0.05459831121718883, 0.054633877402053894, 0.054590318810415116, 0.054590318810415116, 0.05458484611743481, 0.05459663073391248, 0.05457735168780524, 0.054592571588236834, 0.05458003115873324, 0.05458755086639042]
 	Train: 432386 (69.84%)
 	Val: 57484 (9.28%)
 	Test: 72769 (11.75%)
 	Test OOD: 56503 (9.13%)
 	No scaling applied
-	Seed: 15 ID errors (MSE, MAE) stats: {'min': [array([0.27200237, 0.40932718], dtype=float32)], 'max': [array([41136.63   ,   184.58916], dtype=float32)], 'mean': [array([602.7666 ,  15.51514], dtype=float32)], 'std': [array([1548.0297  ,   14.467805], dtype=float32)], 'quantile25': [array([55.16155243,  6.16831779])], 'median': [array([175.88754272,  11.20075226])], 'quantile75': [array([545.98059082,  19.83212662])]}
-	Seed: 15 OOD errors (MSE, MAE) stats: {'min': [array([0.21850467, 0.3464292 ], dtype=float32)], 'max': [array([32751.4    ,   170.31013], dtype=float32)], 'mean': [array([782.8017  ,  18.262022], dtype=float32)], 'std': [array([1611.2207  ,   15.765324], dtype=float32)], 'quantile25': [array([82.86574936,  7.49062109])], 'median': [array([267.10771179,  13.76366472])], 'quantile75': [array([776.04310608,  23.65495205])]}
+	Seed: 15 ID mean of (MSE, MAE): [605.5823974609375, 15.558449745178223]
+	Seed: 15 OOD mean of (MSE, MAE) stats: [782.6779174804688, 18.264461517333984]
+	Seed: 15 ID median of (MSE, MAE): [176.3067626953125, 11.207841873168945]
+	Seed: 15 OOD median of (MSE, MAE) stats: [265.15435791015625, 13.713220596313477]
+	Seed: 15 ID likelihoods: -10.122032994220394
+	Seed: 15 OOD likelihoods: -10.250299283754163
+	Seed: 15 ID calibration errors: [0.05455228451459085, 0.05454361354554331, 0.05455376715192394, 0.05454403749081549, 0.054557997235689444, 0.054538430170475174, 0.05452378649179197, 0.05452421043706415, 0.05449982304383805, 0.054464949446282974, 0.054426707708941195, 0.05436610227293222]
+	Seed: 15 OOD calibration errors: [0.054545497193742624, 0.054557206707722745, 0.05456117641037887, 0.05457937017008137, 0.054589673996485774, 0.05461301113973283, 0.054598381070983804, 0.05458142411163614, 0.05456902028352582, 0.05454400450365921, 0.054530061925314316, 0.05451517937869972]
 	Train: 440247 (71.04%)
 	Val: 57712 (9.31%)
 	Test: 72728 (11.74%)
 	Test OOD: 49031 (7.91%)
 	No scaling applied
-	Seed: 16 ID errors (MSE, MAE) stats: {'min': [array([0.27452588, 0.45231628], dtype=float32)], 'max': [array([37157.51   ,   186.11047], dtype=float32)], 'mean': [array([600.3645  ,  15.631241], dtype=float32)], 'std': [array([1426.16    ,   14.293177], dtype=float32)], 'quantile25': [array([56.38586044,  6.24427223])], 'median': [array([178.28918457,  11.30122519])], 'quantile75': [array([570.82720947,  20.29600048])]}
-	Seed: 16 OOD errors (MSE, MAE) stats: {'min': [array([0.35013804, 0.44635263], dtype=float32)], 'max': [array([39348.207  ,   178.50452], dtype=float32)], 'mean': [array([768.2997  ,  17.773222], dtype=float32)], 'std': [array([1770.9679  ,   16.022566], dtype=float32)], 'quantile25': [array([81.90498352,  7.53465664])], 'median': [array([248.94010162,  13.27078629])], 'quantile75': [array([676.6778717 ,  22.35381508])]}
+	Seed: 16 ID mean of (MSE, MAE): [602.8536376953125, 15.65658187866211]
+	Seed: 16 OOD mean of (MSE, MAE) stats: [769.4946899414062, 17.76793098449707]
+	Seed: 16 ID median of (MSE, MAE): [179.43560791015625, 11.282333374023438]
+	Seed: 16 OOD median of (MSE, MAE) stats: [243.23257446289062, 13.095388412475586]
+	Seed: 16 ID likelihoods: -10.119775653815104
+	Seed: 16 OOD likelihoods: -10.241806471663558
+	Seed: 16 ID calibration errors: [0.05454974393569765, 0.05453391796477363, 0.05454405104026412, 0.054528988297782514, 0.05454628272950906, 0.05453642339552678, 0.05454386081311435, 0.05452433005245629, 0.0545213977705378, 0.054441490768415604, 0.05441697466452745, 0.054359282481749795]
+	Seed: 16 OOD calibration errors: [0.05460981639839724, 0.054695648351932, 0.0546792338871219, 0.05467584004633103, 0.05464452320480622, 0.054648755694906015, 0.05464003490486524, 0.05461632016981432, 0.05458637879067429, 0.05457810954376228, 0.054573408068953604, 0.05454970302366942]
 	Train: 424721 (68.43%)
 	Val: 58780 (9.47%)
 	Test: 71774 (11.56%)
 	Test OOD: 65403 (10.54%)
 	No scaling applied
-	Seed: 17 ID errors (MSE, MAE) stats: {'min': [array([0.15980776, 0.33667246], dtype=float32)], 'max': [array([40970.504  ,   169.55713], dtype=float32)], 'mean': [array([601.0111  ,  15.571307], dtype=float32)], 'std': [array([1467.3516  ,   14.350317], dtype=float32)], 'quantile25': [array([57.4583931 ,  6.30925179])], 'median': [array([179.37203217,  11.25462103])], 'quantile75': [array([552.39445496,  19.86128902])]}
-	Seed: 17 OOD errors (MSE, MAE) stats: {'min': [array([0.18322165, 0.37546158], dtype=float32)], 'max': [array([54415.934  ,   232.88293], dtype=float32)], 'mean': [array([818.5527  ,  18.464394], dtype=float32)], 'std': [array([1877.7842  ,   16.523294], dtype=float32)], 'quantile25': [array([81.2707119 ,  7.50192964])], 'median': [array([267.32948303,  13.80912495])], 'quantile75': [array([777.09535217,  23.66087055])]}
+	Seed: 17 ID mean of (MSE, MAE): [603.3341064453125, 15.593727111816406]
+	Seed: 17 OOD mean of (MSE, MAE) stats: [819.2926635742188, 18.472352981567383]
+	Seed: 17 ID median of (MSE, MAE): [178.9282684326172, 11.296146392822266]
+	Seed: 17 OOD median of (MSE, MAE) stats: [267.3323974609375, 13.75416088104248]
+	Seed: 17 ID likelihoods: -10.120175255075122
+	Seed: 17 OOD likelihoods: -10.273158991013926
+	Seed: 17 ID calibration errors: [0.05454684532756704, 0.05452042674526543, 0.054523490812107035, 0.05453124393947378, 0.05454296176168206, 0.054535795853429485, 0.05451334631216351, 0.05450578490024769, 0.054517113013718206, 0.0544413974833643, 0.05440082576142615, 0.05434319957383345]
+	Seed: 17 OOD calibration errors: [0.05458317504255022, 0.054633432017525504, 0.05465532673271543, 0.05463968808512754, 0.054650269541881485, 0.054687970260553345, 0.054677606366461635, 0.05465879556397338, 0.054662847098025956, 0.05468511608185162, 0.054671820416780065, 0.05460275416073376]
 	Train: 423608 (68.50%)
 	Val: 56273 (9.10%)
 	Test: 72496 (11.72%)
 	Test OOD: 65997 (10.67%)
 	No scaling applied
-	Seed: 18 ID errors (MSE, MAE) stats: {'min': [array([0.21468274, 0.3657125 ], dtype=float32)], 'max': [array([36954.133  ,   185.53267], dtype=float32)], 'mean': [array([596.9859 ,  15.52434], dtype=float32)], 'std': [array([1442.8706   ,   14.3003435], dtype=float32)], 'quantile25': [array([54.49936581,  6.21199405])], 'median': [array([177.08708191,  11.20662737])], 'quantile75': [array([546.79322815,  19.81056118])]}
-	Seed: 18 OOD errors (MSE, MAE) stats: {'min': [array([0.31180206, 0.43343225], dtype=float32)], 'max': [array([8.1269908e+09, 7.0050695e+04], dtype=float32)], 'mean': [array([3.4091838e+06, 6.7345062e+01], dtype=float32)], 'std': [array([1.2646746e+08, 1.5140000e+03], dtype=float32)], 'quantile25': [array([86.77844048,  7.69309807])], 'median': [array([275.25975037,  13.97794342])], 'quantile75': [array([819.01133728,  24.34817219])]}
+	Seed: 18 ID mean of (MSE, MAE): [598.65283203125, 15.537591934204102]
+	Seed: 18 OOD mean of (MSE, MAE) stats: [3022.701904296875, 19.164569854736328]
+	Seed: 18 ID median of (MSE, MAE): [177.3483123779297, 11.245266914367676]
+	Seed: 18 OOD median of (MSE, MAE) stats: [270.3642883300781, 13.858610153198242]
+	Seed: 18 ID likelihoods: -10.116279356674394
+	Seed: 18 OOD likelihoods: -10.925891602394636
+	Seed: 18 ID calibration errors: [0.05454551328986559, 0.054515360958558405, 0.05454239748630316, 0.05452984733032498, 0.054544225612375236, 0.05453254487368073, 0.054528597249257696, 0.054492514082210224, 0.05449466412765489, 0.05442948837847568, 0.05437831259733949, 0.05433235331990514]
+	Seed: 18 OOD calibration errors: [0.05454862021096856, 0.05458213247995481, 0.05460955927211346, 0.054620985638761714, 0.05459135201247068, 0.05457438549702606, 0.054582030157778065, 0.05456269805663164, 0.054552786386004866, 0.054548071604881315, 0.05455209893083111, 0.05454024243640557]
 	Train: 422428 (68.44%)
 	Val: 55913 (9.06%)
 	Test: 72070 (11.68%)
 	Test OOD: 66811 (10.82%)
 	No scaling applied
-	Seed: 19 ID errors (MSE, MAE) stats: {'min': [array([0.26306427, 0.40232596], dtype=float32)], 'max': [array([40861.566  ,   187.70872], dtype=float32)], 'mean': [array([607.5793 ,  15.59004], dtype=float32)], 'std': [array([1542.9058  ,   14.517779], dtype=float32)], 'quantile25': [array([54.58502769,  6.13972545])], 'median': [array([177.97045898,  11.32699108])], 'quantile75': [array([559.39093018,  19.97424984])]}
-	Seed: 19 OOD errors (MSE, MAE) stats: {'min': [array([0.4661645, 0.5252228], dtype=float32)], 'max': [array([26157.21   ,   144.31116], dtype=float32)], 'mean': [array([749.14703 ,  17.910624], dtype=float32)], 'std': [array([1512.8938  ,   15.433248], dtype=float32)], 'quantile25': [array([80.50497437,  7.4818244 ])], 'median': [array([254.3067627 ,  13.41969776])], 'quantile75': [array([734.36279297,  23.26916504])]}
-RS ID (MSE, MAE) errors stats: {'mean': array([[606.3158  ,  15.621071]], dtype=float32), 'std': array([[1506.2522  ,   14.454073]], dtype=float32), 'quantile25': array([[56.22692051,  6.22979503]]), 'quantile75': array([[559.10770721,  20.02569833]]), 'median': array([[179.38270416,  11.33530769]]), 'min': array([[0.25173777, 0.3999862 ]], dtype=float32), 'max': array([[40174.047  ,   183.29277]], dtype=float32)}
-RS OOD (MSE, MAE) errors stats: {'mean': array([[1.6801820e+06, 3.1735565e+01]], dtype=float32), 'std': array([[6.7933608e+07, 4.6990424e+02]], dtype=float32), 'quantile25': array([[77.14020748,  7.27303745]]), 'quantile75': array([[711.84407501,  22.7998486 ]]), 'median': array([[245.15424118,  13.15974612]]), 'min': array([[0.2727156 , 0.41322678]], dtype=float32), 'max': array([[4.4564997e+09, 2.2695051e+04]], dtype=float32)}
+	Seed: 19 ID mean of (MSE, MAE): [610.2147216796875, 15.609051704406738]
+	Seed: 19 OOD mean of (MSE, MAE) stats: [748.4249267578125, 17.889820098876953]
+	Seed: 19 ID median of (MSE, MAE): [178.7745361328125, 11.348347663879395]
+	Seed: 19 OOD median of (MSE, MAE) stats: [252.80108642578125, 13.333072662353516]
+	Seed: 19 ID likelihoods: -10.125845182463586
+	Seed: 19 OOD likelihoods: -10.227924105820229
+	Seed: 19 ID calibration errors: [0.05454688193000101, 0.0545354894870435, 0.054538173279128715, 0.054515812149858726, 0.05453588232990411, 0.054520074922933294, 0.05450432601435457, 0.054521447494961996, 0.05450971595156912, 0.054476312894097385, 0.05444937604913507, 0.05438688977886821]
+	Seed: 19 OOD calibration errors: [0.054564474509108486, 0.05459059396248279, 0.05462540099783048, 0.0546290552261749, 0.054650942715662065, 0.05462093313093413, 0.054602931916693714, 0.05460324789062814, 0.054606548944948215, 0.054586616501649816, 0.05459052863549562, 0.05455806293751424]
+ID mean of (MSE, MAE): [609.0035400390625, 15.649675369262695]
+OOD mean of (MSE, MAE): [4003.856689453125, 17.95211410522461]
+ID median of (MSE, MAE): [180.23831176757812, 11.346304893493652]
+OOD median of (MSE, MAE): [243.54550170898438, 13.11015796661377]
+ID likelihoods: -10.124822916653113
+OOD likelihoods: -10.479161873881907
+ID calibration errors: [0.054548217938482135, 0.054535165215396905, 0.05453716593895489, 0.054530506837626266, 0.054545765099488254, 0.05453780974488256, 0.054519511683889556, 0.05451485039657485, 0.054509227762102694, 0.05445853828244268, 0.05441970533076266, 0.054369652296831404]
+OOD calibration errors: [0.054563873332237965, 0.05459528154748009, 0.05461080311881864, 0.0546160119384629, 0.05460735142621932, 0.05462026151735674, 0.05461250056619921, 0.05459946725404158, 0.05458278333232317, 0.05457246784518817, 0.05455226245593873, 0.05453122697628395]
