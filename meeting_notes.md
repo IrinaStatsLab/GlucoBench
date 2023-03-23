@@ -1,3 +1,32 @@
+# Wednesday March 22, 2023
+Next Meeting: Wednesday March 29th, 2023    
+Next Meeting Notetaker: **Nathaniel**
+
+## Tasks
+* Finish drafting your sections - 3/4 of a page or more
+	* include a list of figures/tables for your section
+* Create your assigned plots (see below)
+
+## Assigned plots
+* Nathaniel:
+	* Plot all model errors without confidence intervals for each dataset ordered by size - i.e. y axis is error, x axis is datasets by size
+	* One plot each for with and without covariates
+* Nicky:
+	* Plot best model error with confidence intervals for each dataset ordered by size - y axis is error, x axis is datasets by size
+	* One plot each for with and without covariates
+* Valeriya:
+	* Plot all model errors without confidence intervals for each dataset ordered by type - y axis is error, x axis is datasets by type
+		* should be Hall (none) -> Colas (mixed) -> IGLU (type 2) -> Dubosson (type 1) -> Weinstock (type 1), not sure on Dubosson/Weinstock ordering
+	* One plot each for with and without covariates
+* Lizzie:
+	* Plot best model error with confidence intervals for each dataset ordered by type
+		* See Valeriya's
+	* One plot each for with and without covariates
+
+## Updates
+* Splitting updated to take test from the very end - prevent test data chronologically before train
+* Subsampling had a bug in darts, Renat has fixed for us
+
 # Wednesday March 8, 2023
 Next Meeting: Wednesday March 22th, 2023  
 Next Meeting Notetaker: **Nathaniel**
