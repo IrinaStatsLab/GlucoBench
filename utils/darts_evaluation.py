@@ -171,18 +171,15 @@ def rescale_and_backtest(series: Union[TimeSeries,
                                                       forecast, 
                                                       intersect=True, 
                                                       remove_nan_union=True)
-                cdf_vals.append(stats.norm.cdf(y_true, loc=y_pred, scale=est_var))
+                y_true, y_pred = y_true.flatten(), y_pred.flatten()
+                cdf_vals.append(stats.norm.cdf(y_true, loc=y_pred, scale=np.sqrt(est_var)))
         cdf_vals = np.vstack(cdf_vals)
         # compute the prediction calibration
-        cal_error = []
-        for j in range(cdf_vals.shape[1]):
-            cal_error_j = 0
-            for p in cal_thresholds:
-                est_p = (cdf_vals[:, j] <= p).astype(float)
-                est_p = np.mean(est_p)
-                cal_error_j += (est_p - p) ** 2
-            cal_error.append(cal_error_j / len(cal_thresholds))
-        cal_error = np.array(cal_error)
+        cal_error = np.zeros(forecasts[0][0].n_timesteps)
+        for p in cal_thresholds:
+            est_p = (cdf_vals <= p).astype(float)
+            est_p = np.mean(est_p, axis=0)
+            cal_error += (est_p - p) ** 2
 
     return backtest_list, log_likelihood, cal_error
 
@@ -256,18 +253,15 @@ def rescale_and_test(series: Union[TimeSeries,
         cdf_vals = []
         for t, f in zip(series, forecasts):
             t, f = _get_values_or_raise(t, f, intersect=True, remove_nan_union=True)
-            cdf_vals.append(stats.norm.cdf(t, loc=f, scale=est_var))
+            t, f = t.flatten(), f.flatten()
+            cdf_vals.append(stats.norm.cdf(t, loc=f, scale=np.sqrt(est_var)))
         cdf_vals = np.vstack(cdf_vals)
         # compute the prediction calibration
-        cal_error = []
-        for j in range(cdf_vals.shape[1]):
-            cal_error_j = 0
-            for p in cal_thresholds:
-                est_p = (cdf_vals[:, j] <= p).astype(float)
-                est_p = np.mean(est_p)
-                cal_error_j += (est_p - p) ** 2
-            cal_error.append(cal_error_j / len(cal_thresholds))
-        cal_error = np.array(cal_error)
+        cal_error = np.zeros(forecasts[0].n_timesteps)
+        for p in cal_thresholds:
+            est_p = (cdf_vals <= p).astype(float)
+            est_p = np.mean(est_p, axis=0)
+            cal_error += (est_p - p) ** 2
 
     if likelihood == "Quantile":
         # no likelihood since we don't have a parametric model
@@ -280,8 +274,9 @@ def rescale_and_test(series: Union[TimeSeries,
             for t, f in zip(series, forecasts):
                 q = f.quantile(p)
                 t, q = _get_values_or_raise(t, q, intersect=True, remove_nan_union=True)
+                t, q = t.flatten(), q.flatten()
                 est_p += (t <= q).astype(float)
             est_p = (est_p / len(series)).flatten()
             cal_error += (est_p - p) ** 2
-
+        
     return errors, log_likelihood, cal_error
