@@ -52,10 +52,10 @@ max_length_input: 192 # in number of points (16 hrs)
 length_pred: 12 # in number of points (predict 1 hr)
 
 linreg:
-  in_len: 72
+  in_len: 192
 
 linreg_covariates:
-  in_len: 60
+  in_len: 12
 
 tft:
   in_len: 168
