@@ -148,12 +148,20 @@ class DataFormatter():
                                                            **self._interpolation_params)
 
   def __split_data(self):
-    self.train_idx, self.val_idx, self.test_idx, self.test_idx_ood = utils.split(self.data, 
-                                                                                 self._column_definition, 
-                                                                                 **self._split_params)
-    self.train_data, self.val_data, self.test_data = self.data.iloc[self.train_idx], \
-                                                      self.data.iloc[self.val_idx], \
-                                                        self.data.iloc[self.test_idx + self.test_idx_ood]
+    if self.params['split_params']['test_percent_subjects'] == 0 or \
+        self.params['split_params']['length_segment'] == 0:
+      print('\tNo splitting performed since test_percent_subjects or length_segment is 0.')
+      self.train_idx, self.val_idx, self.test_idx, self.test_idx_ood = None, None, None, None
+      self.train_data, self.val_data, self.test_data = self.data, None, None
+    else:
+      assert self.params['split_params']['length_segment'] > self.params['length_pred'], \
+        'length_segment for test / val must be greater than length_pred.'
+      self.train_idx, self.val_idx, self.test_idx, self.test_idx_ood = utils.split(self.data, 
+                                                                                  self._column_definition, 
+                                                                                  **self._split_params)
+      self.train_data, self.val_data, self.test_data = self.data.iloc[self.train_idx], \
+                                                        self.data.iloc[self.val_idx], \
+                                                          self.data.iloc[self.test_idx + self.test_idx_ood]
 
   def __encode(self):
     self.data, self._column_definition, self.encoders = utils.encode(self.data, 
