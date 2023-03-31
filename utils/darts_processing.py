@@ -245,10 +245,22 @@ def reshuffle_data(formatter: DataFormatter,
 
 class ScalerCustom:
     '''
-    Custom scaler for TimeSeries.
+    Min-max scaler for TimeSeries that fits on all sequences simultaenously.
+    Default Darts scaler fits one scaler per sequence in the list.
+
+    Attributes
+    ----------
+    scaler: Scaler
+        Darts scaler object.
+    min_: np.ndarray
+        Per feature adjustment for minimum (see Scikit-learn).
+    scale_: np.ndarray
+        Per feature relative scaling of the data (see Scikit-learn).
     '''
     def __init__(self):
         self.scaler = Scaler()
+        self.min_ = None
+        self.scale_ = None 
 
     def fit(self, time_series: Union[List[TimeSeries], TimeSeries]) -> None:
         if isinstance(time_series, list):
@@ -263,6 +275,9 @@ class ScalerCustom:
             series = self.scaler.fit(series)
         else:
             series = self.scaler.fit(time_series)
+        # extract min and scale
+        self.min_ = self.scaler._fitted_params[0].min_
+        self.scale_ = self.scaler._fitted_params[0].scale_
 
     def transform(self, time_series: Union[List[TimeSeries], TimeSeries]) -> Union[List[TimeSeries], TimeSeries]:
         if isinstance(time_series, list):

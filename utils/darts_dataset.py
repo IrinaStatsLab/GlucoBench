@@ -399,6 +399,7 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
         use_static_covariates: bool = True,
         random_state: Optional[int] = 0,
         max_samples_per_ts: Optional[int] = None,
+        array_output_only: bool = False,
     ):
         """
         Parameters
@@ -426,6 +427,9 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
             The random state to use for sampling.
         max_samples_per_ts
             The maximum number of samples to be drawn from each time series. If None, all samples will be drawn.
+        array_output_only
+            Whether __getitem__ returns only the arrays or adds the full `TimeSeries` object to the output tuple
+            This may cause problems with the torch collate and loader functions but works for Darts.
         """
         super().__init__(target_series = target_series,
                          past_covariates = past_covariates,
@@ -469,6 +473,7 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
         self.total_length = input_chunk_length + output_chunk_length
         self.total_number_samples = sum([len(v) for v in self.valid_sampling_locations.values()])
         self.use_static_covariates = use_static_covariates
+        self.array_output_only = array_output_only
 
     def __len__(self):
         """
@@ -518,6 +523,13 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
             static_covariates = self.target_series[target_idx].static_covariates_values(copy=True)
         else:
             static_covariates = None
+        if self.array_output_only:
+            return (past_target_series,
+                    past_covariates,
+                    historic_future_covariates,
+                    future_covariates,
+                    future_past_covariates,
+                    static_covariates)
         return (past_target_series,
                 past_covariates,
                 historic_future_covariates,
@@ -530,7 +542,7 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
             self, idx: int
         ) -> TimeSeries:
         """
-        Returns the same sample as getitem, but with the future target values which are to be predicted.
+        Returns the future target series at the given index.
         """
         # get idx of target series
         target_idx = 0
@@ -540,7 +552,7 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
         # get sampling location within the target series
         sampling_location = self.valid_sampling_locations[target_idx][idx]
         # get target series
-        target_series = self.target_series[target_idx][sampling_location : sampling_location + self.total_length]
+        target_series = self.target_series[target_idx][sampling_location + self.input_chunk_length : sampling_location + self.total_length]
 
         return target_series
 
@@ -555,6 +567,7 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
         use_static_covariates: bool = True,
         random_state: Optional[int] = 0,
         max_samples_per_ts: Optional[int] = None,
+        array_output_only: bool = False,
     ):
         """
         Parameters
@@ -579,6 +592,9 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
             The random state to use for sampling.
         max_samples_per_ts
             The maximum number of samples to be drawn from each time series. If None, all samples will be drawn.
+        array_output_only
+            Whether __getitem__ returns only the arrays or adds the full `TimeSeries` object to the output tuple
+            This may cause problems with the torch collate and loader functions but works for Darts.
         """
         super().__init__(target_series = target_series,
                          covariates = covariates,
@@ -612,6 +628,7 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
         self.total_length = input_chunk_length + output_chunk_length
         self.total_number_samples = sum([len(v) for v in self.valid_sampling_locations.values()])
         self.use_static_covariates = use_static_covariates
+        self.array_output_only = array_output_only
 
     def __len__(self):
         """
@@ -653,6 +670,12 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
             static_covariates = self.target_series[target_idx].static_covariates_values(copy=True)
         else:
             static_covariates = None
+        # return arrays or arrays with TimeSeries
+        if self.array_output_only:
+            return (past_target_series,
+                    past_covariates,
+                    future_past_covariates,
+                    static_covariates)
         return (past_target_series,
                 past_covariates,
                 future_past_covariates,
@@ -663,7 +686,7 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
             self, idx: int
         ) -> TimeSeries:
         """
-        Returns the same sample as getitem, but with the future target values which are to be predicted.
+        Returns the future target series at the given index.
         """
         # get idx of target series
         target_idx = 0
@@ -673,7 +696,7 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
         # get sampling location within the target series
         sampling_location = self.valid_sampling_locations[target_idx][idx]
         # get target series
-        target_series = self.target_series[target_idx][sampling_location : sampling_location + self.total_length]
+        target_series = self.target_series[target_idx][sampling_location + self.input_chunk_length : sampling_location + self.total_length]
 
         return target_series
 
@@ -688,6 +711,7 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
         use_static_covariates: bool = True,
         random_state: Optional[int] = 0,
         max_samples_per_ts: Optional[int] = None,
+        array_output_only: bool = False,
     ):
         """
         Parameters
@@ -710,6 +734,9 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
             The random state to use for sampling.
         max_samples_per_ts
             The maximum number of samples to be drawn from each time series. If None, all samples will be drawn.
+        array_output_only
+            Whether __getitem__ returns only the arrays or adds the full `TimeSeries` object to the output tuple
+            This may cause problems with the torch collate and loader functions but works for Darts.
         """
         super().__init__(target_series = target_series,
                          covariates = covariates,
@@ -743,6 +770,7 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
         self.total_length = input_chunk_length + output_chunk_length
         self.total_number_samples = sum([len(v) for v in self.valid_sampling_locations.values()])
         self.use_static_covariates = use_static_covariates
+        self.array_output_only = array_output_only
 
     def __len__(self):
         """
@@ -784,6 +812,12 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
             static_covariates = self.target_series[target_idx].static_covariates_values(copy=True)
         else:
             static_covariates = None
+        # return arrays or arrays with TimeSeries
+        if self.array_output_only:
+            return (past_target_series,
+                    historic_future_covariates,
+                    future_covariates,
+                    static_covariates)
         return (past_target_series,
                 historic_future_covariates,
                 future_covariates,
@@ -794,7 +828,7 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
             self, idx: int
         ) -> TimeSeries:
         """
-        Returns the same sample as getitem, but with the future target values which are to be predicted.
+        Returns the future target series at the given index.
         """
         # get idx of target series
         target_idx = 0
@@ -804,7 +838,7 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
         # get sampling location within the target series
         sampling_location = self.valid_sampling_locations[target_idx][idx]
         # get target series
-        target_series = self.target_series[target_idx][sampling_location : sampling_location + self.total_length]
+        target_series = self.target_series[target_idx][sampling_location + self.input_chunk_length : sampling_location + self.total_length]
 
         return target_series
         
