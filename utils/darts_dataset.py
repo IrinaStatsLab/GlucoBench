@@ -523,20 +523,26 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
             static_covariates = self.target_series[target_idx].static_covariates_values(copy=True)
         else:
             static_covariates = None
+        # whether to remove Timeseries and None and return only arrays   
         if self.array_output_only:
+            output = []
+            for element in [past_target_series,
+                            past_covariates,
+                            historic_future_covariates,
+                            future_covariates,
+                            future_past_covariates,
+                            static_covariates]:
+                if element is not None:
+                    output.append(element)
+            return tuple(output)
+        else:
             return (past_target_series,
                     past_covariates,
                     historic_future_covariates,
                     future_covariates,
                     future_past_covariates,
-                    static_covariates)
-        return (past_target_series,
-                past_covariates,
-                historic_future_covariates,
-                future_covariates,
-                future_past_covariates,
-                static_covariates,
-                past_target_series_with_time)
+                    static_covariates,
+                    past_target_series_with_time)
 
     def evalsample(
             self, idx: int
@@ -672,15 +678,20 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
             static_covariates = None
         # return arrays or arrays with TimeSeries
         if self.array_output_only:
+            output = []
+            for element in (past_target_series,
+                            past_covariates,
+                            future_past_covariates,
+                            static_covariates):
+                if element is not None:
+                    output.append(element)
+            return tuple(output)
+        else:
             return (past_target_series,
                     past_covariates,
                     future_past_covariates,
-                    static_covariates)
-        return (past_target_series,
-                past_covariates,
-                future_past_covariates,
-                static_covariates,
-                past_target_series_with_time)
+                    static_covariates,
+                    past_target_series_with_time)
 
     def evalsample(
             self, idx: int
@@ -814,15 +825,20 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
             static_covariates = None
         # return arrays or arrays with TimeSeries
         if self.array_output_only:
+            output  = []
+            for element in (past_target_series,
+                            historic_future_covariates,
+                            future_covariates,
+                            static_covariates):
+                if element is not None:
+                    output.append(element)
+            return tuple(output)
+        else:
             return (past_target_series,
                     historic_future_covariates,
                     future_covariates,
-                    static_covariates)
-        return (past_target_series,
-                historic_future_covariates,
-                future_covariates,
-                static_covariates,
-                past_target_series_with_time)
+                    static_covariates,
+                    past_target_series_with_time)
 
     def evalsample(
             self, idx: int

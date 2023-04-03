@@ -238,59 +238,6 @@ def split(df: pd.DataFrame,
         test_idx += list(id_data.iloc[-length_segment-max_length_input:].index)
       else:
         train_idx += list(id_data.index)
-  
-
-    # if len(segment_ids) >= 3:
-    #   train_idx += list(id_data.loc[id_data[id_segment_col].isin(segment_ids[:-2])].index)
-    #   val_idx += list(id_data.loc[id_data[id_segment_col] == segment_ids[-2]].index)
-    #   test_idx += list(id_data.loc[id_data[id_segment_col] == segment_ids[-1]].index)
-    # elif len(segment_ids) == 2:
-    #   first_segment = id_data[id_data[id_segment_col] == segment_ids[0]]
-    #   last_segment = id_data[id_data[id_segment_col] == segment_ids[1]]
-    #   if len(last_segment) > 2 * length_segment:
-    #     train_idx += list(first_segment.index)
-    #     val_idx += list(last_segment.iloc[:-length_segment].index)
-    #     test_idx += list(last_segment.iloc[-length_segment:].index)
-    #   else:
-    #     test_idx += list(last_segment.index)
-    #     if len(first_segment) > 2 * length_segment:
-    #       train_idx += list(first_segment.iloc[:-length_segment].index)
-    #       val_idx += list(first_segment.iloc[-length_segment:].index)
-    #     else:
-    #       train_idx += list(first_segment.index)
-    # elif len(segment_ids) == 1:
-    #   if len(id_data) > 3 * length_segment:
-    #     train_idx += list(id_data.iloc[:-length_segment-length_segment].index)
-    #     val_idx += list(id_data.iloc[-length_segment-length_segment:-length_segment].index)
-    #     test_idx += list(id_data.iloc[-length_segment:].index)
-    #   elif len(id_data) > 2 * length_segment:
-    #     train_idx += list(id_data.iloc[:-length_segment].index)
-    #     test_idx += list(id_data.iloc[-length_segment:].index)
-    #   else:
-    #     train_idx += list(id_data.index)
-
-  # for id_segment, segment_data in df.groupby(id_segment_col):
-  #   # handle length of segment = 0 case
-  #   if length_segment == 0:
-  #     train_idx += list(segment_data.index)
-  #     continue
-  #   # otherwise, split into train, val and test
-  #   if len(segment_data) >= 3 * length_segment:
-  #     # get indices for train, val and test
-  #     train_idx += list(segment_data.iloc[:-length_segment-length_segment].index)
-  #     val_idx += list(segment_data.iloc[-length_segment-length_segment:-length_segment].index)
-  #     test_idx += list(segment_data.iloc[-length_segment:].index)
-  #   elif len(segment_data) >= 2 * length_segment:
-  #     # get indices for train and test
-  #     train_idx += list(segment_data.iloc[:-length_segment].index)
-  #     val_idx += list(segment_data.iloc[-length_segment:].index)
-  #   elif len(segment_data) >= length_segment:
-  #     # get indices for train
-  #     train_idx += list(segment_data.index)
-  #   else:
-  #     # segment is too short, skip
-  #     continue
-  # print number of points in each set and proportion
   total_len = len(train_idx) + len(val_idx) + len(test_idx) + len(test_idx_ood)
   print('\tTrain: {} ({:.2f}%)'.format(len(train_idx), len(train_idx) / total_len * 100))
   print('\tVal: {} ({:.2f}%)'.format(len(val_idx), len(val_idx) / total_len * 100))
