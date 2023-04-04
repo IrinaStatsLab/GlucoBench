@@ -1,3 +1,24 @@
+# Wednesday March 29, 2023
+Next Meeting: Wednesday
+Next Meeting Notetaker:
+
+## Tasks
+* Everyone: finish their sections in the paper. Prioritize writing over creating figures since then Renat/Dr. G can edit
+
+* Renat
+	* Upload TFT results 
+
+* Lizzie:
+	* Update the tables
+
+* Nathaniel
+	* Add a smooth trendline w/ confidence intervals on the "difficulty" plot, have T2, Healthy, etc. in the x label 
+	* Use CI instead of boxplots
+
+
+## Assigned Plots
+
+
 # Wednesday March 22, 2023
 Next Meeting: Wednesday March 29th, 2023    
 Next Meeting Notetaker: **Nathaniel**
