@@ -1,3 +1,64 @@
+# Wednesday April 5, 2023
+Next Meeting: Wednesday April 12th, 2023    
+Next Meeting Notetaker: **Nicky**
+
+## Tasks
+* Continue working on your sections as needed
+* Create plots and figures as assigned
+
+## Required plots
+* OOD/ID vs models plot - Nathaniel
+* ID RMSE vs datasets ordered by diabetes type - Nathaniel
+* Night vs Day plot - Renat
+	* Density vs error?
+	* 1 Dataset, 1 model, ID only
+* RMSE compared to theoretical - Renat
+* For Valeriya, think of a figure or two for 5.1
+	* Preferably two to make 6 total for our panel
+	* Maybe a histogram or something like that
+
+## Updates
+* Lizzie’s sections:
+	* Demographic table good, text complete can be edited
+	* Renat has updated results tables with percentages
+	* Rewrite 4.3 based on new table
+* Nathaniel’s sections:
+	* Compared ID and OOD errors and found centered on 0 
+	* OOD-ID table to be subsumed by Renat’s table 
+	* Be careful when drawing conclusions, can say they don’t differ too much
+		* Except Arima and Regression which tend to generalize poorly
+	* Try to add jitter to point plot
+	* Pull standard errors from original results txt files
+		* Can just modify summary notebook
+		* For models without standard error, just have point (can plug SE = 0)
+	* Plot to compare ID vs OOD
+		* X axis models order same as table
+		* Calculate ratio of OOD/ID 
+		* add horizontal line at 1
+	* For covariates errors, just put NA for linear regression since it balloons
+
+
+# Wednesday March 29, 2023
+Next Meeting: Wednesday  
+Next Meeting Notetaker:  
+
+## Tasks
+* Everyone: finish their sections in the paper. Prioritize writing over creating figures since then Renat/Dr. G can edit
+
+* Renat
+	* Upload TFT results 
+
+* Lizzie:
+	* Update the tables
+
+* Nathaniel
+	* Add a smooth trendline w/ confidence intervals on the "difficulty" plot, have T2, Healthy, etc. in the x label 
+	* Use CI instead of boxplots
+
+
+## Assigned Plots
+
+
 # Wednesday March 22, 2023
 Next Meeting: Wednesday March 29th, 2023    
 Next Meeting Notetaker: **Nathaniel**
