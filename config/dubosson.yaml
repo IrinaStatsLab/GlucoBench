@@ -183,4 +183,23 @@ nhits_covariates:
   batch_size: 48
   lr_epochs: 12
 
+gluformer:
+  in_len: 108
+  max_samples_per_ts: 100
+  d_model: 384
+  n_heads: 8
+  d_fcn: 1024
+  num_enc_layers: 1
+  num_dec_layers: 3
+
+latentode:
+  in_len: 48
+  max_samples_per_ts: 100
+  latents: 20
+  rec_dims: 40
+  rec_layers: 3
+  gen_layers: 3
+  units: 100
+  gru_units: 100
+
 

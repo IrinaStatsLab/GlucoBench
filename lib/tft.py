@@ -121,7 +121,7 @@ if __name__ == '__main__':
                                            dataset=args.dataset,
                                            use_covs=True if args.use_covs == 'True' else False,
                                            cov_type='mixed',
-                                           use_static_covs=True,)
+                                           use_static_covs=True if args.use_covs == 'True' else False)
     
     # hyperparameter optimization
     best_params = None
@@ -175,7 +175,7 @@ if __name__ == '__main__':
                                                         seed=seed, 
                                                         use_covs=True if args.use_covs == 'True' else False,
                                                         cov_type='mixed',
-                                                        use_static_covs=True,)
+                                                        use_static_covs=True if args.use_covs == 'True' else False)
             # model callbacks
             el_stopper = EarlyStopping(monitor="val_loss", patience=10, min_delta=0.001, mode='min') 
             loss_logger = LossLogger()

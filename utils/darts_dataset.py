@@ -33,7 +33,6 @@ from data_formatter.base import *
 def get_valid_sampling_locations(target_series: Union[TimeSeries, Sequence[TimeSeries]],
                                  output_chunk_length: int = 12,
                                  input_chunk_length: int = 12,
-                                 use_static_covariates: bool = True,
                                  random_state: Optional[int] = 0,
                                  max_samples_per_ts: Optional[int] = None):
     """
@@ -120,8 +119,8 @@ class SamplingDatasetPast(PastCovariatesTrainingDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -218,8 +217,8 @@ class SamplingDatasetDual(DualCovariatesTrainingDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts,)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -331,8 +330,8 @@ class SamplingDatasetMixed(MixedCovariatesTrainingDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts,)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -464,8 +463,8 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts,)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -625,8 +624,8 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts,)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -772,8 +771,8 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts,)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
