@@ -33,7 +33,6 @@ from data_formatter.base import *
 def get_valid_sampling_locations(target_series: Union[TimeSeries, Sequence[TimeSeries]],
                                  output_chunk_length: int = 12,
                                  input_chunk_length: int = 12,
-                                 use_static_covariates: bool = True,
                                  random_state: Optional[int] = 0,
                                  max_samples_per_ts: Optional[int] = None):
     """
@@ -120,8 +119,8 @@ class SamplingDatasetPast(PastCovariatesTrainingDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -218,8 +217,8 @@ class SamplingDatasetDual(DualCovariatesTrainingDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts,)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -331,8 +330,8 @@ class SamplingDatasetMixed(MixedCovariatesTrainingDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts,)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -464,8 +463,8 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts,)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -523,20 +522,26 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
             static_covariates = self.target_series[target_idx].static_covariates_values(copy=True)
         else:
             static_covariates = None
+        # whether to remove Timeseries and None and return only arrays   
         if self.array_output_only:
+            output = []
+            for element in [past_target_series,
+                            past_covariates,
+                            historic_future_covariates,
+                            future_covariates,
+                            future_past_covariates,
+                            static_covariates]:
+                if element is not None:
+                    output.append(element)
+            return tuple(output)
+        else:
             return (past_target_series,
                     past_covariates,
                     historic_future_covariates,
                     future_covariates,
                     future_past_covariates,
-                    static_covariates)
-        return (past_target_series,
-                past_covariates,
-                historic_future_covariates,
-                future_covariates,
-                future_past_covariates,
-                static_covariates,
-                past_target_series_with_time)
+                    static_covariates,
+                    past_target_series_with_time)
 
     def evalsample(
             self, idx: int
@@ -619,8 +624,8 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts,)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -672,15 +677,20 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
             static_covariates = None
         # return arrays or arrays with TimeSeries
         if self.array_output_only:
+            output = []
+            for element in (past_target_series,
+                            past_covariates,
+                            future_past_covariates,
+                            static_covariates):
+                if element is not None:
+                    output.append(element)
+            return tuple(output)
+        else:
             return (past_target_series,
                     past_covariates,
                     future_past_covariates,
-                    static_covariates)
-        return (past_target_series,
-                past_covariates,
-                future_past_covariates,
-                static_covariates,
-                past_target_series_with_time)
+                    static_covariates,
+                    past_target_series_with_time)
 
     def evalsample(
             self, idx: int
@@ -761,8 +771,8 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
         self.valid_sampling_locations = get_valid_sampling_locations(target_series,
                                                                      output_chunk_length,
                                                                      input_chunk_length,
-                                                                     max_samples_per_ts,
-                                                                     random_state)
+                                                                     random_state,
+                                                                     max_samples_per_ts,)
         
         # set parameters
         self.output_chunk_length = output_chunk_length
@@ -814,15 +824,20 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
             static_covariates = None
         # return arrays or arrays with TimeSeries
         if self.array_output_only:
+            output  = []
+            for element in (past_target_series,
+                            historic_future_covariates,
+                            future_covariates,
+                            static_covariates):
+                if element is not None:
+                    output.append(element)
+            return tuple(output)
+        else:
             return (past_target_series,
                     historic_future_covariates,
                     future_covariates,
-                    static_covariates)
-        return (past_target_series,
-                historic_future_covariates,
-                future_covariates,
-                static_covariates,
-                past_target_series_with_time)
+                    static_covariates,
+                    past_target_series_with_time)
 
     def evalsample(
             self, idx: int
