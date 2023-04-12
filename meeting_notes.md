@@ -1,6 +1,54 @@
+# Wednesday April 12th, 2023
+Next Meeting: Wednesday April 19th, 2023  
+Next Meeting Notetaker: **Nicky**
+
+PRIORITY TODOs: 
+Nicky finish table and fix figure, Nathaniel finish figures, Valeriya adjust figure  
+Send times of your finals to Dr. Gaynanova and Renat so they can plan accordingly
+
+## Updates
+Nathaniel 
+finished OD/ID plot
+		Maybe add to caption note that regression dropped some values
+	Error bars plot - in progress
+		Seaborn doesn’t allow for specifying error
+		Planning to switch to matplotlib
+		Final version needs to specify error and drop title
+		Use MAE so that the standard deviation we calculate is valid
+
+Comments/reviews
+
+3.1 Data (Lizzie)  
+	* Need clear structure for each paragraph
+3.2 Features (Nicky)  
+	* Need more writing  
+	* Drop glucose from covariate table because it is not a covariate  
+	* For covariate plot change dynamic unknown to something like heart rate   
+	* Change plot x axis to 12 hour tick marks (see Renat’s adjustment to be pushed)  
+3.3 Pre-processing (Valeriya)  
+	* Change plot x axis to 12 hour tick marks (see Renat’s adjustment to be pushed)  
+	* Make sure no overlap with 3.1, make sure to match  
+4.1 Models and Sections (Renat)  
+4.2 Testing protocols (Nicky + Lizzie)  
+	* Renat will help  
+4.3 Results (Lizzie)  
+	* Reference analysis section with label  
+	* Results is what happens vs analysis is why it happens  
+	* Rewrite last paragraph to summarize effect of covariates  
+		* Current structure is hard to follow, too specific  
+5.1 How does adding covariates affect (Valeriya)  
+	* Make the text broader summaries instead of dataset specific  
+		* Table has specific  
+5.2 Are models generalizable (Nathaniel)  
+	* Need to finish writing  
+5.3 Why do models fail (Nathaniel)  
+	* Need to finish writing  
+	* 5.3.3 would be limitations of existing reporting practices or suggestions  
+
+
 # Wednesday April 5, 2023
 Next Meeting: Wednesday April 12th, 2023    
-Next Meeting Notetaker: **Nicky**
+Next Meeting Notetaker: Lizzie
 
 ## Tasks
 * Continue working on your sections as needed
