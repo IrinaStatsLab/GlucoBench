@@ -1,5 +1,6 @@
 import os
 import sys
+from tqdm import tqdm
 import matplotlib.pyplot
 import matplotlib.pyplot as plt
 
@@ -264,7 +265,8 @@ class LatentODEWrapper():
     def predict(self, test_dataset: SamplingDatasetDual, 
                       batch_size: int = 32,
                       num_samples: int = 100,
-                      device: str = 'cuda'):
+                      device: str = 'cuda',
+                      use_tqdm: bool = False):
         """
         Predict the future target series given the supplied samples from the dataset.
 
@@ -295,7 +297,7 @@ class LatentODEWrapper():
 
         predictions = []
         with torch.no_grad():
-            for itr in range(num_batches):
+            for itr in tqdm(range(num_batches)) if use_tqdm else range(num_batches):
                 batch = test_loader.__next__()
                 observed_data = batch[0].to(device)
                 observed_tp = torch.arange(0, test_dataset.input_chunk_length).to(device) / 12
