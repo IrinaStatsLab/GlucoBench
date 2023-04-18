@@ -1,0 +1,316 @@
+Optimization started at 2023-04-10 15:06:36.153923
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		Height: REAL_VALUED (STATIC_INPUT)
+		Weight: REAL_VALUED (STATIC_INPUT)
+		Gender: REAL_VALUED (STATIC_INPUT)
+		Race: REAL_VALUED (STATIC_INPUT)
+		EduLevel: REAL_VALUED (STATIC_INPUT)
+		AnnualInc: REAL_VALUED (STATIC_INPUT)
+		MaritalStatus: REAL_VALUED (STATIC_INPUT)
+		DaysWkEx: REAL_VALUED (STATIC_INPUT)
+		DaysWkDrinkAlc: REAL_VALUED (STATIC_INPUT)
+		DaysMonBingeAlc: REAL_VALUED (STATIC_INPUT)
+		T1DDiagAge: REAL_VALUED (STATIC_INPUT)
+		NumHospDKA: REAL_VALUED (STATIC_INPUT)
+		NumSHSinceT1DDiag: REAL_VALUED (STATIC_INPUT)
+		InsDeliveryMethod: REAL_VALUED (STATIC_INPUT)
+		UnitsInsTotal: REAL_VALUED (STATIC_INPUT)
+		NumMeterCheckDay: REAL_VALUED (STATIC_INPUT)
+		Aspirin: REAL_VALUED (STATIC_INPUT)
+		Simvastatin: REAL_VALUED (STATIC_INPUT)
+		Lisinopril: REAL_VALUED (STATIC_INPUT)
+		Vitamin D: REAL_VALUED (STATIC_INPUT)
+		Multivitamin preparation: REAL_VALUED (STATIC_INPUT)
+		Omeprazole: REAL_VALUED (STATIC_INPUT)
+		atorvastatin: REAL_VALUED (STATIC_INPUT)
+		Synthroid: REAL_VALUED (STATIC_INPUT)
+		vitamin D3: REAL_VALUED (STATIC_INPUT)
+		Hypertension: REAL_VALUED (STATIC_INPUT)
+		Hyperlipidemia: REAL_VALUED (STATIC_INPUT)
+		Hypothyroidism: REAL_VALUED (STATIC_INPUT)
+		Depression: REAL_VALUED (STATIC_INPUT)
+		Coronary artery disease: REAL_VALUED (STATIC_INPUT)
+		Diabetic peripheral neuropathy: REAL_VALUED (STATIC_INPUT)
+		Dyslipidemia: REAL_VALUED (STATIC_INPUT)
+		Chronic kidney disease: REAL_VALUED (STATIC_INPUT)
+		Osteoporosis: REAL_VALUED (STATIC_INPUT)
+		Proliferative diabetic retinopathy: REAL_VALUED (STATIC_INPUT)
+		Hypercholesterolemia: REAL_VALUED (STATIC_INPUT)
+		Erectile dysfunction: REAL_VALUED (STATIC_INPUT)
+		Type I diabetes mellitus: REAL_VALUED (STATIC_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 1416
+	Extracted segments: 681
+	Interpolated values: 140564
+	Percent of values interpolated: 24.24%
+Splitting data...
+	Train: 431798 (69.72%)
+	Val: 57067 (9.21%)
+	Test: 72421 (11.69%)
+	Test OOD: 58048 (9.37%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
+	Train: 425413 (68.73%)
+	Val: 56593 (9.14%)
+	Test: 72022 (11.64%)
+	Test OOD: 64922 (10.49%)
+	No scaling applied
+		Model Seed: 10 Seed: 1 ID mean of (MSE, MAE): [611.8337    15.722503]
+		Model Seed: 10 Seed: 1 OOD mean of (MSE, MAE) stats: [755.2136    17.670916]
+		Model Seed: 10 Seed: 1 ID median of (MSE, MAE): [178.50238   11.295735]
+		Model Seed: 10 Seed: 1 OOD median of (MSE, MAE) stats: [240.1776    13.057659]
+		Model Seed: 10 Seed: 1 ID likelihoods: -26.163610458374023
+		Model Seed: 10 Seed: 1 OOD likelihoods: -31.683624267578125
+		Model Seed: 10 Seed: 1 ID calibration errors: [0.02937596 0.01047781 0.06277729 0.1341032  0.20629276 0.2724308
+ 0.33044288 0.38024485 0.4235676  0.46577597 0.49988604 0.5307362 ]
+		Model Seed: 10 Seed: 1 OOD calibration errors: [0.02638466 0.01370515 0.09157392 0.1897984  0.28136843 0.36120543
+ 0.43203062 0.4926313  0.5413144  0.5841565  0.6202195  0.65124285]
+	Train: 429990 (69.47%)
+	Val: 56876 (9.19%)
+	Test: 72378 (11.69%)
+	Test OOD: 59706 (9.65%)
+	No scaling applied
+		Model Seed: 10 Seed: 2 ID mean of (MSE, MAE): [610.893     15.644221]
+		Model Seed: 10 Seed: 2 OOD mean of (MSE, MAE) stats: [671.8692    16.548313]
+		Model Seed: 10 Seed: 2 ID median of (MSE, MAE): [178.03522   11.203063]
+		Model Seed: 10 Seed: 2 OOD median of (MSE, MAE) stats: [203.55365   11.952011]
+		Model Seed: 10 Seed: 2 ID likelihoods: -26.13913345336914
+		Model Seed: 10 Seed: 2 OOD likelihoods: -28.4927978515625
+		Model Seed: 10 Seed: 2 ID calibration errors: [0.0878757  0.05245101 0.07696392 0.13547763 0.20550925 0.27094314
+ 0.3272748  0.37925404 0.42392826 0.46372882 0.49764556 0.5267806 ]
+		Model Seed: 10 Seed: 2 OOD calibration errors: [0.07944439 0.04266563 0.07534507 0.1493815  0.23523563 0.31203863
+ 0.3796528  0.43969533 0.49195644 0.5376067  0.57825005 0.6084799 ]
+	Model Seed: 10 ID mean of (MSE, MAE): [611.36334   15.683362]
+	Model Seed: 10 OOD mean of (MSE, MAE): [713.5414    17.109615]
+	Model Seed: 10 ID median of (MSE, MAE): [178.2688    11.249399]
+	Model Seed: 10 OOD median of (MSE, MAE): [221.86563   12.504835]
+	Model Seed: 10 ID likelihoods: -26.151371955871582
+	Model Seed: 10 OOD likelihoods: -30.088211059570312
+	Model Seed: 10 ID calibration errors: [0.05862583 0.03146441 0.06987061 0.13479042 0.205901   0.27168697
+ 0.32885885 0.37974945 0.42374793 0.46475238 0.4987658  0.5287584 ]
+	Model Seed: 10 OOD calibration errors: [0.05291452 0.02818539 0.0834595  0.16958995 0.25830203 0.33662203
+ 0.4058417  0.4661633  0.5166354  0.5608816  0.5992348  0.62986135]
+	Train: 425413 (68.73%)
+	Val: 56593 (9.14%)
+	Test: 72022 (11.64%)
+	Test OOD: 64922 (10.49%)
+	No scaling applied
+		Model Seed: 11 Seed: 1 ID mean of (MSE, MAE): [618.39667   15.932532]
+		Model Seed: 11 Seed: 1 OOD mean of (MSE, MAE) stats: [757.4765    17.802427]
+		Model Seed: 11 Seed: 1 ID median of (MSE, MAE): [189.49544   11.606819]
+		Model Seed: 11 Seed: 1 OOD median of (MSE, MAE) stats: [242.99011   13.158653]
+		Model Seed: 11 Seed: 1 ID likelihoods: -26.154251098632812
+		Model Seed: 11 Seed: 1 OOD likelihoods: -31.492517471313477
+		Model Seed: 11 Seed: 1 ID calibration errors: [0.00570937 0.03270609 0.102291   0.18646315 0.2690867  0.34139708
+ 0.40051192 0.4511572  0.4932819  0.5318865  0.56134844 0.5847605 ]
+		Model Seed: 11 Seed: 1 OOD calibration errors: [0.00285011 0.04496789 0.13201977 0.23641297 0.3378584  0.4269545
+ 0.4967191  0.5553437  0.60338    0.6420743  0.6746715  0.70171756]
+	Train: 429990 (69.47%)
+	Val: 56876 (9.19%)
+	Test: 72378 (11.69%)
+	Test OOD: 59706 (9.65%)
+	No scaling applied
+		Model Seed: 11 Seed: 2 ID mean of (MSE, MAE): [612.969     15.858652]
+		Model Seed: 11 Seed: 2 OOD mean of (MSE, MAE) stats: [678.48987   16.851099]
+		Model Seed: 11 Seed: 2 ID median of (MSE, MAE): [181.34065   11.462444]
+		Model Seed: 11 Seed: 2 OOD median of (MSE, MAE) stats: [215.52959   12.507843]
+		Model Seed: 11 Seed: 2 ID likelihoods: -26.130962371826172
+		Model Seed: 11 Seed: 2 OOD likelihoods: -28.640277862548828
+		Model Seed: 11 Seed: 2 ID calibration errors: [0.17891973 0.17547563 0.22468495 0.2830541  0.3370988  0.38622043
+ 0.43092978 0.47191817 0.508319   0.5375054  0.56323624 0.5836723 ]
+		Model Seed: 11 Seed: 2 OOD calibration errors: [0.1841489  0.19807443 0.26633266 0.33638734 0.39992127 0.45726767
+ 0.5116107  0.5581513  0.59842414 0.62871677 0.65797305 0.68113977]
+	Model Seed: 11 ID mean of (MSE, MAE): [615.68286   15.895592]
+	Model Seed: 11 OOD mean of (MSE, MAE): [717.98315   17.326763]
+	Model Seed: 11 ID median of (MSE, MAE): [185.41805   11.534632]
+	Model Seed: 11 OOD median of (MSE, MAE): [229.25986   12.833248]
+	Model Seed: 11 ID likelihoods: -26.142606735229492
+	Model Seed: 11 OOD likelihoods: -30.066397666931152
+	Model Seed: 11 ID calibration errors: [0.09231456 0.10409085 0.16348797 0.23475863 0.30309275 0.36380875
+ 0.41572085 0.4615377  0.5008005  0.534696   0.56229234 0.58421636]
+	Model Seed: 11 OOD calibration errors: [0.0934995  0.12152116 0.19917622 0.28640014 0.36888984 0.44211107
+ 0.5041649  0.5567475  0.6009021  0.6353955  0.66632223 0.69142866]
+	Train: 425413 (68.73%)
+	Val: 56593 (9.14%)
+	Test: 72022 (11.64%)
+	Test OOD: 64922 (10.49%)
+	No scaling applied
+		Model Seed: 12 Seed: 1 ID mean of (MSE, MAE): [613.22833   16.105494]
+		Model Seed: 12 Seed: 1 OOD mean of (MSE, MAE) stats: [753.4093    18.071291]
+		Model Seed: 12 Seed: 1 ID median of (MSE, MAE): [201.64816   12.066734]
+		Model Seed: 12 Seed: 1 OOD median of (MSE, MAE) stats: [266.51843   13.876918]
+		Model Seed: 12 Seed: 1 ID likelihoods: -26.096689224243164
+		Model Seed: 12 Seed: 1 OOD likelihoods: -31.466156005859375
+		Model Seed: 12 Seed: 1 ID calibration errors: [0.25452712 0.17857325 0.19306251 0.24234433 0.30091918 0.35772994
+ 0.40741345 0.45128402 0.49265835 0.5263966  0.55730414 0.58108103]
+		Model Seed: 12 Seed: 1 OOD calibration errors: [0.23086242 0.21487354 0.27405983 0.34836587 0.42013183 0.48632827
+ 0.54224557 0.58775115 0.62570155 0.66262585 0.6904963  0.7140247 ]
+	Train: 429990 (69.47%)
+	Val: 56876 (9.19%)
+	Test: 72378 (11.69%)
+	Test OOD: 59706 (9.65%)
+	No scaling applied
+		Model Seed: 12 Seed: 2 ID mean of (MSE, MAE): [608.5796    15.660537]
+		Model Seed: 12 Seed: 2 OOD mean of (MSE, MAE) stats: [670.0802    16.564959]
+		Model Seed: 12 Seed: 2 ID median of (MSE, MAE): [177.89116   11.197128]
+		Model Seed: 12 Seed: 2 OOD median of (MSE, MAE) stats: [202.23315   11.964749]
+		Model Seed: 12 Seed: 2 ID likelihoods: -26.0896053314209
+		Model Seed: 12 Seed: 2 OOD likelihoods: -28.514801025390625
+		Model Seed: 12 Seed: 2 ID calibration errors: [0.06729809 0.0673201  0.11601469 0.1837219  0.2529955  0.31607816
+ 0.3669507  0.41210088 0.4528855  0.48746106 0.5138252  0.53446263]
+		Model Seed: 12 Seed: 2 OOD calibration errors: [0.05453401 0.07307319 0.14187852 0.22244538 0.3029147  0.3722986
+ 0.42803895 0.47634056 0.5222658  0.55965334 0.58811903 0.60971117]
+	Model Seed: 12 ID mean of (MSE, MAE): [610.90393   15.883015]
+	Model Seed: 12 OOD mean of (MSE, MAE): [711.74475   17.318125]
+	Model Seed: 12 ID median of (MSE, MAE): [189.76965   11.631931]
+	Model Seed: 12 OOD median of (MSE, MAE): [234.3758    12.920834]
+	Model Seed: 12 ID likelihoods: -26.09314727783203
+	Model Seed: 12 OOD likelihoods: -29.990478515625
+	Model Seed: 12 ID calibration errors: [0.1609126  0.12294668 0.1545386  0.21303311 0.27695733 0.33690405
+ 0.38718206 0.43169245 0.47277194 0.5069288  0.53556466 0.5577718 ]
+	Model Seed: 12 OOD calibration errors: [0.14269821 0.14397337 0.20796917 0.28540564 0.36152327 0.42931342
+ 0.48514226 0.53204584 0.57398367 0.6111396  0.6393077  0.661868  ]
+	Train: 425413 (68.73%)
+	Val: 56593 (9.14%)
+	Test: 72022 (11.64%)
+	Test OOD: 64922 (10.49%)
+	No scaling applied
+		Model Seed: 13 Seed: 1 ID mean of (MSE, MAE): [612.6488    15.803849]
+		Model Seed: 13 Seed: 1 OOD mean of (MSE, MAE) stats: [745.191     17.575958]
+		Model Seed: 13 Seed: 1 ID median of (MSE, MAE): [185.98111   11.502505]
+		Model Seed: 13 Seed: 1 OOD median of (MSE, MAE) stats: [234.7293    12.905574]
+		Model Seed: 13 Seed: 1 ID likelihoods: -26.05234146118164
+		Model Seed: 13 Seed: 1 OOD likelihoods: -31.130657196044922
+		Model Seed: 13 Seed: 1 ID calibration errors: [0.0579168  0.02910046 0.08603729 0.16508693 0.23852432 0.30335385
+ 0.35952404 0.40611383 0.4456659  0.48255515 0.5129733  0.537215  ]
+		Model Seed: 13 Seed: 1 OOD calibration errors: [0.04342919 0.04014105 0.1171485  0.21219285 0.3011025  0.37765104
+ 0.44434476 0.501721   0.54819775 0.5866864  0.61976016 0.6448118 ]
+	Train: 429990 (69.47%)
+	Val: 56876 (9.19%)
+	Test: 72378 (11.69%)
+	Test OOD: 59706 (9.65%)
+	No scaling applied
+		Model Seed: 13 Seed: 2 ID mean of (MSE, MAE): [610.34125  15.6374 ]
+		Model Seed: 13 Seed: 2 OOD mean of (MSE, MAE) stats: [672.2508    16.528618]
+		Model Seed: 13 Seed: 2 ID median of (MSE, MAE): [173.57721   11.093198]
+		Model Seed: 13 Seed: 2 OOD median of (MSE, MAE) stats: [197.86891   11.818913]
+		Model Seed: 13 Seed: 2 ID likelihoods: -26.338754653930664
+		Model Seed: 13 Seed: 2 OOD likelihoods: -28.75716209411621
+		Model Seed: 13 Seed: 2 ID calibration errors: [0.00215723 0.01875456 0.06694833 0.13167787 0.20250998 0.26944202
+ 0.32621938 0.3753146  0.41721198 0.45594722 0.48984107 0.5178906 ]
+		Model Seed: 13 Seed: 2 OOD calibration errors: [0.00535301 0.02254701 0.07693024 0.14914422 0.2319481  0.30888352
+ 0.37753117 0.43430158 0.48599532 0.5308143  0.56896263 0.59735   ]
+	Model Seed: 13 ID mean of (MSE, MAE): [611.495     15.720625]
+	Model Seed: 13 OOD mean of (MSE, MAE): [708.7209    17.052288]
+	Model Seed: 13 ID median of (MSE, MAE): [179.77916   11.297852]
+	Model Seed: 13 OOD median of (MSE, MAE): [216.2991    12.362244]
+	Model Seed: 13 ID likelihoods: -26.195548057556152
+	Model Seed: 13 OOD likelihoods: -29.943909645080566
+	Model Seed: 13 ID calibration errors: [0.03003702 0.02392751 0.07649282 0.1483824  0.22051716 0.28639793
+ 0.34287173 0.39071423 0.43143892 0.4692512  0.5014072  0.5275528 ]
+	Model Seed: 13 OOD calibration errors: [0.0243911  0.03134403 0.09703937 0.18066853 0.2665253  0.34326726
+ 0.41093796 0.46801132 0.5170965  0.55875033 0.5943614  0.6210809 ]
+	Train: 425413 (68.73%)
+	Val: 56593 (9.14%)
+	Test: 72022 (11.64%)
+	Test OOD: 64922 (10.49%)
+	No scaling applied
+		Model Seed: 14 Seed: 1 ID mean of (MSE, MAE): [610.4058    15.592942]
+		Model Seed: 14 Seed: 1 OOD mean of (MSE, MAE) stats: [750.9207    17.491087]
+		Model Seed: 14 Seed: 1 ID median of (MSE, MAE): [171.50107   11.041404]
+		Model Seed: 14 Seed: 1 OOD median of (MSE, MAE) stats: [226.79297  12.63799]
+		Model Seed: 14 Seed: 1 ID likelihoods: -25.983531951904297
+		Model Seed: 14 Seed: 1 OOD likelihoods: -31.387039184570312
+		Model Seed: 14 Seed: 1 ID calibration errors: [0.03466086 0.02608519 0.0848768  0.16219132 0.23563205 0.3003308
+ 0.35387585 0.4006765  0.44068614 0.47952396 0.51130086 0.53560257]
+		Model Seed: 14 Seed: 1 OOD calibration errors: [0.02256077 0.02641623 0.11289576 0.2160166  0.30491114 0.3826203
+ 0.44764644 0.50095993 0.54716295 0.5868199  0.6205703  0.6452966 ]
+	Train: 429990 (69.47%)
+	Val: 56876 (9.19%)
+	Test: 72378 (11.69%)
+	Test OOD: 59706 (9.65%)
+	No scaling applied
+		Model Seed: 14 Seed: 2 ID mean of (MSE, MAE): [623.24805  16.09106]
+		Model Seed: 14 Seed: 2 OOD mean of (MSE, MAE) stats: [686.5305    17.086123]
+		Model Seed: 14 Seed: 2 ID median of (MSE, MAE): [195.94019   11.926926]
+		Model Seed: 14 Seed: 2 OOD median of (MSE, MAE) stats: [231.07405   12.987171]
+		Model Seed: 14 Seed: 2 ID likelihoods: -26.424678802490234
+		Model Seed: 14 Seed: 2 OOD likelihoods: -28.860836029052734
+		Model Seed: 14 Seed: 2 ID calibration errors: [0.1520658  0.10936869 0.16373584 0.23667194 0.30597752 0.36275932
+ 0.40927967 0.45331958 0.48935676 0.5202756  0.543765   0.562362  ]
+		Model Seed: 14 Seed: 2 OOD calibration errors: [0.17556465 0.15051746 0.22007255 0.29957122 0.3692336  0.43265855
+ 0.4875438  0.532564   0.5720063  0.6026566  0.627514   0.64660007]
+	Model Seed: 14 ID mean of (MSE, MAE): [616.8269    15.842001]
+	Model Seed: 14 OOD mean of (MSE, MAE): [718.7256    17.288605]
+	Model Seed: 14 ID median of (MSE, MAE): [183.72063   11.484165]
+	Model Seed: 14 OOD median of (MSE, MAE): [228.9335   12.81258]
+	Model Seed: 14 ID likelihoods: -26.204105377197266
+	Model Seed: 14 OOD likelihoods: -30.123937606811523
+	Model Seed: 14 ID calibration errors: [0.09336333 0.06772694 0.12430632 0.19943163 0.2708048  0.33154505
+ 0.38157776 0.42699802 0.46502143 0.49989977 0.52753294 0.54898226]
+	Model Seed: 14 OOD calibration errors: [0.09906271 0.08846685 0.16648415 0.2577939  0.33707237 0.40763944
+ 0.4675951  0.51676196 0.5595846  0.59473825 0.62404215 0.6459483 ]
+	Train: 425413 (68.73%)
+	Val: 56593 (9.14%)
+	Test: 72022 (11.64%)
+	Test OOD: 64922 (10.49%)
+	No scaling applied
+		Model Seed: 15 Seed: 1 ID mean of (MSE, MAE): [614.67035   16.063374]
+		Model Seed: 15 Seed: 1 OOD mean of (MSE, MAE) stats: [768.9688    18.161724]
+		Model Seed: 15 Seed: 1 ID median of (MSE, MAE): [190.47269   11.789093]
+		Model Seed: 15 Seed: 1 OOD median of (MSE, MAE) stats: [256.81503   13.716954]
+		Model Seed: 15 Seed: 1 ID likelihoods: -26.314651489257812
+		Model Seed: 15 Seed: 1 OOD likelihoods: -32.23380661010742
+		Model Seed: 15 Seed: 1 ID calibration errors: [0.3051844  0.24961846 0.2655738  0.30052105 0.34244138 0.3865531
+ 0.4303193  0.4713506  0.5095129  0.5412559  0.566088   0.58761513]
+		Model Seed: 15 Seed: 1 OOD calibration errors: [0.3101146  0.2872407  0.3373933  0.39854413 0.45624968 0.51314247
+ 0.56687516 0.61128914 0.6482786  0.6803509  0.7085454  0.7308408 ]
+	Train: 429990 (69.47%)
+	Val: 56876 (9.19%)
+	Test: 72378 (11.69%)
+	Test OOD: 59706 (9.65%)
+	No scaling applied
+		Model Seed: 15 Seed: 2 ID mean of (MSE, MAE): [617.2237     15.9169445]
+		Model Seed: 15 Seed: 2 OOD mean of (MSE, MAE) stats: [680.18317   16.877924]
+		Model Seed: 15 Seed: 2 ID median of (MSE, MAE): [192.42586   11.740916]
+		Model Seed: 15 Seed: 2 OOD median of (MSE, MAE) stats: [225.39201  12.72752]
+		Model Seed: 15 Seed: 2 ID likelihoods: -26.282196044921875
+		Model Seed: 15 Seed: 2 OOD likelihoods: -28.72673988342285
+		Model Seed: 15 Seed: 2 ID calibration errors: [0.05023231 0.03761778 0.10400339 0.18891934 0.26708633 0.334912
+ 0.39326704 0.4453593  0.49036264 0.52990466 0.5627621  0.59154   ]
+		Model Seed: 15 Seed: 2 OOD calibration errors: [0.05156588 0.05246777 0.13732465 0.23484577 0.32321206 0.39779508
+ 0.464986   0.5224798  0.57145464 0.6126032  0.6507612  0.6825934 ]
+	Model Seed: 15 ID mean of (MSE, MAE): [615.947     15.990159]
+	Model Seed: 15 OOD mean of (MSE, MAE): [724.576     17.519825]
+	Model Seed: 15 ID median of (MSE, MAE): [191.44928   11.765005]
+	Model Seed: 15 OOD median of (MSE, MAE): [241.10352   13.222237]
+	Model Seed: 15 ID likelihoods: -26.298423767089844
+	Model Seed: 15 OOD likelihoods: -30.480273246765137
+	Model Seed: 15 ID calibration errors: [0.17770836 0.14361812 0.1847886  0.24472019 0.30476385 0.36073256
+ 0.41179317 0.45835495 0.49993777 0.5355803  0.56442505 0.58957756]
+	Model Seed: 15 OOD calibration errors: [0.18084024 0.16985424 0.23735899 0.31669495 0.38973087 0.45546877
+ 0.5159306  0.56688446 0.6098666  0.64647704 0.6796533  0.70671713]
+	Train: 425413 (68.73%)
+	Val: 56593 (9.14%)
+	Test: 72022 (11.64%)
+	Test OOD: 64922 (10.49%)
+	No scaling applied
