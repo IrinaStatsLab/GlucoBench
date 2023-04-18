@@ -1,5 +1,6 @@
 import os
 import sys
+from tqdm import tqdm
 
 import torch
 import torch.nn as nn
@@ -254,7 +255,8 @@ class Gluformer(nn.Module):
   def predict(self, test_dataset: SamplingDatasetDual, 
               batch_size: int = 32,
               num_samples: int = 100,
-              device: str = 'cuda'):
+              device: str = 'cuda',
+              use_tqdm: bool = False):
     """
     Predict the future target series given the supplied samples from the dataset.
 
@@ -290,7 +292,7 @@ class Gluformer(nn.Module):
     for i, (past_target_series,
             historic_future_covariates,
             future_covariates,
-            static_covariates) in enumerate(test_loader):
+            static_covariates) in enumerate(tqdm(test_loader)) if use_tqdm else enumerate(test_loader):
       # reshape static covariates to be [batch_size, num_static_covariates]
       static_covariates = static_covariates.reshape(-1, static_covariates.shape[-1])
       # create decoder input
