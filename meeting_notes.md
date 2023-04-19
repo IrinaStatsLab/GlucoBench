@@ -1,3 +1,11 @@
+# Wednesday, April 19, 2023
+Next Meeting: Wednesday April 26th, 2023
+Next Meeting Notetaker: 
+
+PRIORITY TODOs:
+Push all code, tables, and figures. Choose a place to eat. Good luck on finals!!!
+
+
 # Wednesday April 12th, 2023
 Next Meeting: Wednesday April 19th, 2023  
 Next Meeting Notetaker: **Nicky**
