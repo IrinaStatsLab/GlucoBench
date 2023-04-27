@@ -63,6 +63,8 @@ def get_valid_sampling_locations(target_series: Union[TimeSeries, Sequence[TimeS
         for id, locations in valid_sampling_locations.items():
             if len(locations) > max_samples_per_ts:
                 updated_sampling_locations[id] = random.sample(locations, max_samples_per_ts)
+            else:
+                updated_sampling_locations[id] = locations
         valid_sampling_locations = updated_sampling_locations
             
     return valid_sampling_locations
