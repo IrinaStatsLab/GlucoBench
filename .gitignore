@@ -7,8 +7,8 @@ cache/*
 track_*
 output/tensorboard_*/*
 
-# ignore csv files in the raw data folder
-raw_data/*.csv
+# ignore folder raw_data
+raw_data/
 
 # ignore pre-complied code
 *.cpython-37.pyc
