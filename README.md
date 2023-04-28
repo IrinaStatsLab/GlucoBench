@@ -21,19 +21,19 @@ To run [Latent ODE](https://github.com/YuliaRubanova/latent_ode) model, install 
 
 The code is organized as follows:
 
-- bin: training commands for all models
-- config: configuration files for all datasets
-- data_formatter
+- `bin`: training commands for all models
+- `config`: configuration files for all datasets
+- `data_formatter`
     - base.py: performs **all** pre-processing for all CGM datasets
-- exploratory_analysis: notebooks with processing steps for pulling the data and converting to `.csv` files
-- lib
-    - gluformer: model implementation
-    - latent_ode: model implementation
-    - *.py: hyper-paraemter tuning, training, validation, and testing scripts
-- output: hyper-parameter optimization and testing logs
-- paper_results: code for producing tables and plots, found in the paper
-- raw_data: web-pulled CGM data (processed using `exploratory_analysis`)
-- utils: helper functions for model training and testing
+- `exploratory_analysis`: notebooks with processing steps for pulling the data and converting to `.csv` files
+- `lib`
+    - `gluformer/`: model implementation
+    - `latent_ode/`: model implementation
+    - `*.py`: hyper-paraemter tuning, training, validation, and testing scripts
+- `output`: hyper-parameter optimization and testing logs
+- `paper_results`: code for producing tables and plots, found in the paper
+- `raw_data`: web-pulled CGM data (processed using `exploratory_analysis`)
+- `utils`: helper functions for model training and testing
 
 ## How to reproduce results?
 
