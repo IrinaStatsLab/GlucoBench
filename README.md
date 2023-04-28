@@ -1,4 +1,6 @@
-# GluNet
+# GlucoBench
+
+<!-- # GluNet
 
 Table of Contents:
 
@@ -27,4 +29,4 @@ The main goal of the project is to create a unified library of glucose data sets
 - [ ] (March 15) Add ARIMA, LinearRegression, RandomForest, and XGBModel
 - [ ] (March 22) Add RNNModel, NBEATS, and TFT
 - [ ] (...) Analysis / paper writing
-- [ ] (May 11) **Hard deadline for submission to NeurIPS** 
+- [ ] (May 11) **Hard deadline for submission to NeurIPS**  -->
