@@ -40,8 +40,8 @@ The code is organized as follows:
 
 The datasets are distributed according to the following licences and can be downloaded from the following links outlined in the table below.
 
-| Dataset | License | # of subjects | Frequency of reads |
-| -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| Dataset | License | Number of patients | CGM Frequency |
+| ------- | ------- | ------------------ | ------------- |
 | [Colas](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0225817#sec018) | [Creative Commons 4.0](https://creativecommons.org/licenses/by/3.0/us/) | 208 | 5 minutes |
 | [Dubosson](https://doi.org/10.5281/zenodo.1421615) | [Creative Commons 4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode) | 9 | 5 minutes |
 | [Hall](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.2005143#pbio.2005143.s010) | [Creative Commons 4.0](https://creativecommons.org/licenses/by/4.0/) | 57 | 5 minutes |
