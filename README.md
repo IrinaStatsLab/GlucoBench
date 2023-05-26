@@ -5,7 +5,7 @@ If you found our work interesting and plan to re-use the code, please cite us as
 ```
 @article{
   author  = {Renat Sergazinov and Valeriya Rogovchenko and Elizabeth Chun and Nathaniel Fernandes and Irina Gaynanova},
-  title   = {GlucoBench: Curated List of Continuous Glucose Monitoring datasets with Prediction Benchmarks},
+  title   = {GlucoBench: Curated List of Continuous Glucose Monitoring Datasets with Prediction Benchmarks},
   journal = {arXiv}
   year    = {2023},
 }
