@@ -52,7 +52,81 @@ To process the data, follow the instructions in the `exploratory_analysis/` fold
 
 # How to reproduce results?
 
+## Setting up the enviroment
+
+We recommend to setup clean Python enviroment with [conda](https://docs.conda.io/) and install all dependenices by running `conda env create -f environment.yml`. Now we can activate the environment by running `conda activate glunet`.
+
+## Changing the configs
+
+The `config/` folder stores the best hyper-parameters (selected by [Optuna](https://optuna.org)) for each dataset and model. The `config/` also stores the dataset-specific parameters for interpolation, dropping, splitting, and scaling. To train and evaluate the models with these defaults, we can simply run: 
+
+```python
+python ./lib/model.py --dataset dataset --use_covs False --optuna False
+``` 
+
+## Changing the hyper-parameters
+
+To change the search grid for hyper-parameters, we need to modify the `./lib/model.py` file. Specifically, we look at the `objective()` function and modify the `trial.suggest_*` parameters to set the desired ranges. Once we are done, we can run the following command to re-run the hyper-parameter optimization:
+
+```python
+python ./lib/model.py --dataset dataset --use_covs False --optuna True
+```
+
 # How to work with the repository?
+
+## Just the data
+To start experimenting with the data, we can run the following command:
+
+```python
+import yaml
+from data_formatter.base import DataFormatter
+
+with open(f'./config/{dataset}.yaml', 'r') as f:
+    config = yaml.safe_load(f)
+formatter = DataFormatter(config)
+```
+
+The command exposes an object of class `DataFormatter` which automatically pre-processes the data upon initialization. The pre-processing steps can be controlled via the `config/` files. The `DataFormatter` object exposes the following attributes:
+
+1. `formatter.train_data`: training data (as `pandas.DataFrame`)
+2. `formatter.val_data`: validation data
+3. `formatter.test_data`: testing (in-distribution and out-of-distribution) data
+  i. `formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)]`: in-distribution testing data
+  ii. `formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]`: out-of-distribution testing data
+4. `formatter.data`: unscaled full data
+
+## Integration with PyTorch
+
+Training models with PyTorch typically boils down to (1) defining a `Dataset` class with `__getitem__()` method, (2) wrapping it into a `DataLoader`, (3) defining a `torch.nn.Module` class with `forward()` method that implements the model,  and (4) optimizing the model with `torch.optim` in a training loop. 
+
+**Parts (1) and (2)** crucically depend on the definition of the `Dataset` class. Essentially, having the data in the table format (e.g. `formatter.train_data`), how do we sample input-output pairs and pass the covariate information? The various `Dataset` classes conveniently adopted from the `Darts` library (see [here](https://unit8co.github.io/darts/generated_api/darts.utils.data.training_dataset.html)) offer one way to wrap the data into a `Dataset` class. Different `Dataset` classes differ in what information is provided to the model:
+
+1. `SamplingDatasetPast`: supports only past covariates
+2. `SamplingDatasetDual`: supports only future-known covariates
+3. `SamplingDatasetMixed`: supports both past and future-known covariates
+
+Below we give an example of loading the data and wrapping it into a `Dataset`:
+
+```python
+from utils.darts_processing import load_data
+from utils.darts_dataset import SamplingDatasetDual
+
+formatter, series, scalers = load_data(seed=0,
+                                       dataset=dataset,
+                                       use_covs=True, 
+                                       cov_type='dual',
+                                       use_static_covs=True)
+dataset_train = SamplingDatasetDual(series['train']['target'],
+                                    series['train']['future'],
+                                    output_chunk_length=out_len,
+                                    input_chunk_length=in_len,
+                                    use_static_covariates=True,
+                                    max_samples_per_ts=max_samples_per_ts,)
+```
+
+**Parts (3) and (4)** are model-specific, so we omit their discussion. For inspiration, we suggest to take a look at the `lib/gluformer/model.py` and `lib/latent_ode/trainer_glunet.py` files.
+
+
 
 
 
