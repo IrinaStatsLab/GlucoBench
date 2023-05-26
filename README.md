@@ -1,6 +1,6 @@
 # GlucoBench
 
-The official implemntation of the paper "GlucoBench: Curated List of Continuous Glucose Monitoring Datasets with Prediction Benchmarks."
+The official implementation of the paper "GlucoBench: Curated List of Continuous Glucose Monitoring Datasets with Prediction Benchmarks."
 If you found our work interesting and plan to re-use the code, please cite us as:
 ```
 @article{
