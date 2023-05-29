@@ -74,6 +74,8 @@ python ./lib/model.py --dataset dataset --use_covs False --optuna True
 
 # How to work with the repository?
 
+We provide a detailed example of the workflow in the `example.ipynb` notebook. For clarification, we provide some general suggestions below in order of increasing complexity. 
+
 ## Just the data
 To start experimenting with the data, we can run the following command:
 

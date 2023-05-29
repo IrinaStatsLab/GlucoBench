@@ -135,18 +135,22 @@ def load_data(seed = 0,
         for split in ['train', 'val', 'test', 'test_ood']:
             for cov in ['dynamic', 'future']:
                 series[split][cov] = None
+    elif use_covs and cov_type == 'mixed':
+        pass # this is the default for make_series()
     elif use_covs and cov_type == 'past':
-        # use future covariates as dynamic covariates
+        # use future covariates as dynamic (past) covariates
         if series['train']['dynamic'] is None:
             for split in ['train', 'val', 'test', 'test_ood']:
                 series[split]['dynamic'] = series[split]['future']
-        # or attach them to dynamic covariates
         else:
             for split in ['train', 'val', 'test', 'test_ood']:
                 for i in range(len(series[split]['future'])):
                     series[split]['dynamic'][i] = series[split]['dynamic'][i].concatenate(series[split]['future'][i], axis=1)
+        # erase future covariates
+        for split in ['train', 'val', 'test', 'test_ood']:
+            series[split]['future'] = None
     elif use_covs and cov_type == 'dual':
-        # set dynamic covariates to None, because they are not supported
+        # erase dynamic (past) covariates
         for split in ['train', 'val', 'test', 'test_ood']:
             series[split]['dynamic'] = None
     
