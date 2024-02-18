@@ -32,10 +32,10 @@ def avg_results(model_names: str,
         arr_ood_errors = arr_id_errors.copy()
         arr_id_likelihoods = arr_id_errors.copy()
         arr_ood_likelihoods = arr_id_errors.copy()
-        arr_id_errors_std = arr_id_errors.copy()
-        arr_ood_errors_std = arr_id_errors.copy()
-        arr_id_likelihoods_std = arr_id_errors.copy()
-        arr_ood_likelihoods_std = arr_id_errors.copy()
+        arr_id_errors_std = np.full((len(model_names), 2, 2), np.nan)
+        arr_ood_errors_std = arr_id_errors_std.copy()
+        arr_id_likelihoods_std = arr_id_errors_std.copy()
+        arr_ood_likelihoods_std = arr_id_errors_std.copy()
         for model_name in model_names:
             if not os.path.isfile(model_name):
                     continue
@@ -43,38 +43,52 @@ def avg_results(model_names: str,
                 for line in f:
                     if line.startswith('ID median of (MSE, MAE):'):
                         id_mse_mae = re.findall(r'\d+\.\d+(?:e-\d+)?', line)
-                        arr_id_errors[model_names.index(model_name), 0] = np.sqrt(float(id_mse_mae[0]))
+                        arr_id_errors[model_names.index(model_name), 0] = float(id_mse_mae[0])
                         arr_id_errors[model_names.index(model_name), 1] = float(id_mse_mae[1])
                         if len(id_mse_mae) > 2:
-                            arr_id_errors_std[model_names.index(model_name), 0] = np.sqrt(float(id_mse_mae[2]))
-                            arr_id_errors_std[model_names.index(model_name), 1] = float(id_mse_mae[3])
+                            arr_id_errors_std[model_names.index(model_name), 0, 0] = float(id_mse_mae[2])
+                            arr_id_errors_std[model_names.index(model_name), 0, 1] = float(id_mse_mae[3])
+                        if len(id_mse_mae) > 4:
+                            arr_id_errors_std[model_names.index(model_name), 1, 0] = float(id_mse_mae[4])
+                            arr_id_errors_std[model_names.index(model_name), 1, 1] = float(id_mse_mae[5])
                     elif line.startswith('OOD median of (MSE, MAE):'):
                         ood_mse_mae = re.findall(r'\d+\.\d+(?:e-\d+)?', line)
-                        arr_ood_errors[model_names.index(model_name), 0] = np.sqrt(float(ood_mse_mae[0]))
+                        arr_ood_errors[model_names.index(model_name), 0] = float(ood_mse_mae[0])
                         arr_ood_errors[model_names.index(model_name), 1] = float(ood_mse_mae[1])
                         if len(ood_mse_mae) > 2:
-                            arr_ood_errors_std[model_names.index(model_name), 0] = np.sqrt(float(ood_mse_mae[2]))
-                            arr_ood_errors_std[model_names.index(model_name), 1] = float(ood_mse_mae[3])
+                            arr_ood_errors_std[model_names.index(model_name), 0, 0] = float(ood_mse_mae[2])
+                            arr_ood_errors_std[model_names.index(model_name), 0, 1] = float(ood_mse_mae[3])
+                        if len(ood_mse_mae) > 4:
+                            arr_ood_errors_std[model_names.index(model_name), 1, 0] = float(ood_mse_mae[4])
+                            arr_ood_errors_std[model_names.index(model_name), 1, 1] = float(ood_mse_mae[5])
                     elif line.startswith('ID likelihoods:'):
                         id_likelihoods = re.findall(r'-?\d+\.\d+(?:e-\d+)?', line)
                         arr_id_likelihoods[model_names.index(model_name), 0] = float(id_likelihoods[0])
                         if len(id_likelihoods) > 1:
-                            arr_id_likelihoods_std[model_names.index(model_name), 0] = float(id_likelihoods[1])
+                            arr_id_likelihoods_std[model_names.index(model_name), 0, 0] = float(id_likelihoods[1])
+                        if len(id_likelihoods) > 2:
+                            arr_id_likelihoods_std[model_names.index(model_name), 1, 0] = float(id_likelihoods[2])
                     elif line.startswith('OOD likelihoods:'):
                         ood_likelihoods = re.findall(r'-?\d+\.\d+(?:e-\d+)?', line)
                         arr_ood_likelihoods[model_names.index(model_name), 0] = float(ood_likelihoods[0])
                         if len(ood_likelihoods) > 1:
-                            arr_ood_likelihoods_std[model_names.index(model_name), 0] = float(ood_likelihoods[1])
+                            arr_ood_likelihoods_std[model_names.index(model_name), 0, 0] = float(ood_likelihoods[1])
+                        if len(ood_likelihoods) > 2:
+                            arr_ood_likelihoods_std[model_names.index(model_name), 1, 0] = float(ood_likelihoods[2])
                     elif line.startswith('ID calibration errors:'):
                         id_calib = re.findall(r'-?\d+\.\d+(?:e-\d+)?', line)
                         arr_id_likelihoods[model_names.index(model_name), 1] = np.mean([float(x) for x in id_calib[:time_steps]])
                         if len(id_calib) > time_steps:
-                            arr_id_likelihoods_std[model_names.index(model_name), 1] = np.mean([float(x) for x in id_calib[time_steps:]])
+                            arr_id_likelihoods_std[model_names.index(model_name), 0, 1] = np.mean([float(x) for x in id_calib[time_steps:]])
+                        if len(id_calib) > 2*time_steps:
+                            arr_id_likelihoods_std[model_names.index(model_name), 1, 1] = np.mean([float(x) for x in id_calib[2*time_steps:]])
                     elif line.startswith('OOD calibration errors:'):
                         ood_calib = re.findall(r'-?\d+\.\d+(?:e-\d+)?', line)
                         arr_ood_likelihoods[model_names.index(model_name), 1] = np.mean([float(x) for x in ood_calib[:time_steps]])
                         if len(ood_calib) > time_steps:
-                            arr_ood_likelihoods_std[model_names.index(model_name), 1] = np.mean([float(x) for x in ood_calib[time_steps:]])
+                            arr_ood_likelihoods_std[model_names.index(model_name), 0, 1] = np.mean([float(x) for x in ood_calib[time_steps:]])
+                        if len(ood_calib) > 2*time_steps:
+                            arr_ood_likelihoods_std[model_names.index(model_name), 1, 1] = np.mean([float(x) for x in ood_calib[2*time_steps:]])
         return (arr_id_errors, arr_ood_errors, arr_id_likelihoods, arr_ood_likelihoods), \
                 (arr_id_errors_std, arr_ood_errors_std, arr_id_likelihoods_std, arr_ood_likelihoods_std)
 
