@@ -13,7 +13,7 @@ If you found our work interesting and plan to re-use the code, please cite us as
 
 # Dependencies
 
-We recommend to setup clean Python enviroment with [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html "conda-env") and install all dependenices by running `conda env export --no-builds > environment.yml`. 
+We recommend to setup clean Python enviroment with [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html "conda-env") by running `conda create -n glucobench python=3.10`. Then we can install all dependenices by running `pip install -r requirments.txt`. 
 
 To run [Latent ODE](https://github.com/YuliaRubanova/latent_ode) model, install [`torchdiffeq`](https://github.com/rtqichen/torchdiffeq).
 
