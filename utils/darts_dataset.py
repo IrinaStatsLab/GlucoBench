@@ -79,6 +79,7 @@ class SamplingDatasetPast(PastCovariatesTrainingDataset):
         use_static_covariates: bool = True,
         random_state: Optional[int] = 0,
         max_samples_per_ts: Optional[int] = None,
+        remove_nan: bool = False,
     ) -> None:
         """
         Parameters
@@ -100,8 +101,12 @@ class SamplingDatasetPast(PastCovariatesTrainingDataset):
             The random state to use for sampling.
         max_samples_per_ts
             The maximum number of samples to be drawn from each time series. If None, all samples will be drawn.
+        remove_nan
+            Whether to remove None from the output. E.g. if no covariates are provided, the covariates output will be None 
+            or (optionally) removed from the __getitem__ output.
         """
         super().__init__()
+        self.remove_nan = remove_nan
 
         self.target_series = (
             [target_series] if isinstance(target_series, TimeSeries) else target_series
@@ -137,9 +142,7 @@ class SamplingDatasetPast(PastCovariatesTrainingDataset):
         """
         return self.total_number_samples
 
-    def __getitem__(
-        self, idx: int
-    ) -> Tuple[np.ndarray, Optional[np.ndarray], Optional[np.ndarray], np.ndarray]:
+    def __getitem__(self, idx: int):
         # get idx of target series
         target_idx = 0
         while idx >= len(self.valid_sampling_locations[target_idx]):
@@ -164,12 +167,18 @@ class SamplingDatasetPast(PastCovariatesTrainingDataset):
             static_covariates = None
         
         # return elements that are not None
-        out = []
-        out += [past_target_series] if past_target_series is not None else []
-        out += [covariates] if covariates is not None else []
-        out += [static_covariates] if static_covariates is not None else []
-        out += [future_target_series] if future_target_series is not None else []
-        return tuple(out)
+        if self.remove_nan:
+            out = []
+            out += [past_target_series] if past_target_series is not None else []
+            out += [covariates] if covariates is not None else []
+            out += [static_covariates] if static_covariates is not None else []
+            out += [future_target_series] if future_target_series is not None else []
+            return tuple(out)
+        else:
+            return tuple([past_target_series, 
+                          covariates, 
+                          static_covariates, 
+                          future_target_series])
     
 class SamplingDatasetDual(DualCovariatesTrainingDataset):
     def __init__(
@@ -181,6 +190,7 @@ class SamplingDatasetDual(DualCovariatesTrainingDataset):
         use_static_covariates: bool = True,
         random_state: Optional[int] = 0,
         max_samples_per_ts: Optional[int] = None,
+        remove_nan: bool = False,
     ) -> None:
         """
         Parameters
@@ -202,8 +212,12 @@ class SamplingDatasetDual(DualCovariatesTrainingDataset):
             The random state to use for sampling.
         max_samples_per_ts
             The maximum number of samples to be drawn from each time series. If None, all samples will be drawn.
+        remove_nan
+            Whether to remove None from the output. E.g. if no covariates are provided, the covariates output will be None 
+            or (optionally) removed from the __getitem__ output.
         """
         super().__init__()
+        self.remove_nan = remove_nan
 
         self.target_series = (
             [target_series] if isinstance(target_series, TimeSeries) else target_series
@@ -239,9 +253,7 @@ class SamplingDatasetDual(DualCovariatesTrainingDataset):
         """
         return self.total_number_samples
 
-    def __getitem__(
-        self, idx: int
-    ) -> Tuple[np.ndarray, Optional[np.ndarray], Optional[np.ndarray], np.ndarray]:
+    def __getitem__(self, idx: int):
         # get idx of target series
         target_idx = 0
         while idx >= len(self.valid_sampling_locations[target_idx]):
@@ -268,13 +280,20 @@ class SamplingDatasetDual(DualCovariatesTrainingDataset):
             static_covariates = None
         
         # return elements that are not None
-        out = []
-        out += [past_target_series] if past_target_series is not None else []
-        out += [past_covariates] if past_covariates is not None else []
-        out += [future_covariates] if future_covariates is not None else []
-        out += [static_covariates] if static_covariates is not None else []
-        out += [future_target_series] if future_target_series is not None else []
-        return tuple(out)
+        if self.remove_nan:
+            out = []
+            out += [past_target_series] if past_target_series is not None else []
+            out += [past_covariates] if past_covariates is not None else []
+            out += [future_covariates] if future_covariates is not None else []
+            out += [static_covariates] if static_covariates is not None else []
+            out += [future_target_series] if future_target_series is not None else []
+            return tuple(out)
+        else:
+            return tuple([past_target_series, 
+                          past_covariates, 
+                          future_covariates, 
+                          static_covariates, 
+                          future_target_series])
     
 class SamplingDatasetMixed(MixedCovariatesTrainingDataset):
     def __init__(
@@ -287,6 +306,7 @@ class SamplingDatasetMixed(MixedCovariatesTrainingDataset):
         use_static_covariates: bool = True,
         random_state: Optional[int] = 0,
         max_samples_per_ts: Optional[int] = None,
+        remove_nan: bool = False,
     ) -> None:
         """
         Parameters
@@ -311,8 +331,12 @@ class SamplingDatasetMixed(MixedCovariatesTrainingDataset):
             The random state to use for sampling.
         max_samples_per_ts
             The maximum number of samples to be drawn from each time series. If None, all samples will be drawn.
+        remove_nan
+            Whether to remove None from the output. E.g. if no covariates are provided, the covariates output will be None 
+            or (optionally) removed from the __getitem__ output.
         """
         super().__init__()
+        self.remove_nan = remove_nan
 
         self.target_series = (
             [target_series] if isinstance(target_series, TimeSeries) else target_series
@@ -356,9 +380,7 @@ class SamplingDatasetMixed(MixedCovariatesTrainingDataset):
         """
         return self.total_number_samples
 
-    def __getitem__(
-        self, idx: int
-    ) -> Tuple[np.ndarray, Optional[np.ndarray], Optional[np.ndarray], np.ndarray]:
+    def __getitem__(self, idx: int):
         # get idx of target series
         target_idx = 0
         while idx >= len(self.valid_sampling_locations[target_idx]):
@@ -391,14 +413,22 @@ class SamplingDatasetMixed(MixedCovariatesTrainingDataset):
             static_covariates = None
 
         # return elements that are not None
-        out = []
-        out += [past_target_series] if past_target_series is not None else []
-        out += [past_covariates] if past_covariates is not None else []
-        out += [historic_future_covariates] if historic_future_covariates is not None else []
-        out += [future_covariates] if future_covariates is not None else []
-        out += [static_covariates] if static_covariates is not None else []
-        out += [future_target_series] if future_target_series is not None else []
-        return tuple(out)
+        if self.remove_nan:
+            out = []
+            out += [past_target_series] if past_target_series is not None else []
+            out += [past_covariates] if past_covariates is not None else []
+            out += [historic_future_covariates] if historic_future_covariates is not None else []
+            out += [future_covariates] if future_covariates is not None else []
+            out += [static_covariates] if static_covariates is not None else []
+            out += [future_target_series] if future_target_series is not None else []
+            return tuple(out)
+        else:
+            return tuple([past_target_series, 
+                          past_covariates, 
+                          historic_future_covariates, 
+                          future_covariates, 
+                          static_covariates, 
+                          future_target_series])
 
 class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
     def __init__(
@@ -494,15 +524,7 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
         """
         return self.total_number_samples
 
-    def __getitem__(
-        self, idx: int
-    ) -> Tuple[np.ndarray, 
-               Optional[np.ndarray], 
-               Optional[np.ndarray], 
-               Optional[np.ndarray],
-               Optional[np.ndarray],
-               Optional[np.ndarray],
-               TimeSeries]:
+    def __getitem__(self, idx: int):
         # get idx of target series
         target_idx = 0
         while idx >= len(self.valid_sampling_locations[target_idx]):
@@ -513,6 +535,7 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
         # get target series
         target_series = self.target_series[target_idx]
         past_target_series_with_time = target_series[sampling_location : sampling_location + self.input_chunk_length]
+        past_end = past_target_series_with_time.time_index[-1]
         target_series = self.target_series[target_idx].values()
         past_target_series = target_series[sampling_location : sampling_location + self.input_chunk_length]
         # get past covariates
@@ -537,18 +560,26 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
         else:
             static_covariates = None
         # whether to remove Timeseries and None and return only arrays   
-        out = []
-        out += [past_target_series] if past_target_series is not None else []
-        out += [past_covariates] if past_covariates is not None else []
-        out += [historic_future_covariates] if historic_future_covariates is not None else []
-        out += [future_covariates] if future_covariates is not None else []
-        out += [future_past_covariates] if future_past_covariates is not None else []
-        out += [static_covariates] if static_covariates is not None else []
+        
         if self.array_output_only:
+            out = []
+            out += [past_target_series] if past_target_series is not None else []
+            out += [past_covariates] if past_covariates is not None else []
+            out += [historic_future_covariates] if historic_future_covariates is not None else []
+            out += [future_covariates] if future_covariates is not None else []
+            out += [future_past_covariates] if future_past_covariates is not None else []
+            out += [static_covariates] if static_covariates is not None else []
             return tuple(out)
         else:
-            out += [past_target_series_with_time] if past_target_series_with_time is not None else []
-            return tuple(out)
+            return tuple([past_target_series,
+                          past_covariates,
+                          historic_future_covariates,
+                          future_covariates,
+                          future_past_covariates,
+                          static_covariates,
+                          past_target_series_with_time,
+                          past_end
+                          ])
 
     def evalsample(
             self, idx: int
@@ -648,15 +679,7 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
         """
         return self.total_number_samples
 
-    def __getitem__(
-        self, idx: int
-    ) -> Tuple[
-        np.ndarray,
-        Optional[np.ndarray],
-        Optional[np.ndarray],
-        Optional[np.ndarray],
-        TimeSeries,
-        ]:
+    def __getitem__(self, idx: int):
         # get idx of target series
         target_idx = 0
         while idx >= len(self.valid_sampling_locations[target_idx]):
@@ -667,6 +690,7 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
         # get target series
         target_series = self.target_series[target_idx]
         past_target_series_with_time = target_series[sampling_location : sampling_location + self.input_chunk_length]
+        past_end = past_target_series_with_time.time_index[-1]
         target_series = self.target_series[target_idx].values()
         past_target_series = target_series[sampling_location : sampling_location + self.input_chunk_length]
         # get past covariates
@@ -683,16 +707,20 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
         else:
             static_covariates = None
         # return arrays or arrays with TimeSeries
-        out = []
-        out += [past_target_series] if past_target_series is not None else []
-        out += [past_covariates] if past_covariates is not None else []
-        out += [future_past_covariates] if future_past_covariates is not None else []
-        out += [static_covariates] if static_covariates is not None else []
         if self.array_output_only:
+            out = []
+            out += [past_target_series] if past_target_series is not None else []
+            out += [past_covariates] if past_covariates is not None else []
+            out += [future_past_covariates] if future_past_covariates is not None else []
+            out += [static_covariates] if static_covariates is not None else []
             return tuple(out)
         else:
-            out += [past_target_series_with_time] if past_target_series_with_time is not None else []
-            return tuple(out)
+            return tuple([past_target_series,
+                          past_covariates,
+                          future_past_covariates,
+                          static_covariates,
+                          past_target_series_with_time,
+                          past_end])
 
     def evalsample(
             self, idx: int
@@ -790,15 +818,7 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
         """
         return self.total_number_samples
 
-    def __getitem__(
-        self, idx: int
-    ) -> Tuple[
-        np.ndarray,
-        Optional[np.ndarray],
-        Optional[np.ndarray],
-        Optional[np.ndarray],
-        TimeSeries,
-        ]:
+    def __getitem__(self, idx: int):
         # get idx of target series
         target_idx = 0
         while idx >= len(self.valid_sampling_locations[target_idx]):
@@ -809,6 +829,7 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
         # get target series
         target_series = self.target_series[target_idx]
         past_target_series_with_time = target_series[sampling_location : sampling_location + self.input_chunk_length]
+        past_end = past_target_series_with_time.time_index[-1]
         target_series = self.target_series[target_idx].values()
         past_target_series = target_series[sampling_location : sampling_location + self.input_chunk_length]
         # get past covariates
@@ -825,16 +846,20 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
         else:
             static_covariates = None
         # return arrays or arrays with TimeSeries
-        out = []
-        out += [past_target_series] if past_target_series is not None else []
-        out += [historic_future_covariates] if historic_future_covariates is not None else []
-        out += [future_covariates] if future_covariates is not None else []
-        out += [static_covariates] if static_covariates is not None else []
         if self.array_output_only:
+            out = []
+            out += [past_target_series] if past_target_series is not None else []
+            out += [historic_future_covariates] if historic_future_covariates is not None else []
+            out += [future_covariates] if future_covariates is not None else []
+            out += [static_covariates] if static_covariates is not None else []
             return tuple(out)
         else:
-            out += [past_target_series_with_time] if past_target_series_with_time is not None else []
-            return tuple(out)
+            return tuple([past_target_series,
+                            historic_future_covariates,
+                            future_covariates,
+                            static_covariates,
+                            past_target_series_with_time,
+                            past_end])
         
     def evalsample(
             self, idx: int
