@@ -135,6 +135,11 @@ def rescale_and_backtest(series: Union[TimeSeries,
     if not isinstance(metric, list):
         metric = [metric]
 
+    # BUG FIX ISSUE https://github.com/IrinaStatsLab/GlucoBench/issues/3
+    # align time index of series and forecasts
+    for idx in range(len(series)):
+        forecasts[idx] = series[idx].with_values(forecasts[idx].values()[:, np.newaxis])
+
     # compute errors: 1) reverse scaling forecasts and true values, 2)compute errors
     backtest_list = []
     for idx in range(len(series)):
@@ -229,6 +234,11 @@ def rescale_and_test(series: Union[TimeSeries,
     series = [series] if isinstance(series, TimeSeries) else series
     forecasts = [forecasts] if isinstance(forecasts, TimeSeries) else forecasts
     metric = [metric] if not isinstance(metric, list) else metric
+
+    # BUG FIX ISSUE https://github.com/IrinaStatsLab/GlucoBench/issues/3
+    # align time index of series and forecasts
+    for idx in range(len(series)):
+        forecasts[idx] = series[idx].with_values(forecasts[idx].values()[:, np.newaxis])
 
     # compute errors: 1) reverse scaling forecasts and true values, 2)compute errors
     series = scaler.inverse_transform(series)
