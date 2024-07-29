@@ -273,7 +273,7 @@ class ScalerCustom:
             value_cols = df.columns
             df.reset_index(inplace=True)
             # create new equally spaced time grid
-            df['new_time'] = pd.date_range(start=df['time'].min(), periods=len(df), freq='1H')
+            df['new_time'] = pd.date_range(start=df['time'].min(), periods=len(df), freq='1h')
             # fit scaler
             series = TimeSeries.from_dataframe(df, time_col='new_time', value_cols=value_cols)
             series = self.scaler.fit(series)

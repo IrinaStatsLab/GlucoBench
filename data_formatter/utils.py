@@ -122,7 +122,7 @@ def interpolate(data: pd.DataFrame,
       # interpolate
       segment_data[interpolation_columns] = segment_data[interpolation_columns].interpolate(method='index')
       # fill constant columns with last value
-      segment_data[constant_columns] = segment_data[constant_columns].fillna(method='ffill')
+      segment_data[constant_columns] = segment_data[constant_columns].ffill()
       # delete rows not conforming to frequency
       segment_data = segment_data.reindex(index_new)
       # reset index, make the time a column with name time_col
