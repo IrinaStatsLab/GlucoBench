@@ -578,7 +578,7 @@ class SamplingDatasetInferenceMixed(MixedCovariatesInferenceDataset):
                           future_past_covariates,
                           static_covariates,
                           past_target_series_with_time,
-                          past_end
+                          past_end + past_target_series_with_time.freq
                           ])
 
     def evalsample(
@@ -720,7 +720,7 @@ class SamplingDatasetInferencePast(PastCovariatesInferenceDataset):
                           future_past_covariates,
                           static_covariates,
                           past_target_series_with_time,
-                          past_end])
+                          past_end + past_target_series_with_time.freq])
 
     def evalsample(
             self, idx: int
@@ -859,7 +859,7 @@ class SamplingDatasetInferenceDual(DualCovariatesInferenceDataset):
                             future_covariates,
                             static_covariates,
                             past_target_series_with_time,
-                            past_end])
+                            past_end + past_target_series_with_time.freq,])
         
     def evalsample(
             self, idx: int
