@@ -13,7 +13,7 @@ If you found our work interesting and plan to re-use the code, please cite us as
 
 # Dependencies
 
-We recommend to setup clean Python enviroment with [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html "conda-env") by running `conda create -n glucobench python=3.10`. Then we can install all dependenices by running `pip install -r requirments.txt`. 
+We recommend to setup clean Python environment with [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html "conda-env") by running `conda create -n glucobench python=3.10`. Then we can install all dependenices by running `pip install -r requirments.txt`. 
 
 To run [Latent ODE](https://github.com/YuliaRubanova/latent_ode) model, install [`torchdiffeq`](https://github.com/rtqichen/torchdiffeq).
 
@@ -54,7 +54,7 @@ To process the data, follow the instructions in the `exploratory_analysis/` fold
 
 ## Setting up the enviroment
 
-We recommend to setup clean Python enviroment with [conda](https://docs.conda.io/) and install all dependenices by running `conda env create -f environment.yml`. Now we can activate the environment by running `conda activate glunet`.
+We recommend to setup clean Python enviroment with [conda](https://docs.conda.io/) and install all dependencies by running `conda env create -f environment.yml`. Now we can activate the environment by running `conda activate glunet`.
 
 ## Changing the configs
 
