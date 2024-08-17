@@ -54,7 +54,28 @@ To process the data, follow the instructions in the `exploratory_analysis/` fold
 
 ## Setting up the enviroment
 
-We recommend to setup clean Python enviroment with [conda](https://docs.conda.io/) and install all dependencies by running `conda env create -f environment.yml`. Now we can activate the environment by running `conda activate glunet`.
+We recommend setting up a clean Python environment using [Conda](https://docs.conda.io/). Follow these steps:
+
+1. Create a new environment named `glucobench` with Python 3.10 by running:
+   ```
+   conda env create -n glucobench python=3.10
+   ```
+
+2. Activate the environment with:
+   ```
+   conda activate glucobench
+   ```
+
+3. Install all required dependencies by running:
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. (Optional) To confirm that you're installing in the correct environment, run:
+   ```
+   which pip
+   ```
+   This should display the path to the `pip` executable within the `glucobench` environment."
 
 ## Changing the configs
 
