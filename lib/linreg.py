@@ -110,6 +110,18 @@ if __name__ == '__main__':
     ood_errors_cv = {key: [] for key in reductions if key is not None}
     id_likelihoods_cv = []; ood_likelihoods_cv = []
     id_cal_errors_cv = []; ood_cal_errors_cv = []
+
+    # CREATE THE MODEL OUTPUT FOLDER
+    from pathlib import Path
+    modelsp = Path("output") / "models"
+    modelsp.mkdir(exist_ok=True)
+    dataset_models = modelsp / args.dataset
+    dataset_models.mkdir(exist_ok=True)
+    metricsp = dataset_models / "metrics.csv"
+    metricsp.touch(exist_ok=True)
+    with metricsp.open("a") as f:
+        f.write(f"seed,model,RMSE,MAE\n")
+
     for seed in seeds:
         formatter, series, scalers = reshuffle_data(formatter, 
                                                     seed, 
@@ -186,6 +198,11 @@ if __name__ == '__main__':
             f.write(f"\tSeed: {seed} OOD likelihoods: {ood_likelihood_sample}\n")
             f.write(f"\tSeed: {seed} ID calibration errors: {id_cal_errors_sample.tolist()}\n")
             f.write(f"\tSeed: {seed} OOD calibration errors: {ood_cal_errors_sample.tolist()}\n")
+
+        model_path = dataset_models / f"linear_{args.dataset}_{seed}_pkl"
+        model.save(model_path)
+        with metricsp.open("a") as f:
+            f.write(f"{seed},{model_path},here_will_be_RMSE,here_will_be_MAE\n")
 
     # compute, save, and print results
     with open(study_file, "a") as f:

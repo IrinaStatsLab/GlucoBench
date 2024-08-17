@@ -17,6 +17,8 @@ __pycache__/
 *.pyc
 *.DS_Store
 .ipynb_checkpoints
+.micromamba/
+.vscode/
 
 # ignore irrelevant files
 legacy
@@ -26,6 +28,8 @@ meeting_notes.md
 
 # ignore workspace 
 *.code-workspace
+glucobench/
+
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can

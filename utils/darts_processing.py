@@ -14,10 +14,14 @@ from darts import metrics
 from darts import TimeSeries
 from darts.dataprocessing.transformers import Scaler
 from pytorch_lightning.callbacks import Callback
+from sympy import pprint
 
 # import data formatter
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from data_formatter.base import *
+
+pd.set_option('display.width', None)   # Set display width to None to avoid truncation
+pd.set_option('display.max_columns', None)  # Display all columns
 
 def make_series(data: Dict[str, pd.DataFrame],
                 time_col: str,
@@ -51,7 +55,11 @@ def make_series(data: Dict[str, pd.DataFrame],
     series = {i: {j: None for j in value_cols} for i in data.keys()}
     scalers = {}
     for key, df in data.items():
+        print(key,df,"-+--+-+--+--+--+--+")
         for name, cols in value_cols.items():
+            # Adjust display settings
+            print(f"DATAFRAME for key {key} in NAME {name} and COLS {cols} and GROUP_COL {group_col}")
+            pprint(df.head(1))
             series[key][name] = TimeSeries.from_group_dataframe(df = df,
                                                                 group_cols = group_col,
                                                                 time_col = time_col,
@@ -62,6 +70,9 @@ def make_series(data: Dict[str, pd.DataFrame],
             if cols is not None: 
                 if key == 'train':
                     scalers[name] = ScalerCustom()
+                    print("series[key][name]")
+                    print(name)
+                    print(series[key][name])
                     series[key][name] = scalers[name].fit_transform(series[key][name])
                 else:
                     series[key][name] = scalers[name].transform(series[key][name])
@@ -119,17 +130,19 @@ def load_data(seed = 0,
     dynamic_cols = formatter.get_column('dynamic_covs')
     future_cols = formatter.get_column('future_covs')
 
+    data = {'train': formatter.train_data,
+            'val': formatter.val_data,
+            'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
+            'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]}
+    value_cols = {'target': target_col,
+                  'static': static_cols,
+                  'dynamic': dynamic_cols,
+                  'future': future_cols}
     # build series
-    series, scalers = make_series({'train': formatter.train_data,
-                                    'val': formatter.val_data,
-                                    'test': formatter.test_data.loc[~formatter.test_data.index.isin(formatter.test_idx_ood)],
-                                    'test_ood': formatter.test_data.loc[formatter.test_data.index.isin(formatter.test_idx_ood)]},
+    series, scalers = make_series(data,
                                     time_col,
                                     group_col,
-                                    {'target': target_col,
-                                    'static': static_cols,
-                                    'dynamic': dynamic_cols,
-                                    'future': future_cols})
+                                    value_cols)
     if not use_covs:
         # set dynamic and future covariates to None
         for split in ['train', 'val', 'test', 'test_ood']:
@@ -267,7 +280,11 @@ class ScalerCustom:
         self.scale_ = None 
 
     def fit(self, time_series: Union[List[TimeSeries], TimeSeries]) -> None:
+        print("+++++++++++++++++++++++++")
+        print(time_series)
+
         if isinstance(time_series, list):
+
             # extract series as Pandas dataframe
             df = pd.concat([ts.pd_dataframe() for ts in time_series])
             value_cols = df.columns

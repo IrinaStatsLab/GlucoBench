@@ -1,0 +1,95 @@
+Optimization started at 2024-08-17 09:08:20.886539
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+who tf is col
+('id', <DataTypes.CATEGORICAL: 1>, <InputTypes.ID: 4>)
+DataTypes.CATEGORICAL
+who tf is col
+('time', <DataTypes.DATE: 2>, <InputTypes.TIME: 6>)
+DataTypes.DATE
+who tf is col
+('gl', <DataTypes.REAL_VALUED: 0>, <InputTypes.TARGET: 0>)
+DataTypes.REAL_VALUED
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+		time_second: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 24
+	Extracted segments: 20
+	Interpolated values: 987
+	Percent of values interpolated: 8.19%
+Splitting data...
+	Train: 9918 (58.21%)
+	Val: 2665 (15.64%)
+	Test: 2665 (15.64%)
+	Test OOD: 1791 (10.51%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
+	Train: 10140 (59.51%)
+	Val: 2665 (15.64%)
+	Test: 2665 (15.64%)
+	Test OOD: 1569 (9.21%)
+	No scaling applied
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+who tf is col
+('id', <DataTypes.CATEGORICAL: 1>, <InputTypes.ID: 4>)
+DataTypes.CATEGORICAL
+who tf is col
+('time', <DataTypes.DATE: 2>, <InputTypes.TIME: 6>)
+DataTypes.DATE
+who tf is col
+('gl', <DataTypes.REAL_VALUED: 0>, <InputTypes.TARGET: 0>)
+DataTypes.REAL_VALUED
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+		time_second: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 24
+	Extracted segments: 20
+	Interpolated values: 987
+	Percent of values interpolated: 8.19%
+Splitting data...
+	Train: 9918 (58.21%)
+	Val: 2665 (15.64%)
+	Test: 2665 (15.64%)
+	Test OOD: 1791 (10.51%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
+	Train: 10140 (59.51%)
+	Val: 2665 (15.64%)
+	Test: 2665 (15.64%)
+	Test OOD: 1569 (9.21%)
+	No scaling applied

@@ -1,0 +1,168 @@
+data_csv_path: ./raw_data/livia.csv
+drop: null
+ds_name: livia
+index_col: -1
+observation_interval: 5min
+
+column_definition:
+- data_type: categorical
+  input_type: id
+  name: id
+- data_type: date
+  input_type: time
+  name: time
+- data_type: real_valued
+  input_type: target
+  name: gl
+
+encoding_params:
+  date:
+  - day
+  - month
+  - year
+  - hour
+  - minute
+  - second
+
+# Drop
+drop: null
+
+# NA values abbreviation
+nan_vals: null
+
+# Interpolation parameters
+interpolation_params:
+  gap_threshold: 45 # in minutes
+  min_drop_length: 240 # in number of points (20 hrs)
+
+scaling_params:
+  scaler: None
+
+
+
+split_params:
+  length_segment: 13
+  random_state: 0
+  test_percent_subjects: 0.1
+
+
+# Splitting parameters
+#split_params:
+#  test_percent_subjects: .1
+#  length_segment: 240
+#  random_state: 0
+
+# Model params
+max_length_input: 192
+length_pred: 12
+
+latentode:
+  gen_layers: 3
+  gru_units: 100
+  in_len: 48
+  latents: 20
+  max_samples_per_ts: 100
+  rec_dims: 40
+  rec_layers: 3
+  units: 100
+  length_pred: 12
+
+linreg:
+  in_len: 192
+
+linreg_covariates:
+  in_len: 12
+  max_length_input: 192
+  nan_vals: null
+
+nhits:
+  batch_size: 64
+  dropout: 0.12695408586813234
+  in_len: 96
+  kernel_sizes: 5
+  lr: 0.0004510532358403777
+  lr_epochs: 16
+  max_samples_per_ts: 50
+
+nhits_covariates:
+  batch_size: 32
+  dropout: 0.09469970402653531
+  in_len: 144
+  kernel_sizes: 3
+  lr: 0.0009786650965760999
+  lr_epochs: 10
+  max_samples_per_ts: 50
+  observation_interval: 5min
+
+
+tft:
+  batch_size: 32
+  dropout: 0.12792080253276716
+  hidden_size: 80
+  in_len: 168
+  lr: 0.003164601797779577
+  max_grad_norm: 0.5265925565310886
+  max_samples_per_ts: 50
+  num_attention_heads: 4
+
+tft_covariates:
+  batch_size: 32
+  dropout: 0.22790916758695268
+  hidden_size: 80
+  in_len: 96
+  lr: 0.005050238867376333
+  max_grad_norm: 0.026706367007025333
+  max_samples_per_ts: 50
+  num_attention_heads: 3
+
+transformer:
+  batch_size: 32
+  d_model: 96
+  dim_feedforward: 448
+  dropout: 0.10161152207464333
+  in_len: 96
+  lr: 0.000840888489686657
+  lr_epochs: 16
+  max_grad_norm: 0.6740479322943925
+  max_samples_per_ts: 50
+  n_heads: 4
+  num_decoder_layers: 1
+  num_encoder_layers: 4
+
+transformer_covariates:
+  batch_size: 32
+  d_model: 128
+  dim_feedforward: 160
+  dropout: 0.044926981080245884
+  in_len: 108
+  lr: 0.00029632347559614453
+  lr_epochs: 20
+  max_grad_norm: 0.8890169619043728
+  max_samples_per_ts: 50
+  n_heads: 2
+  num_decoder_layers: 2
+  num_encoder_layers: 2
+
+xgboost:
+  alpha: 0.124
+  colsample_bytree: 0.8
+  gamma: 0.5
+  in_len: 84
+  lambda_: 0.089
+  lr: 0.506
+  max_depth: 9
+  min_child_weight: 2.0
+  n_estimators: 416
+  subsample: 0.9
+
+xgboost_covariates:
+  alpha: 0.199
+  colsample_bytree: 1.0
+  gamma: 1.0
+  in_len: 96
+  lambda_: 0.018000000000000002
+  lr: 0.387
+  max_depth: 8
+  min_child_weight: 1.0
+  n_estimators: 288
+  subsample: 0.8

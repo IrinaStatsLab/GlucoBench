@@ -11,3 +11,5 @@ nohup python ./lib/linreg.py --dataset hall --use_covs False --optuna False > ./
 nohup python ./lib/linreg.py --dataset hall --use_covs True --optuna False > ./output/track_linreg_covariates_hall.txt &
 nohup python ./lib/linreg.py --dataset iglu --use_covs False --optuna False > ./output/track_linreg_iglu.txt &
 nohup python ./lib/linreg.py --dataset iglu --use_covs True --optuna False > ./output/track_linreg_covariates_iglu.txt &
+nohup python ./lib/linreg.py --dataset livia --use_covs True --optuna False > ./output/track_linreg_covariates_hall.txt &
+nohup python ./lib/linreg.py --dataset livia --use_covs False --optuna False > ./output/track_linreg_covariates_hall.txt &

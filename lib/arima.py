@@ -26,7 +26,8 @@ def test_model(test_data, scaler, in_len, out_len, stride, target_col, group_col
                         max_Q=10,
                         allowdrift=True,
                         allowmean=True,
-                        parallel=False)
+                        #parallel=False
+                        )
         model.fit(train_set)
         # get valid sampling locations for future prediction
         start_idx = np.arange(start=stride, stop=len(data) - in_len - out_len + 1, step=stride)

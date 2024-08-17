@@ -1,5 +1,6 @@
 #!/bin/sh
 
+
 # execute in parallel
 nohup python ./lib/arima.py --dataset weinstock > ./output/track_arima_weinstock.txt &
 nohup python ./lib/arima.py --dataset colas > ./output/track_arima_colas.txt &
