@@ -1,18 +1,14 @@
-r""""Contains definitions of the methods used by the _BaseDataLoaderIter workers to
-collate samples fetched from dataset into Tensor(s).
-These **needs** to be in global scope since Py2 doesn't support serializing
-static methods.
-"""
-
+from typing import Any, Dict, List, Tuple, Union, Mapping, Sequence
 import torch
 import re
 import collections
-from torch._six import string_classes
 
 np_str_obj_array_pattern = re.compile(r'[SaUO]')
 
+# Replace torch._six.string_classes with this
+string_classes = (str, bytes)
 
-def default_convert(data):
+def default_convert(data: Any) -> Any:
     r"""Converts each NumPy array data field into a tensor"""
     elem_type = type(data)
     if isinstance(data, torch.Tensor):
@@ -33,13 +29,11 @@ def default_convert(data):
     else:
         return data
 
-
 default_collate_err_msg_format = (
     "default_collate: batch must contain tensors, numpy arrays, numbers, "
     "dicts or lists; found {}")
 
-
-def default_collate(batch):
+def default_collate(batch: List[Any]) -> Union[torch.Tensor, List, Dict, Tuple]:
     r"""Puts each data field into a tensor with outer dimension batch size"""
 
     elem = batch[0]
@@ -69,11 +63,11 @@ def default_collate(batch):
         return torch.tensor(batch)
     elif isinstance(elem, string_classes):
         return batch
-    elif isinstance(elem, collections.abc.Mapping):
+    elif isinstance(elem, Mapping):
         return {key: default_collate([d[key] for d in batch]) for key in elem}
     elif isinstance(elem, tuple) and hasattr(elem, '_fields'):  # namedtuple
         return elem_type(*(default_collate(samples) for samples in zip(*batch)))
-    elif isinstance(elem, collections.abc.Sequence):
+    elif isinstance(elem, Sequence):
         # check to make sure that the elements in batch have consistent size
         it = iter(batch)
         elem_size = len(next(it))
