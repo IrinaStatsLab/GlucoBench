@@ -113,9 +113,6 @@ class DataFormatter():
   def __set_data_types(self):
     # set time column as datetime format in pandas
     for col in self._column_definition:
-      print('who tf is col')
-      print (col)
-      print (col[1])
       if col[1] == DataTypes.DATE:
         self.data[col[0]] = pd.to_datetime(self.data[col[0]])
       if col[1] == DataTypes.CATEGORICAL:

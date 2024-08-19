@@ -55,7 +55,7 @@ def make_series(data: Dict[str, pd.DataFrame],
     series = {i: {j: None for j in value_cols} for i in data.keys()}
     scalers = {}
     for key, df in data.items():
-        print(key,df,"-+--+-+--+--+--+--+")
+        
         for name, cols in value_cols.items():
             # Adjust display settings
             print(f"DATAFRAME for key {key} in NAME {name} and COLS {cols} and GROUP_COL {group_col}")
@@ -70,9 +70,6 @@ def make_series(data: Dict[str, pd.DataFrame],
             if cols is not None: 
                 if key == 'train':
                     scalers[name] = ScalerCustom()
-                    print("series[key][name]")
-                    print(name)
-                    print(series[key][name])
                     series[key][name] = scalers[name].fit_transform(series[key][name])
                 else:
                     series[key][name] = scalers[name].transform(series[key][name])
@@ -280,9 +277,7 @@ class ScalerCustom:
         self.scale_ = None 
 
     def fit(self, time_series: Union[List[TimeSeries], TimeSeries]) -> None:
-        print("+++++++++++++++++++++++++")
-        print(time_series)
-
+        
         if isinstance(time_series, list):
 
             # extract series as Pandas dataframe

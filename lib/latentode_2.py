@@ -1,31 +1,20 @@
-import sys
 import os
-import yaml
-import datetime
+import sys
 import argparse
-from functools import partial
+import datetime
 
+import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
 
-# Import data formatter
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from data_formatter.base import *
-from lib.gluformer.model import Gluformer
-from lib.gluformer.utils.evaluation import test
-from utils.darts_processing import load_data, reshuffle_data
-from utils.darts_dataset import SamplingDatasetDual, SamplingDatasetInferenceDual
+# Load model
+from latent_ode.trainer_glunet import LatentODEWrapper
+from latent_ode.eval_glunet import test
 
-# Define function for setting lags
-def set_lags(in_len, args):
-    lags_past_covariates = None
-    lags_future_covariates = None
-    if args.use_covs == 'True':
-        if series['train']['future'] is not None:
-            lags_past_covariates = in_len
-        if series['train']['static'] is not None:
-            lags_future_covariates = (in_len, formatter.params['length_pred'])
-    return lags_past_covariates, lags_future_covariates
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+# Utils for darts
+from utils.darts_dataset import SamplingDatasetDual, SamplingDatasetInferenceDual
+from utils.darts_processing import load_data
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, default='weinstock')
@@ -42,7 +31,7 @@ if __name__ == '__main__':
     device = torch.device(f'cuda:{args.gpu_id}' if torch.cuda.is_available() else 'cpu')
     
     # Load data
-    study_file = f'./output/gluformer_{args.dataset}.txt'
+    study_file = f'./output/latentode_{args.dataset}.txt'
     if not os.path.exists(study_file):
         with open(study_file, "w") as f:
             f.write(f"Training and testing started at {datetime.datetime.now()}\n")
@@ -54,26 +43,22 @@ if __name__ == '__main__':
                                            cov_type='dual',
                                            use_static_covs=True)
     
-    # Set model parameters directly
-    in_len = 96  # Fixed input length
-    label_len = in_len // 3
+    # Set fixed parameters
     out_len = formatter.params['length_pred']
-    max_samples_per_ts = 200  # Fixed max samples per time series
-    d_model = 512  # Fixed model dimension
-    n_heads = 8  # Fixed number of attention heads
-    d_fcn = 1024  # Fixed dimension of FCN
-    num_enc_layers = 2  # Fixed number of encoder layers
-    num_dec_layers = 2  # Fixed number of decoder layers
-    
-    num_dynamic_features = series['train']['future'][-1].n_components
-    num_static_features = series['train']['static'][-1].n_components
+    in_len = 96  # Fixed input length
+    max_samples_per_ts = None  # Unlimited samples per time series
+    latents = 20  # Fixed latent dimensions
+    rec_dims = 40  # Fixed reconstruction dimensions
+    rec_layers = 3  # Fixed number of reconstruction layers
+    gen_layers = 3  # Fixed number of generation layers
+    units = 150  # Fixed number of units
+    gru_units = 150  # Fixed number of GRU units
     model_path = os.path.join(os.path.dirname(__file__),
-                              f'../output/tensorboard_gluformer_{args.dataset}/model.pt')
+                              f'../output/tensorboard_latentode_{args.dataset}/model.ckpt')
 
-    # Set model seed
     writer = SummaryWriter(os.path.join(os.path.dirname(__file__), 
-                           f'../output/tensorboard_gluformer_{args.dataset}/run'))
-    
+                           f'../output/tensorboard_latentode_{args.dataset}/run'))
+
     # Create datasets
     dataset_train = SamplingDatasetDual(series['train']['target'],
                                         series['train']['future'],
@@ -99,25 +84,19 @@ if __name__ == '__main__':
                                                     use_static_covariates=True,
                                                     array_output_only=True)
 
-    # Build the Gluformer model
-    model = Gluformer(d_model=d_model, 
-                      n_heads=n_heads, 
-                      d_fcn=d_fcn, 
-                      r_drop=0.2, 
-                      activ='relu', 
-                      num_enc_layers=num_enc_layers, 
-                      num_dec_layers=num_dec_layers,
-                      distil=True, 
-                      len_seq=in_len,
-                      label_len=label_len,
-                      len_pred=out_len,
-                      num_dynamic_features=num_dynamic_features,
-                      num_static_features=num_static_features)
+    # Build the LatentODE model
+    model = LatentODEWrapper(device=device,
+                             latents=latents,
+                             rec_dims=rec_dims,
+                             rec_layers=rec_layers,
+                             gen_layers=gen_layers,
+                             units=units,
+                             gru_units=gru_units)
 
     # Train the model
     model.fit(dataset_train,
               dataset_val,
-              learning_rate=1e-4,
+              learning_rate=1e-3,
               batch_size=32,
               epochs=100,
               num_samples=1,
@@ -127,40 +106,27 @@ if __name__ == '__main__':
               logger=writer)
 
     # Backtest on the test set
-    predictions, logvar = model.predict(dataset_test,
-                                        batch_size=32,
-                                        num_samples=3,
-                                        device=device)
+    predictions = model.predict(dataset_test,
+                                batch_size=32,
+                                num_samples=10,
+                                device=device)
     trues = np.array([dataset_test.evalsample(i).values() for i in range(len(dataset_test))])
     trues = (trues - scalers['target'].min_) / scalers['target'].scale_
     predictions = (predictions - scalers['target'].min_) / scalers['target'].scale_
-    var = np.exp(logvar) / scalers['target'].scale_**2
-    id_errors_sample, id_likelihood_sample, id_cal_errors_sample = test(trues, predictions, var=var)
+    obsrv_std = 0.01 / scalers['target'].scale_
+    id_errors_sample, id_likelihood_sample, id_cal_errors_sample = test(trues, predictions, obsrv_std)
 
     # Backtest on the OOD test set
-    predictions, logvar = model.predict(dataset_test_ood,
-                                        batch_size=32,
-                                        num_samples=3,
-                                        device=device)
+    predictions = model.predict(dataset_test_ood,
+                                batch_size=32,
+                                num_samples=10,
+                                device=device)
     trues = np.array([dataset_test_ood.evalsample(i).values() for i in range(len(dataset_test_ood))])
     trues = (trues - scalers['target'].min_) / scalers['target'].scale_
     predictions = (predictions - scalers['target'].min_) / scalers['target'].scale_
-    var = np.exp(logvar) / scalers['target'].scale_**2
-    ood_errors_sample, ood_likelihood_sample, ood_cal_errors_sample = test(trues, predictions, var=var)
-
-
-    # CREATE THE MODEL OUTPUT FOLDER
-    from pathlib import Path
-    modelsp = Path("output") / "models"
-    modelsp.mkdir(exist_ok=True)
-    dataset_models = modelsp / args.dataset
-    dataset_models.mkdir(exist_ok=True)
-    metricsp = dataset_models / "metrics.csv"
-    metricsp.touch(exist_ok=True)
-    with metricsp.open("a") as f:
-        f.write(f"model,ID RMSE/MAE,OOD RMSE/MAE\n")
-
-
+    obsrv_std = 0.01 / scalers['target'].scale_
+    ood_errors_sample, ood_likelihood_sample, ood_cal_errors_sample = test(trues, predictions, obsrv_std)
+    
     # Compute, save, and print results
     with open(study_file, "a") as f:
         for reduction in reductions:
@@ -178,8 +144,3 @@ if __name__ == '__main__':
         f.write(f"OOD likelihoods: {ood_likelihood_sample}\n")
         f.write(f"ID calibration errors: {id_cal_errors_sample}\n")
         f.write(f"OOD calibration errors: {ood_cal_errors_sample}\n")
-
-        model_path = dataset_models / f"gluformer_{args.dataset}_pkl"
-        model.save(model_path)
-        with metricsp.open("a") as f:
-            f.write(f"{model_path},{id_errors_sample_red},{ood_errors_sample_red}\n")

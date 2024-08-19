@@ -1,4 +1,4 @@
-Optimization started at 2024-08-17 09:08:20.886539
+Training and testing started at 2024-08-19 22:34:00.570736
 --------------------------------
 Loading column definition...
 Checking column definition...
@@ -8,13 +8,13 @@ Checking for NA values...
 Setting data types...
 who tf is col
 ('id', <DataTypes.CATEGORICAL: 1>, <InputTypes.ID: 4>)
-DataTypes.CATEGORICAL
+1
 who tf is col
 ('time', <DataTypes.DATE: 2>, <InputTypes.TIME: 6>)
-DataTypes.DATE
+2
 who tf is col
 ('gl', <DataTypes.REAL_VALUED: 0>, <InputTypes.TARGET: 0>)
-DataTypes.REAL_VALUED
+0
 Dropping columns / rows...
 Encoding data...
 	Updated column definition:
@@ -41,55 +41,13 @@ Scaling data...
 	No scaling applied
 Data formatting complete.
 --------------------------------
-	Train: 10140 (59.51%)
-	Val: 2665 (15.64%)
-	Test: 2665 (15.64%)
-	Test OOD: 1569 (9.21%)
-	No scaling applied
---------------------------------
-Loading column definition...
-Checking column definition...
-Loading data...
-Dropping columns / rows...
-Checking for NA values...
-Setting data types...
-who tf is col
-('id', <DataTypes.CATEGORICAL: 1>, <InputTypes.ID: 4>)
-DataTypes.CATEGORICAL
-who tf is col
-('time', <DataTypes.DATE: 2>, <InputTypes.TIME: 6>)
-DataTypes.DATE
-who tf is col
-('gl', <DataTypes.REAL_VALUED: 0>, <InputTypes.TARGET: 0>)
-DataTypes.REAL_VALUED
-Dropping columns / rows...
-Encoding data...
-	Updated column definition:
-		id: REAL_VALUED (ID)
-		time: DATE (TIME)
-		gl: REAL_VALUED (TARGET)
-		time_day: REAL_VALUED (KNOWN_INPUT)
-		time_month: REAL_VALUED (KNOWN_INPUT)
-		time_year: REAL_VALUED (KNOWN_INPUT)
-		time_hour: REAL_VALUED (KNOWN_INPUT)
-		time_minute: REAL_VALUED (KNOWN_INPUT)
-		time_second: REAL_VALUED (KNOWN_INPUT)
-Interpolating data...
-	Dropped segments: 24
-	Extracted segments: 20
-	Interpolated values: 987
-	Percent of values interpolated: 8.19%
-Splitting data...
-	Train: 9918 (58.21%)
-	Val: 2665 (15.64%)
-	Test: 2665 (15.64%)
-	Test OOD: 1791 (10.51%)
-Scaling data...
-	No scaling applied
-Data formatting complete.
---------------------------------
-	Train: 10140 (59.51%)
-	Val: 2665 (15.64%)
-	Test: 2665 (15.64%)
-	Test OOD: 1569 (9.21%)
-	No scaling applied
+ID mean of (MSE, MAE): [838.6723   18.98956]
+OOD mean of (MSE, MAE): [764.7483    18.477781]
+ID median of (MSE, MAE): [260.18387   13.711178]
+OOD median of (MSE, MAE): [249.63585  13.48838]
+ID likelihoods: -10.284848157346374
+OOD likelihoods: -10.238711867465142
+ID calibration errors: [0.4804783  0.31640958 0.2185735  0.14859415 0.13503262 0.05243168
+ 0.02799019 0.01708016 0.00225744 0.0492046  0.00409075 0.00942371]
+OOD calibration errors: [0.45877366 0.34102272 0.27295062 0.20623398 0.23345782 0.09922995
+ 0.10141654 0.03100005 0.05754177 0.21482345 0.0586774  0.07834189]
