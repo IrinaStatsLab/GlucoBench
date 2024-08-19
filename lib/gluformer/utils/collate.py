@@ -7,10 +7,10 @@ static methods.
 import torch
 import re
 import collections
-from torch._six import string_classes
+import six
+import numpy as np
 
 np_str_obj_array_pattern = re.compile(r'[SaUO]')
-
 
 def default_convert(data):
     r"""Converts each NumPy array data field into a tensor"""
@@ -28,7 +28,7 @@ def default_convert(data):
         return {key: default_convert(data[key]) for key in data}
     elif isinstance(data, tuple) and hasattr(data, '_fields'):  # namedtuple
         return elem_type(*(default_convert(d) for d in data))
-    elif isinstance(data, collections.abc.Sequence) and not isinstance(data, string_classes):
+    elif isinstance(data, collections.abc.Sequence) and not isinstance(data, six.string_types):
         return [default_convert(d) for d in data]
     else:
         return data
@@ -67,7 +67,7 @@ def default_collate(batch):
         return torch.tensor(batch, dtype=torch.float64)
     elif isinstance(elem, int):
         return torch.tensor(batch)
-    elif isinstance(elem, string_classes):
+    elif isinstance(elem, six.string_types):
         return batch
     elif isinstance(elem, collections.abc.Mapping):
         return {key: default_collate([d[key] for d in batch]) for key in elem}
