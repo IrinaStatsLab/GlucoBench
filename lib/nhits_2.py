@@ -168,11 +168,17 @@ def main(
         f.write(f"ID calibration errors: {id_cal_errors_sample}\n")
         f.write(f"OOD calibration errors: {ood_cal_errors_sample}\n")
 
+
         model_path = dataset_models / f"nhits_{dataset}_pkl"
         model.save(str(model_path))
         if metricsp.stat().st_size == 0:
             with metricsp.open("a") as f:
                 f.write(f"model,ID RMSE/MAE,OOD RMSE/MAE\n")
+
+
+        model_path = dataset_models / f"nhits_{args.dataset}_pkl"
+        model.save(model_path)
+
         with metricsp.open("a") as f:
             f.write(f"{model_path},{id_errors_sample_red},{ood_errors_sample_red}\n")
 
