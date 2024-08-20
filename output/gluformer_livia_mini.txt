@@ -89,3 +89,36 @@ ID calibration errors: [0.06968845 0.10160744 0.1036557  0.11124651 0.12292516 0
  0.13102425 0.14341832 0.1426789  0.15639339 0.16999384 0.2083962 ]
 OOD calibration errors: [0.00857855 0.01887973 0.04118984 0.07875175 0.11653742 0.15143277
  0.18278585 0.20469998 0.2357676  0.26456212 0.28698287 0.30957783]
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+		time_second: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 28
+	Extracted segments: 40
+	Interpolated values: 3001
+	Percent of values interpolated: 12.96%
+Splitting data...
+	Train: 19798 (61.16%)
+	Val: 4920 (15.20%)
+	Test: 4920 (15.20%)
+	Test OOD: 2734 (8.45%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
