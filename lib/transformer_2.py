@@ -140,6 +140,18 @@ if __name__ == '__main__':
                                                                                        [metrics.mse, metrics.mae],
                                                                                        scalers['target'])
     
+    # CREATE THE MODEL OUTPUT FOLDER
+    from pathlib import Path
+    modelsp = Path("output") / "models"
+    modelsp.mkdir(exist_ok=True)
+    dataset_models = modelsp / args.dataset
+    dataset_models.mkdir(exist_ok=True)
+    metricsp = dataset_models / "metrics.csv"
+    metricsp.touch(exist_ok=True)
+    with metricsp.open("a") as f:
+        f.write(f"model,ID RMSE/MAE,OOD RMSE/MAE\n")
+
+
     # Compute, save, and print results
     with open(study_file, "a") as f:
         for reduction in reductions:
@@ -157,3 +169,8 @@ if __name__ == '__main__':
         f.write(f"OOD likelihoods: {ood_likelihood_sample}\n")
         f.write(f"ID calibration errors: {id_cal_errors_sample}\n")
         f.write(f"OOD calibration errors: {ood_cal_errors_sample}\n")
+        
+        model_path = dataset_models / f"transformer_{args.dataset}_pkl"
+        model.save(model_path)
+        with metricsp.open("a") as f:
+            f.write(f"{model_path},{id_errors_sample_red},{ood_errors_sample_red}\n")
