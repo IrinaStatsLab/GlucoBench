@@ -1,9 +1,13 @@
 name: glucosedao
 channels:
 - conda-forge
+- pytorch
+- nvidia
 dependencies:
   - python==3.11
-  - pytorch-gpu
+  - pytorch-cuda
+  - pytorch
+  - cuda-toolkit
   #- pytorch-lightning
   - matplotlib
   - optuna

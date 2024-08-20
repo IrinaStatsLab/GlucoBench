@@ -28,7 +28,7 @@ def set_lags(in_len, args):
     return lags_past_covariates, lags_future_covariates
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', type=str, default='weinstock')
+parser.add_argument('--dataset', type=str, default='livia_mini')
 parser.add_argument('--gpu_id', type=int, default=0)
 parser.add_argument('--reduction1', type=str, default='mean')
 parser.add_argument('--reduction2', type=str, default='median')
@@ -179,7 +179,8 @@ if __name__ == '__main__':
         f.write(f"ID calibration errors: {id_cal_errors_sample}\n")
         f.write(f"OOD calibration errors: {ood_cal_errors_sample}\n")
 
-        model_path = dataset_models / f"gluformer_{args.dataset}_pkl"
-        model.save(model_path)
+        model_path = dataset_models / f"gluformer_{args.dataset}.pth"
+        #model.save(model_path)
+        torch.save(model, str(model_path))
         with metricsp.open("a") as f:
             f.write(f"{model_path},{id_errors_sample_red},{ood_errors_sample_red}\n")

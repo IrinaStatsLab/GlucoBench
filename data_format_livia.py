@@ -100,7 +100,7 @@ combined_df['gl']=combined_df['gl'].astype('float64')
 #print(datatypes)
 
 # Write the modified dataframe to a new CSV file
-combined_df.to_csv('./raw_data/livia_unmerged/livia.csv', index=True)
+combined_df.to_csv('./raw_data/livia_unmerged/livia_mini.csv', index=True)
 
 print("CSV files have been successfully merged, modified, and saved.")
 

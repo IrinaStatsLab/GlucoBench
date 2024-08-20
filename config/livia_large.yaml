@@ -1,28 +1,28 @@
-data_csv_path: ./raw_data/livia.csv
+data_csv_path: ./raw_data/livia_large.csv
 drop: null
-ds_name: livia
+ds_name: livia_large
 index_col: -1
 observation_interval: 5min
 
 column_definition:
-- data_type: categorical
-  input_type: id
-  name: id
-- data_type: date
-  input_type: time
-  name: time
-- data_type: real_valued
-  input_type: target
-  name: gl
+  - data_type: categorical
+    input_type: id
+    name: id
+  - data_type: date
+    input_type: time
+    name: time
+  - data_type: real_valued
+    input_type: target
+    name: gl
 
 encoding_params:
   date:
-  - day
-  - month
-  - year
-  - hour
-  - minute
-  - second
+    - day
+    - month
+    - year
+    - hour
+    - minute
+    - second
 
 # Drop
 drop: null

@@ -48,7 +48,7 @@ def get_static_covariate_fields(model: LinearRegressionModel) -> Optional[List[s
 
 
 @app.command()
-def linear(model_path: Path = Path("output/models/livia/linear_livia_10_pkl"), file: Optional[Path] = Path("raw_data/livia.csv"), n: int = 10):
+def linear(model_path: Path = Path("output/models/livia/linear_livia_10_pkl"), file: Optional[Path] = Path("raw_data/livia_mini.csv"), n: int = 10):
     model = LinearRegressionModel.load(model_path)
     pprint(get_static_covariate_fields(model))
 
