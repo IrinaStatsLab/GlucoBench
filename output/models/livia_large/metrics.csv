@@ -1,2 +1,5 @@
 model,ID RMSE/MAE,OOD RMSE/MAE
 output/models/livia_large/gluformer_livia_large_pth,[147.61273   10.384947],[250.4856    13.541423]
+output/models/livia_large/gluformer_1samples_100epochs_12heads_320batch_geluactivation_livia_large.pth,[287.97903   14.744115],[395.56885   17.530745]
+output/models/livia_large/gluformer_1samples_100epochs_8heads_160batch_reluactivation_livia_large.pth,[256.28302   14.026365],[371.42465   17.081606]
+output/models/livia_large/gluformer_1samples_200epochs_8heads_32batch_geluactivation_livia_large.pth,[145.32152   10.203011],[238.44078   13.146278]

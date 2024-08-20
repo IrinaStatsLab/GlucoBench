@@ -25,9 +25,9 @@ def main(dataset: str = 'livia_mini',
          reduction2: str = 'median',
          reduction3: Optional[str] = None,
          num_samples: int = 1,
-         epochs: int = 100,
-         n_heads: int = 12,
-         batch_size: int = 320,
+         epochs: int = 400,
+         n_heads: int = 10,
+         batch_size: int = 32,
          activ: str = "gelu"):
 
     reductions = [reduction1, reduction2, reduction3]
@@ -122,7 +122,7 @@ def main(dataset: str = 'livia_mini',
     # Backtest on the test set
     predictions, logvar = model.predict(dataset_test,
                                         batch_size=batch_size,
-                                        num_samples=num_samples,
+                                        num_samples=3, #num_samples,
                                         device=device)
     trues = np.array([dataset_test.evalsample(i).values() for i in range(len(dataset_test))])
     trues = (trues - scalers['target'].min_) / scalers['target'].scale_
@@ -133,7 +133,7 @@ def main(dataset: str = 'livia_mini',
     # Backtest on the OOD test set
     predictions, logvar = model.predict(dataset_test_ood,
                                         batch_size=batch_size,
-                                        num_samples=num_samples,
+                                        num_samples=3, #=num_samples,
                                         device=device)
     trues = np.array([dataset_test_ood.evalsample(i).values() for i in range(len(dataset_test_ood))])
     trues = (trues - scalers['target'].min_) / scalers['target'].scale_

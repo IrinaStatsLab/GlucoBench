@@ -174,3 +174,165 @@ Scaling data...
 	No scaling applied
 Data formatting complete.
 --------------------------------
+ID mean of (MSE, MAE): [702.0604    18.813593]
+OOD mean of (MSE, MAE): [908.77625  21.91207]
+ID median of (MSE, MAE): [287.97903   14.744115]
+OOD median of (MSE, MAE): [395.56885   17.530745]
+ID likelihoods: -2.6284022331237793
+OOD likelihoods: -2.2418859004974365
+ID calibration errors: [0.03509589 0.01587896 0.00632126 0.0078837  0.01824275 0.03208205
+ 0.0479177  0.06443315 0.08071662 0.09653694 0.11093923 0.1249518 ]
+OOD calibration errors: [0.01746645 0.0094019  0.01281766 0.02538739 0.04696032 0.07141069
+ 0.09664082 0.12174679 0.14575525 0.16363598 0.1836455  0.20226128]
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+		time_second: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 188
+	Extracted segments: 406
+	Interpolated values: 21276
+	Percent of values interpolated: 6.96%
+Splitting data...
+	Train: 266941 (63.98%)
+	Val: 59450 (14.25%)
+	Test: 59450 (14.25%)
+	Test OOD: 31355 (7.52%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
+ID mean of (MSE, MAE): [632.03      17.924208]
+OOD mean of (MSE, MAE): [902.1485    21.656689]
+ID median of (MSE, MAE): [256.28302   14.026365]
+OOD median of (MSE, MAE): [371.42465   17.081606]
+ID likelihoods: -0.48628097772598267
+OOD likelihoods: 0.338986873626709
+ID calibration errors: [0.0246664  0.00726273 0.00166394 0.00705682 0.01821406 0.03297895
+ 0.04666505 0.05976566 0.07321155 0.08677892 0.09869312 0.11314353]
+OOD calibration errors: [0.00429233 0.00276259 0.01176732 0.03290291 0.05640166 0.08153997
+ 0.10534257 0.12726465 0.14876311 0.16917213 0.18795148 0.2007313 ]
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+		time_second: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 188
+	Extracted segments: 406
+	Interpolated values: 21276
+	Percent of values interpolated: 6.96%
+Splitting data...
+	Train: 266941 (63.98%)
+	Val: 59450 (14.25%)
+	Test: 59450 (14.25%)
+	Test OOD: 31355 (7.52%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+		time_second: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 188
+	Extracted segments: 406
+	Interpolated values: 21276
+	Percent of values interpolated: 6.96%
+Splitting data...
+	Train: 266941 (63.98%)
+	Val: 59450 (14.25%)
+	Test: 59450 (14.25%)
+	Test OOD: 31355 (7.52%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------
+ID mean of (MSE, MAE): [425.70493   13.687826]
+OOD mean of (MSE, MAE): [637.3736    17.189728]
+ID median of (MSE, MAE): [145.32152   10.203011]
+OOD median of (MSE, MAE): [238.44078   13.146278]
+ID likelihoods: -0.5918875336647034
+OOD likelihoods: 0.1769101321697235
+ID calibration errors: [0.1678679  0.07527334 0.02490737 0.0080332  0.00770234 0.01385508
+ 0.02139405 0.03050907 0.039799   0.0520063  0.06412783 0.07957173]
+OOD calibration errors: [0.14033357 0.04831641 0.00904922 0.00856669 0.02547802 0.04892335
+ 0.07478685 0.09766678 0.11933258 0.13703757 0.16222235 0.17858875]
+--------------------------------
+Loading column definition...
+Checking column definition...
+Loading data...
+Dropping columns / rows...
+Checking for NA values...
+Setting data types...
+Dropping columns / rows...
+Encoding data...
+	Updated column definition:
+		id: REAL_VALUED (ID)
+		time: DATE (TIME)
+		gl: REAL_VALUED (TARGET)
+		time_day: REAL_VALUED (KNOWN_INPUT)
+		time_month: REAL_VALUED (KNOWN_INPUT)
+		time_year: REAL_VALUED (KNOWN_INPUT)
+		time_hour: REAL_VALUED (KNOWN_INPUT)
+		time_minute: REAL_VALUED (KNOWN_INPUT)
+		time_second: REAL_VALUED (KNOWN_INPUT)
+Interpolating data...
+	Dropped segments: 188
+	Extracted segments: 406
+	Interpolated values: 21276
+	Percent of values interpolated: 6.96%
+Splitting data...
+	Train: 266941 (63.98%)
+	Val: 59450 (14.25%)
+	Test: 59450 (14.25%)
+	Test OOD: 31355 (7.52%)
+Scaling data...
+	No scaling applied
+Data formatting complete.
+--------------------------------

@@ -1,4 +1,5 @@
 model,ID RMSE/MAE,OOD RMSE/MAE
 output/models/livia_mini/gluformer_livia_mini_pth,[254.62332   14.305138],[492.896     19.686234]
-model,ID RMSE/MAE,OOD RMSE/MAE
 output/models/livia_mini/nhits_livia_mini_pkl,[147.28082  10.18974],[191.64265   12.171683]
+output/models/livia_mini/gluformer_1samples_100epochs_8heads_320batch_livia_mini.pth,[457.9776    18.964022],[564.9422    21.374268]
+output/models/livia_mini/transformer_3samples_10epochs_2heads_32batch_geluactivation_livia_mini.pth,[212.90619  12.34643],[215.09778   12.368915]
